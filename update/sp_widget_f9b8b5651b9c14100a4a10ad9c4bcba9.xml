@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function ($scope,AGGridFactory) {
+    /* widget controller */
+    var c = this;
+
+    var orgManager = new AGGridFactory();
+	
+	c.addNew = function() {
+        orgManager.editRow("-1");
+	}
+
+    orgManager.setColumns ([{
+            field: 'edit',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellRenderer: 'editCell'
+        },
+        {
+            field: 'org_code',
+            headerName: 'Org. Code',
+            cellStyle: {
+                color: 'blue',
+                'text-decoration': 'underline',
+                'cursor': 'pointer'
+            }
+        },
+        {
+            field: 'org_type',
+            headerName: 'Org. Type',
+            filter: 'agTextColumnFilter',
+            suppressMenu: true
+        },
+        {
+            field: 'org_name',
+            headerName: 'Organization Name',
+            sort: 'asc',
+            filter: 'agTextColumnFilter',
+            suppressMenu: true
+        },
+        {
+            field: 'org_desc',
+            headerName: 'Description'
+        },
+        {
+            field: 'organization_parent_ref',
+            headerName: 'Parent Organization'
+        },
+        {
+            field: 'delete',
+            headerName: 'Delete',
+            maxWidth: 80,
+            cellRenderer: 'deleteCell'
+        }
+    ]);
+
+    var pageProps = {
+        pageController: c, 
+        tableName: c.data.tableName, 
+        dataArray: null, 
+        pageType: 'Organization', 
+        linkedField: 'org_code', 
+        detailsPage: 'organization_detail',
+        usePaging: false
+    }
+
+    orgManager.setPageProperties(pageProps);
+    orgManager.setRenderers('org_code'); //build renderers and set display field to show on delete attempt
+    orgManager.renderGrid('orgGrid'); //render grid objects
+    orgManager.setGridData(c.data.tableData); //set grid data
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.full-grid {
+    width: 94vw;
+    height: calc(100vh - 135px);
+    clear: both;
+}
+.fms-list-header {
+    margin-bottom: 0px !important;
+}
+.pageLabel {
+    float: left;
+    margin-right: 10px;
+}
+.row-button {
+    cursor: pointer;
+}
+.new-button {
+    float: left;
+}
+.edit-pencil {
+    color: #003ade;
+    font-size: 13px;
+}
+.delete-x {
+    color: #000000;
+    font-size: 13px;
+}
+.updated-row {
+    background-color: #FFFFCC;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>organization_list</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Organization List</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+
+    var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+    
+
+    if (input) { //input holds the data coming back to the server
+
+		if (input.mode == "deleteRow"){
+			FMSUtility.deleteRecord(FMSConstants.TABLE_ORGANIZATION, input.rowID);
+		}
+
+	}
+	
+	data.tableName = FMSConstants.TABLE_ORGANIZATION;
+    data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_ORGANIZATION, "", true); //get all org info
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-04-20 18:03:37</sys_created_on>
+        <sys_id>f9b8b5651b9c14100a4a10ad9c4bcba9</sys_id>
+        <sys_mod_count>152</sys_mod_count>
+        <sys_name>Organization List</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_widget_f9b8b5651b9c14100a4a10ad9c4bcba9</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-04 13:34:52</sys_updated_on>
+        <template><![CDATA[<div style="width: 100%; height: 100%">
+
+  <div class="container">
+    <div class="row">
+      <div class="form-group col-sm-12 fms-list-header">
+        <h4 class="pageLabel">Organization List</h4>
+        <a href="javascript:void(0)" ng-click="c.addNew();" class="btn btn-info new-button">Add Organization</a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+
+
+        <div id="orgGrid" class="ag-theme-balham full-grid"></div>
+
+
+      </div>
+    </div>
+  </div>
+
+</div>
+]]></template>
+    </sp_widget>
+</record_update>

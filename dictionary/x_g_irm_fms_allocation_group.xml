@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Allocation Group" max_length="40" name="x_g_irm_fms_allocation_group" type="collection">
+        <element label="Disabled" max_length="40" name="disabled" type="boolean"/>
+        <element label="Group Description" max_length="500" name="group_desc" type="string"/>
+        <element display="true" label="Group Name" mandatory="true" max_length="20" name="group_name" type="string"/>
+        <element label="Project" mandatory="true" max_length="32" name="project_ref" reference="x_g_irm_fms_project" type="reference"/>
+        <element label="Validate Transaction Allotment?" max_length="40" name="val_tran_allotment" type="boolean"/>
+        <element label="Validate Transaction Appropriation?" max_length="40" name="val_tran_appropriation" type="boolean"/>
+        <element label="Validate Transaction FY?" max_length="40" name="val_tran_fy" type="boolean"/>
+        <element label="Validate Transaction Not Deficient?" max_length="40" name="val_tran_not_deficient" type="boolean"/>
+        <index name="index">
+            <element name="project_ref"/>
+        </index>
+    </element>
+</database>

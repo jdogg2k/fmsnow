@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="cost_pool_desc" label="Cost Pool Description" language="en" table="x_g_irm_fms_cost_pool">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>cost_pool_desc</element>
+            <help/>
+            <hint/>
+            <label>Cost Pool Description</label>
+            <language>en</language>
+            <name>x_g_irm_fms_cost_pool</name>
+            <plural>Cost Pool Descriptions</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-09 16:41:13</sys_created_on>
+            <sys_id>235cf08e1bc0d0500a4a10ad9c4bcb5f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Cost Pool Description</sys_name>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_documentation_x_g_irm_fms_cost_pool_cost_pool_desc_en</sys_update_name>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-09 16:41:13</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

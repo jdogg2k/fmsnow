@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Contract Party" max_length="40" name="x_g_irm_fms_contract_party" type="collection">
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new contract party]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.party_name.toString() + '\t\t\t\t[' + current.party_type.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;})(current);" display="true" label="Contract Party display" max_length="256" name="contract_party_display" type="string" virtual="true"/>
+        <element label="Contract" mandatory="true" max_length="32" name="contract_ref" reference="x_g_irm_fms_contract" type="reference"/>
+        <element label="Party Email" max_length="128" name="party_email" type="string"/>
+        <element label="Party / Group Name" mandatory="true" max_length="128" name="party_name" type="string"/>
+        <element default="true" label="Notify?" max_length="40" name="party_notify" type="boolean"/>
+        <element choice="1" label="Party Type" mandatory="true" max_length="40" name="party_type" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Contracting Officer" value="CO"/>
+                <element inactive_on_update="false" label="Contracting Officer Representative" value="COR"/>
+                <element inactive_on_update="false" label="Government Technical Manager" value="GTM"/>
+                <element inactive_on_update="false" label="Other Interested Party" value="INT"/>
+                <element inactive_on_update="false" label="Purchaser / Buyer" value="PUR"/>
+                <element inactive_on_update="false" label="Vendor Representative" value="VEN"/>
+            </choice>
+        </element>
+        <index name="index">
+            <element name="contract_ref"/>
+        </index>
+    </element>
+</database>

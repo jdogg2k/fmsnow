@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Project" max_length="40" name="x_g_irm_fms_project" type="collection">
+        <element label="Function Code" max_length="32" name="function_code_ref" reference="x_g_irm_fms_function_code" type="reference"/>
+        <element label="Investment" max_length="32" name="investment" reference="x_g_irm_fms_investment" type="reference"/>
+        <element label="OMB Project Name" mandatory="true" max_length="40" name="omb_project_name" type="string"/>
+        <element default="javascript: g_user.getClientData('org_id');" label="Organization" mandatory="true" max_length="32" name="organization_ref" reference="x_g_irm_fms_organization" reference_qual="javascript: &quot;sys_idIN&quot; + new OrgHierarchy().getUserOrgs();" type="reference" use_reference_qualifier="advanced"/>
+        <element label="Project Code" mandatory="true" max_length="12" name="project_code" type="string"/>
+        <element label="Project Description" max_length="500" name="project_desc" type="string"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new project]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.project_name.toString() + '\t\t\t\t[' + current.project_code.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;})(current);" display="true" label="Project display" mandatory="true" max_length="256" name="project_display" type="string" virtual="true"/>
+        <element label="Project Name" mandatory="true" max_length="30" name="project_name" type="string"/>
+        <index name="index">
+            <element name="organization_ref"/>
+        </index>
+        <index name="index2">
+            <element name="investment"/>
+        </index>
+        <index name="index3">
+            <element name="function_code_ref"/>
+        </index>
+    </element>
+</database>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="contract_contract_display" label="Contract / Contract display" language="en" table="x_g_irm_fms_contract_contract">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>contract_contract_display</element>
+            <help/>
+            <hint/>
+            <label>Contract / Contract display</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract_contract</name>
+            <plural>Contract / Contract displays</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 19:38:09</sys_created_on>
+            <sys_id>7d4bd0b91b0c90501f7e113d9c4bcbb4</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Contract / Contract display</sys_name>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_documentation_x_g_irm_fms_contract_contract_contract_contract_display_en</sys_update_name>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 19:38:09</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $rootScope, $timeout) {
+    /* widget controller */
+	
+	var c = this;
+
+	if ($scope.data.myOrg_id.length > 0) {
+		$timeout(function() {
+			$rootScope.$broadcast('OrgChanged', {org_id: $scope.data.myOrg_id});
+		}, 500);
+	}
+	
+  $scope.selOrg = {
+      displayValue: $scope.data.myOrg_name,
+      value: $scope.data.myOrg_id,
+      name: 'selOrg'
+  };
+
+  $scope.selProj = {
+      displayValue: $scope.data.myProj_name,
+      value: $scope.data.myProj_id,
+      name: 'selProj'
+  };
+
+  $scope.$on("field.change", function(evt, parms) {
+      if (parms.field.name == 'selOrg') {
+          if (c.data.myOrg_name != parms.newValue || !parms.newValue) {
+              $rootScope.$broadcast('OrgChanged', {org_id: parms.newValue});
+              $scope.selProj.displayValue = '';
+              $scope.selProj.value = '';
+          }
+          c.data.myOrg_name = parms.displayValue;
+          c.data.myOrg_id = parms.newValue;
+		  c.server.get({
+            org_id: parms.newValue
+			}).then(function(resp) {});
+      }
+
+      if (parms.field.name == 'selProj')
+          $rootScope.$broadcast('ProjectChanged', {org_id: parms.newValue});
+  });
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description>Select an organization and project by user</description>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>organization_selection</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+
+}]]></link>
+        <name>Organization Selection</name>
+        <option_schema>[{"name":"hide_widget","section":"Behavior","default_value":"false","label":"Hide Widget","type":"boolean"},{"hint":"","name":"hide_project","section":"Behavior","default_value":"false","label":"Hide Project","type":"boolean"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function(options) {
+	var session = gs.getSession();
+	
+	if (input) { //input holds the data coming back to the server
+        if (input.org_id) {
+            session.putClientData('org_id', input.org_id.toString());
+        }
+    }
+	
+	data.selectedOrg = "";
+	if (session.getClientData('org_id'))
+		data.selectedOrg = session.getClientData('org_id');
+    data.userOrgs = [];
+    data.hide_widget = (options.hide_widget.toString() == 'true');
+	data.hide_project = (options.hide_project.toString() == 'true');
+	data.orgTableName = FMSConstants.TABLE_ORGANIZATION;
+	data.projTableName = FMSConstants.TABLE_PROJECT;
+    var gr = new GlideRecord(FMSConstants.TABLE_ORGANIZATION);
+    gr.addEncodedQuery('sys_idIN' + new OrgHierarchy().getUserOrgs());
+    gr.orderBy('org_name');
+    gr.query();
+    while (gr.next()) {
+		if (data.userOrgs.length == 0 || $sp.getParameter("org_id") == gr.getValue("sys_id") || data.selectedOrg == gr.getValue("sys_id")) {
+			data.myOrg_id = gr.getValue("sys_id");
+			data.myOrg_name = gr.getValue("organization_display");
+		}
+        data.userOrgs.push(gr.getValue("sys_id"));
+    }
+    if (gr.getRowCount() == 0) {
+        gs.addInfoMessage("ERROR!!! CONTACT SYSTEM ADMINISTRATOR.  NO ORGANIZATIONS DEFINED.");
+    }
+	
+	console.log(data.hide_widget);
+
+})(options);]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-04-28 16:15:35</sys_created_on>
+        <sys_id>c3c8aac01bac5c101f7e113d9c4bcbb0</sys_id>
+        <sys_mod_count>128</sys_mod_count>
+        <sys_name>Organization Selection</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_widget_c3c8aac01bac5c101f7e113d9c4bcbb0</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-04 18:48:33</sys_updated_on>
+        <template><![CDATA[<div style="display: inline-flex;" class="topFilters" ng-hide="c.data.hide_widget">
+  <div style="display: inline-flex; align-items: center; min-width: 400px;">
+    <label class="control-label">Organization:</label>
+    <sn-record-picker field="selOrg" table="data.orgTableName" default-query="'sys_idIN' + data.userOrgs + '^ORDERBYorg_name'" display-field="'organization_display'" value-field="'sys_id'" search-fields="'org_name,org_code'" page-size="100" ></sn-record-picker>
+  </div>
+  &nbsp;&nbsp;
+  <div style="display: inline-flex; align-items: center; min-width: 400px;" ng-hide="c.data.hide_project">
+    <label class="control-label">Project:</label>
+    <sn-record-picker field="selProj" table="data.projTableName" default-query="'organization_ref=' + data.myOrg_id" display-field="'project_display'" value-field="'sys_id'" search-fields="'project_name'" page-size="100" sn-disabled="!data.myOrg_id"></sn-record-picker>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

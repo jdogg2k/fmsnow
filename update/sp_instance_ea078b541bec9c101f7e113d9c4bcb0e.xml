@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>1</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="2">08070f541bec9c101f7e113d9c4bcbff</sp_column>
+        <sp_widget display_value="HTML">8679ef89cb21120000f8d856634c9c4f</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-04-29 12:49:06</sys_created_on>
+        <sys_id>ea078b541bec9c101f7e113d9c4bcb0e</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>Financial Management System</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_instance_ea078b541bec9c101f7e113d9c4bcb0e</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-29 12:58:57</sys_updated_on>
+        <title>Financial Management System</title>
+        <url/>
+        <widget_parameters><![CDATA[{
+	"html": {
+		"value": "<h1>Financial Management System Home</h1>",
+		"displayValue": "<h1>Financial Management System Home</h1>"
+	}
+}]]></widget_parameters>
+    </sp_instance>
+    <sys_translated_text action="delete_multiple" query="documentkey=ea078b541bec9c101f7e113d9c4bcb0e"/>
+</record_update>

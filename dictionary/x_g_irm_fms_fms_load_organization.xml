@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="sys_import_set_row" label="FMS Load Organization" max_length="40" name="x_g_irm_fms_fms_load_organization" type="collection">
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Description" label="Description" max_length="50" name="u_description" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Organization Name" label="Organization Name" max_length="40" name="u_organization_name" type="string"/>
+        <element attributes="import_attribute_name=Org. Code" label="Org. Code" max_length="40" name="u_org__code" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Org. Type" label="Org. Type" max_length="40" name="u_org__type" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Parent Organization" label="Parent Organization" max_length="40" name="u_parent_organization" type="string"/>
+    </element>
+</database>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Budget" max_length="40" name="x_g_irm_fms_budget" type="collection">
+        <element label="Approved Date" max_length="40" name="approved_date" type="glide_date_time"/>
+        <element label="Budget Description" max_length="50" name="budget_desc" type="string"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new budget]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.budget_desc.toString() + '\t\t\t\t[' + current.budget_type.toString() + ' ' + current.budget_version_revision + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" display="true" label="Budget display" max_length="256" name="budget_display" read_only="true" type="string" virtual="true"/>
+        <element label="Budget Notes" max_length="500" name="budget_notes" type="string"/>
+        <element label="Budget Revision" max_length="40" name="budget_revision" read_only="true" type="integer"/>
+        <element label="Source" max_length="32" name="budget_source_ref" read_only="true" reference="x_g_irm_fms_budget" type="reference"/>
+        <element choice="3" default="Working" label="Budget Status" mandatory="true" max_length="10" name="budget_status" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Approved" value="Approved"/>
+                <element inactive_on_update="false" label="Rejected" value="Rejected"/>
+                <element inactive_on_update="false" label="Submitted" value="Submitted"/>
+                <element inactive_on_update="false" label="Working" value="Working"/>
+            </choice>
+        </element>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;    var items = new GlideRecord('x_g_irm_fms_budget_item');&#13;&#10;    items.addQuery('budget_ref', current.sys_id);&#13;&#10;    items.query();&#13;&#10;    var total = 0;&#13;&#10;    while (items.next()) {&#13;&#10;        total += parseFloat(items.budget_amt);&#13;&#10;    }&#13;&#10;    return total; &#13;&#10;})(current);" label="Budget Total" max_length="20" name="budget_total_amt" read_only="true" type="currency" virtual="true"/>
+        <element choice="1" label="Budget Type" mandatory="true" max_length="10" name="budget_type" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Actual" value="Actual"/>
+                <element inactive_on_update="false" label="Baseline" value="Baseline"/>
+                <element inactive_on_update="false" label="Execution" value="Execution"/>
+                <element inactive_on_update="false" label="Forecast" value="Forecast"/>
+                <element inactive_on_update="false" label="WhatIf" value="WhatIf"/>
+            </choice>
+        </element>
+        <element label="Budget Version" max_length="40" name="budget_version" read_only="true" type="integer"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;v1.0&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = 'v' + current.budget_version.toString() + '.' + current.budget_revision.toString(); &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" label="Budget Version Revision" max_length="32" name="budget_version_revision" read_only="true" type="string" virtual="true"/>
+        <element label="Is Current?" max_length="40" name="current" type="boolean"/>
+        <element attributes="format=none" choice="3" default="javascript:new Date().getFullYear();" label="FY" mandatory="true" max_length="40" name="fy" type="integer">
+            <choice/>
+        </element>
+        <element label="Locked?" max_length="40" name="locked" type="boolean"/>
+        <element label="Project" mandatory="true" max_length="32" name="project_ref" reference="x_g_irm_fms_project" reference_qual="javascript: &quot;organization_refIN&quot; + new OrgHierarchy().getUserOrgs();" type="reference" use_reference_qualifier="advanced"/>
+        <index name="index">
+            <element name="project_ref"/>
+        </index>
+        <index name="index2">
+            <element name="budget_source_ref"/>
+        </index>
+    </element>
+</database>

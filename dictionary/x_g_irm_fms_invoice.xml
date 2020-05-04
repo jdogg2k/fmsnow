@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Invoice" max_length="40" name="x_g_irm_fms_invoice" type="collection">
+        <element label="Contract Number" max_length="20" name="contract_number" type="string"/>
+        <element label="Estimated Cost" max_length="20" name="estimated_cost" type="currency"/>
+        <element label="Invoice Amount" mandatory="true" max_length="20" name="invoice_amount" type="currency"/>
+        <element label="Invoice Number" mandatory="true" max_length="20" name="invoice_nmbr" type="string"/>
+        <element label="Notes" max_length="500" name="notes" type="string"/>
+        <element label="Obligation" mandatory="true" max_length="15" name="obligation" type="string"/>
+        <element label="Paid Amount" max_length="20" name="paid_amount" type="currency"/>
+        <element label="Paid Date" max_length="40" name="paid_date" type="glide_date"/>
+    </element>
+</database>

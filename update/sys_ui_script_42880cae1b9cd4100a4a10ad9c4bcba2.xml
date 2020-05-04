@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_script">
+    <sys_ui_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <description/>
+        <global>false</global>
+        <name>x_g_irm_fms.FormProcessing</name>
+        <script><![CDATA[var x_g_irm_fms = x_g_irm_fms || {};
+
+x_g_irm_fms.FormProcessing = (function() {
+    "use strict";
+
+    return {
+
+        LoadFYChoices: function(gform) {
+            var mod = new GlideAjax('x_g_irm_fms.FMSHelper');
+            mod.addParam('sysparm_name', 'getFiscalYears');
+            mod.getXMLAnswer(function(answer) {
+                var years = [];
+                years = JSON.parse(answer);
+                for (i = 0; i < years.length; i++) {
+                    gform.addOption('fy', years[i].toString(), years[i].toString());
+                }
+            });
+        },
+
+        type: "FormProcessing"
+    };
+})();]]></script>
+        <script_name>FormProcessing</script_name>
+        <sys_class_name>sys_ui_script</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-04-23 12:44:48</sys_created_on>
+        <sys_id>42880cae1b9cd4100a4a10ad9c4bcba2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_g_irm_fms.FormProcessing</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_ui_script_42880cae1b9cd4100a4a10ad9c4bcba2</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-23 12:44:48</sys_updated_on>
+        <ui_type>10</ui_type>
+        <use_scoped_format>true</use_scoped_format>
+    </sys_ui_script>
+</record_update>

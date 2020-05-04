@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_angular_provider">
+    <sp_angular_provider action="INSERT_OR_UPDATE">
+        <name>AGGridFactory</name>
+        <script><![CDATA[function AGGridFactory($http, $rootScope, spUtil, spModal, $uibModalStack) {
+
+    var AGGridFactory = function () { 
+
+        var DeleteCellRenderer = function() {};
+        var EditCellRenderer = function() {};
+
+        var pageController = {};
+        var linkField = "sys_id";
+        var dataTable = "";
+        var dataArray = "tableData";
+        var pageName = "";
+        var detailsPage = "";
+        var updatedID = "";
+        var gridOptions = {
+            defaultColDef: {
+                editable: false,
+                sortable: true,
+                resizable: true,
+                filter: false,
+                flex: 1,
+                minWidth: 100,
+            },
+            suppressRowClickSelection: true,
+            rowSelection: 'multiple',
+            floatingFilter: true,
+            pagination: true,
+            paginationAutoPageSize: true,
+            onCellClicked: function(params) {
+                if (params.data && params.data.sys_id && params.colDef.field == linkField) {
+                    launchRowDetails(params.data.sys_id);
+                }
+            },
+            rowClassRules: {
+                'updated-row': function(params) {
+                    var retVal = false;
+                    if (params.data) {
+                        if (params.data.sys_id) {
+                            if (params.data.sys_id == updatedID)
+                                retVal = true;
+                        }
+                    }
+                    return retVal;
+                }
+            },
+            components: {
+                editCell: EditCellRenderer,
+                deleteCell: DeleteCellRenderer
+            }
+        };
+
+        var launchRowDetails = function(rowID) {
+            var urlToNav = "/fms?id=" + detailsPage + "&org_id=" + rowID;
+            window.location.href = urlToNav;
+        }
+    
+        this.editRow = function(tID, query) {
+            editGridRow(tID, query)
+        }
+
+        var editGridRow = function(targetID, query) {
+            var titlePrefix = "New";
+            var wInput = {
+                table: dataTable, 
+                sys_id: targetID, 
+                view: 'portal'
+            }
+
+            if (query)
+                wInput.query = query;
+
+
+            if (targetID != "-1") {
+                titlePrefix = "Edit";
+                updatedID = targetID;
+            }
+
+            spModal.open({
+                title: titlePrefix + ' ' + pageName,
+                widget: 'fms-form-widget', 
+                buttons: [],
+                widgetInput: wInput
+            });
+        }
+    
+        var deleteRow = function(delID) {
+            pageController.server.get({
+                mode: 'deleteRow',
+                rowID: delID,
+                delTable: dataTable
+            }).then(function (delResp) {
+                spUtil.addInfoMessage(pageName + " Deleted Successfully");
+                gridOptions.api.setRowData(delResp.data[dataArray]);
+                gridOptions.api.sizeColumnsToFit();
+            });
+        }
+        
+    
+        //setting functions called from widget
+        this.renderGrid = function(ele) {
+            var gridDiv = document.querySelector('#' + ele);
+            new agGrid.Grid(gridDiv, gridOptions);
+        }
+        this.setColumns = function(columnData) {
+            gridOptions.columnDefs = columnData;
+        }
+        this.setGridData = function(rowData) {
+            /*var pagingActive = true;
+            var rowCount = rowData.length;
+            if (rowCount > 25) //only show paging controls if array data is large enough
+                pagingActive = true;
+
+            gridOptions.pagination = true;*/
+            gridOptions.api.setRowData(rowData);
+            gridOptions.api.sizeColumnsToFit();
+        }
+        this.setPageProperties = function(pageProps) {
+            pageController = pageProps.pageController; //link to page controller
+            dataTable = pageProps.tableName; //SNOW table name
+            if (pageProps.dataArray != null)
+                dataArray = pageProps.dataArray; //name of data array variable from widget Server Script
+            pageName = pageProps.pageType; //object type for page
+            linkField = pageProps.linkedField; //field that should be linked from grid
+            detailsPage = pageProps.detailsPage; //details page to point link to
+        }
+        this.setUpdatedID = function(id) {
+            updatedID = id;
+        }
+
+        this.setRenderers = function(displayField) {
+            EditCellRenderer.prototype.init = function(params) {
+    
+                // create the cell
+                this.eGui = document.createElement('div');
+    
+                if (params.data) {
+                    this.eGui.innerHTML = '<span class="row-button"><i class="fa fa-edit edit-pencil"></i></span>';
+                    // get references to the elements we want
+                    this.eButton = this.eGui.querySelector('.fa-edit');
+                    // add event listener to button
+                    this.eventListener = function() {
+                        editGridRow(params.data.sys_id);
+                    };
+                    this.eButton.addEventListener('click', this.eventListener);
+                }
+            };
+    
+            // gets called once when grid ready to insert the element
+            EditCellRenderer.prototype.getGui = function() {
+                return this.eGui;
+            };
+    
+            // gets called whenever the user gets the cell to refresh
+            EditCellRenderer.prototype.refresh = function(params) {
+    
+                // return true to tell the grid we refreshed successfully
+                return true;
+            };
+    
+            // gets called when the cell is removed from the grid
+            EditCellRenderer.prototype.destroy = function() {
+                // do cleanup, remove event listener from button
+                if (this.eButton)
+                    this.eButton.removeEventListener('click', this.eventListener);
+            };
+    
+            
+    
+            // gets called once before the renderer is used
+            DeleteCellRenderer.prototype.init = function(params) {
+    
+                // create the cell
+                this.eGui = document.createElement('div');
+    
+                if (params.data) {
+    
+                    this.eGui.innerHTML = '<span class="row-button"><i class="fa fa-window-close delete-x"></i></span>';
+    
+                    // get references to the elements we want
+                    this.eButton = this.eGui.querySelector('.fa-window-close');
+    
+                    // add event listener to button
+                    this.eventListener = function() {
+                        if (window.confirm("Are you sure you want to delete " + params.data[displayField]+ "?")) { //delete this row
+                            deleteRow(params.data.sys_id);
+                        }
+                    };
+                    this.eButton.addEventListener('click', this.eventListener);
+                }
+            };
+    
+            // gets called once when grid ready to insert the element
+            DeleteCellRenderer.prototype.getGui = function() {
+                return this.eGui;
+            };
+    
+            // gets called whenever the user gets the cell to refresh
+            DeleteCellRenderer.prototype.refresh = function(params) {
+    
+                // return true to tell the grid we refreshed successfully
+                return true;
+            };
+    
+            // gets called when the cell is removed from the grid
+            DeleteCellRenderer.prototype.destroy = function() {
+                // do cleanup, remove event listener from button
+                if (this.eButton)
+                    this.eButton.removeEventListener('click', this.eventListener);
+            };
+        }
+
+        $rootScope.$on("spModel.uiActionComplete", function(evt, response) {
+
+            if (response.isInsert)
+                updatedID = response.sys_id;
+    
+            $uibModalStack.dismissAll(); //close the modal
+    
+            //We need to call back to server side to get latest array of organization records now that we have a new/updated value
+            pageController.server.get({
+                mode: 'getData' //this mode doesn't really matter, we just need to refresh the data server-side
+            }).then(function (saveResp) {
+
+                gridOptions.api.setRowData(saveResp.data[dataArray]);
+                gridOptions.api.sizeColumnsToFit();
+    
+                //highlight the modded record
+                gridOptions.api.forEachNode(function (rowNode, index) {
+                    if (rowNode.data.sys_id == updatedID) {
+                        gridOptions.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
+                    }
+                });
+    
+            });
+        });
+    }
+
+    return (AGGridFactory);
+}]]></script>
+        <sys_class_name>sp_angular_provider</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-04-24 14:39:22</sys_created_on>
+        <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
+        <sys_mod_count>132</sys_mod_count>
+        <sys_name>AGGridFactory</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-29 19:02:50</sys_updated_on>
+        <type>service</type>
+    </sp_angular_provider>
+</record_update>

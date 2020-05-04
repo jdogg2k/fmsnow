@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="sys_import_set_row" label="FMS Load Contract" max_length="40" name="x_g_irm_fms_fms_load_contract" type="collection">
+        <element attributes="import_attribute_name=AQM Delay" label="AQM Delay" max_length="40" name="u_aqm_delay" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Award Level" label="Award Level" max_length="40" name="u_award_level" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=BaseValue" label="BaseValue" max_length="40" name="u_basevalue" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Base End Date" label="Base End Date" max_length="40" name="u_base_end_date" type="glide_date"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Base Start Date" label="Base Start Date" max_length="40" name="u_base_start_date" type="glide_date"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Category" label="Category" max_length="40" name="u_category" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Classification" label="Classification" max_length="40" name="u_classification" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Contract PIID" label="Contract PIID" max_length="40" name="u_contract_piid" type="string"/>
+        <element attributes="import_attribute_name=Current OY" label="Current OY" max_length="40" name="u_current_oy" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=EndDate                      EndDate" label="EndDate                      EndDate" max_length="40" name="u_enddate_____________enddate" type="glide_date"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=IDV Type" label="IDV Type" max_length="40" name="u_idv_type" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Is Base" label="Is Base" max_length="40" name="u_is_base" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Is Extended" label="Is Extended" max_length="40" name="u_is_extended" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Non-IDV Type" label="Non-IDV Type" max_length="40" name="u_non_idv_type" type="string"/>
+        <element attributes="import_attribute_name=Org Code" label="Org Code" max_length="40" name="u_org_code" type="integer"/>
+        <element attributes="import_attribute_name=OY" label="OY" max_length="40" name="u_oy" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Parent PIID" label="Parent PIID" max_length="40" name="u_parent_piid" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Period" label="Period" max_length="40" name="u_period" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Pricing Model" label="Pricing Model" max_length="40" name="u_pricing_model" type="string"/>
+        <element attributes="import_attribute_name=Priority Tier" label="Priority Tier" max_length="40" name="u_priority_tier" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Product / Service" label="Product / Service" max_length="40" name="u_product___service" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Project Code" label="Project Code" max_length="40" name="u_project_code" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Risk?" label="Risk?" max_length="40" name="u_risk_" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=StartDate" label="StartDate" max_length="40" name="u_startdate" type="glide_date"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Status" label="Status" max_length="40" name="u_status" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=TotalValue" label="TotalValue" max_length="40" name="u_totalvalue" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Vendor Name(s)" label="Vendor Name(s)" max_length="40" name="u_vendor_name_s_" type="string"/>
+    </element>
+</database>

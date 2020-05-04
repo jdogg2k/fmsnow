@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="sys_import_set_row" label="FMS Load Budget" max_length="40" name="x_g_irm_fms_fms_load_budget" type="collection">
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Approved Date" label="Approved Date" max_length="40" name="u_approved_date" type="glide_date"/>
+        <element attributes="import_attribute_name=Budget Revision" label="Budget Revision" max_length="40" name="u_budget_revision" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Budget Status" label="Budget Status" max_length="40" name="u_budget_status" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Budget Total" label="Budget Total" max_length="40" name="u_budget_total" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Budget Type" label="Budget Type" max_length="40" name="u_budget_type" type="string"/>
+        <element attributes="import_attribute_name=Budget Version" label="Budget Version" max_length="40" name="u_budget_version" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Created From" label="Created From" max_length="40" name="u_created_from" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Current" label="Current" max_length="40" name="u_current" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Description" label="Description" max_length="40" name="u_description" type="string"/>
+        <element attributes="import_attribute_name=FY" label="FY" max_length="40" name="u_fy" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Locked" label="Locked" max_length="40" name="u_locked" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Project Name" label="Project Name" max_length="40" name="u_project_name" type="string"/>
+    </element>
+</database>

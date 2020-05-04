@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="post_type" table="x_g_irm_fms_post" version="3">
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>post_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>American Institute in Taiwan</label>
+            <language>en</language>
+            <name>x_g_irm_fms_post</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-07 20:06:49</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>de28d3191bc050500a4a10ad9c4bcb8b</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-07 20:06:49</sys_updated_on>
+            <value>AIT</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>post_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Branch Office</label>
+            <language>en</language>
+            <name>x_g_irm_fms_post</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-07 20:07:07</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>a5489bd51bc050500a4a10ad9c4bcba6</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-07 20:07:07</sys_updated_on>
+            <value>BO</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>post_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Consulate</label>
+            <language>en</language>
+            <name>x_g_irm_fms_post</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-07 20:07:30</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>d6589bd51bc050500a4a10ad9c4bcba9</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-07 20:07:30</sys_updated_on>
+            <value>C</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>post_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Consulate General</label>
+            <language>en</language>
+            <name>x_g_irm_fms_post</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-07 20:07:47</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>cf681fd51bc050500a4a10ad9c4bcb65</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-07 20:07:47</sys_updated_on>
+            <value>CG</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>post_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Embassy</label>
+            <language>en</language>
+            <name>x_g_irm_fms_post</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-07 20:08:02</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>f77897191bc050500a4a10ad9c4bcb16</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-07 20:08:02</sys_updated_on>
+            <value>E</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>post_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>U.S. Interests</label>
+            <language>en</language>
+            <name>x_g_irm_fms_post</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-07 20:08:23</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>9f88d3191bc050500a4a10ad9c4bcb02</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-07 20:08:23</sys_updated_on>
+            <value>INT</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>post_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Mission</label>
+            <language>en</language>
+            <name>x_g_irm_fms_post</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-07 20:08:42</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>31a813191bc050500a4a10ad9c4bcbfb</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-07 20:08:42</sys_updated_on>
+            <value>M</value>
+        </sys_choice>
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>post_type</element>
+            <name>x_g_irm_fms_post</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-07 20:06:49</sys_created_on>
+            <sys_id>cc4817191bc050500a4a10ad9c4bcbdf</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>post_type</sys_name>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_choice_x_g_irm_fms_post_post_type</sys_update_name>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-07 20:06:49</sys_updated_on>
+        </sys_choice_set>
+    </sys_choice>
+</record_update>

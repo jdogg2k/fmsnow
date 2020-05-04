@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script_client">
+    <sys_script_client action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <applies_extended>false</applies_extended>
+        <condition/>
+        <description/>
+        <field>ams_ref_nmbr</field>
+        <global>true</global>
+        <isolate_script>true</isolate_script>
+        <messages/>
+        <name>Allocation Pool Load</name>
+        <order/>
+        <script><![CDATA[function onLoad() {
+    var mod = new GlideAjax('x_g_irm_fms.FMSHelper');
+	mod.addParam('sysparm_name','getFiscalYears');
+	mod.getXML(processYears);
+}
+
+function processYears(response) {
+	var answer = response.responseXML.documentElement.getAttribute("answer");
+
+	var years= [];
+	years = JSON.parse(answer);
+	for (i = 0; i < years.length; i++) {
+		g_form.addOption('fy', years[i].toString(), years[i].toString());
+	}
+
+}]]></script>
+        <sys_class_name>sys_script_client</sys_class_name>
+        <sys_created_by>markeljr@state.gov</sys_created_by>
+        <sys_created_on>2020-04-14 12:58:18</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>c29735271b88d0101f7e113d9c4bcb0b</sys_id>
+        <sys_mod_count>15</sys_mod_count>
+        <sys_name>Allocation Pool Load</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_script_client_c29735271b88d0101f7e113d9c4bcb0b</sys_update_name>
+        <sys_updated_by>rosejl@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-14 14:41:44</sys_updated_on>
+        <table>x_g_irm_fms_allocation_pool</table>
+        <type>onLoad</type>
+        <ui_type>10</ui_type>
+        <view/>
+    </sys_script_client>
+</record_update>

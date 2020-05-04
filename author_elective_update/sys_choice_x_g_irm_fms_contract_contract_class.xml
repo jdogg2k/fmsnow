@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="contract_class" table="x_g_irm_fms_contract" version="3">
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>contract_class</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Contract</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:09:03</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>af220be51bc490501f7e113d9c4bcb75</sys_id>
+            <sys_mod_count>1</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 19:26:23</sys_updated_on>
+            <value>Contract</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>contract_class</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Letter</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:08:43</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>e0124ba51bc490501f7e113d9c4bcb84</sys_id>
+            <sys_mod_count>1</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 19:27:02</sys_updated_on>
+            <value>Letter</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>contract_class</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Solicitation</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:01:59</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>2c80cfa51bc490501f7e113d9c4bcbcb</sys_id>
+            <sys_mod_count>1</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 19:27:12</sys_updated_on>
+            <value>Solicitation</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>contract_class</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Task Order</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:09:26</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>ef3247291bc490501f7e113d9c4bcbe3</sys_id>
+            <sys_mod_count>1</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 19:27:24</sys_updated_on>
+            <value>Task Order</value>
+        </sys_choice>
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>contract_class</element>
+            <name>x_g_irm_fms_contract</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:01:59</sys_created_on>
+            <sys_id>2e9043e51bc490501f7e113d9c4bcb1e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>contract_class</sys_name>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_choice_x_g_irm_fms_contract_contract_class</sys_update_name>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:01:59</sys_updated_on>
+        </sys_choice_set>
+    </sys_choice>
+</record_update>

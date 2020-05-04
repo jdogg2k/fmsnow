@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Notification" max_length="40" name="x_g_irm_fms_notification" type="collection">
+        <element choice="1" label="Basis Column" mandatory="true" max_length="128" name="basis_column" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Current OY End Date" value="ContractCurrentOYEndDate"/>
+                <element inactive_on_update="false" label="Last OY End Date" value="ContractLastOYEndDate"/>
+                <element inactive_on_update="false" label="Org. Promote Date" value="ContractOrgPromoteDate"/>
+                <element inactive_on_update="false" label="Performance End Date" value="ContractPerformEndDate"/>
+                <element inactive_on_update="false" label="User" value="UserID"/>
+            </choice>
+        </element>
+        <element label="Basis Relative Days" mandatory="true" max_length="40" name="basis_relative_days" type="integer"/>
+        <element choice="1" label="Basis Table" mandatory="true" max_length="128" name="basis_table" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Contract" value="tblContract"/>
+                <element inactive_on_update="false" label="SysUser" value="tblSysUser"/>
+            </choice>
+        </element>
+        <element default="7" label="Interim Days" mandatory="true" max_length="40" name="interim_days" type="integer"/>
+        <element label="Last Run Date" max_length="40" name="last_run_date" type="glide_date_time"/>
+        <element label="Message Body" mandatory="true" max_length="2000" name="message_body" type="string"/>
+        <element label="Message Subject" mandatory="true" max_length="128" name="message_subject" type="string"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new notification]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.message_subject.toString() + '\t\t\t\t[' + current.basis_table + ' / ' + current.basis_column.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;})(current);" display="true" label="Notification display" max_length="256" name="notification_display" type="string" virtual="true"/>
+    </element>
+</database>

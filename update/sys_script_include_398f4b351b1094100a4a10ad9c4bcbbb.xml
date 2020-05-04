@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_g_irm_fms.FMSConstants</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description>Constants used by MID server extensions.</description>
+        <name>FMSConstants</name>
+        <script><![CDATA[function FMSConstants() {}
+FMSConstants.TABLE_ORGANIZATION = 'x_g_irm_fms_organization';
+FMSConstants.TABLE_PROJECT = 'x_g_irm_fms_project';
+FMSConstants.TABLE_EXPENSE_ITEM = 'x_g_irm_fms_expense_item';
+FMSConstants.TABLE_COST_POOL = 'x_g_irm_fms_cost_pool';
+FMSConstants.TABLE_OMB_CATEGORY = 'x_g_irm_fms_omb_category';
+FMSConstants.TABLE_USER_ORGANIZATION = 'x_g_irm_fms_user_organization';
+
+FMSConstants.ROLE_SYSADMIN = 'x_g_irm_fms.sysadmin';]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-04-21 19:01:23</sys_created_on>
+        <sys_id>398f4b351b1094100a4a10ad9c4bcbbb</sys_id>
+        <sys_mod_count>11</sys_mod_count>
+        <sys_name>FMSConstants</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_script_include_398f4b351b1094100a4a10ad9c4bcbbb</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-30 19:54:36</sys_updated_on>
+    </sys_script_include>
+</record_update>

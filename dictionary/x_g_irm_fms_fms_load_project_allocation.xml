@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="sys_import_set_row" label="FMS Load Project Allocation" max_length="40" name="x_g_irm_fms_fms_load_project_allocation" type="collection">
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Allocation Group" label="Allocation Group" max_length="40" name="u_allocation_group" type="string"/>
+        <element attributes="import_attribute_name=Allotment" label="Allotment" max_length="40" name="u_allotment" type="integer"/>
+        <element attributes="import_attribute_name=Amount" label="Amount" max_length="15" name="u_amount" type="decimal"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Appropriation" label="Appropriation" max_length="40" name="u_appropriation" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Carry-forward" label="Carry-forward" max_length="40" name="u_carry_forward" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Date" label="Date" max_length="40" name="u_date" type="glide_date"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Fund Source" label="Fund Source" max_length="40" name="u_fund_source" type="string"/>
+        <element attributes="import_attribute_name=FY" label="FY" max_length="40" name="u_fy" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Other Office / Project" label="Other Office / Project" max_length="40" name="u_other_office___project" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Project Name" label="Project Name" max_length="40" name="u_project_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Ref/Agreement" label="Ref/Agreement" max_length="40" name="u_ref_agreement" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Reimburse Organization" label="Reimburse Organization" max_length="40" name="u_reimburse_organization" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Transfer Type" label="Transfer Type" max_length="40" name="u_transfer_type" type="string"/>
+    </element>
+</database>

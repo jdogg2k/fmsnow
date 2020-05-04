@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function ($scope, AGGridFactory) {
+  /* widget controller */
+  var c = this;
+  c.targetOrg = "";
+
+  var projManager = new AGGridFactory();
+
+  c.addNew = function () {
+    projManager.editRow("-1", "organization_ref=" + c.targetOrg);
+  }
+
+  projManager.setColumns([{
+      field: 'edit',
+      headerName: 'Edit',
+      maxWidth: 50,
+      cellRenderer: 'editCell'
+    },
+    {
+      field: 'project_code',
+      headerName: 'Project Code',
+      sort: 'asc',
+      cellStyle: {
+        color: 'blue',
+        'text-decoration': 'underline',
+        'cursor': 'pointer'
+      }
+    },
+    {
+      field: 'project_name',
+      headerName: 'Project Name'
+    },
+    {
+      field: 'omb_project_name',
+      headerName: 'OMB Project Name'
+    },
+    {
+      field: 'investment',
+      headerName: 'Investment'
+    },
+    {
+      field: 'function_code_ref',
+      headerName: 'Function Code'
+    },
+    {
+      field: 'project_desc',
+      headerName: 'Description'
+    },
+    {
+      field: 'delete',
+      headerName: 'Delete',
+      maxWidth: 80,
+      cellRenderer: 'deleteCell'
+    }
+  ]);
+
+  var projectProps = {
+    pageController: c,
+    tableName: c.data.tableName,
+    dataArray: null,
+    pageType: 'Project',
+    linkedField: 'project_code',
+    detailsPage: 'project_detail',
+    usePaging: false
+  }
+
+  projManager.setPageProperties(projectProps);
+  projManager.setRenderers('project_name'); //build renderers and set display field to show on delete attempt
+  projManager.renderGrid('projGrid'); //render grid objects
+  projManager.setGridData(c.data.tableData); //set grid data
+
+  $rootScope.$on('OrgChanged', function (event, args) {
+    c.server.get({
+      org_id: args.org_id
+    }).then(function (resp) {
+      c.targetOrg = resp.data.selectedOrg;
+      projManager.setGridData(resp.data.tableData); //set grid data
+    });
+
+  });
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.full-grid {
+    width: 94vw;
+    height: calc(100vh - 210px);
+    clear: both;
+}
+.fms-list-header {
+    margin-bottom: 0px !important;
+}
+.pageLabel {
+    float: left;
+    margin-right: 10px;
+}
+.row-button {
+    cursor: pointer;
+}
+.new-button {
+    float: left;
+}
+.edit-pencil {
+    color: #003ade;
+    font-size: 13px;
+}
+.delete-x {
+    color: #000000;
+    font-size: 13px;
+}
+.updated-row {
+    background-color: #FFFFCC;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>project_grid</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Project Grid</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+
+    var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+    
+    var session = gs.getSession();
+
+    if (input) { //input holds the data coming back to the server
+
+		if (input.mode == "deleteRow"){
+			FMSUtility.deleteRecord(FMSConstants.TABLE_PROJECT, input.rowID);
+		}
+        if (input.org_id) {
+            session.putClientData('org_id', input.org_id.toString());
+        }
+
+    }
+    
+    data.selectedOrg = session.getClientData('org_id');
+    data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_PROJECT, "organization_ref=" + data.selectedOrg, true); //get all expense item info
+	
+	data.tableName = FMSConstants.TABLE_PROJECT;
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-04-29 16:09:57</sys_created_on>
+        <sys_id>a80573d01b289c100a4a10ad9c4bcb93</sys_id>
+        <sys_mod_count>19</sys_mod_count>
+        <sys_name>Project Grid</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_widget_a80573d01b289c100a4a10ad9c4bcb93</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-04 14:06:01</sys_updated_on>
+        <template><![CDATA[<div style="width: 100%; height: 100%">
+
+  <div class="container">
+    <div class="row">
+      <div class="form-group col-sm-12 fms-list-header">
+        <a href="javascript:void(0)" ng-click="c.addNew();" class="btn btn-info new-button">Add Project</a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+
+        <div id="projGrid" class="ag-theme-balham full-grid"></div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+]]></template>
+    </sp_widget>
+</record_update>

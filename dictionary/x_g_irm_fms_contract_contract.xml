@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Contract / Contract" max_length="40" name="x_g_irm_fms_contract_contract" type="collection">
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new contract relationship]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.contract_ref.contract_piid.toString() + ' : ' + current.contract_rel_ref.contract_piid.toString() + '\t\t\t\t[' + current.relationship_type.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;})(current);" display="true" label="Contract / Contract display" max_length="256" name="contract_contract_display" type="string" virtual="true"/>
+        <element label="Contract" mandatory="true" max_length="32" name="contract_ref" reference="x_g_irm_fms_contract" type="reference"/>
+        <element label="Related Contract" mandatory="true" max_length="32" name="contract_rel_ref" reference="x_g_irm_fms_contract" type="reference"/>
+        <element label="Relationship Date" mandatory="true" max_length="40" name="relationship_date" type="glide_date"/>
+        <element choice="1" label="Relationship Type" mandatory="true" max_length="30" name="relationship_type" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Contract/Task Order" value="Contract/Task Order"/>
+                <element inactive_on_update="false" label="Letter/Contract" value="Letter/Contract"/>
+                <element inactive_on_update="false" label="Solicitation/Contract" value="Solicitation/Contract"/>
+            </choice>
+        </element>
+        <index name="index">
+            <element name="contract_rel_ref"/>
+        </index>
+        <index name="index2">
+            <element name="contract_ref"/>
+        </index>
+    </element>
+</database>

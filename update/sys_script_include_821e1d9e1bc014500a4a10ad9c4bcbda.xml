@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_g_irm_fms.FMSHelper</api_name>
+        <caller_access/>
+        <client_callable>true</client_callable>
+        <description>Utility class that will contain a group of functions to use in Service Portal and elsewhere in the FMS application</description>
+        <name>FMSHelper</name>
+        <script><![CDATA[var FMSHelper = Class.create();
+FMSHelper.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+
+    getFiscalYears: function() {
+        var yearsArray = [];
+        var currentYear = new Date().getFullYear();
+        for (var i = currentYear - 10; i <= currentYear + 5; i++) {
+            yearsArray.push(i);
+        }
+		
+		var retArray = JSON.stringify(yearsArray);
+
+        return retArray;
+    },
+
+    //we can continue to add more functions here
+
+    type: 'FMSHelper'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>rosejl@state.gov</sys_created_by>
+        <sys_created_on>2020-04-10 13:49:39</sys_created_on>
+        <sys_id>821e1d9e1bc014500a4a10ad9c4bcbda</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>FMSHelper</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_script_include_821e1d9e1bc014500a4a10ad9c4bcbda</sys_update_name>
+        <sys_updated_by>rosejl@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-14 14:40:42</sys_updated_on>
+    </sys_script_include>
+</record_update>

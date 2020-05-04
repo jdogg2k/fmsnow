@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_g_irm_fms.FMSUtilities</api_name>
+        <caller_access/>
+        <client_callable>true</client_callable>
+        <description>Utility class that will contain a group of functions to use in Service Portal to extract data for FMS</description>
+        <name>FMSUtilities</name>
+        <script><![CDATA[var FMSUtilities = Class.create();
+FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+
+    getTableData: function(table, encQry, returnSysID) {
+
+      /* JLR - This function will return all non-sys values of any table in FMS - may want to modify so it can accept an optional encoded query
+      setting returnSysID to true will force the function to return the sys_id along with all of the table fields*/
+
+      var newArray = [];
+
+      //build field arrays
+      var regFields = [];
+      var dictionaryQ = new GlideRecord("sys_dictionary");
+      dictionaryQ.addEncodedQuery("internal_type!=reference^elementNOT LIKEsys_^internal_type!=collection^internal_type!=boolean^choiceISEMPTY^name=" + table);
+      dictionaryQ.query();
+      while (dictionaryQ.next()) {
+        regFields.push(dictionaryQ.getValue("element")); 
+      }
+
+      var displayFields = [];
+      var displayQ = new GlideRecord("sys_dictionary");
+      displayQ.addEncodedQuery("name=" + table + "^internal_type=reference^NQname=" + table + "^internal_type=boolean^NQname=" + table + "^choiceIN3,1,2");
+      displayQ.query();
+      while (displayQ.next()) {
+        displayFields.push(displayQ.getValue("element")); 
+      }
+
+      var tableQuery = new GlideRecord(table);
+      if (encQry !== undefined && encQry != '')
+        tableQuery.addEncodedQuery(encQry);
+      tableQuery.query();
+      while (tableQuery.next()) {
+          
+        var dataObj = {};
+
+        regFields.forEach(function(field){
+          dataObj[field] = tableQuery.getValue(field);
+        })
+
+        displayFields.forEach(function(field){
+          dataObj[field] = tableQuery.getDisplayValue(field);
+          dataObj[field + "_rawval"] = tableQuery.getValue(field);
+        })
+
+        if (returnSysID !== undefined && returnSysID != false)
+          dataObj.sys_id = tableQuery.getDisplayValue("sys_id");
+          
+        newArray.push(dataObj);
+      }
+      
+		  return newArray;
+    },
+
+    saveRecord: function(table, payload, updateID) {
+
+      /* JLR - This function will insert or update a record for the specified table based on the payload received.  Pass a sys_id to update or use 'new' for a new record */
+
+      var mode = "insert";
+      if (updateID != "new")
+        mode = "update";
+      var updatedID = "";
+
+      var gr = new GlideRecord(table);
+      if (mode == "insert"){
+        gr.initialize();
+      } else {
+        gr.get(updateID);
+      }
+
+      for (var property in payload) {
+        gr.setValue(property, payload[property]);
+      }
+
+      if (mode == "insert") {
+        updatedID = gr.insert();
+      } else {
+        gr.update();
+        updatedID = updateID;
+      }
+      
+		  return updatedID;
+    },
+
+    deleteRecord: function(table, deleteID) {
+
+      /* JLR - This function will delete a record for the specified table based on the payload received.  Pass a table name and sys_id to delete the record */
+
+      var gridQ = "sys_id=" + deleteID;
+			var deleteRec = new GlideRecordSecure(table);
+			deleteRec.addEncodedQuery(gridQ);
+      deleteRec.deleteMultiple();
+      
+    },
+
+    //we can continue to add more functions here
+
+    type: 'FMSUtilities'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-04-21 18:30:12</sys_created_on>
+        <sys_id>c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_id>
+        <sys_mod_count>21</sys_mod_count>
+        <sys_name>FMSUtilities</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_script_include_c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-29 15:19:58</sys_updated_on>
+    </sys_script_include>
+</record_update>

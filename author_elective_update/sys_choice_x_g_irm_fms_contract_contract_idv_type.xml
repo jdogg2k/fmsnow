@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="contract_idv_type" table="x_g_irm_fms_contract" version="3">
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>contract_idv_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Basic Ordering Agreement</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:13:57</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>ac13c7691bc490501f7e113d9c4bcb3d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:13:57</sys_updated_on>
+            <value>BOA</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>contract_idv_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Blanket Purchase Agreement</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:14:20</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>ba5387691bc490501f7e113d9c4bcb27</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:14:20</sys_updated_on>
+            <value>BPA</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>contract_idv_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Enterprise-Wide Acquisition Contract</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:14:49</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>74730f691bc490501f7e113d9c4bcb51</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:14:49</sys_updated_on>
+            <value>EWAC</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>contract_idv_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Federal Supply Schedule</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:15:17</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>77830be51bc490501f7e113d9c4bcb7e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:15:17</sys_updated_on>
+            <value>FSS</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>contract_idv_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Government-Wide Acquisition Contract</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:15:50</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>77a303a91bc490501f7e113d9c4bcb3f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:15:50</sys_updated_on>
+            <value>GWAC</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>contract_idv_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Indefinite Delivery / Indefinite Quantity</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:16:16</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>4fc38b691bc490501f7e113d9c4bcbf8</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:16:16</sys_updated_on>
+            <value>IDIQ</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>contract_idv_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Multi-Agency Contract</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:16:37</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>09e343a91bc490501f7e113d9c4bcbb8</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:16:37</sys_updated_on>
+            <value>MAC</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>contract_idv_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>T&amp;M</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence>0</sequence>
+            <sys_created_by>rosejl@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 20:28:58</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>46e6ac351b4490500a4a10ad9c4bcb34</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>rosejl@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 20:28:58</sys_updated_on>
+            <value>T&amp;M</value>
+        </sys_choice>
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>contract_idv_type</element>
+            <name>x_g_irm_fms_contract</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:13:57</sys_created_on>
+            <sys_id>f5538b291bc490501f7e113d9c4bcb2d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>contract_idv_type</sys_name>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_choice_x_g_irm_fms_contract_contract_idv_type</sys_update_name>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:13:57</sys_updated_on>
+        </sys_choice_set>
+    </sys_choice>
+</record_update>

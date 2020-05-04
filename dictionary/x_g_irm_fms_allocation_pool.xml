@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Allocation Pool" max_length="40" name="x_g_irm_fms_allocation_pool" type="collection">
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;if (current.pool_status != &quot;Received&quot;) return 0;&#13;&#10;    var items = new GlideRecord('x_g_irm_fms_project_allocation');&#13;&#10;    items.addQuery('allocation_pool_ref', current.sys_id);&#13;&#10;    items.query();&#13;&#10;    var total = 0;&#13;&#10;    while (items.next()) {&#13;&#10;        total += parseFloat(items.allocation_amt);&#13;&#10;    }&#13;&#10;    return total; &#13;&#10;})(current);" label="Allocated Amount" max_length="20" name="allocated_amt" read_only="true" type="currency" virtual="true"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new allocation pool]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.organization_ref.org_name.toString() + ' [' + current.pool_purpose.toString() + ' - ' + current.receive_date.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;})(current);" display="true" label="Allocation Pool display" max_length="256" name="allocation_pool_display" read_only="true" type="string" virtual="true"/>
+        <element label="AMS Reference Number" max_length="20" name="ams_ref_nmbr" type="string"/>
+        <element label="Appropriation Type" mandatory="true" max_length="32" name="appropriation_type_ref" reference="x_g_irm_fms_appropriation_type" type="reference"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;if (current.pool_status != &quot;Received&quot;) return 0;&#13;&#10;    var items = new GlideRecord('x_g_irm_fms_allocation_pool');&#13;&#10;    items.addQuery('pool_parent_ref', current.sys_id);&#13;&#10;    items.query();&#13;&#10;    var total = 0;&#13;&#10;    while (items.next()) {&#13;&#10;        total += parseFloat(items.receive_amt);&#13;&#10;    }&#13;&#10;    return total; &#13;&#10;})(current);" label="Distributed Amount" max_length="20" name="distributed_amt" read_only="true" type="currency" virtual="true"/>
+        <element choice="3" default="javascript:new Date().getFullYear();" label="FY" mandatory="true" max_length="40" name="fy" type="integer">
+            <choice/>
+        </element>
+        <element choice="1" label="FY Qtr" mandatory="true" max_length="40" name="fy_qtr" type="integer">
+            <choice>
+                <element inactive_on_update="false" label="1st" value="1"/>
+                <element inactive_on_update="false" label="2nd" value="2"/>
+                <element inactive_on_update="false" label="3rd" value="3"/>
+                <element inactive_on_update="false" label="4th" value="4"/>
+            </choice>
+        </element>
+        <element label="IBIS Document" max_length="20" name="ibis_document" type="string"/>
+        <element label="Investment" mandatory="true" max_length="32" name="investment_ref" reference="x_g_irm_fms_investment" type="reference"/>
+        <element label="Organization" mandatory="true" max_length="32" name="organization_ref" reference="x_g_irm_fms_organization" type="reference"/>
+        <element label="Source Organization" max_length="32" name="organization_source_ref" reference="x_g_irm_fms_organization" type="reference"/>
+        <element label="Pool Notes" max_length="500" name="pool_notes" type="string"/>
+        <element label="Parent Pool" max_length="32" name="pool_parent_ref" reference="x_g_irm_fms_allocation_pool" reference_qual="javascript:&quot;organization_ref=&quot; + current.organization_ref.organization_parent_ref + &quot;^fy=&quot; + current.fy + &quot;^pool_status=Received^unassigned_amt&gt;=&quot; + current.receive_amt" type="reference" use_reference_qualifier="advanced"/>
+        <element choice="1" label="Pool Purpose" mandatory="true" max_length="16" name="pool_purpose" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Equipment" value="Equipment"/>
+                <element inactive_on_update="false" label="Labor" value="Labor"/>
+                <element inactive_on_update="false" label="Logistics" value="Logistics"/>
+                <element inactive_on_update="false" label="Mission" value="Mission"/>
+                <element inactive_on_update="false" label="Other" value="Other"/>
+                <element inactive_on_update="false" label="Purchase Card" value="Purchase Card"/>
+                <element inactive_on_update="false" label="Software" value="Software"/>
+                <element inactive_on_update="false" label="Supplies" value="Supplies"/>
+                <element inactive_on_update="false" label="Training" value="Training"/>
+                <element inactive_on_update="false" label="Travel" value="Travel"/>
+                <element inactive_on_update="false" label="Unidentified" value="Unidentified"/>
+            </choice>
+        </element>
+        <element choice="1" label="Pool Status" mandatory="true" max_length="16" name="pool_status" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Received" value="Received"/>
+                <element inactive_on_update="false" label="Requested" value="Requested"/>
+            </choice>
+        </element>
+        <element choice="1" label="Pool Type" mandatory="true" max_length="16" name="pool_type" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Adjustment" value="Adjustment"/>
+                <element inactive_on_update="false" label="Apportionment" value="Apportionment"/>
+                <element inactive_on_update="false" label="Asset Sale" value="Asset Sale"/>
+                <element inactive_on_update="false" label="Assignment" value="Assignment"/>
+                <element inactive_on_update="false" label="Payment" value="Payment"/>
+                <element inactive_on_update="false" label="Reimbursement" value="Reimbursement"/>
+            </choice>
+        </element>
+        <element label="Receive Amount" max_length="20" name="receive_amt" type="currency"/>
+        <element label="Receive Date" max_length="40" name="receive_date" type="glide_date"/>
+        <element label="Request Amount" max_length="20" name="request_amt" type="currency"/>
+        <element label="Request Date" max_length="40" name="request_date" type="glide_date"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;return current.allocated_amt + current.distributed_amt;  // return the calculated value&#13;&#10;})(current);" label="Unassigned Amount" max_length="20" name="unassigned_amt" read_only="true" type="currency" virtual="true"/>
+        <index name="index">
+            <element name="appropriation_type_ref"/>
+        </index>
+        <index name="index2">
+            <element name="organization_ref"/>
+        </index>
+        <index name="index3">
+            <element name="organization_source_ref"/>
+        </index>
+        <index name="index4">
+            <element name="pool_parent_ref"/>
+        </index>
+        <index name="index5">
+            <element name="investment_ref"/>
+        </index>
+    </element>
+</database>

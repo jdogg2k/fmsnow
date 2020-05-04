@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Budget Item Phase" max_length="40" name="x_g_irm_fms_budget_item_phase" type="collection">
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new item phasing]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.fiscal_month.toString() + '\t\t\t\t[' + current.fiscal_month.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" display="true" label="Budget Item Phase display" max_length="256" name="budget_item_phase_display" read_only="true" type="string" virtual="true"/>
+        <element label="Budget Item" mandatory="true" max_length="32" name="budget_item_ref" reference="x_g_irm_fms_budget_item" type="reference"/>
+        <element choice="1" label="Fiscal Month" mandatory="true" max_length="40" name="fiscal_month" type="integer">
+            <choice>
+                <element inactive_on_update="false" label="Oct" sequence="1" value="1"/>
+                <element inactive_on_update="false" label="Nov" sequence="2" value="2"/>
+                <element inactive_on_update="false" label="Dec" sequence="3" value="3"/>
+                <element inactive_on_update="false" label="Jan" sequence="4" value="4"/>
+                <element inactive_on_update="false" label="Feb" sequence="5" value="5"/>
+                <element inactive_on_update="false" label="Mar" sequence="6" value="6"/>
+                <element inactive_on_update="false" label="Apr" sequence="7" value="7"/>
+                <element inactive_on_update="false" label="May" sequence="8" value="8"/>
+                <element inactive_on_update="false" label="Jun" sequence="9" value="9"/>
+                <element inactive_on_update="false" label="Jul" sequence="10" value="10"/>
+                <element inactive_on_update="false" label="Aug" sequence="11" value="11"/>
+                <element inactive_on_update="false" label="Sep" sequence="12" value="12"/>
+            </choice>
+        </element>
+        <element label="Phase Amount" mandatory="true" max_length="20" name="phase_amt" type="currency"/>
+        <index name="index">
+            <element name="budget_item_ref"/>
+        </index>
+    </element>
+</database>

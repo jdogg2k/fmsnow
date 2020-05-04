@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="pool_purpose" table="x_g_irm_fms_allocation_pool" version="3">
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pool_purpose</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Equipment</label>
+            <language>en</language>
+            <name>x_g_irm_fms_allocation_pool</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-09 17:49:01</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>3fdb8d8e1b04d0500a4a10ad9c4bcbaa</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-09 17:49:01</sys_updated_on>
+            <value>Equipment</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pool_purpose</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Labor</label>
+            <language>en</language>
+            <name>x_g_irm_fms_allocation_pool</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-09 17:48:24</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>86bb058e1b04d0500a4a10ad9c4bcb3e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-09 17:48:24</sys_updated_on>
+            <value>Labor</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pool_purpose</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Logistics</label>
+            <language>en</language>
+            <name>x_g_irm_fms_allocation_pool</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-09 17:48:37</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>24cb4d8e1b04d0500a4a10ad9c4bcb04</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-09 17:48:37</sys_updated_on>
+            <value>Logistics</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pool_purpose</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Mission</label>
+            <language>en</language>
+            <name>x_g_irm_fms_allocation_pool</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-09 17:47:54</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>b49b898e1b04d0500a4a10ad9c4bcb94</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-09 17:47:54</sys_updated_on>
+            <value>Mission</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pool_purpose</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Other</label>
+            <language>en</language>
+            <name>x_g_irm_fms_allocation_pool</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-09 17:49:55</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>911c01ce1b04d0500a4a10ad9c4bcbc8</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-09 17:49:55</sys_updated_on>
+            <value>Other</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pool_purpose</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Purchase Card</label>
+            <language>en</language>
+            <name>x_g_irm_fms_allocation_pool</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-09 17:48:14</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>7eabc18e1b04d0500a4a10ad9c4bcb54</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-09 17:48:14</sys_updated_on>
+            <value>Purchase Card</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pool_purpose</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Software</label>
+            <language>en</language>
+            <name>x_g_irm_fms_allocation_pool</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-09 17:49:12</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>f1ebcd8e1b04d0500a4a10ad9c4bcb6a</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-09 17:49:12</sys_updated_on>
+            <value>Software</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pool_purpose</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Supplies</label>
+            <language>en</language>
+            <name>x_g_irm_fms_allocation_pool</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-09 17:49:23</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>1cfbcd8e1b04d0500a4a10ad9c4bcbfa</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-09 17:49:23</sys_updated_on>
+            <value>Supplies</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pool_purpose</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Training</label>
+            <language>en</language>
+            <name>x_g_irm_fms_allocation_pool</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-09 17:49:44</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>220c0d8e1b04d0500a4a10ad9c4bcb97</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-09 17:49:44</sys_updated_on>
+            <value>Training</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pool_purpose</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Travel</label>
+            <language>en</language>
+            <name>x_g_irm_fms_allocation_pool</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-09 17:48:50</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>4ddbc58e1b04d0500a4a10ad9c4bcb0d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-09 17:48:50</sys_updated_on>
+            <value>Travel</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pool_purpose</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Unidentified</label>
+            <language>en</language>
+            <name>x_g_irm_fms_allocation_pool</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-09 17:50:10</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>e42c8d8e1b04d0500a4a10ad9c4bcbee</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-09 17:50:10</sys_updated_on>
+            <value>Unidentified</value>
+        </sys_choice>
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>pool_purpose</element>
+            <name>x_g_irm_fms_allocation_pool</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-09 17:47:54</sys_created_on>
+            <sys_id>58ab058e1b04d0500a4a10ad9c4bcb3b</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>pool_purpose</sys_name>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_choice_x_g_irm_fms_allocation_pool_pool_purpose</sys_update_name>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-09 17:47:54</sys_updated_on>
+        </sys_choice_set>
+    </sys_choice>
+</record_update>

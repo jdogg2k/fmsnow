@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="u_current_oy" label="Current OY" language="en" table="x_g_irm_fms_fms_load_contract">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>u_current_oy</element>
+            <help/>
+            <hint/>
+            <label>Current OY</label>
+            <language>en</language>
+            <name>x_g_irm_fms_fms_load_contract</name>
+            <plural>Current OYs</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>rosejl@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 18:42:16</sys_created_on>
+            <sys_id>4f7e44fd1bc090500a4a10ad9c4bcbde</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Current OY</sys_name>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_documentation_x_g_irm_fms_fms_load_contract_u_current_oy_en</sys_update_name>
+            <sys_updated_by>rosejl@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 18:42:16</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

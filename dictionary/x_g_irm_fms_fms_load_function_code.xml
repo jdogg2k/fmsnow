@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="sys_import_set_row" label="FMS Load Function Code" max_length="40" name="x_g_irm_fms_fms_load_function_code" type="collection">
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Description" label="Description" max_length="50" name="u_description" type="string"/>
+        <element attributes="import_attribute_name=Function Code" label="Function Code" max_length="40" name="u_function_code" type="integer"/>
+    </element>
+</database>

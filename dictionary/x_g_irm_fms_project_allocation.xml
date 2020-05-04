@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Project Allocation" max_length="40" name="x_g_irm_fms_project_allocation" type="collection">
+        <element label="Agreement Number" max_length="10" name="agreement_nmbr" type="string"/>
+        <element label="Allocation Amount" mandatory="true" max_length="20" name="allocation_amt" type="currency"/>
+        <element label="Allocation Date" mandatory="true" max_length="40" name="allocation_date" type="glide_date"/>
+        <element label="Allocation Group" mandatory="true" max_length="32" name="allocation_group_ref" reference="x_g_irm_fms_allocation_group" reference_qual="javascript: &quot;project_ref=&quot; + current.project_ref;" type="reference" use_reference_qualifier="advanced"/>
+        <element label="Allocation Pool" mandatory="true" max_length="32" name="allocation_pool_ref" reference="x_g_irm_fms_allocation_pool" reference_qual="javascript: &quot;organization_ref=&quot; + current.project_ref.organization_ref + &quot;^fy=&quot; + current.fy;" type="reference" use_reference_qualifier="advanced"/>
+        <element label="Allotment" mandatory="true" max_length="32" name="allotment" reference="x_g_irm_fms_allotment" type="reference"/>
+        <element label="Appropriation" mandatory="true" max_length="32" name="appropriation_ref" reference="x_g_irm_fms_project_appropriation" reference_qual="project_ref=^EQ" reference_qual_condition="project_ref=^EQ" type="reference"/>
+        <element label="Carryforward?" max_length="40" name="carryforward" type="boolean"/>
+        <element label="Fund Source" mandatory="true" max_length="16" name="fund_source" type="string"/>
+        <element attributes="format=none" choice="3" default="javascript:new Date().getFullYear();" label="FY" mandatory="true" max_length="40" name="fy" type="integer">
+            <choice>
+                <element inactive_on_update="false" label="2000" value="2000"/>
+                <element inactive_on_update="false" label="2001" value="2001"/>
+                <element inactive_on_update="false" label="2002" value="2002"/>
+                <element inactive_on_update="false" label="2003" value="2003"/>
+                <element inactive_on_update="false" label="2004" value="2004"/>
+                <element inactive_on_update="false" label="2005" value="2005"/>
+                <element inactive_on_update="false" label="2006" value="2006"/>
+                <element inactive_on_update="false" label="2007" value="2007"/>
+                <element inactive_on_update="false" label="2008" value="2008"/>
+                <element inactive_on_update="false" label="2009" value="2009"/>
+                <element inactive_on_update="false" label="2010" value="2010"/>
+                <element inactive_on_update="false" label="2011" value="2011"/>
+                <element inactive_on_update="false" label="2012" value="2012"/>
+                <element inactive_on_update="false" label="2013" value="2013"/>
+                <element inactive_on_update="false" label="2014" value="2014"/>
+                <element inactive_on_update="false" label="2015" value="2015"/>
+                <element inactive_on_update="false" label="2016" value="2016"/>
+                <element inactive_on_update="false" label="2017" value="2017"/>
+                <element inactive_on_update="false" label="2018" value="2018"/>
+                <element inactive_on_update="false" label="2019" value="2019"/>
+                <element inactive_on_update="false" label="2020" value="2020"/>
+                <element inactive_on_update="false" label="2021" value="2021"/>
+                <element inactive_on_update="false" label="2022" value="2022"/>
+                <element inactive_on_update="false" label="2023" value="2023"/>
+                <element inactive_on_update="false" label="2024" value="2024"/>
+                <element inactive_on_update="false" label="2025" value="2025"/>
+                <element inactive_on_update="false" label="2026" value="2026"/>
+                <element inactive_on_update="false" label="2027" value="2027"/>
+                <element inactive_on_update="false" label="2028" value="2028"/>
+                <element inactive_on_update="false" label="2029" value="2029"/>
+            </choice>
+        </element>
+        <element label="Notes" max_length="500" name="notes" type="string"/>
+        <element label="Reimburse Organization" max_length="32" name="organization_reimburse_ref" reference="x_g_irm_fms_organization" type="reference"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new project allocation]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.project_ref.project_name.toString() + '\t\t\t\t[' + current.allocation_group_ref.group_name.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" display="true" label="Project Allocation display" max_length="256" name="project_allocation_display" read_only="true" type="string" virtual="true"/>
+        <element label="Project" mandatory="true" max_length="32" name="project_ref" reference="x_g_irm_fms_project" reference_qual="javascript: &quot;organization_refIN&quot; + new OrgHierarchy().GetUserOrgs();" type="reference" use_reference_qualifier="advanced"/>
+        <element label="Transfer Type" max_length="32" name="transfer_type_ref" reference="x_g_irm_fms_transfer_type" type="reference"/>
+        <element label="Transfer Project" max_length="32" name="xfer_project_ref" reference="x_g_irm_fms_project" reference_qual="sys_id!=current.project_ref^EQ" reference_qual_condition="sys_id!=current.project_ref^EQ" type="reference"/>
+        <index name="index">
+            <element name="allocation_pool_ref"/>
+        </index>
+        <index name="index2">
+            <element name="organization_reimburse_ref"/>
+        </index>
+        <index name="index3">
+            <element name="project_ref"/>
+        </index>
+        <index name="index4">
+            <element name="allocation_group_ref"/>
+        </index>
+        <index name="index5">
+            <element name="transfer_type_ref"/>
+        </index>
+        <index name="index6">
+            <element name="allotment"/>
+        </index>
+        <index name="index7">
+            <element name="appropriation_ref"/>
+        </index>
+        <index name="index8">
+            <element name="xfer_project_ref"/>
+        </index>
+    </element>
+</database>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="receive_date" label="Receive Date" language="en" table="x_g_irm_fms_fin_tran_po">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>receive_date</element>
+            <help/>
+            <hint/>
+            <label>Receive Date</label>
+            <language>en</language>
+            <name>x_g_irm_fms_fin_tran_po</name>
+            <plural>Receive Dates</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-10 12:31:11</sys_created_on>
+            <sys_id>72bc8d5e1b8014500a4a10ad9c4bcb7f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Receive Date</sys_name>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_documentation_x_g_irm_fms_fin_tran_po_receive_date_en</sys_update_name>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-10 12:31:11</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

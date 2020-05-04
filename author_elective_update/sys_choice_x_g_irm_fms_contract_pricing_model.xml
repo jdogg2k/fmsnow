@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="pricing_model" table="x_g_irm_fms_contract" version="3">
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pricing_model</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Cost Plus Award Fee</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:45:48</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>968a0b211b0890501f7e113d9c4bcbf9</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:45:48</sys_updated_on>
+            <value>C+AF</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pricing_model</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Cost Plus Fixed Fee</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:46:08</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>5daacf211b0890501f7e113d9c4bcb07</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:46:08</sys_updated_on>
+            <value>C+FF</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pricing_model</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Cost Plus Incentive Fee</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:46:35</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>b6ba4f211b0890501f7e113d9c4bcb6d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:46:35</sys_updated_on>
+            <value>C+IF</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pricing_model</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Cost No Fee</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:44:56</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>2a5ac7211b0890501f7e113d9c4bcbbb</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:44:56</sys_updated_on>
+            <value>CNF</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pricing_model</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Combination</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:48:30</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>cc3bc7611b0890501f7e113d9c4bcb6b</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:48:30</sys_updated_on>
+            <value>COMBO</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pricing_model</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Cost Sharing</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:45:19</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>a47ac3ed1bc490501f7e113d9c4bcbcc</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:45:19</sys_updated_on>
+            <value>CS</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pricing_model</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Order Dependent</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:48:07</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>161b0f211b0890501f7e113d9c4bcb09</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:48:07</sys_updated_on>
+            <value>DEP</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pricing_model</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Enterprise License Agreement</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:47:22</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>5bea83211b0890501f7e113d9c4bcbb4</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:47:22</sys_updated_on>
+            <value>ELA</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pricing_model</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Firm Fixed Price</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:43:12</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>16f947211b0890501f7e113d9c4bcb10</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:43:12</sys_updated_on>
+            <value>FFP</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pricing_model</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Fixed Price w/Economic Adjustment</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:43:35</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>630ac3ed1bc490501f7e113d9c4bcbc7</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:43:35</sys_updated_on>
+            <value>FPA</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pricing_model</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Fixed Price Award Fee</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:44:30</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>d54a0fed1bc490501f7e113d9c4bcb4e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:44:30</sys_updated_on>
+            <value>FPAF</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pricing_model</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Fixed Price Incentive</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:44:06</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>313a0fed1bc490501f7e113d9c4bcbdf</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:44:06</sys_updated_on>
+            <value>FPI</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pricing_model</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Fixed Price Level of Effort</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:42:50</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>5ad983211b0890501f7e113d9c4bcb2f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:42:50</sys_updated_on>
+            <value>FPLE</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pricing_model</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Fixed Price Redetermination</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:42:19</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>87c983211b0890501f7e113d9c4bcbae</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:42:19</sys_updated_on>
+            <value>FPR</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pricing_model</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Labor Hours</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:47:47</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>580b83211b0890501f7e113d9c4bcbb7</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:47:47</sys_updated_on>
+            <value>HRS</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pricing_model</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Other</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:48:57</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>cd4b03611b0890501f7e113d9c4bcb94</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:48:57</sys_updated_on>
+            <value>OTHER</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>pricing_model</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Time and Materials</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:47:00</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>dada4b211b0890501f7e113d9c4bcb6c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:47:00</sys_updated_on>
+            <value>T&amp;M</value>
+        </sys_choice>
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>pricing_model</element>
+            <name>x_g_irm_fms_contract</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 13:42:19</sys_created_on>
+            <sys_id>55d9c3ed1bc490501f7e113d9c4bcb0f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>pricing_model</sys_name>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_choice_x_g_irm_fms_contract_pricing_model</sys_update_name>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 13:42:19</sys_updated_on>
+        </sys_choice_set>
+    </sys_choice>
+</record_update>

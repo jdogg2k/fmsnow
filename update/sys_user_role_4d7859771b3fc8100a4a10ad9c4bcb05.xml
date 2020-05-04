@@ -2,7 +2,7 @@
     <sys_user_role action="INSERT_OR_UPDATE">
         <assignable_by/>
         <can_delegate>true</can_delegate>
-        <description/>
+        <description>Read-only access to FMS data</description>
         <elevated_privilege>false</elevated_privilege>
         <grantable>true</grantable>
         <includes_roles/>
@@ -14,13 +14,13 @@
         <sys_created_by>rosejl@state.gov</sys_created_by>
         <sys_created_on>2020-04-02 18:57:36</sys_created_on>
         <sys_id>4d7859771b3fc8100a4a10ad9c4bcb05</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>1</sys_mod_count>
         <sys_name>x_g_irm_fms.readonly</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_user_role_4d7859771b3fc8100a4a10ad9c4bcb05</sys_update_name>
-        <sys_updated_by>rosejl@state.gov</sys_updated_by>
-        <sys_updated_on>2020-04-02 18:57:36</sys_updated_on>
+        <sys_updated_by>markeljr@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-07 15:51:58</sys_updated_on>
     </sys_user_role>
 </record_update>

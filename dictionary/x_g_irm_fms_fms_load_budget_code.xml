@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="sys_import_set_row" label="FMS Load Budget Code" max_length="40" name="x_g_irm_fms_fms_load_budget_code" type="collection">
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Budget Code" label="Budget Code" max_length="45" name="u_budget_code" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Classification" label="Classification" max_length="40" name="u_classification" type="string"/>
+    </element>
+</database>

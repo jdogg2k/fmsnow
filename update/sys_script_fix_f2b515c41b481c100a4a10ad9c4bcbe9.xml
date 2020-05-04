@@ -2,25 +2,74 @@
     <sys_script_fix action="INSERT_OR_UPDATE">
         <active>true</active>
         <before>false</before>
-        <description>Just a POC to use with SyncScript</description>
+        <description/>
         <flush_cache>false</flush_cache>
-        <name>TEST FMS Development Script</name>
+        <name>FMS Development Script</name>
         <record_for_rollback>false</record_for_rollback>
         <run_once>true</run_once>
-        <script><![CDATA[var gr = new GlideRecord();
-//test for SN ScriptSync - Edit here and watch it change on the browser side.]]></script>
+        <script><![CDATA[/*var gr = new GlideRecord("x_g_irm_fms_budget_code");
+gr.query();
+while (gr.next()) {
+	gr.number = gr.number.replace("10", "00");
+	gr.update();
+}
+
+
+
+var gr = new GlideRecord("x_g_irm_fms_expense_item");
+gr.query();
+while (gr.next()) {
+	gr.parent_organization_ref = gr.organization_ref;
+	gr.update();
+}
+
+var gr = new GlideRecord("x_g_irm_fms_fms_load_project_allocation");
+gr.query();
+while (gr.next()) {
+	
+	var projApprop = new GlideRecord("x_g_irm_fms_project_appropriation");
+	projApprop.addQuery("appropriation_ref.appropriation", gr.getValue("u_appropriation"));
+	projApprop.addQuery("project_ref.project_name", gr.getValue("u_project_name"));
+	projApprop.query();
+	
+	if (!projApprop.next()) {
+		
+		projApprop.initialize();
+		
+		var appropVal = "";
+		
+		var appropRec = new GlideRecord("x_g_irm_fms_appropriation");
+		appropRec.addQuery("appropriation", gr.getValue("u_appropriation"));
+		appropRec.query();
+		if (appropRec.next())
+			appropVal = appropRec.getValue("sys_id");
+		
+		var projVal = "";
+		
+		var projRec = new GlideRecord("x_g_irm_fms_project");
+		projRec.addQuery("project_name", gr.getValue("u_project_name"));
+		projRec.query();
+		if (projRec.next())
+			projVal = projRec.getValue("sys_id");
+		
+		projApprop.appropriation_ref = appropVal;
+		projApprop.project_ref = projVal;
+		projApprop.insert();
+		
+	}
+}*/]]></script>
         <sys_class_name>sys_script_fix</sys_class_name>
         <sys_created_by>rosejl@state.gov</sys_created_by>
         <sys_created_on>2020-04-03 13:24:32</sys_created_on>
         <sys_id>f2b515c41b481c100a4a10ad9c4bcbe9</sys_id>
-        <sys_mod_count>2</sys_mod_count>
-        <sys_name>TEST FMS Development Script</sys_name>
+        <sys_mod_count>40</sys_mod_count>
+        <sys_name>FMS Development Script</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_fix_f2b515c41b481c100a4a10ad9c4bcbe9</sys_update_name>
-        <sys_updated_by>rosejl@state.gov</sys_updated_by>
-        <sys_updated_on>2020-04-03 15:04:00</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-29 18:21:26</sys_updated_on>
         <unloadable>false</unloadable>
     </sys_script_fix>
 </record_update>

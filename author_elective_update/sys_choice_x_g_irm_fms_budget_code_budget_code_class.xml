@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="budget_code_class" table="x_g_irm_fms_budget_code" version="3">
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>budget_code_class</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Labor</label>
+            <language>en</language>
+            <name>x_g_irm_fms_budget_code</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-07 17:01:14</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>7abdea551b0850501f7e113d9c4bcb9b</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-07 17:01:14</sys_updated_on>
+            <value>Labor</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>budget_code_class</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Logistics</label>
+            <language>en</language>
+            <name>x_g_irm_fms_budget_code</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-07 17:01:32</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>becdaa951b0850501f7e113d9c4bcb86</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-07 17:01:32</sys_updated_on>
+            <value>Logistics</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>budget_code_class</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Material</label>
+            <language>en</language>
+            <name>x_g_irm_fms_budget_code</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-07 17:00:58</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>56ad22951b0850501f7e113d9c4bcb8e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-07 17:00:58</sys_updated_on>
+            <value>Material</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>budget_code_class</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Other</label>
+            <language>en</language>
+            <name>x_g_irm_fms_budget_code</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-07 16:59:13</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>334d22951b0850501f7e113d9c4bcb89</sys_id>
+            <sys_mod_count>1</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-07 17:00:28</sys_updated_on>
+            <value>Other</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>budget_code_class</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Travel</label>
+            <language>en</language>
+            <name>x_g_irm_fms_budget_code</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-07 17:01:50</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>dceda2d51b0850501f7e113d9c4bcbce</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-07 17:01:50</sys_updated_on>
+            <value>Travel</value>
+        </sys_choice>
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>budget_code_class</element>
+            <name>x_g_irm_fms_budget_code</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-07 16:59:13</sys_created_on>
+            <sys_id>7b4d22951b0850501f7e113d9c4bcb89</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>budget_code_class</sys_name>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_choice_x_g_irm_fms_budget_code_budget_code_class</sys_update_name>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-07 16:59:13</sys_updated_on>
+        </sys_choice_set>
+    </sys_choice>
+</record_update>

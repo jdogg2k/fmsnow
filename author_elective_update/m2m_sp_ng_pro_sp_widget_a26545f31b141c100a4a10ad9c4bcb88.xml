@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_ng_pro_sp_widget">
+    <m2m_sp_ng_pro_sp_widget action="DELETE">
+        <sp_angular_provider display_value="AGGridHelper">2b4ed2321b1458100a4a10ad9c4bcbc2</sp_angular_provider>
+        <sp_widget display_value="Organization List">f9b8b5651b9c14100a4a10ad9c4bcba9</sp_widget>
+        <sys_class_name>m2m_sp_ng_pro_sp_widget</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-04-27 14:05:48</sys_created_on>
+        <sys_id>a26545f31b141c100a4a10ad9c4bcb88</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>AGGridHelper.Organization List</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>m2m_sp_ng_pro_sp_widget_a26545f31b141c100a4a10ad9c4bcb88</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-27 14:05:48</sys_updated_on>
+    </m2m_sp_ng_pro_sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>m2m_sp_ng_pro_sp_widget_a26545f31b141c100a4a10ad9c4bcb88</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_ng_pro_sp_widget"><m2m_sp_ng_pro_sp_widget action="INSERT_OR_UPDATE"><sp_angular_provider display_value="AGGridHelper">2b4ed2321b1458100a4a10ad9c4bcbc2</sp_angular_provider><sp_widget display_value="Organization List">f9b8b5651b9c14100a4a10ad9c4bcba9</sp_widget><sys_class_name>m2m_sp_ng_pro_sp_widget</sys_class_name><sys_created_by>RoseJL@state.gov</sys_created_by><sys_created_on>2020-04-27 14:05:48</sys_created_on><sys_id>a26545f31b141c100a4a10ad9c4bcb88</sys_id><sys_mod_count>0</sys_mod_count><sys_name>AGGridHelper.Organization List</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>m2m_sp_ng_pro_sp_widget_a26545f31b141c100a4a10ad9c4bcb88</sys_update_name><sys_updated_by>RoseJL@state.gov</sys_updated_by><sys_updated_on>2020-04-27 14:05:48</sys_updated_on></m2m_sp_ng_pro_sp_widget></record_update>]]></payload>
+        <payload_hash>-1191097457</payload_hash>
+        <record_name>AGGridHelper.Organization List</record_name>
+        <reverted_from/>
+        <source>569811731b3fc8100a4a10ad9c4bcb1a</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-04-27 14:05:48</sys_created_on>
+        <sys_id>ee6545f31b141c100a4a10ad9c4bcb89</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>171bbf54fca0000001</sys_recorded_at>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-27 14:05:48</sys_updated_on>
+        <type>Angular Providers</type>
+        <update_guid>2a6545f3c7141c109cb694646a012089</update_guid>
+        <update_guid_history>2a6545f3c7141c109cb694646a012089:-1191097457</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="AGGridHelper.Organization List">593aa2b71b105c101f7e113d9c4bcb51</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-04-27 21:26:11</sys_created_on>
+        <sys_db_object display_value="" name="m2m_sp_ng_pro_sp_widget">m2m_sp_ng_pro_sp_widget</sys_db_object>
+        <sys_id>0ea0926fa27947e688223beb4fb9cbe9</sys_id>
+        <sys_metadata>a26545f31b141c100a4a10ad9c4bcb88</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>AGGridHelper.Organization List</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>m2m_sp_ng_pro_sp_widget_a26545f31b141c100a4a10ad9c4bcb88</sys_update_name>
+        <sys_update_version display_value="m2m_sp_ng_pro_sp_widget_a26545f31b141c100a4a10ad9c4bcb88">ee6545f31b141c100a4a10ad9c4bcb89</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-27 21:26:11</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

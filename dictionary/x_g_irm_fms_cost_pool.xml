@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Cost Pool" max_length="40" name="x_g_irm_fms_cost_pool" type="collection">
+        <element label="Cost Pool Description" max_length="500" name="cost_pool_desc" type="string"/>
+        <element display="true" label="Cost Pool Name" mandatory="true" max_length="20" name="cost_pool_name" type="string"/>
+        <element label="Disabled" max_length="40" name="disabled" type="boolean"/>
+        <element default="javascript: g_user.getClientData('org_id');" label="Organization" mandatory="true" max_length="32" name="organization_ref" reference="x_g_irm_fms_organization" reference_qual="javascript: &quot;sys_idIN&quot; + new OrgHierarchy().getUserOrgs();" type="reference" use_reference_qualifier="advanced"/>
+        <index name="index">
+            <element name="organization_ref"/>
+        </index>
+    </element>
+</database>

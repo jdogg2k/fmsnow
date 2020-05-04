@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_macro">
+    <sys_ui_macro action="DELETE">
+        <active>true</active>
+        <category>general</category>
+        <description/>
+        <media_type/>
+        <name>FormProcessing</name>
+        <scoped_name>x_g_irm_fms_FormProcessing</scoped_name>
+        <sys_class_name>sys_ui_macro</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-04-23 13:47:35</sys_created_on>
+        <sys_id>a70910ea1bdcd4100a4a10ad9c4bcb05</sys_id>
+        <sys_mod_count>8</sys_mod_count>
+        <sys_name>FormProcessing</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_ui_macro_a70910ea1bdcd4100a4a10ad9c4bcb05</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-23 20:18:25</sys_updated_on>
+        <xml><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	<script>
+		function LoadFYChoices() {
+			alert('yes');
+		}
+	</script>
+	<g:requires name="FormProcessing.jsdbx" />  
+</j:jelly>]]></xml>
+    </sys_ui_macro>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_ui_macro_a70910ea1bdcd4100a4a10ad9c4bcb05</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ui_macro"&gt;&lt;sys_ui_macro action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;category&gt;general&lt;/category&gt;&lt;description/&gt;&lt;media_type/&gt;&lt;name&gt;FormProcessing&lt;/name&gt;&lt;scoped_name&gt;x_g_irm_fms_FormProcessing&lt;/scoped_name&gt;&lt;sys_class_name&gt;sys_ui_macro&lt;/sys_class_name&gt;&lt;sys_created_by&gt;MarkelJR@state.gov&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-23 13:47:35&lt;/sys_created_on&gt;&lt;sys_id&gt;a70910ea1bdcd4100a4a10ad9c4bcb05&lt;/sys_id&gt;&lt;sys_mod_count&gt;8&lt;/sys_mod_count&gt;&lt;sys_name&gt;FormProcessing&lt;/sys_name&gt;&lt;sys_package display_value="FMS" source="x_g_irm_fms"&gt;c728dd331b3fc8100a4a10ad9c4bcbb6&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="FMS"&gt;c728dd331b3fc8100a4a10ad9c4bcbb6&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_macro_a70910ea1bdcd4100a4a10ad9c4bcb05&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;MarkelJR@state.gov&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-23 20:18:25&lt;/sys_updated_on&gt;&lt;xml&gt;&lt;![CDATA[&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null"&gt;
+	&lt;script&gt;
+		function LoadFYChoices() {
+			alert('yes');
+		}
+	&lt;/script&gt;
+	&lt;g:requires name="FormProcessing.jsdbx" /&gt;  
+&lt;/j:jelly&gt;]]&gt;&lt;/xml&gt;&lt;/sys_ui_macro&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-420391958</payload_hash>
+        <record_name>FormProcessing</record_name>
+        <reverted_from/>
+        <source>5531d2991bcc10500a4a10ad9c4bcbe0</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-04-23 20:18:25</sys_created_on>
+        <sys_id>f154b96a1b1418100a4a10ad9c4bcb41</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>171a8b104120000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-23 20:18:25</sys_updated_on>
+        <type>Macro</type>
+        <update_guid>7d54b96aca141810b3f8d594d145fb40</update_guid>
+        <update_guid_history>7d54b96aca141810b3f8d594d145fb40:-420391958,76f379aaf114181098272c42a66fcb10:1775808189,e57a812a1894181035eab91c15e8e0a2:-172870066,01a945e6f5941810e14c7f52f38c3daa:1258120923,54f68962079418102bb3d0448aef71c7:1303942999,d3ba786abc5418109a448d6ca333a93e:-2098358939,5f4af06a34541810a1a4316252c1b0f5:-82496041,0f1f9cee88dcd410d7e491955f1ec3c4:-1276976888,bcead06ec3dcd41082c82ac602b34a32:28890198</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-04-23 20:51:56</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_macro">sys_ui_macro</sys_db_object>
+        <sys_id>1d14c57ca7764f94bb726599f3a41939</sys_id>
+        <sys_metadata>a70910ea1bdcd4100a4a10ad9c4bcb05</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>FormProcessing</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_ui_macro_a70910ea1bdcd4100a4a10ad9c4bcb05</sys_update_name>
+        <sys_update_version display_value="sys_ui_macro_a70910ea1bdcd4100a4a10ad9c4bcb05">f154b96a1b1418100a4a10ad9c4bcb41</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-23 20:51:56</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

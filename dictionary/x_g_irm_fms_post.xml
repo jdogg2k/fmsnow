@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Post" max_length="40" name="x_g_irm_fms_post" type="collection">
+        <element label="Post City" mandatory="true" max_length="50" name="post_city" type="string"/>
+        <element label="Post Country" mandatory="true" max_length="50" name="post_country" type="string"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new post]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.post_name.toString() + '\t\t\t\t[' + current.post_type.toString() + ']' + ' in ' + current.post_city.toString(); &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;})(current);" display="true" label="Post display" max_length="256" name="post_display" type="string" virtual="true"/>
+        <element label="Post Name" mandatory="true" max_length="50" name="post_name" type="string"/>
+        <element choice="1" label="Post Type" mandatory="true" max_length="4" name="post_type" type="string">
+            <choice>
+                <element inactive_on_update="false" label="American Institute in Taiwan" value="AIT"/>
+                <element inactive_on_update="false" label="Branch Office" value="BO"/>
+                <element inactive_on_update="false" label="Consulate" value="C"/>
+                <element inactive_on_update="false" label="Consulate General" value="CG"/>
+                <element inactive_on_update="false" label="Embassy" value="E"/>
+                <element inactive_on_update="false" label="Mission" value="M"/>
+                <element inactive_on_update="false" label="U.S. Interests" value="INT"/>
+            </choice>
+        </element>
+        <element label="Post Region" mandatory="true" max_length="32" name="region_ref" reference="x_g_irm_fms_region" type="reference"/>
+        <index name="index">
+            <element name="region_ref"/>
+        </index>
+    </element>
+</database>

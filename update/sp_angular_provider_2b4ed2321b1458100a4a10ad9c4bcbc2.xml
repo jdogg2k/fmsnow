@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_angular_provider">
+    <sp_angular_provider action="INSERT_OR_UPDATE">
+        <name>AGGridHelper</name>
+        <script><![CDATA[function AGGridHelper(){
+	return{
+		setGrid:function(gridOptions, rowData) {
+
+			/* Add grids to the DOM */
+			var agGridDiv = document.querySelector('#AGgrid');
+			new agGrid.Grid(agGridDiv, gridOptions);
+		
+			/* Associate back-end arrays to the front-end grids */
+			gridOptions.api.setRowData(rowData);
+			gridOptions.api.sizeColumnsToFit();
+
+		}
+	};
+}]]></script>
+        <sys_class_name>sp_angular_provider</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-04-24 18:00:16</sys_created_on>
+        <sys_id>2b4ed2321b1458100a4a10ad9c4bcbc2</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_name>AGGridHelper</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_angular_provider_2b4ed2321b1458100a4a10ad9c4bcbc2</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-27 14:13:03</sys_updated_on>
+        <type>factory</type>
+    </sp_angular_provider>
+</record_update>

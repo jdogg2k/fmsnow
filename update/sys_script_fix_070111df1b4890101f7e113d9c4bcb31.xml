@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_fix">
+    <sys_script_fix action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <before>true</before>
+        <description/>
+        <flush_cache>true</flush_cache>
+        <name>Fix Calculated Fields</name>
+        <record_for_rollback>false</record_for_rollback>
+        <run_once>true</run_once>
+        <script><![CDATA[var allTables = new GlideRecord('sys_dictionary');
+allTables.addEncodedQuery('sys_scope=c728dd331b3fc8100a4a10ad9c4bcbb6^virtual=true^display=true');
+allTables.query();
+while (allTables.next()) {
+    var gr = new GlideRecord(allTables.getValue('name'));
+    gr.query();
+    while (gr.next()) {
+        gr.autoSysFields(false); // avoid "updated" and "updated_by" changes
+        gr.setWorkflow(false);
+        gr.setValue('sys_updated_on', new GlideDateTime());
+        gr.update();
+    }
+}]]></script>
+        <sys_class_name>sys_script_fix</sys_class_name>
+        <sys_created_by>markeljr@state.gov</sys_created_by>
+        <sys_created_on>2020-04-13 15:25:17</sys_created_on>
+        <sys_id>070111df1b4890101f7e113d9c4bcb31</sys_id>
+        <sys_mod_count>8</sys_mod_count>
+        <sys_name>Fix Calculated Fields</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_script_fix_070111df1b4890101f7e113d9c4bcb31</sys_update_name>
+        <sys_updated_by>markeljr@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-13 16:56:28</sys_updated_on>
+        <unloadable>true</unloadable>
+    </sys_script_fix>
+</record_update>

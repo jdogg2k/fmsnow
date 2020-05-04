@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Transfer Type" max_length="40" name="x_g_irm_fms_transfer_type" type="collection">
+        <element label="Transfer Type" mandatory="true" max_length="16" name="transfer_type" type="string"/>
+        <element label="Transfer Type Code" mandatory="true" max_length="3" name="transfer_type_code" type="string"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new transfer type]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.transfer_type.toString() + '\t\t\t\t[' + current.transfer_type_code.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;})(current);" display="true" label="Transfer Type display" max_length="256" name="transfer_type_display" type="string" virtual="true"/>
+    </element>
+</database>

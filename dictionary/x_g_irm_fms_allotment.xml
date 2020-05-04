@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Allotment" max_length="40" name="x_g_irm_fms_allotment" type="collection">
+        <element attributes="format=none" label="allotment" mandatory="true" max_length="40" name="allotment" type="integer"/>
+        <element label="Allotment Description" mandatory="true" max_length="50" name="allotment_desc" type="string"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new allotment]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.allotment_desc.toString() + '\t\t\t\t[' + current.allotment.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;})(current);" display="true" label="Allotment display" max_length="256" name="allotment_display" type="string" virtual="true"/>
+    </element>
+</database>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_db_object">
+    <sys_db_object action="INSERT_OR_UPDATE">
+        <access/>
+        <actions_access>false</actions_access>
+        <alter_access>false</alter_access>
+        <caller_access/>
+        <client_scripts_access>false</client_scripts_access>
+        <configuration_access>false</configuration_access>
+        <create_access>false</create_access>
+        <create_access_controls>false</create_access_controls>
+        <delete_access>false</delete_access>
+        <extension_model/>
+        <is_extendable>false</is_extendable>
+        <label>FMS Load Region</label>
+        <live_feed_enabled>false</live_feed_enabled>
+        <name>x_g_irm_fms_fms_load_region</name>
+        <number_ref/>
+        <provider_class/>
+        <read_access>true</read_access>
+        <scriptable_table>false</scriptable_table>
+        <super_class display_value="Import Set Row" name="sys_import_set_row">d75311a61b1300101f7e113d9c4bcb24</super_class>
+        <sys_class_code/>
+        <sys_class_name>sys_db_object</sys_class_name>
+        <sys_class_path/>
+        <sys_created_by>rosejl@state.gov</sys_created_by>
+        <sys_created_on>2020-04-08 16:07:37</sys_created_on>
+        <sys_id>ed1be7ed1b4090500a4a10ad9c4bcbc2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Irm Fms Fms Load Region</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_db_object_ed1be7ed1b4090500a4a10ad9c4bcbc2</sys_update_name>
+        <sys_updated_by>rosejl@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-08 16:07:37</sys_updated_on>
+        <update_access>false</update_access>
+        <user_role/>
+        <ws_access>true</ws_access>
+    </sys_db_object>
+</record_update>

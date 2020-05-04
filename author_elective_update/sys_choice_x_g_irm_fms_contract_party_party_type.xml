@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="party_type" table="x_g_irm_fms_contract_party" version="3">
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>party_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Contracting Officer</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract_party</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 14:31:30</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>6c15572d1b0890501f7e113d9c4bcb02</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 14:31:30</sys_updated_on>
+            <value>CO</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>party_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Contracting Officer Representative</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract_party</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 14:31:50</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>1f159be91b0890501f7e113d9c4bcb1c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 14:31:50</sys_updated_on>
+            <value>COR</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>party_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Government Technical Manager</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract_party</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 14:32:18</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>bd359be91b0890501f7e113d9c4bcb3f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 14:32:18</sys_updated_on>
+            <value>GTM</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>party_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Other Interested Party</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract_party</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 14:32:42</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>fe459ba91b0890501f7e113d9c4bcb62</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 14:32:42</sys_updated_on>
+            <value>INT</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>party_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Purchaser / Buyer</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract_party</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 14:33:02</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>5c65932d1b0890501f7e113d9c4bcb79</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 14:33:02</sys_updated_on>
+            <value>PUR</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>party_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Vendor Representative</label>
+            <language>en</language>
+            <name>x_g_irm_fms_contract_party</name>
+            <sequence/>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 14:33:22</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>8d75972d1b0890501f7e113d9c4bcb7e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 14:33:22</sys_updated_on>
+            <value>VEN</value>
+        </sys_choice>
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>party_type</element>
+            <name>x_g_irm_fms_contract_party</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-08 14:31:30</sys_created_on>
+            <sys_id>ce159be91b0890501f7e113d9c4bcb19</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>party_type</sys_name>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_choice_x_g_irm_fms_contract_party_party_type</sys_update_name>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-08 14:31:30</sys_updated_on>
+        </sys_choice_set>
+    </sys_choice>
+</record_update>

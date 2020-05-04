@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_rectangle_menu_item">
+    <sp_rectangle_menu_item action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <color>default</color>
+        <condition/>
+        <display_1>org_code</display_1>
+        <display_2>org_type</display_2>
+        <display_date>sys_created_on</display_date>
+        <filter table="x_g_irm_fms_organization">org_code=184000^EQ<item endquery="false" field="org_code" goto="false" newquery="false" operator="=" or="false" value="184000"/>
+            <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
+        </filter>
+        <glyph>empty</glyph>
+        <hint/>
+        <kb_article/>
+        <kb_category/>
+        <kb_topic/>
+        <label>Organizations</label>
+        <order>100</order>
+        <record_script/>
+        <sc_cat_item/>
+        <sc_category/>
+        <short_description/>
+        <sp_page display_value="organization_list">778935a51b9c14100a4a10ad9c4bcb94</sp_page>
+        <sp_rectangle_menu/>
+        <sp_rectangle_menu_item display_value="Setup">be6edaeb1b0cd0100a4a10ad9c4bcbb7</sp_rectangle_menu_item>
+        <sys_class_name>sp_rectangle_menu_item</sys_class_name>
+        <sys_created_by>rosejl@state.gov</sys_created_by>
+        <sys_created_on>2020-04-14 16:45:12</sys_created_on>
+        <sys_id>691d2e2b1b4cd0100a4a10ad9c4bcbff</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>Organizations</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_rectangle_menu_item_691d2e2b1b4cd0100a4a10ad9c4bcbff</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-28 13:16:12</sys_updated_on>
+        <table>x_g_irm_fms_organization</table>
+        <type>page</type>
+        <url>#</url>
+        <url_target/>
+    </sp_rectangle_menu_item>
+    <sys_translated_text action="delete_multiple" query="documentkey=691d2e2b1b4cd0100a4a10ad9c4bcbff"/>
+</record_update>
