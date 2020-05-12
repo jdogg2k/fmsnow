@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="u_contract_non_idvtype" label="Contract Non IDVType" language="en" table="x_g_irm_fms_fms_load_contract">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>u_contract_non_idvtype</element>
+            <help/>
+            <hint/>
+            <label>Contract Non IDVType</label>
+            <language>en</language>
+            <name>x_g_irm_fms_fms_load_contract</name>
+            <plural>Contract Non IDVTypes</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-05-06 11:42:47</sys_created_on>
+            <sys_id>dffabe661b6c94501f7e113d9c4bcbbc</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Contract Non IDVType</sys_name>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_documentation_x_g_irm_fms_fms_load_contract_u_contract_non_idvtype_en</sys_update_name>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-06 11:42:47</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

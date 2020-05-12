@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_widget_dependency">
     <m2m_sp_widget_dependency action="INSERT_OR_UPDATE">
         <sp_dependency display_value="ag-grid">b352dd901b9810100a4a10ad9c4bcb1b</sp_dependency>
-        <sp_widget display_value="Organization List">f9b8b5651b9c14100a4a10ad9c4bcba9</sp_widget>
+        <sp_widget display_value="Organization Grid">f9b8b5651b9c14100a4a10ad9c4bcba9</sp_widget>
         <sys_class_name>m2m_sp_widget_dependency</sys_class_name>
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-20 18:03:37</sys_created_on>

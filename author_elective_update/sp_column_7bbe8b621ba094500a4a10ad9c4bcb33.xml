@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_column">
+    <sp_column action="DELETE">
+        <class_name/>
+        <order>1</order>
+        <size>12</size>
+        <size_lg/>
+        <size_sm/>
+        <size_xs/>
+        <sp_row display_value="1">37be8b621ba094500a4a10ad9c4bcb31</sp_row>
+        <sys_class_name>sp_column</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-05-06 13:09:07</sys_created_on>
+        <sys_id>7bbe8b621ba094500a4a10ad9c4bcb33</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>1</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_column_7bbe8b621ba094500a4a10ad9c4bcb33</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-06 13:09:07</sys_updated_on>
+    </sp_column>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sp_column_7bbe8b621ba094500a4a10ad9c4bcb33</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_column"><sp_column action="INSERT_OR_UPDATE"><class_name/><order>1</order><size>12</size><size_lg/><size_sm/><size_xs/><sp_row display_value="1">37be8b621ba094500a4a10ad9c4bcb31</sp_row><sys_class_name>sp_column</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2020-05-06 13:09:07</sys_created_on><sys_id>7bbe8b621ba094500a4a10ad9c4bcb33</sys_id><sys_mod_count>0</sys_mod_count><sys_name>1</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sp_column_7bbe8b621ba094500a4a10ad9c4bcb33</sys_update_name><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2020-05-06 13:09:07</sys_updated_on></sp_column></record_update>]]></payload>
+        <payload_hash>-1570218142</payload_hash>
+        <record_name>1</record_name>
+        <reverted_from/>
+        <source>2211964e1bac14501f7e113d9c4bcbef</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-05-06 13:09:07</sys_created_on>
+        <sys_id>b7be8b621ba094500a4a10ad9c4bcb35</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>171ea1aa5ec0000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-06 13:09:07</sys_updated_on>
+        <type>Column</type>
+        <update_guid>ffbe8b62c1a094502c86347bf1f67534</update_guid>
+        <update_guid_history>ffbe8b62c1a094502c86347bf1f67534:-1570218142</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="1">e81c53e01b38d0100a4a10ad9c4bcb60</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-05-12 19:15:10</sys_created_on>
+        <sys_db_object display_value="" name="sp_column">sp_column</sys_db_object>
+        <sys_id>7b18774bf7044483a3e9c274ce283211</sys_id>
+        <sys_metadata>7bbe8b621ba094500a4a10ad9c4bcb33</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>1</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sp_column_7bbe8b621ba094500a4a10ad9c4bcb33</sys_update_name>
+        <sys_update_version display_value="sp_column_7bbe8b621ba094500a4a10ad9c4bcb33">b7be8b621ba094500a4a10ad9c4bcb35</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-12 19:15:10</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

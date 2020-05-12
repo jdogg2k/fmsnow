@@ -7,7 +7,32 @@
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Base Start Date" label="Base Start Date" max_length="40" name="u_base_start_date" type="glide_date"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Category" label="Category" max_length="40" name="u_category" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Classification" label="Classification" max_length="40" name="u_classification" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract AQMDelay Days" max_length="40" name="u_contract_aqmdelay_days" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Award Level" max_length="40" name="u_contract_award_level" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Base Value" max_length="40" name="u_contract_base_value" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Category" max_length="40" name="u_contract_category" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Class" max_length="40" name="u_contract_class" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Comment" max_length="500" name="u_contract_comment" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Has Risk" max_length="40" name="u_contract_has_risk" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract ID" max_length="40" name="u_contract_id" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract IDVType" max_length="40" name="u_contract_idvtype" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Non IDVType" max_length="40" name="u_contract_non_idvtype" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Operational Status" max_length="40" name="u_contract_operational_status" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Option Years" max_length="40" name="u_contract_option_years" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Org Code" max_length="40" name="u_contract_org_code" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Org Promote Date" max_length="40" name="u_contract_org_promote_date" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Perform End Date" max_length="40" name="u_contract_perform_end_date" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Perform Start Date" max_length="40" name="u_contract_perform_start_date" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Period" max_length="40" name="u_contract_period" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Contract PIID" label="Contract PIID" max_length="40" name="u_contract_piid" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Pricing Model" max_length="40" name="u_contract_pricing_model" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Product Service" max_length="40" name="u_contract_product_service" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Project Code" max_length="40" name="u_contract_project_code" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Purpose" max_length="500" name="u_contract_purpose" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Risk Explanation" max_length="500" name="u_contract_risk_explanation" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Status Detail" max_length="500" name="u_contract_status_detail" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Total Value" max_length="40" name="u_contract_total_value" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Contract Vendor Names" max_length="40" name="u_contract_vendor_names" type="string"/>
         <element attributes="import_attribute_name=Current OY" label="Current OY" max_length="40" name="u_current_oy" type="integer"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=EndDate                      EndDate" label="EndDate                      EndDate" max_length="40" name="u_enddate_____________enddate" type="glide_date"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=IDV Type" label="IDV Type" max_length="40" name="u_idv_type" type="string"/>
@@ -17,6 +42,8 @@
         <element attributes="import_attribute_name=Org Code" label="Org Code" max_length="40" name="u_org_code" type="integer"/>
         <element attributes="import_attribute_name=OY" label="OY" max_length="40" name="u_oy" type="integer"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Parent PIID" label="Parent PIID" max_length="40" name="u_parent_piid" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Performance End Date" max_length="40" name="u_performance_end_date" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Performance Start Date" max_length="40" name="u_performance_start_date" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Period" label="Period" max_length="40" name="u_period" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Pricing Model" label="Pricing Model" max_length="40" name="u_pricing_model" type="string"/>
         <element attributes="import_attribute_name=Priority Tier" label="Priority Tier" max_length="40" name="u_priority_tier" type="integer"/>

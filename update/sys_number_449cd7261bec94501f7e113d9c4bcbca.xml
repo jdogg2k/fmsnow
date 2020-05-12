@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_number">
+    <sys_number action="INSERT_OR_UPDATE">
+        <category display_value="" name="x_g_irm_fms_contract_party">x_g_irm_fms_contract_party</category>
+        <maximum_digits>7</maximum_digits>
+        <number>0</number>
+        <prefix>PTY</prefix>
+        <sys_class_name>sys_number</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-05-06 14:09:28</sys_created_on>
+        <sys_id>449cd7261bec94501f7e113d9c4bcbca</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>PTY</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_number_449cd7261bec94501f7e113d9c4bcbca</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-06 14:09:28</sys_updated_on>
+    </sys_number>
+</record_update>

@@ -52,6 +52,7 @@
             </choice>
         </element>
         <element label="Contract PIID" mandatory="true" max_length="20" name="contract_piid" type="string"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;&#13;&#10;&#9;var cType = &quot;&quot;;&#13;&#10;&#9;if (current.contract_non_idv_type != null &amp;&amp; current.contract_non_idv_type != &quot;&quot;)&#13;&#10;&#9;&#9;cType = current.contract_non_idv_type;&#13;&#10;&#9;if (current.contract_idv_type != null &amp;&amp; current.contract_idv_type != &quot;&quot;)&#13;&#10;&#9;&#9;cType = current.contract_idv_type;&#13;&#10;&#13;&#10;&#9;return cType; &#13;&#10;&#13;&#10;})(current);" label="Contract Type" max_length="60" name="contract_type" type="string" virtual="true"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;if (current.option_years.nil() || current.option_years == 0) return null;&#13;&#10;&#9;var gdStart = new GlideDate(current.perform_start_date);&#13;&#10;&#9;var gdEnd = new GlideDate();&#13;&#10;&#9;var years = Math.ceil(GlideDate.subtract(gdStart, gdEnd).getMonthPart() / 12);&#13;&#10;&#9;gdStart.addYearsUTC(years + 1);&#13;&#10;&#9;gdStart.addDaysUTC(-1);&#13;&#10;&#9;return gdStart;&#13;&#10;})(current);" label="Current OY" max_length="40" name="current_oy" read_only="true" type="integer" virtual="true"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var val = new GlideDateTime(current.perform_start_date);&#13;&#10;&#9;val.addYearsUTC(2);&#13;&#10;&#9;return val; &#13;&#10;})(current);" label="Current OY End Date" max_length="40" name="current_oy_end_date" read_only="true" type="glide_date" virtual="true"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var val = new GlideDateTime(current.perform_start_date);&#13;&#10;&#9;val.addYearsUTC(2);&#13;&#10;&#9;return val; &#13;&#10;})(current);" label="Current OY Start Date" max_length="40" name="current_oy_start_date" read_only="true" type="glide_date" virtual="true"/>
@@ -60,6 +61,7 @@
         <element label="Has Risk?" max_length="40" name="has_risk" type="boolean"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var val = new GlideDateTime(current.perform_start_date);&#13;&#10;&#9;val.addYearsUTC(2);&#13;&#10;&#9;return val; &#13;&#10;})(current);" label="Last OY End Date" max_length="40" name="last_oy_end_date" read_only="true" type="glide_date" virtual="true"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var val = new GlideDateTime(current.perform_start_date);&#13;&#10;&#9;val.addYearsUTC(2);&#13;&#10;&#9;return val; &#13;&#10;})(current);" label="Last OY Start Date" max_length="40" name="last_oy_start_date" read_only="true" type="glide_date" virtual="true"/>
+        <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element choice="1" label="Operational Status" mandatory="true" max_length="8" name="operational_status" type="string">
             <choice>
                 <element inactive_on_update="false" label="Active" value="Active"/>
@@ -126,9 +128,12 @@
         <element label="Total Value" max_length="20" name="total_value" type="currency"/>
         <element label="Vendor Name(s)" max_length="300" name="vendor_names" type="string"/>
         <index name="index">
-            <element name="project_ref"/>
+            <element name="number"/>
         </index>
         <index name="index2">
+            <element name="project_ref"/>
+        </index>
+        <index name="index3">
             <element name="organization_ref"/>
         </index>
     </element>

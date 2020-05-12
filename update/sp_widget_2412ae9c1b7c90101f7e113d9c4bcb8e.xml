@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function ($rootScope) {
+  /* widget controller */
+  var c = this;
+
+  c.gridStates = {
+    budget : true,
+    contract : false,
+    group : false,
+    appropriation : false
+  }
+
+  c.setActiveGrid = function(gridType) {
+    if (c.gridStates[gridType] == false){
+      $rootScope.$broadcast('ProjDetailsGridChanged', {grid_type: gridType});
+      c.gridStates[gridType] = true;
+    }
+  }
+
+  $rootScope.$on('ProjChanged', function (event, args) {
+    c.server.get({
+      mode: "setProj",
+      org_id: args.proj_id
+    }).then(function (resp) {
+      c.data.selProj = resp.data.selProj;
+    });
+  });
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.newItem {
+    float: right;
+    margin-right: 5px;
+    width: 130px;
+}
+
+.excel-button {
+    float: right;
+    cursor: pointer;
+}
+
+.fms-tabs {
+    float: left;
+}
+
+.row-button {
+    cursor: pointer;
+}
+
+.edit-pencil {
+    color: #003ade;
+    font-size: 13px;
+}
+
+.delete-x {
+    color: #000000;
+    font-size: 13px;
+}
+
+.updated-row {
+    background-color: #FFFFCC;
+}
+
+.ag-header-cell-label .ag-header-icon.ag-sort-order {
+    display: none
+}
+
+.new-button {
+    margin-right: 10px;
+}
+
+.fms-header-buttons {
+    float: right;
+    margin-top: -36px;
+}
+
+.topFilters {
+    margin-left: 37px;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>project_detail</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Project Detail</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function($sp) {
+    var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+    var session = gs.getSession();
+
+    data.selectedProjID = $sp.getParameter("proj_id");
+
+    if (input) {
+        if (input.mode == "setProj") {
+            data.selectedProjID = input.proj_id;
+        }
+    }
+
+    data.selProj = FMSUtility.getTableData(FMSConstants.TABLE_PROJECT, "sys_id=" + data.selectedProjID)[0]; //get all project info
+
+})($sp);]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-05-11 20:23:16</sys_created_on>
+        <sys_id>2412ae9c1b7c90101f7e113d9c4bcb8e</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Project Detail</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_widget_2412ae9c1b7c90101f7e113d9c4bcb8e</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-12 19:13:41</sys_updated_on>
+        <template><![CDATA[<div style="width: 100%; height: 100%">
+  <widget id="organization_selection" options='{"hide_widget": true, "hide_project": true}'></widget>
+  <div class="container">
+    <div class="row">
+      <div class="form-group col-sm-3">
+        Project Code: {{c.data.selProj.proj_code}}
+      </div>
+      <div class="form-group col-sm-3">
+        Project Name: {{c.data.selProj.project_name}}
+      </div>
+      <div class="form-group col-sm-6">
+        Project Org.: <a href="/fms?id=organization_detail&org_id={{c.data.selOrg.organization_ref_rawval}}">{{c.data.selProj.organization_ref}}</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-9">
+        Description: {{c.data.selProj.project_desc}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">        
+        <ul class="nav nav-tabs fms-tabs">
+          <li class="active"><a data-toggle="tab" href="#budgets" ng-click="c.setActiveGrid('budget');">Budgets</a>
+          <li><a data-toggle="tab" href="#appropriations" ng-click="c.setActiveGrid('appropriation');">Appropriations</a></li>
+          <li><a data-toggle="tab" href="#groups" ng-click="c.setActiveGrid('group');">Allocation Groups</a></li>
+          <li><a data-toggle="tab" href="#contracts" ng-click="c.setActiveGrid('contract');">Contracts</a></li>
+        </ul>
+        <!--<a href="javascript:void(0)" class="btn btn-success excel-button">Export to Excel</a>
+        <a href="javascript:void(0)" ng-click="c.addNew();" class="btn btn-info newItem">Add {{c.newButtonLabel}}</a>-->
+      
+        <div class="tab-content">
+          <div id="budgets" class="tab-pane fade in active">
+            <widget id="budget_grid"></widget>
+          </div>
+          <div id="appropriations" class="tab-pane fade">
+            <widget id="project_appropriation_grid"></widget>
+          </div>
+          <div id="groups" class="tab-pane fade">
+            <widget id="allocation_group_grid"></widget>
+          </div>
+          <div id="contracts" class="tab-pane fade">
+            <widget id="contract_grid"></widget>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>  
+
+</div>]]></template>
+    </sp_widget>
+</record_update>

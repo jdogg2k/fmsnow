@@ -1,85 +1,135 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function ($scope, AGGridFactory) {
-  /* widget controller */
-  var c = this;
-  c.targetOrg = "";
+        <client_script><![CDATA[function($scope, AGGridFactory) {
+    /* widget controller */
+    var c = this;
+    c.targetOrg = c.data.selectedOrg;
+    c.userAuth = $rootScope.userAuth;
 
-  var projManager = new AGGridFactory();
+    var projManager = new AGGridFactory();
 
-  c.addNew = function () {
-    projManager.editRow("-1", "organization_ref=" + c.targetOrg);
-  }
-
-  projManager.setColumns([{
-      field: 'edit',
-      headerName: 'Edit',
-      maxWidth: 50,
-      cellRenderer: 'editCell'
-    },
-    {
-      field: 'project_code',
-      headerName: 'Project Code',
-      sort: 'asc',
-      cellStyle: {
-        color: 'blue',
-        'text-decoration': 'underline',
-        'cursor': 'pointer'
-      }
-    },
-    {
-      field: 'project_name',
-      headerName: 'Project Name'
-    },
-    {
-      field: 'omb_project_name',
-      headerName: 'OMB Project Name'
-    },
-    {
-      field: 'investment',
-      headerName: 'Investment'
-    },
-    {
-      field: 'function_code_ref',
-      headerName: 'Function Code'
-    },
-    {
-      field: 'project_desc',
-      headerName: 'Description'
-    },
-    {
-      field: 'delete',
-      headerName: 'Delete',
-      maxWidth: 80,
-      cellRenderer: 'deleteCell'
+    c.addNew = function() {
+        projManager.editRow("-1", "project_ref=" + c.targetProj);
     }
-  ]);
 
-  var projectProps = {
-    pageController: c,
-    tableName: c.data.tableName,
-    dataArray: null,
-    pageType: 'Project',
-    linkedField: 'project_code',
-    detailsPage: 'project_detail',
-    usePaging: false
-  }
+	c.canAdd = function() { 
+		if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin) {
+			if (c.userAuth.orgs.indexOf(c.targetOrg) >= 0) 
+				return true;
+			else
+				return false;
+		}
+		else
+			return false;
+	}
 
-  projManager.setPageProperties(projectProps);
-  projManager.setRenderers('project_name'); //build renderers and set display field to show on delete attempt
-  projManager.renderGrid('projGrid'); //render grid objects
-  projManager.setGridData(c.data.tableData); //set grid data
+c.canEdit = function(auth, data) {
+        if (auth.orgs.indexOf(c.targetOrg) >= 0)
+            return true;
+        else
+            return false;
+    }
 
-  $rootScope.$on('OrgChanged', function (event, args) {
-    c.server.get({
-      org_id: args.org_id
-    }).then(function (resp) {
-      c.targetOrg = resp.data.selectedOrg;
-      projManager.setGridData(resp.data.tableData); //set grid data
+    c.canDelete = function(auth, data) {
+        return c.canEdit(auth, data);
+    }
+
+    c.exportExcel = function() {
+        projManager.exportExcel();
+    }
+
+    projManager.setColumns([{
+            field: 'edit',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+            suppressMenu: true,
+            sortable: false,
+            cellRenderer: 'editCell',
+            cellRendererParams: function(params) {
+                return {
+                    "show": c.canEdit(c.userAuth, params.data)
+                };
+            }
+        },
+        {
+            field: 'project_code',
+            headerName: 'Project Code',
+            sort: 'asc',
+            cellStyle: {
+                color: 'blue',
+                'text-decoration': 'underline',
+                'cursor': 'pointer'
+            }
+        },
+        {
+            field: 'project_name',
+            headerName: 'Project Name'
+        },
+        {
+            field: 'omb_project_name',
+            headerName: 'OMB Project Name'
+        },
+        {
+            field: 'investment',
+            headerName: 'Investment'
+        },
+        {
+            field: 'function_code_ref',
+            headerName: 'Function Code'
+        },
+        {
+            field: 'project_desc',
+            headerName: 'Description'
+        },
+        {
+            field: 'delete',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+            suppressMenu: true,
+            sortable: false,
+            cellRenderer: 'deleteCell',
+            cellRendererParams: function(params) {
+                return {
+                    "show": c.canDelete(c.userAuth, params.data)
+                };
+            }
+        }
+    ]);
+
+    var projectProps = {
+        pageController: c,
+        tableName: c.data.tableName,
+        dataArray: null,
+        pageType: 'Project',
+        linkedField: 'project_code',
+        detailsPage: 'project_detail',
+        usePaging: false
+    }
+
+    projManager.setPageProperties(projectProps);
+    projManager.setRenderers('project_name'); //build renderers and set display field to show on delete attempt
+    projManager.renderGrid('projGrid'); //render grid objects
+    projManager.setGridData(c.data.tableData); //set grid data
+    projManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin));
+    projManager.fitColumns();
+
+    $rootScope.$on('OrgChanged', function(event, args) {
+        c.server.get({
+            mode: "setOrg",
+            org_id: args.org_id
+        }).then(function(resp) {
+            c.targetOrg = resp.data.selectedOrg;
+            projManager.setGridData(resp.data.tableData); //set grid data
+        });
+
     });
-
-  });
 
 }]]></client_script>
         <controller_as>c</controller_as>
@@ -100,6 +150,9 @@
 }
 .new-button {
     float: left;
+}
+.excel-button {
+    float: right;
 }
 .edit-pencil {
     color: #003ade;
@@ -138,7 +191,8 @@
 		if (input.mode == "deleteRow"){
 			FMSUtility.deleteRecord(FMSConstants.TABLE_PROJECT, input.rowID);
 		}
-        if (input.org_id) {
+        if (input.mode == "setOrg") {
+            data.selectedOrgID = input.org_id;
             session.putClientData('org_id', input.org_id.toString());
         }
 
@@ -155,20 +209,23 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-29 16:09:57</sys_created_on>
         <sys_id>a80573d01b289c100a4a10ad9c4bcb93</sys_id>
-        <sys_mod_count>19</sys_mod_count>
+        <sys_mod_count>36</sys_mod_count>
         <sys_name>Project Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_a80573d01b289c100a4a10ad9c4bcb93</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-04 14:06:01</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-11 20:46:23</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
     <div class="row">
       <div class="form-group col-sm-12 fms-list-header">
-        <a href="javascript:void(0)" ng-click="c.addNew();" class="btn btn-info new-button">Add Project</a>
+        <div class="fms-header-buttons">
+          <a href="javascript:void(0)" ng-click="c.addNew();" ng-show="c.canAdd()" class="btn btn-info new-button">Add Project</a>
+          <a href="javascript:void(0)" ng-click="c.exportExcel();" class="btn btn-primary excel-button">Export to Excel</a>
+        </div>
       </div>
     </div>
 
@@ -181,7 +238,6 @@
     </div>
   </div>
 
-</div>
-]]></template>
+</div>]]></template>
     </sp_widget>
 </record_update>

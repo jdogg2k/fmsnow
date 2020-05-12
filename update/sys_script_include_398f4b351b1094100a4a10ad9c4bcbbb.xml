@@ -14,19 +14,28 @@ FMSConstants.TABLE_EXPENSE_ITEM = 'x_g_irm_fms_expense_item';
 FMSConstants.TABLE_COST_POOL = 'x_g_irm_fms_cost_pool';
 FMSConstants.TABLE_OMB_CATEGORY = 'x_g_irm_fms_omb_category';
 FMSConstants.TABLE_USER_ORGANIZATION = 'x_g_irm_fms_user_organization';
+FMSConstants.TABLE_CONTRACT = 'x_g_irm_fms_contract';
+FMSConstants.TABLE_CONTRACT_PARTY = 'x_g_irm_fms_contract_party';
+FMSConstants.TABLE_CONTRACT_CONTRACT = 'x_g_irm_fms_contract_contract';
+FMSConstants.TABLE_PROJECT_APPROPRIATION = 'x_g_irm_fms_project_appropriation';
 
-FMSConstants.ROLE_SYSADMIN = 'x_g_irm_fms.sysadmin';]]></script>
+FMSConstants.ROLE_SYSADMIN = 'x_g_irm_fms.sysadmin';
+FMSConstants.ROLE_ORGADMIN = 'x_g_irm_fms.orgadmin';
+FMSConstants.ROLE_ANALYST = 'x_g_irm_fms.analyst';
+FMSConstants.ROLE_APPROVE = 'x_g_irm_fms.approve';
+FMSConstants.ROLE_CONTRACTS = 'x_g_irm_fms.contracts';
+FMSConstants.ROLE_READONLY = 'x_g_irm_fms.readonly';]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 19:01:23</sys_created_on>
         <sys_id>398f4b351b1094100a4a10ad9c4bcbbb</sys_id>
-        <sys_mod_count>11</sys_mod_count>
+        <sys_mod_count>15</sys_mod_count>
         <sys_name>FMSConstants</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_398f4b351b1094100a4a10ad9c4bcbbb</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-04-30 19:54:36</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-07 16:29:03</sys_updated_on>
     </sys_script_include>
 </record_update>

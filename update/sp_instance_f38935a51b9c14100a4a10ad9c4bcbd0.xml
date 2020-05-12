@@ -11,7 +11,7 @@
         <short_description/>
         <size>md</size>
         <sp_column display_value="1">7f8935a51b9c14100a4a10ad9c4bcbcd</sp_column>
-        <sp_widget display_value="Organization List">f9b8b5651b9c14100a4a10ad9c4bcba9</sp_widget>
+        <sp_widget display_value="Organization Grid">f9b8b5651b9c14100a4a10ad9c4bcba9</sp_widget>
         <sys_class_name>sp_instance</sys_class_name>
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-20 18:07:18</sys_created_on>

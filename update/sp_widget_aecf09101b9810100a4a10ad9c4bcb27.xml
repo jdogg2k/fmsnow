@@ -5,6 +5,44 @@
   /* widget controller */
   var c = this;
 
+  c.gridStates = {
+    project: true,
+    contract: false,
+    expense: false,
+    costpool: false,
+    omb: false,
+    structure: false
+  }
+
+  if (c.data.selOrg.org_type_rawval == 'E') {
+    c.gridStates.project = false;
+    c.gridStates.structure = true;
+  }
+
+  //build org tree
+  $('#org_tree').on('select_node.jstree', function (e, data) {
+    var i, j, r = [];
+    var selOrg = "";
+    for (i = 0, j = data.selected.length; i < j; i++) {
+      var selNode = data.instance.get_node(data.selected[i]);
+      selOrg = selNode.original.sys_id;
+    }
+    window.location.href = "/fms?id=organization_detail&org_id=" + selOrg;
+  }).jstree({
+    'core': {
+      'data': [c.data.orgTreeData]
+    }
+  });
+
+  c.setActiveGrid = function (gridType) {
+    if (c.gridStates[gridType] == false) {
+      $rootScope.$broadcast('OrgDetailsGridChanged', {
+        grid_type: gridType
+      });
+      c.gridStates[gridType] = true;
+    }
+  }
+
   $rootScope.$on('OrgChanged', function (event, args) {
     c.server.get({
       mode: "setOrg",
@@ -16,51 +54,59 @@
 
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>&#13;
-.newItem {&#13;
-    float: right;&#13;
-    margin-right: 5px;&#13;
-    width: 130px;&#13;
-}&#13;
-&#13;
-.excel-button {&#13;
-    float: right;&#13;
-    cursor: pointer;&#13;
-}&#13;
-&#13;
-.fms-tabs {&#13;
-    float: left;&#13;
-}&#13;
-&#13;
-.row-button {&#13;
-    cursor: pointer;&#13;
-}&#13;
-&#13;
-.edit-pencil {&#13;
-    color: #003ade;&#13;
-    font-size: 13px;&#13;
-}&#13;
-&#13;
-.delete-x {&#13;
-    color: #000000;&#13;
-    font-size: 13px;&#13;
-}&#13;
-&#13;
-.updated-row {&#13;
-    background-color: #FFFFCC;&#13;
-}&#13;
-&#13;
-.ag-header-cell-label .ag-header-icon.ag-sort-order {&#13;
-    display: none&#13;
-}&#13;
-&#13;
-.new-button {&#13;
-    float: right !important;&#13;
-    margin-top: -36px;&#13;
-}&#13;
-&#13;
-.topFilters {&#13;
-    margin-left: 37px;&#13;
+        <css>.newItem {
+    float: right;
+    margin-right: 5px;
+    width: 130px;
+}
+
+.excel-button {
+    float: right;
+    cursor: pointer;
+}
+
+.fms-tabs {
+    float: left;
+}
+
+.row-button {
+    cursor: pointer;
+}
+
+.edit-pencil {
+    color: #003ade;
+    font-size: 13px;
+}
+
+.delete-x {
+    color: #000000;
+    font-size: 13px;
+}
+
+.updated-row {
+    background-color: #FFFFCC;
+}
+
+.ag-header-cell-label .ag-header-icon.ag-sort-order {
+    display: none
+}
+
+.new-button {
+    margin-right: 10px;
+}
+
+.fms-header-buttons {
+    float: right;
+    margin-top: -36px;
+}
+
+.topFilters {
+    margin-left: 37px;
+}
+
+.structureTree {
+    float: left;
+    clear: both;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -81,7 +127,7 @@
     var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
     var session = gs.getSession();
 
-    data.selectedOrgID = session.getClientData('org_id') || $sp.getParameter("org_id");
+    data.selectedOrgID = $sp.getParameter("org_id");
 
     if (input) {
         if (input.mode == "setOrg") {
@@ -91,22 +137,30 @@
 
     data.selOrg = FMSUtility.getTableData(FMSConstants.TABLE_ORGANIZATION, "sys_id=" + data.selectedOrgID)[0]; //get all org info
 
+    if (data.selOrg.org_type_rawval == 'I') {
+        data.orgTreeData = FMSUtility.getOrgTree(data.selectedOrgID, "I");  //get internal data
+    } else {
+        data.orgTreeData = FMSUtility.getOrgTree(data.selectedOrgID, "E"); //get external data
+    }
+
+    
+
 })($sp);]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-16 17:52:24</sys_created_on>
         <sys_id>aecf09101b9810100a4a10ad9c4bcb27</sys_id>
-        <sys_mod_count>198</sys_mod_count>
+        <sys_mod_count>249</sys_mod_count>
         <sys_name>Organization Detail</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_aecf09101b9810100a4a10ad9c4bcb27</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-04 18:50:03</sys_updated_on>
+        <sys_updated_on>2020-05-12 18:22:36</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
-  <widget id="organization_selection" options='{"hide_widget": false, "hide_project": true}'></widget>
+  <widget id="organization_selection" options='{"hide_widget": true, "hide_project": true}'></widget>
   <div class="container">
     <div class="row">
       <div class="form-group col-sm-12">
@@ -135,36 +189,34 @@
     <div class="row">
       <div class="col-sm-12">        
         <ul class="nav nav-tabs fms-tabs">
-          <li class="active"><a data-toggle="tab" href="#projects" ng-click="c.setActiveGrid('project');">Projects</a>
-          <li><a data-toggle="tab" href="#contracts">Contracts</a></li>
-          <li><a data-toggle="tab" href="#items" ng-click="c.setActiveGrid('expense');">Expense Items</a></li>
-          <li><a data-toggle="tab" href="#pools" ng-click="c.setActiveGrid('costpool');">Cost Pools</a></li>
-          <li><a data-toggle="tab" href="#categories" ng-click="c.setActiveGrid('omb');">OMB Categories</a></li>
+          <li class="active"><a data-toggle="tab" href="#projects" ng-click="c.setActiveGrid('project');" ng-show="c.data.selOrg.org_type_rawval == 'I'">Projects</a>
+          <li><a data-toggle="tab" href="#contracts" ng-click="c.setActiveGrid('contract');" ng-show="c.data.selOrg.org_type_rawval == 'I'">Contracts</a></li>
+          <li><a data-toggle="tab" href="#items" ng-click="c.setActiveGrid('expense');" ng-show="c.data.selOrg.org_type_rawval == 'I'">Expense Items</a></li>
+          <li><a data-toggle="tab" href="#pools" ng-click="c.setActiveGrid('costpool');" ng-show="c.data.selOrg.org_type_rawval == 'I'">Cost Pools</a></li>
+          <li><a data-toggle="tab" href="#categories" ng-click="c.setActiveGrid('omb');" ng-show="c.data.selOrg.org_type_rawval == 'I'">OMB Categories</a></li>
           <li><a data-toggle="tab" href="#structure">Structure</a></li>
         </ul>
-        <!--<a href="javascript:void(0)" class="btn btn-success excel-button">Export to Excel</a>
-        <a href="javascript:void(0)" ng-click="c.addNew();" class="btn btn-info newItem">Add {{c.newButtonLabel}}</a>-->
       
         <div class="tab-content">
-          <div id="projects" class="tab-pane fade in active">
+          <div id="projects" class="tab-pane fade" ng-class="{'in active': c.data.selOrg.org_type_rawval == 'I'}" ng-show="c.data.selOrg.org_type_rawval == 'I'">
             <widget id="project_grid"></widget>
           </div>
-          <div id="contracts" class="tab-pane fade">
-            <h3>Contracts</h3>
-            <p>Under Construction</p>
+          <div id="contracts" class="tab-pane fade" ng-show="c.data.selOrg.org_type_rawval == 'I'">
+            <widget id="contract_grid"></widget>
           </div>
-          <div id="items" class="tab-pane fade">
+          <div id="items" class="tab-pane fade" ng-show="c.data.selOrg.org_type_rawval == 'I'">
             <widget id="expense_item_grid"></widget>
           </div>
-          <div id="pools" class="tab-pane fade">
+          <div id="pools" class="tab-pane fade" ng-show="c.data.selOrg.org_type_rawval == 'I'">
             <widget id="cost_pool_grid"></widget>
           </div>
-          <div id="categories" class="tab-pane fade">
+          <div id="categories" class="tab-pane fade" ng-show="c.data.selOrg.org_type_rawval == 'I'">
             <widget id="omb_category_grid"></widget>
           </div>
-          <div id="structure" class="tab-pane fade">
-            <h3>Structure</h3>
-            <p>Under Construction</p>
+          <div id="structure" class="tab-pane fade" ng-class="{'in active': c.data.selOrg.org_type_rawval == 'E'}">
+            <div class="structureTree">
+              <div id="org_tree"></div>
+            </div>
           </div>
         </div>
 

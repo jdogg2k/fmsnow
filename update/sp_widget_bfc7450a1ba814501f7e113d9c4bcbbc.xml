@@ -1,85 +1,135 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function (AGGridFactory) {
-  /* widget controller */
-  var c = this;
-  c.targetOrg = c.data.selectedOrg;
+        <client_script><![CDATA[function(AGGridFactory) {
+    /* widget controller */
+    var c = this;
+    c.targetOrg = c.data.selectedOrg;
+    c.userAuth = $rootScope.userAuth;
 
-  var costpoolManager = new AGGridFactory();
+    var costpoolManager = new AGGridFactory();
 
-  c.addNew = function () {
-    costpoolManager.editRow("-1", "organization_ref=" + c.targetOrg);
-  }
-
-  var costPoolColumnDefs = [{
-      field: 'edit',
-      headerName: 'Edit',
-      maxWidth: 50,
-      cellStyle: {
-        textAlign: 'center'
-      },
-      cellRenderer: 'editCell'
-    },
-    {
-      field: 'cost_pool_name',
-      headerName: 'Pool Name',
-      filter: 'agTextColumnFilter',
-      suppressMenu: true,
-      sort: 'asc'
-    },
-    {
-      field: 'cost_pool_desc',
-      headerName: 'Description'
-    },
-    {
-      field: 'disabled',
-      headerName: 'Disabled',
-      maxWidth: 80,
-      cellStyle: {
-        textAlign: 'center'
-      },
-      cellRenderer: function (params) {
-        var input = document.createElement('input');
-        input.type = "checkbox";
-        input.checked = params.value == "true";
-        return input;
-      }
-    },
-    {
-      field: 'delete',
-      headerName: 'Delete',
-      maxWidth: 80,
-      cellStyle: {
-        textAlign: 'center'
-      },
-      cellRenderer: 'deleteCell'
+    c.addNew = function() {
+        costpoolManager.editRow("-1", "organization_ref=" + c.targetOrg);
     }
-  ];
 
-  var costPoolProps = {
-    pageController: c,
-    tableName: c.data.tableName,
-    dataArray: null,
-    pageType: 'Cost Pool',
-    linkedField: '',
-    detailsPage: ''
-  }
+	c.canAdd = function() { 
+		if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin) {
+			if (c.userAuth.orgs.indexOf(c.targetOrg) >= 0) 
+				return true;
+			else
+				return false;
+		}
+		else
+			return false;
+	}
 
-  costpoolManager.setColumns(costPoolColumnDefs);
-  costpoolManager.setPageProperties(costPoolProps);
-  costpoolManager.setRenderers('cost_pool_name'); //build renderers and set display field to show on delete attempt
-  costpoolManager.renderGrid('costPoolGrid'); //render grid objects
-  costpoolManager.setGridData(c.data.tableData); //set grid data
+	c.canEdit = function(auth, data) {
+        if (auth.orgs.indexOf(data.organization_ref_rawval) >= 0)
+            return true;
+        else
+            return false;
+    }
 
-  $rootScope.$on('OrgChanged', function (event, args) {
-    c.targetOrg = args.org_id;
-    c.server.get({
-      org_id: args.org_id
-    }).then(function (resp) {
-      costpoolManager.setGridData(resp.data.tableData); //set grid data
+    c.canDelete = function(auth, data) {
+        return c.canEdit(auth, data);
+    }
+
+    c.exportExcel = function() {
+        costpoolManager.exportExcel();
+    }
+
+    $rootScope.$on('OrgDetailsGridChanged', function(event, args) {
+        if (args.grid_type == "costpool") {
+            costpoolManager.fitColumns();
+        }
     });
-  });
+
+    var costPoolColumnDefs = [{
+            field: 'edit',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+            suppressMenu: true,
+            sortable: false,
+            cellRenderer: 'editCell',
+            cellRendererParams: function(params) {
+                return {
+                    "show": c.canEdit(c.userAuth, params.data)
+                };
+            }
+        },
+        {
+            field: 'cost_pool_name',
+            headerName: 'Pool Name',
+            filter: 'agTextColumnFilter',
+            suppressMenu: true,
+            sort: 'asc'
+        },
+        {
+            field: 'cost_pool_desc',
+            headerName: 'Description'
+        },
+        {
+            field: 'disabled',
+            headerName: 'Disabled',
+            maxWidth: 80,
+            cellStyle: {
+                textAlign: 'center'
+            },
+            cellRenderer: function(params) {
+                var input = document.createElement('input');
+                input.type = "checkbox";
+                input.checked = params.value == "true";
+                return input;
+            }
+        },
+        {
+            field: 'delete',
+            headerName: 'Delete',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+            suppressMenu: true,
+            sortable: false,
+            cellRenderer: 'deleteCell',
+            cellRendererParams: function(params) {
+                return {
+                    "show": c.canDelete(c.userAuth, params.data)
+                };
+            }
+        }
+    ];
+
+    var costPoolProps = {
+        pageController: c,
+        tableName: c.data.tableName,
+        dataArray: null,
+        pageType: 'Cost Pool',
+        linkedField: '',
+        detailsPage: ''
+    }
+
+    costpoolManager.setColumns(costPoolColumnDefs);
+    costpoolManager.setPageProperties(costPoolProps);
+    costpoolManager.setRenderers('cost_pool_name'); //build renderers and set display field to show on delete attempt
+    costpoolManager.renderGrid('costPoolGrid'); //render grid objects
+    costpoolManager.setGridData(c.data.tableData); //set grid data
+    costpoolManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst));
+    costpoolManager.fitColumns();
+
+    $rootScope.$on('OrgChanged', function(event, args) {
+        c.targetOrg = args.org_id;
+        c.server.get({
+            mode: "setOrg",
+            org_id: args.org_id
+        }).then(function(resp) {
+            costpoolManager.setGridData(resp.data.tableData); //set grid data
+        });
+    });
 
 }]]></client_script>
         <controller_as>c</controller_as>
@@ -100,6 +150,9 @@
 }
 .new-button {
     float: left;
+}
+.excel-button {
+    float: right;
 }
 .edit-pencil {
     color: #003ade;
@@ -138,7 +191,7 @@
         if (input.mode == "deleteRow") {
             FMSUtility.deleteRecord(FMSConstants.TABLE_COST_POOL, input.rowID);
         }
-        if (input.org_id) {
+        if (input.mode == "setOrg") {
             session.putClientData('org_id', input.org_id.toString());
         }
     }
@@ -154,20 +207,23 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-04 14:04:25</sys_created_on>
         <sys_id>bfc7450a1ba814501f7e113d9c4bcbbc</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>17</sys_mod_count>
         <sys_name>Cost Pool Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_bfc7450a1ba814501f7e113d9c4bcbbc</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-04 16:07:56</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-11 20:45:21</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
     <div class="row">
       <div class="form-group col-sm-12 fms-list-header">
-        <a href="javascript:void(0)" ng-click="c.addNew();" class="btn btn-info new-button">Add Cost Pool</a>
+        <div class="fms-header-buttons">
+          <a href="javascript:void(0)" ng-click="c.addNew();" ng-show="c.canAdd()" class="btn btn-info new-button">Add Cost Pool</a>
+          <a href="javascript:void(0)" ng-click="c.exportExcel();" class="btn btn-primary excel-button">Export to Excel</a>
+        </div>
       </div>
     </div>
 

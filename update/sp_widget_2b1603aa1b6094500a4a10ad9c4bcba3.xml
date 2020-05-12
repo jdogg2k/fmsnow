@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, AGGridFactory) {
+    /* widget controller */
+    var c = this;
+    c.targetOrg = c.data.selectedOrg;
+    c.targetProj = c.data.selectedProj;
+    c.userAuth = $rootScope.userAuth;
+
+    var approManager = new AGGridFactory();
+
+    c.addNew = function() {
+        ombManager.editRow("-1", "project_ref=" + c.targetProj);
+    }
+	
+	c.canAdd = function() { 
+		if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) {
+			if (c.userAuth.orgs.indexOf(c.targetOrg) >= 0) 
+				return true;
+			else
+				return false;
+		}
+		else
+			return false;
+	}
+
+	c.canEdit = function(auth, data) {
+		if (auth.orgs.indexOf(c.targetOrg) >= 0) 
+			return true;
+		else
+			return false;
+	}
+
+	c.canDelete = function(auth, data) { return c.canEdit(auth, data); }
+
+    c.exportExcel = function() {
+        approManager.exportExcel();
+    }
+
+    var approColumnDefs = [{
+            field: 'edit',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+			suppressMenu: true,
+			sortable: false,
+            cellRenderer: 'editCell',
+			cellRendererParams: function(params) { 
+				return { "show": c.canEdit(c.userAuth, params.data) }; 
+			}
+        },
+        {
+            field: 'appropriation_ref',
+            headerName: 'Appropriation',
+            maxWidth: 150,
+            filter: 'agTextColumnFilter',
+            suppressMenu: true,
+            sort: 'asc'
+        },
+        {
+            field: 'delete',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+			suppressMenu: true,
+			sortable: false,
+            cellRenderer: 'deleteCell',
+			cellRendererParams: function(params) { 
+				return { "show": c.canDelete(c.userAuth, params.data) }; 
+			}
+        }
+    ];
+
+    var approProps = {
+        pageController: c,
+        tableName: c.data.tableName,
+        dataArray: null,
+        pageType: 'Project Appropriations',
+        linkedField: '',
+        detailsPage: '',
+    }
+
+    approManager.setColumns(approColumnDefs);
+    approManager.setPageProperties(approProps);
+    approManager.setRenderers('appropriation'); //build renderers and set display field to show on delete attempt
+    approManager.renderGrid('projApproGrid'); //render grid objects
+    approManager.setGridData(c.data.tableData); //set grid data
+    approManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst));
+	approManager.fitColumns();
+
+    $rootScope.$on('ProjChanged', function(event, args) {
+        c.targetProj = args.proj_id;
+        c.server.get({
+           mode: "setProj",
+           proj_id: args.proj_id
+        }).then(function(resp) {
+            approManager.setGridData(resp.data.tableData); //set grid data
+        });
+    });
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.full-grid {&#13;
+    width: 94vw;&#13;
+    height: calc(100vh - 210px);&#13;
+    clear: both;&#13;
+}&#13;
+.fms-list-header {&#13;
+    margin-bottom: 0px !important;&#13;
+}&#13;
+.pageLabel {&#13;
+    float: left;&#13;
+    margin-right: 10px;&#13;
+}&#13;
+.row-button {&#13;
+    cursor: pointer;&#13;
+}&#13;
+.new-button {&#13;
+    float: left;&#13;
+}&#13;
+.excel-button {&#13;
+    float: right;&#13;
+}&#13;
+.edit-pencil {&#13;
+    color: #003ade;&#13;
+    font-size: 13px;&#13;
+}&#13;
+.delete-x {&#13;
+    color: #000000;&#13;
+    font-size: 13px;&#13;
+}&#13;
+.updated-row {&#13;
+    background-color: #FFFFCC;&#13;
+}&#13;
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>project_appropriation_grid</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Project Appropriation Grid</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+
+    var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+
+    var session = gs.getSession();
+
+    if (input) { //input holds the data coming back to the server
+        if (input.mode == "deleteRow") {
+            FMSUtility.deleteRecord(FMSConstants.TABLE_PROJECT_APPROPRIATION, input.rowID);
+        }
+        if (input.mode == "setProj") {
+            session.putClientData('proj_id', input.proj_id.toString());
+        }
+    }
+	else if ($sp.getParameter("proj_id"))
+		session.putClientData('proj_id', $sp.getParameter("proj_id"));
+		
+
+    data.selectedOrg = session.getClientData('org_id');
+    data.selectedProj = session.getClientData('proj_id');
+    data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_PROJECT_APPROPRIATION, "project_ref=" + data.selectedProj, true); 
+
+    data.tableName = FMSConstants.TABLE_PROJECT_APPROPRIATION;
+
+})();
+
+
+
+]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-05-06 12:43:26</sys_created_on>
+        <sys_id>2b1603aa1b6094500a4a10ad9c4bcba3</sys_id>
+        <sys_mod_count>14</sys_mod_count>
+        <sys_name>Project Appropriation Grid</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_widget_2b1603aa1b6094500a4a10ad9c4bcba3</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-11 20:39:31</sys_updated_on>
+        <template><![CDATA[<div style="width: 100%; height: 100%">
+
+  <div class="container">
+    <div class="row">
+      <div class="form-group col-sm-12 fms-list-header">
+        <div class="fms-header-buttons">
+          <a href="javascript:void(0)" ng-click="c.addNew();" ng-show="c.canAdd()" class="btn btn-info new-button">Add Appropriation</a>
+          <a href="javascript:void(0)" ng-click="c.exportExcel();" class="btn btn-primary excel-button">Export to Excel</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+
+        <div id="projApproGrid" class="ag-theme-balham full-grid"></div>
+
+      </div>
+    </div>
+  </div>
+
+</div>]]></template>
+    </sp_widget>
+</record_update>

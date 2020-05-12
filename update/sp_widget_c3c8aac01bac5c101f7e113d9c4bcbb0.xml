@@ -3,44 +3,55 @@
         <category>custom</category>
         <client_script><![CDATA[function($scope, $rootScope, $timeout) {
     /* widget controller */
+
+    var c = this;
+
+    /*if ($scope.data.myOrg_id && $scope.data.myOrg_id.length > 0) {
+        $timeout(function() {
+            $rootScope.$broadcast('OrgChanged', {
+                org_id: $scope.data.myOrg_id
+            });
+        }, 500);
+    } */
 	
-	var c = this;
+	$rootScope.userAuth = $scope.data.userAuth;
 
-	if ($scope.data.myOrg_id.length > 0) {
-		$timeout(function() {
-			$rootScope.$broadcast('OrgChanged', {org_id: $scope.data.myOrg_id});
-		}, 500);
-	}
-	
-  $scope.selOrg = {
-      displayValue: $scope.data.myOrg_name,
-      value: $scope.data.myOrg_id,
-      name: 'selOrg'
-  };
+    $scope.selOrg = {
+        displayValue: $scope.data.myOrg_name,
+        value: $scope.data.myOrg_id,
+        name: 'selOrg'
+    };
 
-  $scope.selProj = {
-      displayValue: $scope.data.myProj_name,
-      value: $scope.data.myProj_id,
-      name: 'selProj'
-  };
+    $scope.selProj = {
+        displayValue: $scope.data.myProj_name,
+        value: $scope.data.myProj_id,
+        name: 'selProj'
+    };
 
-  $scope.$on("field.change", function(evt, parms) {
-      if (parms.field.name == 'selOrg') {
-          if (c.data.myOrg_name != parms.newValue || !parms.newValue) {
-              $rootScope.$broadcast('OrgChanged', {org_id: parms.newValue});
-              $scope.selProj.displayValue = '';
-              $scope.selProj.value = '';
-          }
-          c.data.myOrg_name = parms.displayValue;
-          c.data.myOrg_id = parms.newValue;
-		  c.server.get({
-            org_id: parms.newValue
-			}).then(function(resp) {});
-      }
+    $scope.$on("field.change", function(evt, parms) {
+        if (parms.field.name == 'selOrg') {
+            if (c.data.myOrg_name != parms.newValue || !parms.newValue) {
+                $rootScope.$broadcast('OrgChanged', {
+                    org_id: parms.newValue
+                });
+                $scope.selProj.displayValue = '';
+                $scope.selProj.value = '';
+            }
+            c.data.myOrg_name = parms.displayValue;
+            c.data.myOrg_id = parms.newValue;
+            c.server.get({
+                org_id: parms.newValue
+            }).then(function(resp) {});
+        }
 
-      if (parms.field.name == 'selProj')
-          $rootScope.$broadcast('ProjectChanged', {org_id: parms.newValue});
-  });
+        if (parms.field.name == 'selProj')
+            $rootScope.$broadcast('ProjectChanged', {
+                proj_id: parms.newValue
+            });
+        c.server.get({
+            proj_id: parms.newValue
+        }).then(function(resp) {});
+    });
 
 }]]></client_script>
         <controller_as>c</controller_as>
@@ -62,37 +73,50 @@
         <roles/>
         <script><![CDATA[(function(options) {
 	var session = gs.getSession();
-	
+    var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries	
 	if (input) { //input holds the data coming back to the server
         if (input.org_id) {
+			data.myOrg_id = input.org_id;
             session.putClientData('org_id', input.org_id.toString());
+		}
+        if (input.proj_id) {
+			data.myProj_id = input.proj_id;
+            session.putClientData('proj_id', input.proj_id.toString());
         }
     }
 	
 	data.selectedOrg = "";
+	data.selectedProj = "";
+    data.userAuth = FMSUtility.getUserAuth();
+    if ($sp.getParameter("org_id"))
+        session.putClientData('org_id', $sp.getParameter("org_id"));
 	if (session.getClientData('org_id'))
 		data.selectedOrg = session.getClientData('org_id');
+    if ($sp.getParameter("proj_id"))
+        session.putClientData('proj_id', $sp.getParameter("proj_id"));
+	if (session.getClientData('proj_id')) 
+		data.selectedProj = session.getClientData('proj_id');
     data.userOrgs = [];
     data.hide_widget = (options.hide_widget.toString() == 'true');
 	data.hide_project = (options.hide_project.toString() == 'true');
 	data.orgTableName = FMSConstants.TABLE_ORGANIZATION;
-	data.projTableName = FMSConstants.TABLE_PROJECT;
+    data.projTableName = FMSConstants.TABLE_PROJECT;
+    
     var gr = new GlideRecord(FMSConstants.TABLE_ORGANIZATION);
-    gr.addEncodedQuery('sys_idIN' + new OrgHierarchy().getUserOrgs());
+    gr.addEncodedQuery('sys_idIN' + data.userAuth.orgs.join(","));
     gr.orderBy('org_name');
     gr.query();
     while (gr.next()) {
-		if (data.userOrgs.length == 0 || $sp.getParameter("org_id") == gr.getValue("sys_id") || data.selectedOrg == gr.getValue("sys_id")) {
+		if (data.userOrgs.length == 0 || data.selectedOrg == gr.getValue("sys_id")) {
 			data.myOrg_id = gr.getValue("sys_id");
-			data.myOrg_name = gr.getValue("organization_display");
+            data.myOrg_name = gr.getValue("organization_display");
 		}
         data.userOrgs.push(gr.getValue("sys_id"));
     }
     if (gr.getRowCount() == 0) {
+		data.hide_widget = true;
         gs.addInfoMessage("ERROR!!! CONTACT SYSTEM ADMINISTRATOR.  NO ORGANIZATIONS DEFINED.");
     }
-	
-	console.log(data.hide_widget);
 
 })(options);]]></script>
         <servicenow>false</servicenow>
@@ -100,14 +124,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-28 16:15:35</sys_created_on>
         <sys_id>c3c8aac01bac5c101f7e113d9c4bcbb0</sys_id>
-        <sys_mod_count>128</sys_mod_count>
+        <sys_mod_count>163</sys_mod_count>
         <sys_name>Organization Selection</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_c3c8aac01bac5c101f7e113d9c4bcbb0</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-04 18:48:33</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-12 19:04:17</sys_updated_on>
         <template><![CDATA[<div style="display: inline-flex;" class="topFilters" ng-hide="c.data.hide_widget">
   <div style="display: inline-flex; align-items: center; min-width: 400px;">
     <label class="control-label">Organization:</label>

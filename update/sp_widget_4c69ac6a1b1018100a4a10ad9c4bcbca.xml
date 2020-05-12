@@ -1,32 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function(AGGridFactory, glideUserSession) {
+        <client_script><![CDATA[function (AGGridFactory) {
     /* widget controller */
     var c = this;
-    c.targetOrg = "";
-	  c.isAdmin = false;
+    c.targetOrg = c.data.selectedOrg;
+	c.userAuth = $rootScope.userAuth;
 
     var expenseManager = new AGGridFactory();
 
-    c.addNew = function() {
+    c.addNew = function () {
         expenseManager.editRow("-1", "organization_ref=" + c.targetOrg);
     }
 	
-	glideUserSession.loadCurrentUser().then(function(currentUser) {
-		isAdmin = currentUser.hasRole('x_g_irm_fms.sysadmin');
-	})
+    c.exportExcel = function () {
+        expenseManager.exportExcel();
+    }
+	
+	c.canAdd = function() { 
+		if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) {
+			if (c.userAuth.orgs.indexOf(c.targetOrg) >= 0) 
+				return true;
+			else
+				return false;
+		}
+		else
+			return false;
+	}
+
+	c.canEdit = function(auth, data) {
+		if (auth.orgs.indexOf(data.organization_ref_rawval) >= 0) 
+			return true;
+		else
+			return false;
+	}
+
+	c.canDelete = function(auth, data) { return c.canEdit(auth, data); }
+
+    $rootScope.$on('OrgDetailsGridChanged', function (event, args) {
+        if (args.grid_type == "expense") {
+            expenseManager.fitColumns();
+        }
+    });
 
     //define AG Grid columns
-    expenseManager.setColumns([{
+    var expenseColumns = [{
             field: 'edit',
             headerName: 'Edit',
             maxWidth: 50,
             cellStyle: {
                 textAlign: 'center'
             },
+			suppressMenu: true,
+			sortable: false,
             cellRenderer: 'editCell',
-						hide: !c.isAdmin
+			cellRendererParams: function(params) { 
+				return { "show": c.canEdit(c.userAuth, params.data) }; 
+			}
         },
         {
             field: 'budget_code_ref',
@@ -54,7 +84,7 @@
             cellStyle: {
                 textAlign: 'center'
             },
-            cellRenderer: function(params) {
+            cellRenderer: function (params) {
                 var input = document.createElement('input');
                 input.type = "checkbox";
                 input.checked = params.value == "true";
@@ -63,33 +93,44 @@
         },
         {
             field: 'delete',
-            headerName: 'Delete',
-            maxWidth: 80,
+            headerName: 'Del.',
+            maxWidth: 50,
             cellStyle: {
                 textAlign: 'center'
             },
-            cellRenderer: 'deleteCell'
+			suppressMenu: true,
+			sortable: false,
+            cellRenderer: 'deleteCell',
+			cellRendererParams: function(params) { 
+				return { "show": c.canDelete(c.userAuth, params.data) }; 
+			}
         }
-    ]);
+    ]
 
     var pageProps = {
         pageController: c,
         tableName: c.data.tableName,
         dataArray: null,
         pageType: 'Expense Item',
-        linkedField: 'activity_code',
-        detailsPage: 'expense_item_detail',
+        linkedField: '',
+        detailsPage: '',
         usePaging: true
     }
 
+    expenseManager.setColumns(expenseColumns);
     expenseManager.setPageProperties(pageProps);
     expenseManager.setRenderers('activity_code'); //build renderers and set display field to show on delete attempt
     expenseManager.renderGrid('expenseGrid'); //render grid objects
+    expenseManager.setGridData(c.data.tableData); //set grid data
+    expenseManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst));
+	if (c.data.pageID.indexOf("detail") == -1)
+        expenseManager.fitColumns();
 
-    $rootScope.$on('OrgChanged', function(event, args) {
+    $rootScope.$on('OrgChanged', function (event, args) {
         c.server.get({
+            mode: "setOrg",
             org_id: args.org_id
-        }).then(function(resp) {
+        }).then(function (resp) {
             c.targetOrg = resp.data.selectedOrg;
             expenseManager.setGridData(resp.data.tableData); //set grid data
         });
@@ -97,37 +138,40 @@
 
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.full-grid {&#13;
-    width: 94vw;&#13;
-    height: calc(100vh - 210px);&#13;
-    clear: both;&#13;
-}&#13;
-.fms-list-header {&#13;
-    margin-bottom: 0px !important;&#13;
-}&#13;
-.pageLabel {&#13;
-    float: left;&#13;
-    margin-right: 10px;&#13;
-}&#13;
-.row-button {&#13;
-    cursor: pointer;&#13;
-}&#13;
-.new-button {&#13;
-    float: left;&#13;
-}&#13;
-.edit-pencil {&#13;
-    color: #003ade;&#13;
-    font-size: 13px;&#13;
-}&#13;
-.delete-x {&#13;
-    color: #000000;&#13;
-    font-size: 13px;&#13;
-}&#13;
-.updated-row {&#13;
-    background-color: #FFFFCC;&#13;
-}&#13;
-.ag-header-cell-label .ag-header-icon.ag-sort-order {&#13;
-    display: none&#13;
+        <css>.full-grid {
+    width: 94vw;
+    height: calc(100vh - 210px);
+    clear: both;
+}
+.fms-list-header {
+    margin-bottom: 0px !important;
+}
+.pageLabel {
+    float: left;
+    margin-right: 10px;
+}
+.row-button {
+    cursor: pointer;
+}
+.new-button {
+    float: left;
+}
+.excel-button {
+    float: right;
+}
+.edit-pencil {
+    color: #003ade;
+    font-size: 13px;
+}
+.delete-x {
+    color: #000000;
+    font-size: 13px;
+}
+.updated-row {
+    background-color: #FFFFCC;
+}
+.ag-header-cell-label .ag-header-icon.ag-sort-order {
+    display: none
   }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -154,14 +198,15 @@
         if (input.mode == "deleteRow") {
             FMSUtility.deleteRecord(FMSConstants.TABLE_EXPENSE_ITEM, input.rowID);
         }
-        if (input.org_id) {
+        if (input.mode == "setOrg") {
             session.putClientData('org_id', input.org_id.toString());
         }
     }
 
-    data.selectedOrg = session.getClientData('org_id');
-    data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_EXPENSE_ITEM, "organization_ref=" + data.selectedOrg, true); //get all expense item info
+    data.pageID = $sp.getParameter("id");
 
+    data.selectedOrg = session.getClientData('org_id');
+    data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_EXPENSE_ITEM, "organization_ref=" + data.selectedOrg, true); 
     data.tableName = FMSConstants.TABLE_EXPENSE_ITEM;
 
 })();]]></script>
@@ -170,31 +215,32 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-23 14:50:54</sys_created_on>
         <sys_id>4c69ac6a1b1018100a4a10ad9c4bcbca</sys_id>
-        <sys_mod_count>101</sys_mod_count>
+        <sys_mod_count>219</sys_mod_count>
         <sys_name>Expense Item Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_4c69ac6a1b1018100a4a10ad9c4bcbca</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-04 19:21:08</sys_updated_on>
+        <sys_updated_on>2020-05-11 20:40:24</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
-  <div class="container">
-    <div class="row">
-      <div class="form-group col-sm-12 fms-list-header">
-        <a href="javascript:void(0)" ng-click="c.addNew();" class="btn btn-info new-button">Add Expense Item</a>
-      </div>
+    <div class="container">
+        <div class="row">
+            <div class="form-group col-sm-12 fms-list-header">
+                <div class="fms-header-buttons">
+                    <a href="javascript:void(0)" ng-click="c.addNew();" ng-show="c.canAdd()" class="btn btn-info new-button">Add Expense Item</a>
+                    <a href="javascript:void(0)" ng-click="c.exportExcel();" class="btn btn-primary excel-button">Export to Excel</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="expenseGrid" class="ag-theme-balham full-grid"></div>
+            </div>
+        </div>
     </div>
 
-    <div class="row">
-      <div class="col-sm-12">
-        <div id="expenseGrid" class="ag-theme-balham full-grid"></div>
-      </div>
-    </div>
-  </div>
-
-</div>
-]]></template>
+</div>]]></template>
     </sp_widget>
 </record_update>

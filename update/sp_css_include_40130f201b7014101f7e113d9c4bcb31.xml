@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_css_include">
+    <sp_css_include action="INSERT_OR_UPDATE">
+        <name>jsTree CSS</name>
+        <source>url</source>
+        <sp_css/>
+        <sys_class_name>sp_css_include</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-05-12 17:26:08</sys_created_on>
+        <sys_id>40130f201b7014101f7e113d9c4bcb31</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>jsTree CSS</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_css_include_40130f201b7014101f7e113d9c4bcb31</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-12 17:26:08</sys_updated_on>
+        <url>https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css</url>
+    </sp_css_include>
+</record_update>
