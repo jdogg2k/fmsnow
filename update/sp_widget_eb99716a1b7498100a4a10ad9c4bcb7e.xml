@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function (AGAllocationPoolGridFactory, $timeout) {
+    /* widget controller */
+    var c = this;
+    c.targetOrg = c.data.selectedOrg;
+	c.userAuth = $rootScope.userAuth;
+
+    var poolManager = new AGAllocationPoolGridFactory();
+
+    c.addNew = function () {
+        poolManager.editRow("-1", "organization_ref=" + c.targetOrg, c.data.tableName);
+    }
+	
+    c.exportExcel = function () {
+        poolManager.exportExcel();
+    }
+	
+	c.canAdd = function() { 
+		/*if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) {
+			if (c.userAuth.orgs.indexOf(c.targetOrg) >= 0) 
+				return true;
+			else
+				return false;
+		}
+		else
+            return false;*/
+            
+            return true;
+	}
+
+	c.canEdit = function(auth, data) {
+		/*if (auth.orgs.indexOf(data.organization_ref_rawval) >= 0) 
+			return true;
+		else
+            return false;*/
+            return true; 
+	}
+
+	c.canDelete = function(auth, data) { return c.canEdit(auth, data); }
+
+    //define AG Grid columns
+    var poolColumns = [
+        {
+            field: 'pool_type',
+            headerName: 'Expand',
+            minWidth: 175,
+            cellRenderer: 'agGroupCellRenderer'
+        },
+        {
+            field: 'edit',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+			suppressMenu: true,
+			sortable: false,
+            cellRenderer: 'editCell',
+			cellRendererParams: function(params) { 
+				return { "show": c.canEdit(c.userAuth, params.data) }; 
+			}
+        },
+        /*{
+            field: 'pool_type',
+            headerName: 'Pool Type'
+        },*/
+        {
+            field: 'organization_source_ref',
+            headerName: 'Source Organization'
+        },
+        {
+            field: 'pool_status',
+            headerName: 'Pool Status'
+        },
+        {
+            field: 'fy',
+            headerName: 'FY',
+            filter: 'agTextColumnFilter',
+            suppressMenu: true
+        },
+        {
+            field: 'fy_qtr',
+            headerName: 'Qtr',
+            filter: 'agTextColumnFilter',
+            suppressMenu: true, 
+            rowGroup: true
+        },
+        {
+            field: 'request_date',
+            headerName: 'Requested Date'
+        },
+        {
+            field: 'request_amt',
+            headerName: 'Requested Amount',
+            type: 'currency',
+            aggFunc: 'sum'
+        },
+        {
+            field: 'receive_date',
+            headerName: 'Received Date'
+        },
+        {
+            field: 'receive_amt',
+            headerName: 'Received Amount',
+            type: 'currency',
+            aggFunc: 'sum'
+        },
+        {
+            field: 'delete',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+			suppressMenu: true,
+			sortable: false,
+            cellRenderer: 'deleteCell',
+			cellRendererParams: function(params) { 
+				return { "show": c.canDelete(c.userAuth, params.data) }; 
+			}
+        }
+    ]
+
+    var pageProps = {
+        pageController: c,
+        tableName: c.data.tableName,
+        dataArray: null,
+        pageType: 'Allocation Pool',
+        linkedField: '',
+        detailsPage: '',
+        usePaging: true
+    }
+
+    poolManager.setColumns(poolColumns);
+    poolManager.setPageProperties(pageProps);
+    poolManager.setRenderers('allocation_pool_display', [], []); //build renderers and set display field to show on delete attempt
+    poolManager.renderGrid('allocationPoolGrid'); //render grid objects
+    poolManager.setGridData(c.data.tableData); //set grid data
+    poolManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst));
+	poolManager.fitColumns();
+
+    $rootScope.$on('OrgChanged', function (event, args) {
+        c.server.get({
+            mode: "setOrg",
+            org_id: args.org_id
+        }).then(function (resp) {
+            c.targetOrg = resp.data.selectedOrg;
+            poolManager.setGridData(resp.data.tableData); //set grid data
+        });
+    });
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.full-grid {
+    width: 94vw;
+    height: calc(100vh - 210px);
+    clear: both;
+}
+.fms-list-header {
+    margin-bottom: 0px !important;
+}
+.pageLabel {
+    float: left;
+    margin-right: 10px;
+}
+.row-button {
+    cursor: pointer;
+}
+.new-button {
+    float: left;
+}
+.excel-button {
+    float: right;
+}
+.edit-pencil {
+    color: #003ade;
+    font-size: 13px;
+}
+.delete-x {
+    color: #000000;
+    font-size: 13px;
+}
+.updated-row {
+    background-color: #FFFFCC;
+}
+.ag-header-cell-label .ag-header-icon.ag-sort-order {
+    display: none
+  }</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>allocation_pool_grid</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Allocation Pool Grid</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+
+	data.selectedOrg = "";
+    var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+
+    var session = gs.getSession();
+
+    if (input) { //input holds the data coming back to the server
+        if (input.mode == "deleteRow") {
+            FMSUtility.deleteRecord(FMSConstants.TABLE_ALLOCATION_POOL, input.rowID);
+        }
+        if (input.mode == "setOrg") {
+            data.selectedOrg = input.org_id.toString();
+        }
+    }
+
+    data.pageID = $sp.getParameter("id");
+
+	if (data.selectedOrg.length == 0 && session.getClientData('org_id') && session.getClientData('org_id').length > 0)
+		data.selectedOrg = session.getClientData('org_id');
+    data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_ALLOCATION_POOL, "organization_ref=" + data.selectedOrg, true); 
+    data.tableName = FMSConstants.TABLE_ALLOCATION_POOL;
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-05-18 17:12:53</sys_created_on>
+        <sys_id>eb99716a1b7498100a4a10ad9c4bcb7e</sys_id>
+        <sys_mod_count>27</sys_mod_count>
+        <sys_name>Allocation Pool Grid</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_widget_eb99716a1b7498100a4a10ad9c4bcb7e</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-18 19:42:54</sys_updated_on>
+        <template><![CDATA[<div style="width: 100%; height: 100%">
+
+    <div class="container">
+        <div class="row">
+            <div class="form-group col-sm-12 fms-list-header">
+                <div class="fms-header-buttons">
+                    <a href="javascript:void(0)" ng-click="c.addNew();" ng-show="c.canAdd()" class="btn btn-info new-button">Add Allocation Pool</a>
+                    <a href="javascript:void(0)" ng-click="c.exportExcel();" class="btn btn-primary excel-button">Export to Excel</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="allocationPoolGrid" class="ag-theme-balham full-grid"></div>
+            </div>
+        </div>
+    </div>
+
+</div>]]></template>
+    </sp_widget>
+</record_update>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container">
+    <sp_container action="DELETE">
+        <background_color/>
+        <background_image/>
+        <background_style>default</background_style>
+        <bootstrap_alt>false</bootstrap_alt>
+        <class_name/>
+        <container_class_name/>
+        <name>Organization Detail - Container 2</name>
+        <order>2</order>
+        <sp_page display_value="organization_detail">c6bf09101b9810100a4a10ad9c4bcb97</sp_page>
+        <subheader>false</subheader>
+        <sys_class_name>sp_container</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-05-15 13:15:38</sys_created_on>
+        <sys_id>0786e5a51bbc94100a4a10ad9c4bcbb7</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Organization Detail - Container 2</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_container_0786e5a51bbc94100a4a10ad9c4bcbb7</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-15 13:15:44</sys_updated_on>
+        <title/>
+        <width>container</width>
+    </sp_container>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sp_container_0786e5a51bbc94100a4a10ad9c4bcbb7</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container"><sp_container action="INSERT_OR_UPDATE"><background_color/><background_image/><background_style>default</background_style><bootstrap_alt>false</bootstrap_alt><class_name/><container_class_name/><name>Organization Detail - Container 2</name><order>2</order><sp_page display_value="organization_detail">c6bf09101b9810100a4a10ad9c4bcb97</sp_page><subheader>false</subheader><sys_class_name>sp_container</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2020-05-15 13:15:38</sys_created_on><sys_id>0786e5a51bbc94100a4a10ad9c4bcbb7</sys_id><sys_mod_count>1</sys_mod_count><sys_name>Organization Detail - Container 2</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sp_container_0786e5a51bbc94100a4a10ad9c4bcbb7</sys_update_name><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2020-05-15 13:15:44</sys_updated_on><title/><width>container</width></sp_container></record_update>]]></payload>
+        <payload_hash>-566291236</payload_hash>
+        <record_name>Organization Detail - Container 2</record_name>
+        <reverted_from/>
+        <source>b2fc58221b3898101f7e113d9c4bcbee</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-05-15 13:15:44</sys_created_on>
+        <sys_id>a896eda51bbc94100a4a10ad9c4bcb7a</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_recorded_at>1721879f1b10000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-18 10:31:37</sys_updated_on>
+        <type>Container</type>
+        <update_guid>e096eda544bc941093b950b51dc3637a</update_guid>
+        <update_guid_history>e096eda544bc941093b950b51dc3637a:-566291236,8786e5a548bc9410238f7e9da9af8fb8:159078139</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="Organization Detail - Container 2">a3a6eda51bbc94100a4a10ad9c4bcb85</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-05-15 13:16:12</sys_created_on>
+        <sys_db_object display_value="" name="sp_container">sp_container</sys_db_object>
+        <sys_id>61145f8c38d0456fa635f40cd5c2cce9</sys_id>
+        <sys_metadata>0786e5a51bbc94100a4a10ad9c4bcbb7</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Organization Detail - Container 2</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sp_container_0786e5a51bbc94100a4a10ad9c4bcbb7</sys_update_name>
+        <sys_update_version display_value="sp_container_0786e5a51bbc94100a4a10ad9c4bcbb7">a896eda51bbc94100a4a10ad9c4bcb7a</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-15 13:16:12</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -19,11 +19,14 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
     //build field arrays
     var regFields = [];
+    var currencyFields = [];
     var dictionaryQ = new GlideRecord("sys_dictionary");
     dictionaryQ.addEncodedQuery("internal_type!=reference^elementNOT LIKEsys_^internal_type!=collection^internal_type!=boolean^choiceISEMPTY^name=" + table);
     dictionaryQ.query();
     while (dictionaryQ.next()) {
       regFields.push(dictionaryQ.getValue("element"));
+      if (dictionaryQ.getValue("internal_type") == "currency")
+        currencyFields.push(dictionaryQ.getValue("element"));
     }
 
     var displayFields = [];
@@ -49,6 +52,10 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
       displayFields.forEach(function (field) {
         dataObj[field] = tableQuery.getDisplayValue(field);
         dataObj[field + "_rawval"] = tableQuery.getValue(field);
+      })
+
+      currencyFields.forEach(function (field) {
+        dataObj[field] = parseFloat(tableQuery.getValue(field));
       })
 
       if (returnSysID !== undefined && returnSysID != false)
@@ -261,13 +268,13 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 18:30:12</sys_created_on>
         <sys_id>c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>67</sys_mod_count>
+        <sys_mod_count>68</sys_mod_count>
         <sys_name>FMSUtilities</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-12 20:21:27</sys_updated_on>
+        <sys_updated_on>2020-05-18 18:05:40</sys_updated_on>
     </sys_script_include>
 </record_update>

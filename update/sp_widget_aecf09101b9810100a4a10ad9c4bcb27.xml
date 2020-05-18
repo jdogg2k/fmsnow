@@ -6,18 +6,18 @@
   var c = this;
 
   c.gridStates = {
-    project: true,
+    project: c.data.selOrg.org_type_rawval != 'E',
     contract: false,
     expense: false,
     costpool: false,
     omb: false,
-    structure: false
+    structure: c.data.selOrg.org_type_rawval == 'E'
   }
 
-  if (c.data.selOrg.org_type_rawval == 'E') {
-    c.gridStates.project = false;
-    c.gridStates.structure = true;
-  }
+//  if (c.data.selOrg.org_type_rawval == 'E') {
+//    c.gridStates.project = false;
+//    c.gridStates.structure = true;
+//  }
 
   //build org tree
   $('#org_tree').on('select_node.jstree', function (e, data) {
@@ -127,7 +127,10 @@
     var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
     var session = gs.getSession();
 
-    data.selectedOrgID = $sp.getParameter("org_id");
+    if ($sp.getParameter("org_id") && $sp.getParameter("org_id").length > 0)
+        data.selectedOrgID = $sp.getParameter("org_id");
+	else
+		data.selectedOrgID = session.getClientData('org_id');
 
     if (input) {
         if (input.mode == "setOrg") {
@@ -143,7 +146,6 @@
         data.orgTreeData = FMSUtility.getOrgTree(data.selectedOrgID, "E"); //get external data
     }
 
-    
 
 })($sp);]]></script>
         <servicenow>false</servicenow>
@@ -151,14 +153,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-16 17:52:24</sys_created_on>
         <sys_id>aecf09101b9810100a4a10ad9c4bcb27</sys_id>
-        <sys_mod_count>249</sys_mod_count>
+        <sys_mod_count>281</sys_mod_count>
         <sys_name>Organization Detail</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_aecf09101b9810100a4a10ad9c4bcb27</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-12 18:22:36</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-15 14:14:21</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
   <widget id="organization_selection" options='{"hide_widget": true, "hide_project": true}'></widget>
   <div class="container">
@@ -198,19 +200,19 @@
         </ul>
       
         <div class="tab-content">
-          <div id="projects" class="tab-pane fade" ng-class="{'in active': c.data.selOrg.org_type_rawval == 'I'}" ng-show="c.data.selOrg.org_type_rawval == 'I'">
+          <div id="projects" class="tab-pane fade" ng-if="!!c.gridStates.project" ng-class="{'in active': c.data.selOrg.org_type_rawval == 'I'}" ng-show="c.data.selOrg.org_type_rawval == 'I'">
             <widget id="project_grid"></widget>
           </div>
-          <div id="contracts" class="tab-pane fade" ng-show="c.data.selOrg.org_type_rawval == 'I'">
+          <div id="contracts" class="tab-pane fade" ng-if="!!c.gridStates.contract" ng-show="c.data.selOrg.org_type_rawval == 'I'">
             <widget id="contract_grid"></widget>
           </div>
-          <div id="items" class="tab-pane fade" ng-show="c.data.selOrg.org_type_rawval == 'I'">
+          <div id="items" class="tab-pane fade" ng-if="!!c.gridStates.expense" ng-show="c.data.selOrg.org_type_rawval == 'I'">
             <widget id="expense_item_grid"></widget>
           </div>
-          <div id="pools" class="tab-pane fade" ng-show="c.data.selOrg.org_type_rawval == 'I'">
+          <div id="pools" class="tab-pane fade" ng-if="!!c.gridStates.costpool" ng-show="c.data.selOrg.org_type_rawval == 'I'">
             <widget id="cost_pool_grid"></widget>
           </div>
-          <div id="categories" class="tab-pane fade" ng-show="c.data.selOrg.org_type_rawval == 'I'">
+          <div id="categories" class="tab-pane fade" ng-if="!!c.gridStates.omb" ng-show="c.data.selOrg.org_type_rawval == 'I'">
             <widget id="omb_category_grid"></widget>
           </div>
           <div id="structure" class="tab-pane fade" ng-class="{'in active': c.data.selOrg.org_type_rawval == 'E'}">

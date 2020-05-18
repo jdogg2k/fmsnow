@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_angular_provider">
+    <sp_angular_provider action="INSERT_OR_UPDATE">
+        <name>AGAllocationPoolGridFactory</name>
+        <script><![CDATA[function AGAllocationPoolGridFactory($http, $rootScope, spUtil, spModal, $uibModalStack) {
+
+    var AGAllocationPoolGridFactory = function () {
+
+        var DeleteCellRenderer = function () {};
+        var EditCellRenderer = function () {};
+
+        function currencyCssFunc(params) {
+            if (params.value !== null && params.value !== undefined && params.value < 0) {
+                return {
+                    "color": "red",
+                    "font-weight": "bold",
+                    "text-align": "right"
+                };
+            } else {
+                return {
+                    "text-align": "right"
+                };
+            }
+        }
+
+        function currencyFormatter(params) {
+            if (params.value != 0 && (params.value === null || params.value === undefined || params.value == "")) {
+                return null;
+            } else if (isNaN(params.value)) {
+                return '$' + parseFloat(0).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+            } else {
+                if (parseFloat(params.value) >= 0) {
+                    return '$' + parseFloat(params.value).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                } else {
+                    return currencyNegative(params.value);
+                }
+            }
+        }
+
+        function currencyNegative(tVal) {
+            return '$(' + parseFloat(tVal).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,").replace("-", "") + ")";
+        }
+        var DetailCellRenderer = function () {
+            this.masterGridApi = null;
+            this.masterRowIndex = null;
+        }
+
+        var activeGrid = null;
+        var activeTable = "";
+        var activeRow = "";
+        var partyTable = "";
+        var relationshipTable = "";
+        var pageController = {};
+        var linkField = "sys_id";
+        var dataTable = "";
+        var dataArray = "tableData";
+        var pageName = "";
+        var detailsPage = "";
+        var updatedID = "";
+        var gridOptions = {
+            defaultColDef: {
+                editable: false,
+                sortable: true,
+                resizable: true,
+                filter: false,
+                flex: 1,
+                minWidth: 100,
+            },
+            suppressAggFuncInHeader: true,
+            //groupUseEntireRow: true,
+            rowSelection: 'single',
+            floatingFilter: true,
+            pagination: true,
+            paginationAutoPageSize: true,
+            suppressColumnVirtualisation: true,
+            masterDetail: true,
+            detailRowHeight: 375,
+            detailCellRenderer: "myDetailCellRenderer",
+            onCellClicked: function (params) {
+                if (params.data && params.data.sys_id && params.colDef.field == linkField) {
+                    launchRowDetails(params.data.sys_id);
+                }
+            },
+            columnTypes: {
+                'currency': {
+                    valueFormatter: currencyFormatter,
+                    cellStyle: currencyCssFunc
+                }
+            },
+            autoGroupColumnDef: {
+                headerName: '',
+                minWidth: 30,
+                cellRendererParams: {
+                    suppressCount: true,
+                    checkbox: false,
+                }
+            },
+            getRowNodeId: function (data) {
+                return data.sys_id;
+            },
+            components: {
+                editCell: EditCellRenderer,
+                deleteCell: DeleteCellRenderer,
+                myDetailCellRenderer: DetailCellRenderer
+            }
+        };
+
+        var launchRowDetails = function (rowID) {
+            var urlToNav = "/fms?id=" + detailsPage + "&org_id=" + rowID;
+            window.location.href = urlToNav;
+        };
+
+        this.editRow = function (tID, query, table) {
+            editGridRow(tID, query, table, null);
+        };
+
+        var editGridRow = function (targetID, query, table, aGrid) {
+            var titlePrefix = "New";
+            var modalName = pageName;
+            activeTable = dataTable;
+            activeGrid = null;
+
+            if (aGrid != null)
+                activeGrid = aGrid;
+
+            if (table.indexOf("contract_") > -1) {
+                if (table.indexOf("contract_party") > -1) {
+                    modalName = "Contract Party";
+                    activeTable = partyTable;
+                } else {
+                    modalName = "Contract Relationship";
+                    activeTable = relationshipTable;
+                }
+            }
+
+            var wInput = {
+                table: table,
+                sys_id: targetID,
+                view: 'portal',
+                query: query
+            };
+
+            if (targetID != "-1") {
+                titlePrefix = "Edit";
+                updatedID = targetID;
+            }
+
+            spModal.open({
+                title: titlePrefix + ' ' + modalName,
+                size: 'lg',
+                widget: 'fms-form-widget',
+                buttons: [],
+                widgetInput: wInput
+            });
+        };
+
+        var deleteRow = function (delID, delTable, detGrid, rowIdx) {
+            pageController.server.get({
+                mode: 'deleteRow',
+                rowID: delID,
+                delTable: delTable
+            }).then(function (delResp) {
+                spUtil.addInfoMessage("Record Deleted Successfully");
+                if (detGrid == null) {
+                    gridOptions.api.setRowData(delResp.data[dataArray]);
+                    gridOptions.api.sizeColumnsToFit();
+                } else {
+                    var detailGridInfo = gridOptions.api.getDetailGridInfo(detGrid);
+                    var rowToDelete = detailGridInfo.api.getDisplayedRowAtIndex(rowIdx);
+                    var res = detailGridInfo.api.updateRowData({
+                        remove: [rowToDelete.data]
+                    });
+                }
+            });
+        };
+
+
+        //setting functions called from widget
+        this.renderGrid = function (ele) {
+            var gridDiv = document.querySelector('#' + ele);
+            new agGrid.Grid(gridDiv, gridOptions);
+        };
+        this.setColumns = function (columnData) {
+            gridOptions.columnDefs = columnData;
+        };
+        this.fitColumns = function () {
+            /*var allColumnIds = [];
+			gridOptions.columnApi.getAllColumns().forEach(function(column) {
+				allColumnIds.push(column.colId);
+			});
+            gridOptions.columnApi.autoSizeColumns(allColumnIds);*/
+            gridOptions.api.sizeColumnsToFit();
+        };
+        this.setColumnsVisible = function (cols, show) {
+            if (gridOptions.columnApi) gridOptions.columnApi.setColumnsVisible(cols, show);
+        };
+        this.setGridData = function (rowData) {
+            gridOptions.api.setRowData(rowData);
+        };
+        this.refreshGrid = function () {
+            gridOptions.api.redrawRows();
+        };
+        this.setPageProperties = function (pageProps, pTable, rTable) {
+            pageController = pageProps.pageController; //link to page controller
+            dataTable = pageProps.tableName; //SNOW table name
+            if (pageProps.dataArray != null)
+                dataArray = pageProps.dataArray; //name of data array variable from widget Server Script
+            pageName = pageProps.pageType; //object type for page
+            linkField = pageProps.linkedField; //field that should be linked from grid
+            detailsPage = pageProps.detailsPage; //details page to point link to
+            partyTable = pTable;
+            relationshipTable = rTable;
+        };
+        this.setUpdatedID = function (id) {
+            updatedID = id;
+        };
+
+        this.exportExcel = function () {
+            var params = {};
+            var exportColumns = [];
+            var allCols = gridOptions.columnApi.getAllColumns();
+            allCols.forEach(function (col) {
+                if (col.colId != "edit" && col.colId != "delete")
+                    exportColumns.push(col.colId);
+            });
+            params.columnKeys = exportColumns;
+            gridOptions.api.exportDataAsCsv(params);
+        };
+        this.setRenderers = function (displayField, partyColumns, relationshipColumns) {
+
+            DetailCellRenderer.prototype.init = function (params) {
+                // trick to convert string of HTML into DOM object
+                var eTemp = document.createElement('div');
+                eTemp.innerHTML = this.getTemplate(params.data);
+                this.eGui = eTemp.firstElementChild;
+                this.masterGridApi = params.api;
+                this.masterRowIndex = params.data.sys_id;
+                //this.setupDetailGrid(params.data.contractParties, partyColumns, params.data.contractContracts, relationshipColumns, params.api, params.data.sys_id);
+            };
+
+            /* DetailCellRenderer.prototype.setupDetailGrid = function (partyData, partyCols, relationshipData, relationshipCols, masterGridApi, targSys) {
+                 var relationshipDetailGrid = this.eGui.querySelector('#relationshipGrid');
+                 var partyDetailGrid = this.eGui.querySelector('#partyGrid');
+                 var relationshipButton = this.eGui.querySelector('#relationshipButton');
+                 var partyButton = this.eGui.querySelector('#partyButton');
+                 var relationshipListener = function () {
+                     editGridRow("-1", "contract_ref=" + targSys, relationshipTable, "detail_rel_" + targSys);
+                 };
+                 relationshipButton.addEventListener('click', relationshipListener);
+                 var partyListener = function () {
+                     editGridRow("-1", "contract_ref=" + targSys, partyTable, "detail_part_" + targSys);
+                 };
+                 partyButton.addEventListener('click', partyListener);
+
+                 new agGrid.Grid(relationshipDetailGrid, {
+                     columnDefs: relationshipCols,
+                     rowData: relationshipData,
+                     onGridReady: function (params) {
+                         var detailGridId = "detail_rel_" + targSys;
+
+                         var gridInfo = {
+                             id: detailGridId,
+                             api: params.api,
+                             columnApi: params.columnApi
+                         };
+                         masterGridApi.addDetailGridInfo(detailGridId, gridInfo);
+                         masterGridApi.getDetailGridInfo(detailGridId).api.sizeColumnsToFit();
+                         
+                     },
+                     overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Please wait ..... processing edits...</span>',
+                     getRowNodeId: function(data) {return data.sys_id; },
+                     components: {
+                         editCell: EditCellRenderer,
+                         deleteCell: DeleteCellRenderer
+                     }
+                 });
+                 new agGrid.Grid(partyDetailGrid, {
+                     columnDefs: partyCols,
+                     rowData: partyData,
+                     onGridReady: function (params) {
+                         var detailGridId = "detail_part_" + targSys;
+
+                         var gridInfo = {
+                             id: detailGridId,
+                             api: params.api,
+                             columnApi: params.columnApi
+                         };
+                         masterGridApi.addDetailGridInfo(detailGridId, gridInfo);
+                         masterGridApi.getDetailGridInfo(detailGridId).api.sizeColumnsToFit();
+                     },
+                     overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Please wait ..... processing edits...</span>',
+                     getRowNodeId: function(data) {return data.sys_id; },
+                     components: {
+                         editCell: EditCellRenderer,
+                         deleteCell: DeleteCellRenderer
+                     }
+                 });
+             };*/
+
+            DetailCellRenderer.prototype.getTemplate = function (data) {
+                var template =
+                    '<div class="full-width-panel">' +
+                    '  <div class="full-width-details">' +
+                    '    <div class="full-width-detail">' + data.pool_notes + '</div>' +
+                    //'    <div class="full-width-detail"><b>Status: </b>' + data.status_detail + '</div>' +
+                    '  </div>' +
+                    /* '  <div class="full-width-details">' +
+                     '    <div class="full-width-title">Contract Relationships</div>' +
+                     '    <a href="javascript:void(0);" id="relationshipButton" class="btn btn-sm btn-info contract-button">Add Contract Relationship</a>' +
+                     '  </div>' +
+                     '  <div id="relationshipGrid" class="details-grid"></div>' +
+                     '  <div class="full-width-details">' +
+                     '    <div class="full-width-title">Contract Parties</div>' +
+                     '    <a href="javascript:void(0);" id="partyButton" class="btn btn-sm btn-info contract-button">Add Contract Party</a>' +
+                     '  </div>' +
+                     '  <div id="partyGrid" class="details-grid"></div>' +*/
+                    '</div>';
+
+                return template;
+            };
+
+            DetailCellRenderer.prototype.getGui = function () {
+                return this.eGui;
+            };
+
+            DetailCellRenderer.prototype.destroy = function () {
+                /*var relationshipGridId = "detail_rel_" + this.masterRowIndex;
+                this.masterGridApi.getDetailGridInfo(relationshipGridId).api.destroy();
+                this.masterGridApi.removeDetailGridInfo(relationshipGridId);
+
+                var partyGridId = "detail_part_" + this.masterRowIndex;
+                this.masterGridApi.getDetailGridInfo(partyGridId).api.destroy();
+                this.masterGridApi.removeDetailGridInfo(partyGridId);*/
+            };
+
+            EditCellRenderer.prototype.init = function (params) {
+
+                // create the cell
+                this.eGui = document.createElement('div');
+
+                this.eGui.innerHTML = '<span class="row-button"><i class="fa fa-edit edit-pencil"></i></span>';
+                // get references to the elements we want
+                this.eButton = this.eGui.querySelector('.fa-edit');
+                // add event listener to button
+                this.eventListener = function () {
+                    var tField = params.colDef.field;
+                    var tID = params.data.sys_id;
+                    var tGrid = null;
+                    var tTable = dataTable;
+                    activeRow = "";
+
+                    if (tField.indexOf("party") > -1) {
+                        tTable = partyTable;
+                        tGrid = "detail_part_" + params.data.contract_ref_rawval;
+                        activeRow = tID;
+                    }
+                    if (tField.indexOf("relationship") > -1) {
+                        tTable = relationshipTable;
+                        tGrid = "detail_rel_" + params.data.contract_ref_rawval;
+                        activeRow = tID;
+                    }
+
+                    editGridRow(tID, "", tTable, tGrid);
+                };
+                this.eButton.addEventListener('click', this.eventListener);
+
+            };
+
+            // gets called once when grid ready to insert the element
+            EditCellRenderer.prototype.getGui = function () {
+                return this.eGui;
+            };
+
+            // gets called whenever the user gets the cell to refresh
+            EditCellRenderer.prototype.refresh = function (params) {
+
+                // return true to tell the grid we refreshed successfully
+                return true;
+            };
+
+            // gets called when the cell is removed from the grid
+            EditCellRenderer.prototype.destroy = function () {
+                // do cleanup, remove event listener from button
+                if (this.eButton)
+                    this.eButton.removeEventListener('click', this.eventListener);
+            };
+
+
+
+            // gets called once before the renderer is used
+            DeleteCellRenderer.prototype.init = function (params) {
+
+                // create the cell
+                this.eGui = document.createElement('div');
+
+                this.eGui.innerHTML = '<span class="row-button"><i class="fa fa-window-close delete-x"></i></span>';
+                // get references to the elements we want
+                this.eButton = this.eGui.querySelector('.fa-window-close');
+                // add event listener to button
+                this.eventListener = function () {
+                    var delDispField = displayField;
+                    var delTable = dataTable;
+                    var tField = params.colDef.field;
+                    var detailGridID = null;
+                    var deleteIndex = 0;
+
+
+                    if (tField.indexOf("party") > -1) {
+                        delTable = partyTable;
+                        delDispField = "party_name";
+                        detailGridID = "detail_part_" + params.data.contract_ref_rawval;
+                    }
+                    if (tField.indexOf("relationship") > -1) {
+                        delTable = relationshipTable;
+                        delDispField = "contract_rel_ref";
+                        detailGridID = "detail_rel_" + params.data.contract_ref_rawval;
+                    }
+
+                    if (detailGridID != null)
+                        deleteIndex = params.rowIndex;
+
+                    if (window.confirm("Are you sure you want to delete " + params.data[delDispField] + "?")) { //delete this row
+                        deleteRow(params.data.sys_id, delTable, detailGridID, deleteIndex);
+                    }
+                };
+                this.eButton.addEventListener('click', this.eventListener);
+
+            };
+
+            // gets called once when grid ready to insert the element
+            DeleteCellRenderer.prototype.getGui = function () {
+                return this.eGui;
+            };
+
+            // gets called whenever the user gets the cell to refresh
+            DeleteCellRenderer.prototype.refresh = function (params) {
+
+                // return true to tell the grid we refreshed successfully
+                return true;
+            };
+
+            // gets called when the cell is removed from the grid
+            DeleteCellRenderer.prototype.destroy = function () {
+                // do cleanup, remove event listener from button
+                if (this.eButton)
+                    this.eButton.removeEventListener('click', this.eventListener);
+            };
+        }
+
+        $rootScope.$on("spModel.uiActionComplete", function (evt, response) {
+
+            if (response.isInsert)
+                updatedID = response.sys_id;
+
+            $uibModalStack.dismissAll(); //close the modal
+
+            if (activeGrid == null) {
+
+                //We need to call back to server side to get latest array of organization records now that we have a new/updated value
+                pageController.server.get({
+                    mode: 'getData' //this mode doesn't really matter, we just need to refresh the data server-side
+                }).then(function (saveResp) {
+
+                    gridOptions.api.setRowData(saveResp.data[dataArray]);
+                    gridOptions.api.sizeColumnsToFit();
+
+                    //highlight the modded record
+                    gridOptions.api.forEachNode(function (rowNode, index) {
+                        if (rowNode.data.sys_id == updatedID) {
+                            gridOptions.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
+                        }
+                    });
+
+                });
+
+            } else {
+
+                var detailGridInfo = gridOptions.api.getDetailGridInfo(activeGrid);
+                detailGridInfo.api.showLoadingOverlay();
+
+                if (!response.isInsert)
+                    updatedID = activeRow;
+
+                //GET RECORD DATA
+                pageController.server.get({
+                    mode: 'getNewRec',
+                    newSysID: updatedID,
+                    targetTable: activeTable
+                }).then(function (saveResp) {
+
+                    var savedRec = saveResp.data.newRec;
+
+                    var dataToUpdate = {
+                        update: [savedRec]
+                    };
+
+                    if (response.isInsert)
+                        dataToUpdate = {
+                            add: [savedRec],
+                            addIndex: 0
+                        };
+
+                    detailGridInfo.api.updateRowData(dataToUpdate);
+
+                    //highlight the modded record
+                    detailGridInfo.api.forEachNode(function (rowNode, index) {
+                        if (rowNode.data.sys_id == updatedID) {
+                            detailGridInfo.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
+                        }
+                    });
+
+                    detailGridInfo.api.hideOverlay();
+                });
+            }
+        });
+    };
+
+    return (AGAllocationPoolGridFactory);
+}]]></script>
+        <sys_class_name>sp_angular_provider</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-05-18 19:15:39</sys_created_on>
+        <sys_id>ceb596e61bf498100a4a10ad9c4bcb26</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>AGAllocationPoolGridFactory</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_angular_provider_ceb596e61bf498100a4a10ad9c4bcb26</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-18 19:43:22</sys_updated_on>
+        <type>service</type>
+    </sp_angular_provider>
+</record_update>

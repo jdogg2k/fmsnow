@@ -4,5 +4,8 @@
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Budget" label="Budget" max_length="40" name="u_budget" type="string"/>
         <element attributes="import_attribute_name=Budget Amount" label="Budget Amount" max_length="15" name="u_budget_amount" type="decimal"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Budget Code" label="Budget Code" max_length="45" name="u_budget_code" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Budget ID" max_length="40" name="u_budget_id" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Expense Item ID" max_length="40" name="u_expense_item_id" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Projected Amount" max_length="40" name="u_projected_amount" type="string"/>
     </element>
 </database>

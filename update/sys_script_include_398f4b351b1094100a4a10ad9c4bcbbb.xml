@@ -18,6 +18,10 @@ FMSConstants.TABLE_CONTRACT = 'x_g_irm_fms_contract';
 FMSConstants.TABLE_CONTRACT_PARTY = 'x_g_irm_fms_contract_party';
 FMSConstants.TABLE_CONTRACT_CONTRACT = 'x_g_irm_fms_contract_contract';
 FMSConstants.TABLE_PROJECT_APPROPRIATION = 'x_g_irm_fms_project_appropriation';
+FMSConstants.TABLE_ALLOCATION_GROUP = 'x_g_irm_fms_allocation_group';
+FMSConstants.TABLE_ALLOCATION_POOL = 'x_g_irm_fms_allocation_pool';
+FMSConstants.TABLE_BUDGET = 'x_g_irm_fms_budget';
+FMSConstants.TABLE_BUDGET_ITEM = 'x_g_irm_fms_budget_item';
 
 FMSConstants.ROLE_SYSADMIN = 'x_g_irm_fms.sysadmin';
 FMSConstants.ROLE_ORGADMIN = 'x_g_irm_fms.orgadmin';
@@ -29,13 +33,13 @@ FMSConstants.ROLE_READONLY = 'x_g_irm_fms.readonly';]]></script>
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 19:01:23</sys_created_on>
         <sys_id>398f4b351b1094100a4a10ad9c4bcbbb</sys_id>
-        <sys_mod_count>15</sys_mod_count>
+        <sys_mod_count>17</sys_mod_count>
         <sys_name>FMSConstants</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_398f4b351b1094100a4a10ad9c4bcbbb</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-07 16:29:03</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-13 11:18:15</sys_updated_on>
     </sys_script_include>
 </record_update>

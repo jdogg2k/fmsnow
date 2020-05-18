@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element extends="sys_import_set_row" label="FMS Load Budget" max_length="40" name="x_g_irm_fms_fms_load_budget" type="collection">
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Approved Date" label="Approved Date" max_length="40" name="u_approved_date" type="glide_date"/>
+        <element attributes="edge_encryption_enabled=true" label="Budget Description" max_length="40" name="u_budget_description" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Budget FY" max_length="40" name="u_budget_fy" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Budget ID" max_length="40" name="u_budget_id" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Budget Notes" max_length="40" name="u_budget_notes" type="string"/>
         <element attributes="import_attribute_name=Budget Revision" label="Budget Revision" max_length="40" name="u_budget_revision" type="integer"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Budget Status" label="Budget Status" max_length="40" name="u_budget_status" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Budget Total" label="Budget Total" max_length="40" name="u_budget_total" type="string"/>
@@ -10,7 +14,11 @@
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Current" label="Current" max_length="40" name="u_current" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Description" label="Description" max_length="40" name="u_description" type="string"/>
         <element attributes="import_attribute_name=FY" label="FY" max_length="40" name="u_fy" type="integer"/>
+        <element attributes="edge_encryption_enabled=true" label="Is Current" max_length="40" name="u_is_current" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Is Locked" max_length="40" name="u_is_locked" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Locked" label="Locked" max_length="40" name="u_locked" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Project Code" max_length="40" name="u_project_code" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Project Name" label="Project Name" max_length="40" name="u_project_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Revised Budget ID" max_length="40" name="u_revised_budget_id" type="string"/>
     </element>
 </database>

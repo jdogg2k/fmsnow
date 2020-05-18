@@ -38,6 +38,7 @@
             floatingFilter: true,
             pagination: true,
             paginationAutoPageSize: true,
+			suppressColumnVirtualisation: true,
             masterDetail: true,
             detailRowHeight: 375,
             detailCellRenderer: "myDetailCellRenderer",
@@ -173,6 +174,11 @@
             gridOptions.columnDefs = columnData;
         };
         this.fitColumns = function () {
+			/*var allColumnIds = [];
+			gridOptions.columnApi.getAllColumns().forEach(function(column) {
+				allColumnIds.push(column.colId);
+			});
+            gridOptions.columnApi.autoSizeColumns(allColumnIds);*/
             gridOptions.api.sizeColumnsToFit();
         };
         this.setColumnsVisible = function (cols, show) {
@@ -500,14 +506,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-07 14:42:15</sys_created_on>
         <sys_id>cead644f1be018501f7e113d9c4bcb71</sys_id>
-        <sys_mod_count>98</sys_mod_count>
+        <sys_mod_count>104</sys_mod_count>
         <sys_name>AGContractGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_cead644f1be018501f7e113d9c4bcb71</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-11 20:45:54</sys_updated_on>
+        <sys_updated_on>2020-05-18 16:58:49</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

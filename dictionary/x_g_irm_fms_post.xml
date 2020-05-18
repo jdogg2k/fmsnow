@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Post" max_length="40" name="x_g_irm_fms_post" type="collection">
+        <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element label="Post City" mandatory="true" max_length="50" name="post_city" type="string"/>
         <element label="Post Country" mandatory="true" max_length="50" name="post_country" type="string"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new post]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.post_name.toString() + '\t\t\t\t[' + current.post_type.toString() + ']' + ' in ' + current.post_city.toString(); &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;})(current);" display="true" label="Post display" max_length="256" name="post_display" type="string" virtual="true"/>

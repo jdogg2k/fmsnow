@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="sys_import_set_row" label="FMS Load Financial Trans PO" max_length="40" name="x_g_irm_fms_fms_load_financial_trans_po" type="collection">
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Approved" label="Approved" max_length="40" name="u_approved" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=AQMApproval Date" label="AQMApproval Date" max_length="40" name="u_aqmapproval_date" type="glide_date"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=AQMReceived Date" label="AQMReceived Date" max_length="40" name="u_aqmreceived_date" type="glide_date"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=AQM POC" label="AQM POC" max_length="40" name="u_aqm_poc" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Award Date" label="Award Date" max_length="40" name="u_award_date" type="glide_date"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Award Number" label="Award Number" max_length="40" name="u_award_number" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Award Vendor Name" label="Award Vendor Name" max_length="50" name="u_award_vendor_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Contract Number" label="Contract Number" max_length="40" name="u_contract_number" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=IRMReceived Date" label="IRMReceived Date" max_length="40" name="u_irmreceived_date" type="glide_date"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Notes" label="Notes" max_length="259" name="u_notes" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=PONumber" label="PONumber" max_length="40" name="u_ponumber" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Quote Vendor Name" label="Quote Vendor Name" max_length="50" name="u_quote_vendor_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Requester" label="Requester" max_length="40" name="u_requester" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Tracking Number" label="Tracking Number" max_length="40" name="u_tracking_number" type="string"/>
+        <element attributes="import_attribute_name=Tran ID" label="Tran ID" max_length="40" name="u_tran_id" type="integer"/>
+    </element>
+</database>

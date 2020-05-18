@@ -49,6 +49,7 @@
         {
             field: 'org_code',
             headerName: 'Org. Code',
+			resizable: true,
             cellStyle: {
                 color: 'blue',
                 'text-decoration': 'underline',
@@ -58,15 +59,13 @@
         {
             field: 'org_type',
             headerName: 'Organization Type',
-            filter: 'agTextColumnFilter',
-            suppressMenu: true
+            filter: 'agTextColumnFilter'
         },
         {
             field: 'org_name',
             headerName: 'Organization Name',
             sort: 'asc',
-            filter: 'agTextColumnFilter',
-            suppressMenu: true
+            filter: 'agTextColumnFilter'
         },
         {
             field: 'org_desc',
@@ -111,37 +110,37 @@
 
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.full-grid {
-    width: 94vw;
-    height: calc(100vh - 135px);
-    clear: both;
-}
-.fms-list-header {
-    margin-bottom: 0px !important;
-}
-.pageLabel {
-    float: left;
-    margin-right: 10px;
-}
-.row-button {
-    cursor: pointer;
-}
-.new-button {
-    float: left;
-}
-.excel-button {
-    float: right;
-}
-.edit-pencil {
-    color: #003ade;
-    font-size: 13px;
-}
-.delete-x {
-    color: #000000;
-    font-size: 13px;
-}
-.updated-row {
-    background-color: #FFFFCC;
+        <css>.full-grid {&#13;
+    width: 94vw;&#13;
+    height: calc(100vh - 135px);&#13;
+    clear: both;&#13;
+}&#13;
+.fms-list-header {&#13;
+    margin-bottom: 0px !important;&#13;
+}&#13;
+.pageLabel {&#13;
+    float: left;&#13;
+    margin-right: 10px;&#13;
+}&#13;
+.row-button {&#13;
+    cursor: pointer;&#13;
+}&#13;
+.new-button {&#13;
+    float: left;&#13;
+}&#13;
+.excel-button {&#13;
+    float: right;&#13;
+}&#13;
+.edit-pencil {&#13;
+    color: #003ade;&#13;
+    font-size: 13px;&#13;
+}&#13;
+.delete-x {&#13;
+    color: #000000;&#13;
+    font-size: 13px;&#13;
+}&#13;
+.updated-row {&#13;
+    background-color: #FFFFCC;&#13;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -180,14 +179,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-20 18:03:37</sys_created_on>
         <sys_id>f9b8b5651b9c14100a4a10ad9c4bcba9</sys_id>
-        <sys_mod_count>180</sys_mod_count>
+        <sys_mod_count>188</sys_mod_count>
         <sys_name>Organization Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_f9b8b5651b9c14100a4a10ad9c4bcba9</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-12 19:03:18</sys_updated_on>
+        <sys_updated_on>2020-05-13 17:49:30</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

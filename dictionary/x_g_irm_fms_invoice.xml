@@ -8,5 +8,9 @@
         <element label="Obligation" mandatory="true" max_length="15" name="obligation" type="string"/>
         <element label="Paid Amount" max_length="20" name="paid_amount" type="currency"/>
         <element label="Paid Date" max_length="40" name="paid_date" type="glide_date"/>
+        <element label="Post" max_length="32" name="post_ref" reference="x_g_irm_fms_post" type="reference"/>
+        <index name="index">
+            <element name="post_ref"/>
+        </index>
     </element>
 </database>

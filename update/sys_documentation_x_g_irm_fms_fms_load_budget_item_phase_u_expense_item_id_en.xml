@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="u_expense_item_id" label="Expense Item ID" language="en" table="x_g_irm_fms_fms_load_budget_item_phase">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>u_expense_item_id</element>
+            <help/>
+            <hint/>
+            <label>Expense Item ID</label>
+            <language>en</language>
+            <name>x_g_irm_fms_fms_load_budget_item_phase</name>
+            <plural>Expense Item IDs</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-05-13 17:56:09</sys_created_on>
+            <sys_id>b89310cd1bf054101f7e113d9c4bcbcc</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Expense Item ID</sys_name>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_documentation_x_g_irm_fms_fms_load_budget_item_phase_u_expense_item_id_en</sys_update_name>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-13 17:56:09</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

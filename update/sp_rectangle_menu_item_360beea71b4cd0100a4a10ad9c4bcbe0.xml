@@ -18,23 +18,23 @@
         <sc_cat_item/>
         <sc_category/>
         <short_description/>
-        <sp_page/>
+        <sp_page display_value="budget_list">08f449911b7494101f7e113d9c4bcb12</sp_page>
         <sp_rectangle_menu/>
         <sp_rectangle_menu_item display_value="Budget">563e5aeb1b0cd0100a4a10ad9c4bcb23</sp_rectangle_menu_item>
         <sys_class_name>sp_rectangle_menu_item</sys_class_name>
         <sys_created_by>rosejl@state.gov</sys_created_by>
         <sys_created_on>2020-04-14 16:35:52</sys_created_on>
         <sys_id>360beea71b4cd0100a4a10ad9c4bcbe0</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>1</sys_mod_count>
         <sys_name>Budget Plans</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_rectangle_menu_item_360beea71b4cd0100a4a10ad9c4bcbe0</sys_update_name>
-        <sys_updated_by>rosejl@state.gov</sys_updated_by>
-        <sys_updated_on>2020-04-14 16:35:52</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-14 16:53:57</sys_updated_on>
         <table/>
-        <type>url</type>
+        <type>page</type>
         <url>#</url>
         <url_target/>
     </sp_rectangle_menu_item>

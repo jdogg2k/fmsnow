@@ -7,7 +7,7 @@
         <date_format>yyyy-MM-dd HH:mm:ss</date_format>
         <map display_value="FMS Allocation Pool Transform">447f9d821b84d0500a4a10ad9c4bcb79</map>
         <reference_value_field>org_code</reference_value_field>
-        <source_field>u_allocation_org</source_field>
+        <source_field>u_allocation_org_code</source_field>
         <source_script><![CDATA[answer = (function transformEntry(source) {
 
 	// Add your code here
@@ -19,14 +19,14 @@
         <sys_created_by>rosejl@state.gov</sys_created_by>
         <sys_created_on>2020-04-09 19:21:11</sys_created_on>
         <sys_id>50f0e9c21b84d0500a4a10ad9c4bcbe0</sys_id>
-        <sys_mod_count>1</sys_mod_count>
-        <sys_name>u_allocation_org</sys_name>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>u_allocation_org_code</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_transform_entry_50f0e9c21b84d0500a4a10ad9c4bcbe0</sys_update_name>
-        <sys_updated_by>rosejl@state.gov</sys_updated_by>
-        <sys_updated_on>2020-04-09 20:03:26</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-13 16:38:55</sys_updated_on>
         <target_field>organization_ref</target_field>
         <target_table>x_g_irm_fms_allocation_pool</target_table>
         <use_source_script>false</use_source_script>

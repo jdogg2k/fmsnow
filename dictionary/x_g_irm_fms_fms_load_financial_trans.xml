@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="sys_import_set_row" label="FMS Load Financial Trans" max_length="40" name="x_g_irm_fms_fms_load_financial_trans" type="collection">
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Account Number" label="Account Number" max_length="40" name="u_account_number" type="string"/>
+        <element attributes="import_attribute_name=Allocation Group ID" label="Allocation Group ID" max_length="40" name="u_allocation_group_id" type="integer"/>
+        <element attributes="import_attribute_name=Allotment" label="Allotment" max_length="40" name="u_allotment" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Amendment" label="Amendment" max_length="40" name="u_amendment" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Appropriation" label="Appropriation" max_length="40" name="u_appropriation" type="string"/>
+        <element attributes="import_attribute_name=Budget FY" label="Budget FY" max_length="40" name="u_budget_fy" type="integer"/>
+        <element attributes="import_attribute_name=Contract ID" label="Contract ID" max_length="40" name="u_contract_id" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Cost Pool ID" label="Cost Pool ID" max_length="40" name="u_cost_pool_id" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Description" label="Description" max_length="50" name="u_description" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Is Void" label="Is Void" max_length="40" name="u_is_void" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Notes" label="Notes" max_length="218" name="u_notes" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Obligation" label="Obligation" max_length="40" name="u_obligation" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Obligation Date" label="Obligation Date" max_length="40" name="u_obligation_date" type="glide_date"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Project Code" label="Project Code" max_length="40" name="u_project_code" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Received By" label="Received By" max_length="40" name="u_received_by" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Reconciliation Date" label="Reconciliation Date" max_length="40" name="u_reconciliation_date" type="string"/>
+        <element attributes="import_attribute_name=Sys User ID" label="Sys User ID" max_length="40" name="u_sys_user_id" type="integer"/>
+        <element attributes="edge_encryption_enabled=true" label="Transaction Date" max_length="40" name="u_transaction_date" type="string"/>
+        <element attributes="import_attribute_name=Tran Date" label="Tran Date" max_length="40" name="u_tran_date" type="integer"/>
+        <element attributes="import_attribute_name=Tran ID" label="Tran ID" max_length="40" name="u_tran_id" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Tran Status" label="Tran Status" max_length="40" name="u_tran_status" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Tran Type" label="Tran Type" max_length="40" name="u_tran_type" type="string"/>
+    </element>
+</database>

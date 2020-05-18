@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_angular_provider">
     <sp_angular_provider action="INSERT_OR_UPDATE">
         <name>AGGridFactory</name>
-        <script><![CDATA[function AGGridFactory($http, $rootScope, spUtil, spModal, $uibModalStack) {
+        <script><![CDATA[function AGGridFactory($http, $rootScope, spUtil, spModal, $uibModalStack, $timeout) {
 
     var AGGridFactory = function() {
 
         var DeleteCellRenderer = function() {};
         var EditCellRenderer = function() {};
+        var CheckBoxRenderer = function() {};
+		function currencyCssFunc(params) {
+			if (params.value !== null && params.value !== undefined && params.value < 0) {
+				return { "color": "red", "font-weight": "bold", "text-align": "right" };
+			} else {
+				return { "text-align": "right" };
+			}
+        }
+        function currencyFormatter(params) {
+            if (params.value != 0 && (params.value === null || params.value === undefined || params.value == "")) {
+                return null;
+            } else if (isNaN(params.value)) {
+    return '$' + parseFloat(0).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+            } else {
+                if (parseFloat(params.value) >= 0) {
+    return '$' + parseFloat(params.value).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                } else {
+                    return currencyNegative(params.value);
+                }
+            }
+        }
+        function currencyNegative(tVal) {
+    return '$(' + parseFloat(tVal).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,").replace("-", "") + ")";
+        }
 
         var pageController = {};
         var linkField = "sys_id";
@@ -25,11 +49,12 @@
                 minWidth: 100,
             },
             suppressRowClickSelection: true,
-            rowSelection: 'multiple',
+            suppressAggFuncInHeader: true,
             floatingFilter: true,
             pagination: true,
             paginationAutoPageSize: true,
-            onCellClicked: function(params) {
+            suppressColumnVirtualisation: true,
+			onCellClicked: function(params) {
                 if (params.data && params.data.sys_id && params.colDef.field == linkField) {
                     launchRowDetails(params.data.sys_id);
                 }
@@ -46,26 +71,29 @@
                     return retVal;
                 }
             },
+            columnTypes: {
+                'currency': { valueFormatter: currencyFormatter, cellStyle: currencyCssFunc }
+            },
             components: {
                 editCell: EditCellRenderer,
-                deleteCell: DeleteCellRenderer
+                deleteCell: DeleteCellRenderer,
+                checkbox: CheckBoxRenderer
             }
         };
 
         var launchRowDetails = function(rowID) {
             var urlToNav = "/fms?id=" + detailsPage;
-            switch (detailsPage)
-				{
-					case 'organization_detail':
-						urlToNav += "&org_id=" + rowID;
-						break;
-					case 'project_detail':
-						urlToNav += "&proj_id=" + rowID;
-						break;
-					case 'budget_detail':
-						urlToNav += "&budget_id=" + rowID;
-						break;
-				}
+            switch (detailsPage) {
+                case 'organization_detail':
+                    urlToNav += "&org_id=" + rowID;
+                    break;
+                case 'project_detail':
+                    urlToNav += "&proj_id=" + rowID;
+                    break;
+                case 'budget_detail':
+                    urlToNav += "&budget_id=" + rowID;
+                    break;
+            }
             window.location.href = urlToNav;
         };
 
@@ -120,7 +148,13 @@
             gridOptions.columnDefs = columnData;
         };
         this.fitColumns = function() {
+			/*var allColumnIds = [];
+			gridOptions.columnApi.getAllColumns().forEach(function(column) {
+				allColumnIds.push(column.colId);
+			});
+            gridOptions.columnApi.autoSizeColumns(allColumnIds);*/
             gridOptions.api.sizeColumnsToFit();
+            
         };
         this.setColumnsVisible = function(cols, show) {
             if (gridOptions.columnApi) gridOptions.columnApi.setColumnsVisible(cols, show);
@@ -230,6 +264,37 @@
                 if (this.eButton)
                     this.eButton.removeEventListener('click', this.eventListener);
             };
+			
+            // gets called once before the renderer is used
+            CheckBoxRenderer.prototype.init = function(params) {
+
+                // create the cell
+                this.eGui = document.createElement('input');
+                this.eGui.type = "checkbox";
+                this.eGui.checked = params.value == "true";
+
+                if (!('disabled' in params) || params.disabled) {
+
+                    this.eGui.disabled = "true";
+                }
+            };
+
+            // gets called once when grid ready to insert the element
+            CheckBoxRenderer.prototype.getGui = function() {
+                return this.eGui;
+            };
+
+            // gets called whenever the user gets the cell to refresh
+            CheckBoxRenderer.prototype.refresh = function(params) {
+
+                // return true to tell the grid we refreshed successfully
+                return true;
+            };
+
+            // gets called when the cell is removed from the grid
+            CheckBoxRenderer.prototype.destroy = function() {
+                // do cleanup
+            };
         }
 
         $rootScope.$on("spModel.uiActionComplete", function(evt, response) {
@@ -264,14 +329,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>186</sys_mod_count>
+        <sys_mod_count>237</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-12 12:20:06</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-18 19:15:00</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

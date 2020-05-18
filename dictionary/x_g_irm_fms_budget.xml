@@ -5,7 +5,7 @@
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new budget]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.budget_desc.toString() + '\t\t\t\t[' + current.budget_type.toString() + ' ' + current.budget_version_revision + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" display="true" label="Budget display" max_length="256" name="budget_display" read_only="true" type="string" virtual="true"/>
         <element label="Budget Notes" max_length="500" name="budget_notes" type="string"/>
         <element label="Budget Revision" max_length="40" name="budget_revision" read_only="true" type="integer"/>
-        <element label="Source" max_length="32" name="budget_source_ref" read_only="true" reference="x_g_irm_fms_budget" type="reference"/>
+        <element label="Revised Budget" max_length="32" name="budget_source_ref" read_only="true" reference="x_g_irm_fms_budget" type="reference"/>
         <element choice="3" default="Working" label="Budget Status" mandatory="true" max_length="10" name="budget_status" type="string">
             <choice>
                 <element inactive_on_update="false" label="Approved" value="Approved"/>
@@ -26,16 +26,21 @@
         </element>
         <element label="Budget Version" max_length="40" name="budget_version" read_only="true" type="integer"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;v1.0&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = 'v' + current.budget_version.toString() + '.' + current.budget_revision.toString(); &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" label="Budget Version Revision" max_length="32" name="budget_version_revision" read_only="true" type="string" virtual="true"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.budget_source_ref.nil()) {&#13;&#10;&#9;&#9;display = &quot;&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.budget_source_ref.fy.toString() + ' ' + current.budget_source_ref.budget_type.toString() + ' ' + current.budget_source_ref.budget_version_revision; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" label="Created From" max_length="256" name="created_from" read_only="true" type="string" virtual="true"/>
         <element label="Is Current?" max_length="40" name="current" type="boolean"/>
-        <element attributes="format=none" choice="3" default="javascript:new Date().getFullYear();" label="FY" mandatory="true" max_length="40" name="fy" type="integer">
+        <element attributes="format=none" choice="3" choice_field="fy" choice_table="x_g_irm_fms_project_allocation" default="javascript:new Date().getFullYear();" label="FY" mandatory="true" max_length="40" name="fy" type="integer">
             <choice/>
         </element>
         <element label="Locked?" max_length="40" name="locked" type="boolean"/>
+        <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element label="Project" mandatory="true" max_length="32" name="project_ref" reference="x_g_irm_fms_project" reference_qual="javascript: &quot;organization_refIN&quot; + new OrgHierarchy().getUserOrgs();" type="reference" use_reference_qualifier="advanced"/>
         <index name="index">
-            <element name="project_ref"/>
+            <element name="number"/>
         </index>
         <index name="index2">
+            <element name="project_ref"/>
+        </index>
+        <index name="index3">
             <element name="budget_source_ref"/>
         </index>
     </element>
