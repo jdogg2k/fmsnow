@@ -10,271 +10,281 @@
         <script><![CDATA[var FMSUtilities = Class.create();
 FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
-  getTableData: function (table, encQry, returnSysID) {
-
-    /* JLR - This function will return all non-sys values of any table in FMS - may want to modify so it can accept an optional encoded query
-    setting returnSysID to true will force the function to return the sys_id along with all of the table fields*/
-
-    var newArray = [];
-
-    //build field arrays
-    var regFields = [];
-    var currencyFields = [];
-    var dictionaryQ = new GlideRecord("sys_dictionary");
-    dictionaryQ.addEncodedQuery("internal_type!=reference^elementNOT LIKEsys_^internal_type!=collection^internal_type!=boolean^choiceISEMPTY^name=" + table);
-    dictionaryQ.query();
-    while (dictionaryQ.next()) {
-      regFields.push(dictionaryQ.getValue("element"));
-      if (dictionaryQ.getValue("internal_type") == "currency")
-        currencyFields.push(dictionaryQ.getValue("element"));
-    }
-
-    var displayFields = [];
-    var displayQ = new GlideRecord("sys_dictionary");
-    displayQ.addEncodedQuery("name=" + table + "^internal_type=reference^NQname=" + table + "^internal_type=boolean^NQname=" + table + "^choiceIN3,1,2");
-    displayQ.query();
-    while (displayQ.next()) {
-      displayFields.push(displayQ.getValue("element"));
-    }
-
-    var tableQuery = new GlideRecord(table);
-    if (encQry !== undefined && encQry != '')
-      tableQuery.addEncodedQuery(encQry);
-    tableQuery.query();
-    while (tableQuery.next()) {
-
-      var dataObj = {};
-
-      regFields.forEach(function (field) {
-        dataObj[field] = tableQuery.getValue(field);
-      })
-
-      displayFields.forEach(function (field) {
-        dataObj[field] = tableQuery.getDisplayValue(field);
-        dataObj[field + "_rawval"] = tableQuery.getValue(field);
-      })
-
-      currencyFields.forEach(function (field) {
-        dataObj[field] = parseFloat(tableQuery.getValue(field));
-      })
-
-      if (returnSysID !== undefined && returnSysID != false)
-        dataObj.sys_id = tableQuery.getDisplayValue("sys_id");
-
-      newArray.push(dataObj);
-    }
-
-    return newArray;
-  },
-
-  getAllContractData: function (table, encQry) {
-
-    /* JLR - This function will return all values for the contracts table in FMS and all associated related data */
-
-    var contractData = this.getTableData(table, encQry, true);
-    for (var i = 0; i < contractData.length; i++) {
-      var tObj = contractData[i];
-      var cQuery = "contract_ref=" + tObj.sys_id;
-      tObj.contractParties = this.getTableData(FMSConstants.TABLE_CONTRACT_PARTY, cQuery, true);
-      tObj.contractContracts = this.getTableData(FMSConstants.TABLE_CONTRACT_CONTRACT, cQuery, true);
-    }
-    return contractData;
-  },
-
-  saveRecord: function (table, payload, updateID) {
-
-    /* JLR - This function will insert or update a record for the specified table based on the payload received.  Pass a sys_id to update or use 'new' for a new record */
-
-    var mode = "insert";
-    if (updateID != "new")
-      mode = "update";
-    var updatedID = "";
-
-    var gr = new GlideRecord(table);
-    if (mode == "insert") {
-      gr.initialize();
-    } else {
-      gr.get(updateID);
-    }
-
-    for (var property in payload) {
-      gr.setValue(property, payload[property]);
-    }
-
-    if (mode == "insert") {
-      updatedID = gr.insert();
-    } else {
-      gr.update();
-      updatedID = updateID;
-    }
-
-    return updatedID;
-  },
-
-  getRecord: function (table, recID) {
-
-    /* JLR - This function will return a single record - used for updating grids client-side */
-    var gr = new GlideRecord(table);
-    gr.get(recID);
-
-    return gr;
-
-  },
-
-  deleteRecord: function (table, deleteID) {
-
-    /* JLR - This function will delete a record for the specified table based on the payload received.  Pass a table name and sys_id to delete the record */
-
-    var gridQ = "sys_id=" + deleteID;
-    var deleteRec = new GlideRecordSecure(table);
-    deleteRec.addEncodedQuery(gridQ);
-    deleteRec.deleteMultiple();
-
-  },
-
-  getOrgTree: function (selID, orgType) {
-
-    /* JLR - This function will return a tree object or orgs and their parents */
-
-    var allOrgs = {};
-
-    if (orgType == "I") {
-
-      var tableQuery = new GlideRecord("x_g_irm_fms_organization");
-      tableQuery.addEncodedQuery("org_code=180000^org_type=I");
-      tableQuery.query();
-      if (tableQuery.next()) {
-        allOrgs.state = {};
-        allOrgs.text = tableQuery.getValue("org_name");
-        allOrgs.state.selected = false;
-        allOrgs.state.opened = false;
-        allOrgs.org_code = tableQuery.getValue("org_code");
-        allOrgs.sys_id = tableQuery.getValue("sys_id");
-        allOrgs.children = this.getOrgChildren(allOrgs.sys_id, selID);
-        if (allOrgs.sys_id == selID)
-          allOrgs.state.selected = true;
-      }
-
-    } else { //build external}
-
-      var extHome = {};
-
-      var extQuery = new GlideRecord("x_g_irm_fms_organization");
-      extQuery.addEncodedQuery("sys_id=" + selID);
-      extQuery.query();
-
-      if (extQuery.next()) {
-        extHome.state = {};
-        extHome.text = extQuery.getValue("org_name");
-        extHome.state.selected = true;
-        extHome.state.opened = true;
-        extHome.org_code = extQuery.getValue("org_code");
-        extHome.sys_id = extQuery.getValue("sys_id");
-        extHome.parentID = extQuery.getValue("organization_parent_ref");
-        extHome.children = this.getOrgChildren(extHome.sys_id, selID);
-
-        if (extHome.parentID != null) {
-          allOrgs = this.checkOrgParent(extHome);
-        } else  {
-          allOrgs = extHome;
+    getScalar: function(table, column, encQry) { // get single value
+        var rec = new GlideRecord(table);
+        rec.addEncodedQuery(encQry);
+        rec.setLimit(1);
+        rec.query();
+        while (rec.next()) {
+			return rec.getElement(column);
         }
-      }
+    },
 
-    }
+    getTableData: function(table, encQry, returnSysID) {
 
-    return allOrgs;
+        /* JLR - This function will return all non-sys values of any table in FMS - may want to modify so it can accept an optional encoded query
+        setting returnSysID to true will force the function to return the sys_id along with all of the table fields*/
 
-  },
+        var newArray = [];
 
-  checkOrgParent: function (existOrg) {
+        //build field arrays
+        var regFields = [];
+        var currencyFields = [];
+        var dictionaryQ = new GlideRecord("sys_dictionary");
+        dictionaryQ.addEncodedQuery("internal_type!=reference^elementNOT LIKEsys_^internal_type!=collection^internal_type!=boolean^choiceISEMPTY^name=" + table);
+        dictionaryQ.query();
+        while (dictionaryQ.next()) {
+            regFields.push(dictionaryQ.getValue("element"));
+            if (dictionaryQ.getValue("internal_type") == "currency")
+                currencyFields.push(dictionaryQ.getValue("element"));
+        }
 
-    /* JLR - This function will return a tree object of orgs and their parents */
+        var displayFields = [];
+        var displayQ = new GlideRecord("sys_dictionary");
+        displayQ.addEncodedQuery("name=" + table + "^internal_type=reference^NQname=" + table + "^internal_type=boolean^NQname=" + table + "^choiceIN3,1,2");
+        displayQ.query();
+        while (displayQ.next()) {
+            displayFields.push(displayQ.getValue("element"));
+        }
 
-    var orgParent = existOrg;
+        var tableQuery = new GlideRecord(table);
+        if (encQry !== undefined && encQry != '')
+            tableQuery.addEncodedQuery(encQry);
+        tableQuery.query();
+        while (tableQuery.next()) {
 
-    var parentQuery = new GlideRecord("x_g_irm_fms_organization");
-    parentQuery.addEncodedQuery("sys_id=" + existOrg.parentID);
-    parentQuery.orderBy("org_name");
-    parentQuery.query();
-    if (parentQuery.next()) {
+            var dataObj = {};
 
-      var parentObj = {};
-      parentObj.state = {};
-      parentObj.text = parentQuery.getValue("org_name");
-      parentObj.state.selected = false;
-      parentObj.state.opened = false;
-      parentObj.org_code = parentQuery.getValue("org_code");
-      parentObj.sys_id = parentQuery.getValue("sys_id");
-      parentObj.children = [existOrg];
+            regFields.forEach(function(field) {
+                dataObj[field] = tableQuery.getValue(field);
+            })
 
-      orgParent = parentObj;
-    }
+            displayFields.forEach(function(field) {
+                dataObj[field] = tableQuery.getDisplayValue(field);
+                dataObj[field + "_rawval"] = tableQuery.getValue(field);
+            })
 
-    return orgParent;
+            currencyFields.forEach(function(field) {
+                dataObj[field] = parseFloat(tableQuery.getValue(field));
+            })
 
-  },
+            if (returnSysID !== undefined && returnSysID != false)
+                dataObj.sys_id = tableQuery.getDisplayValue("sys_id");
 
-  getOrgChildren: function (orgID, selID) {
+            newArray.push(dataObj);
+        }
 
-    /* JLR - This function will return a tree object of orgs and their children */
+        return newArray;
+    },
 
-    var orgKids = [];
+    getAllContractData: function(table, encQry) {
 
-    var orgQuery = new GlideRecord("x_g_irm_fms_organization");
-    orgQuery.addEncodedQuery("organization_parent_ref=" + orgID);
-    orgQuery.orderBy("org_name");
-    orgQuery.query();
-    while (orgQuery.next()) {
+        /* JLR - This function will return all values for the contracts table in FMS and all associated related data */
 
-      var kidObj = {};
-      kidObj.state = {};
-      kidObj.text = orgQuery.getValue("org_name");
-      kidObj.state.selected = false;
-      kidObj.state.opened = false;
-      kidObj.org_code = orgQuery.getValue("org_code");
-      kidObj.sys_id = orgQuery.getValue("sys_id");
-      kidObj.children = this.getOrgChildren(kidObj.sys_id, selID);
-      if (kidObj.sys_id == selID)
-        kidObj.state.selected = true;
-      orgKids.push(kidObj);
-    }
+        var contractData = this.getTableData(table, encQry, true);
+        for (var i = 0; i < contractData.length; i++) {
+            var tObj = contractData[i];
+            var cQuery = "contract_ref=" + tObj.sys_id;
+            tObj.contractParties = this.getTableData(FMSConstants.TABLE_CONTRACT_PARTY, cQuery, true);
+            tObj.contractContracts = this.getTableData(FMSConstants.TABLE_CONTRACT_CONTRACT, cQuery, true);
+        }
+        return contractData;
+    },
 
-    return orgKids;
+    saveRecord: function(table, payload, updateID) {
 
-  },
+        /* JLR - This function will insert or update a record for the specified table based on the payload received.  Pass a sys_id to update or use 'new' for a new record */
+
+        var mode = "insert";
+        if (updateID != "new")
+            mode = "update";
+        var updatedID = "";
+
+        var gr = new GlideRecord(table);
+        if (mode == "insert") {
+            gr.initialize();
+        } else {
+            gr.get(updateID);
+        }
+
+        for (var property in payload) {
+            gr.setValue(property, payload[property]);
+        }
+
+        if (mode == "insert") {
+            updatedID = gr.insert();
+        } else {
+            gr.update();
+            updatedID = updateID;
+        }
+
+        return updatedID;
+    },
+
+    getRecord: function(table, recID) {
+
+        /* JLR - This function will return a single record - used for updating grids client-side */
+        var gr = new GlideRecord(table);
+        gr.get(recID);
+
+        return gr;
+
+    },
+
+    deleteRecord: function(table, deleteID) {
+
+        /* JLR - This function will delete a record for the specified table based on the payload received.  Pass a table name and sys_id to delete the record */
+
+        var gridQ = "sys_id=" + deleteID;
+        var deleteRec = new GlideRecordSecure(table);
+        deleteRec.addEncodedQuery(gridQ);
+        deleteRec.deleteMultiple();
+
+    },
+
+    getOrgTree: function(selID, orgType) {
+
+        /* JLR - This function will return a tree object or orgs and their parents */
+
+        var allOrgs = {};
+
+        if (orgType == "I") {
+
+            var tableQuery = new GlideRecord("x_g_irm_fms_organization");
+            tableQuery.addEncodedQuery("org_code=180000^org_type=I");
+            tableQuery.query();
+            if (tableQuery.next()) {
+                allOrgs.state = {};
+                allOrgs.text = tableQuery.getValue("org_name");
+                allOrgs.state.selected = false;
+                allOrgs.state.opened = false;
+                allOrgs.org_code = tableQuery.getValue("org_code");
+                allOrgs.sys_id = tableQuery.getValue("sys_id");
+                allOrgs.children = this.getOrgChildren(allOrgs.sys_id, selID);
+                if (allOrgs.sys_id == selID)
+                    allOrgs.state.selected = true;
+            }
+
+        } else { //build external}
+
+            var extHome = {};
+
+            var extQuery = new GlideRecord("x_g_irm_fms_organization");
+            extQuery.addEncodedQuery("sys_id=" + selID);
+            extQuery.query();
+
+            if (extQuery.next()) {
+                extHome.state = {};
+                extHome.text = extQuery.getValue("org_name");
+                extHome.state.selected = true;
+                extHome.state.opened = true;
+                extHome.org_code = extQuery.getValue("org_code");
+                extHome.sys_id = extQuery.getValue("sys_id");
+                extHome.parentID = extQuery.getValue("organization_parent_ref");
+                extHome.children = this.getOrgChildren(extHome.sys_id, selID);
+
+                if (extHome.parentID != null) {
+                    allOrgs = this.checkOrgParent(extHome);
+                } else {
+                    allOrgs = extHome;
+                }
+            }
+
+        }
+
+        return allOrgs;
+
+    },
+
+    checkOrgParent: function(existOrg) {
+
+        /* JLR - This function will return a tree object of orgs and their parents */
+
+        var orgParent = existOrg;
+
+        var parentQuery = new GlideRecord("x_g_irm_fms_organization");
+        parentQuery.addEncodedQuery("sys_id=" + existOrg.parentID);
+        parentQuery.orderBy("org_name");
+        parentQuery.query();
+        if (parentQuery.next()) {
+
+            var parentObj = {};
+            parentObj.state = {};
+            parentObj.text = parentQuery.getValue("org_name");
+            parentObj.state.selected = false;
+            parentObj.state.opened = false;
+            parentObj.org_code = parentQuery.getValue("org_code");
+            parentObj.sys_id = parentQuery.getValue("sys_id");
+            parentObj.children = [existOrg];
+
+            orgParent = parentObj;
+        }
+
+        return orgParent;
+
+    },
+
+    getOrgChildren: function(orgID, selID) {
+
+        /* JLR - This function will return a tree object of orgs and their children */
+
+        var orgKids = [];
+
+        var orgQuery = new GlideRecord("x_g_irm_fms_organization");
+        orgQuery.addEncodedQuery("organization_parent_ref=" + orgID);
+        orgQuery.orderBy("org_name");
+        orgQuery.query();
+        while (orgQuery.next()) {
+
+            var kidObj = {};
+            kidObj.state = {};
+            kidObj.text = orgQuery.getValue("org_name");
+            kidObj.state.selected = false;
+            kidObj.state.opened = false;
+            kidObj.org_code = orgQuery.getValue("org_code");
+            kidObj.sys_id = orgQuery.getValue("sys_id");
+            kidObj.children = this.getOrgChildren(kidObj.sys_id, selID);
+            if (kidObj.sys_id == selID)
+                kidObj.state.selected = true;
+            orgKids.push(kidObj);
+        }
+
+        return orgKids;
+
+    },
 
 
-  getUserAuth: function () {
+    getUserAuth: function() {
 
-    var auth = {
-      roles: {
-        "isSysAdmin": gs.hasRole(FMSConstants.ROLE_SYSADMIN),
-        "isOrgAdmin": gs.hasRole(FMSConstants.ROLE_ORGADMIN),
-        "isAnalyst": gs.hasRole(FMSConstants.ROLE_ANALYST),
-        "isContracts": gs.hasRole(FMSConstants.ROLE_CONTRACTS),
-        "isReadOnly": gs.hasRole(FMSConstants.ROLE_READONLY),
-        "canApprove": gs.hasRole(FMSConstants.ROLE_APPROVE)
-      },
-      "orgs": new OrgHierarchy().getUserOrgs()
-    };
-    return auth;
-  },
+        var auth = {
+            roles: {
+                "isSysAdmin": gs.hasRole(FMSConstants.ROLE_SYSADMIN),
+                "isOrgAdmin": gs.hasRole(FMSConstants.ROLE_ORGADMIN),
+                "isAnalyst": gs.hasRole(FMSConstants.ROLE_ANALYST),
+                "isContracts": gs.hasRole(FMSConstants.ROLE_CONTRACTS),
+                "isReadOnly": gs.hasRole(FMSConstants.ROLE_READONLY),
+                "canApprove": gs.hasRole(FMSConstants.ROLE_APPROVE)
+            },
+            "orgs": new OrgHierarchy().getUserOrgs()
+        };
+        return auth;
+    },
 
-  //we can continue to add more functions here
+    //we can continue to add more functions here
 
-  type: 'FMSUtilities'
+    type: 'FMSUtilities'
 });]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 18:30:12</sys_created_on>
         <sys_id>c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>68</sys_mod_count>
+        <sys_mod_count>77</sys_mod_count>
         <sys_name>FMSUtilities</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-18 18:05:40</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-19 15:25:18</sys_updated_on>
     </sys_script_include>
 </record_update>
