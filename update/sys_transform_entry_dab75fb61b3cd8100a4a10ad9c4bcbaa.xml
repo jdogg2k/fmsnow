@@ -27,8 +27,8 @@
 	var eNum = ePrefix + eCode;
 	
 	var bCode = source.u_budget_id.toString();
-	var bCodeLength = eCode.length;
-	var bPrefix = "EXP00";
+	var bCodeLength = bCode.length;
+	var bPrefix = "BGT00";
 	if (bCodeLength == 1)
 		bPrefix += "0000";
 	if (bCodeLength == 2)
@@ -57,14 +57,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-19 18:42:58</sys_created_on>
         <sys_id>dab75fb61b3cd8100a4a10ad9c4bcbaa</sys_id>
-        <sys_mod_count>5</sys_mod_count>
+        <sys_mod_count>7</sys_mod_count>
         <sys_name>[Script]</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_transform_entry_dab75fb61b3cd8100a4a10ad9c4bcbaa</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-19 20:54:33</sys_updated_on>
+        <sys_updated_on>2020-05-21 17:26:03</sys_updated_on>
         <target_field>budget_item_ref</target_field>
         <target_table>x_g_irm_fms_budget_item_phase</target_table>
         <use_source_script>true</use_source_script>

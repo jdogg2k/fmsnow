@@ -7,20 +7,31 @@
         <element attributes="edge_encryption_enabled=true" label="AMSReference" max_length="40" name="u_amsreference" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=AMS Reference" label="AMS Reference" max_length="40" name="u_ams_reference" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Appropriation Type" label="Appropriation Type" max_length="40" name="u_appropriation_type" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Approved Date" max_length="40" name="u_approved_date" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Budget Description" max_length="40" name="u_budget_description" type="string"/>
         <element attributes="edge_encryption_enabled=true" label="Budget FY" max_length="40" name="u_budget_fy" type="string"/>
         <element attributes="edge_encryption_enabled=true" label="Budget FYQuarter" max_length="40" name="u_budget_fyquarter" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Budget ID" max_length="40" name="u_budget_id" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Budget Notes" max_length="40" name="u_budget_notes" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Budget Revision" max_length="40" name="u_budget_revision" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Budget Status" max_length="40" name="u_budget_status" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Budget Type" max_length="40" name="u_budget_type" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Budget Version" max_length="40" name="u_budget_version" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Designation" label="Designation" max_length="40" name="u_designation" type="string"/>
         <element attributes="import_attribute_name=Distributed Amount" label="Distributed Amount" max_length="40" name="u_distributed_amount" type="integer"/>
         <element attributes="import_attribute_name=FY" label="FY" max_length="40" name="u_fy" type="integer"/>
         <element attributes="edge_encryption_enabled=true" label="IBISDocument" max_length="40" name="u_ibisdocument" type="string"/>
         <element attributes="import_attribute_name=IBIS Document" label="IBIS Document" max_length="40" name="u_ibis_document" type="integer"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Investment" label="Investment" max_length="40" name="u_investment" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Is Current" max_length="40" name="u_is_current" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Is Locked" max_length="40" name="u_is_locked" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Org Name" label="Org Name" max_length="40" name="u_org_name" type="string"/>
         <element attributes="edge_encryption_enabled=true" label="Parent Pool ID" max_length="40" name="u_parent_pool_id" type="string"/>
         <element attributes="edge_encryption_enabled=true" label="Pool Notes" max_length="1000" name="u_pool_notes" type="string"/>
         <element attributes="edge_encryption_enabled=true" label="Pool Purpose" max_length="40" name="u_pool_purpose" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Pool Status" label="Pool Status" max_length="40" name="u_pool_status" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Pool Type" label="Pool Type" max_length="40" name="u_pool_type" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Project Code" max_length="40" name="u_project_code" type="string"/>
         <element attributes="import_attribute_name=Qtr" label="Qtr" max_length="40" name="u_qtr" type="integer"/>
         <element attributes="import_attribute_name=Received Amount" label="Received Amount" max_length="15" name="u_received_amount" type="decimal"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Received Date" label="Received Date" max_length="40" name="u_received_date" type="glide_date"/>
@@ -30,6 +41,7 @@
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Requested Date" label="Requested Date" max_length="40" name="u_requested_date" type="glide_date"/>
         <element attributes="edge_encryption_enabled=true" label="Request Amount" max_length="40" name="u_request_amount" type="string"/>
         <element attributes="edge_encryption_enabled=true" label="Request Date" max_length="40" name="u_request_date" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Revised Budget ID" max_length="40" name="u_revised_budget_id" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Source Organization" label="Source Organization" max_length="40" name="u_source_organization" type="string"/>
         <element attributes="edge_encryption_enabled=true" label="Source Org Code" max_length="40" name="u_source_org_code" type="string"/>
         <element attributes="import_attribute_name=Unassigned Amount" label="Unassigned Amount" max_length="40" name="u_unassigned_amount" type="integer"/>

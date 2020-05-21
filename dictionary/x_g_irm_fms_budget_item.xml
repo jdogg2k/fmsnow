@@ -3,11 +3,15 @@
         <element label="Budget Amount" mandatory="true" max_length="20" name="budget_amt" type="currency"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new budget item]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.expense_item_ref.activity_code.toString() + '\t\t\t\t[' + current.expense_item_ref.budget_code_ref.budget_code.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" display="true" label="Budget Item display" max_length="256" name="budget_item_display" read_only="true" type="string" virtual="true"/>
         <element label="Budget" mandatory="true" max_length="32" name="budget_ref" reference="x_g_irm_fms_budget" type="reference"/>
-        <element label="Expense Item" mandatory="true" max_length="32" name="expense_item_ref" reference="x_g_irm_fms_expense_item" reference_qual="javascript:&quot;organization_ref=&quot; + current.budget_ref.project_ref.organization_ref;" type="reference" use_reference_qualifier="advanced"/>
+        <element label="Expense Item" mandatory="true" max_length="32" name="expense_item_ref" reference="x_g_irm_fms_expense_item" reference_qual="javascript: 'organization_ref=' + new x_g_irm_fms.FMSUtilities().getOrgForBudget(current.budget_ref);" type="reference" use_reference_qualifier="advanced"/>
+        <element label="Exp Item" max_length="32" name="exp_item_ref" reference="x_g_irm_fms_expense_item" reference_qual="organization_ref=2d4bc03d1bc090500a4a10ad9c4bcbff^EQ" reference_qual_condition="organization_ref=2d4bc03d1bc090500a4a10ad9c4bcbff^EQ" type="reference"/>
         <index name="index">
             <element name="expense_item_ref"/>
         </index>
         <index name="index2">
+            <element name="exp_item_ref"/>
+        </index>
+        <index name="index3">
             <element name="budget_ref"/>
         </index>
     </element>

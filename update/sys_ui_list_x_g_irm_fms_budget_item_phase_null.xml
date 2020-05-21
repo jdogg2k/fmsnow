@@ -3,77 +3,62 @@
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>budget_item_ref</element>
-            <list_id display_value="x_g_irm_fms_budget_item_phase" element="NULL" name="x_g_irm_fms_budget_item_phase" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">2a2c8f7e1bf8d8100a4a10ad9c4bcb6b</list_id>
+            <list_id display_value="x_g_irm_fms_budget_item_phase" element="NULL" name="x_g_irm_fms_budget_item_phase" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">f14a9daf1bfc5c100a4a10ad9c4bcb10</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>0</position>
             <sum>false</sum>
-            <sys_created_by>MarkelJR@state.gov</sys_created_by>
-            <sys_created_on>2020-05-19 17:52:00</sys_created_on>
-            <sys_id>ee2c8f7e1bf8d8100a4a10ad9c4bcb6c</sys_id>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-05-21 17:29:52</sys_created_on>
+            <sys_id>3d4a9daf1bfc5c100a4a10ad9c4bcb10</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-19 17:52:00</sys_updated_on>
-        </sys_ui_list_element>
-        <sys_ui_list_element action="INSERT_OR_UPDATE">
-            <average_value>false</average_value>
-            <element>expense_item</element>
-            <list_id display_value="x_g_irm_fms_budget_item_phase" element="NULL" name="x_g_irm_fms_budget_item_phase" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">2a2c8f7e1bf8d8100a4a10ad9c4bcb6b</list_id>
-            <max_value>false</max_value>
-            <min_value>false</min_value>
-            <position>1</position>
-            <sum>false</sum>
-            <sys_created_by>MarkelJR@state.gov</sys_created_by>
-            <sys_created_on>2020-05-19 17:52:00</sys_created_on>
-            <sys_id>a62c8f7e1bf8d8100a4a10ad9c4bcb6d</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-19 17:52:00</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-21 17:29:52</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>fiscal_month</element>
-            <list_id display_value="x_g_irm_fms_budget_item_phase" element="NULL" name="x_g_irm_fms_budget_item_phase" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">2a2c8f7e1bf8d8100a4a10ad9c4bcb6b</list_id>
+            <list_id display_value="x_g_irm_fms_budget_item_phase" element="NULL" name="x_g_irm_fms_budget_item_phase" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">f14a9daf1bfc5c100a4a10ad9c4bcb10</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
-            <position>2</position>
+            <position>1</position>
             <sum>false</sum>
-            <sys_created_by>MarkelJR@state.gov</sys_created_by>
-            <sys_created_on>2020-05-19 17:52:00</sys_created_on>
-            <sys_id>2a2c8f7e1bf8d8100a4a10ad9c4bcb6d</sys_id>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-05-21 17:29:52</sys_created_on>
+            <sys_id>bd4a9daf1bfc5c100a4a10ad9c4bcb10</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-19 17:52:00</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-21 17:29:52</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>phase_amt</element>
-            <list_id display_value="x_g_irm_fms_budget_item_phase" element="NULL" name="x_g_irm_fms_budget_item_phase" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">2a2c8f7e1bf8d8100a4a10ad9c4bcb6b</list_id>
+            <list_id display_value="x_g_irm_fms_budget_item_phase" element="NULL" name="x_g_irm_fms_budget_item_phase" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">f14a9daf1bfc5c100a4a10ad9c4bcb10</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
-            <position>3</position>
+            <position>2</position>
             <sum>false</sum>
-            <sys_created_by>MarkelJR@state.gov</sys_created_by>
-            <sys_created_on>2020-05-19 17:52:00</sys_created_on>
-            <sys_id>aa2c8f7e1bf8d8100a4a10ad9c4bcb6d</sys_id>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-05-21 17:29:52</sys_created_on>
+            <sys_id>314a9daf1bfc5c100a4a10ad9c4bcb11</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-19 17:52:00</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-21 17:29:52</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>budget_item_ref.budget_ref.project_ref</element>
-            <list_id display_value="x_g_irm_fms_budget_item_phase" element="NULL" name="x_g_irm_fms_budget_item_phase" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">2a2c8f7e1bf8d8100a4a10ad9c4bcb6b</list_id>
+            <list_id display_value="x_g_irm_fms_budget_item_phase" element="NULL" name="x_g_irm_fms_budget_item_phase" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">f14a9daf1bfc5c100a4a10ad9c4bcb10</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
-            <position>4</position>
+            <position>3</position>
             <sum>false</sum>
-            <sys_created_by>MarkelJR@state.gov</sys_created_by>
-            <sys_created_on>2020-05-19 17:52:00</sys_created_on>
-            <sys_id>2e2c8f7e1bf8d8100a4a10ad9c4bcb6d</sys_id>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-05-21 17:29:52</sys_created_on>
+            <sys_id>b14a9daf1bfc5c100a4a10ad9c4bcb11</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-19 17:52:00</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-21 17:29:52</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
@@ -86,19 +71,19 @@
             <relationship/>
             <sum>false</sum>
             <sys_class_name>sys_ui_list</sys_class_name>
-            <sys_created_by>MarkelJR@state.gov</sys_created_by>
-            <sys_created_on>2020-05-19 17:52:00</sys_created_on>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-05-21 17:29:52</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
-            <sys_id>2a2c8f7e1bf8d8100a4a10ad9c4bcb6b</sys_id>
+            <sys_id>f14a9daf1bfc5c100a4a10ad9c4bcb10</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_name>x_g_irm_fms_budget_item_phase</sys_name>
             <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
             <sys_policy/>
             <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
             <sys_update_name>sys_ui_list_x_g_irm_fms_budget_item_phase_null</sys_update_name>
-            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-19 17:52:00</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-21 17:29:52</sys_updated_on>
             <sys_user/>
             <view display_value="Default view" name="NULL">Default view</view>
             <view_name/>

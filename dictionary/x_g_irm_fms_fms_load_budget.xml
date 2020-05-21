@@ -6,7 +6,7 @@
         <element attributes="edge_encryption_enabled=true" label="Budget ID" max_length="40" name="u_budget_id" type="string"/>
         <element attributes="edge_encryption_enabled=true" label="Budget Notes" max_length="40" name="u_budget_notes" type="string"/>
         <element attributes="import_attribute_name=Budget Revision" label="Budget Revision" max_length="40" name="u_budget_revision" type="integer"/>
-        <element attributes="edge_encryption_enabled=true,import_attribute_name=Budget Status" label="Budget Status" max_length="40" name="u_budget_status" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Budget Status" label="Budget Status" max_length="1000" name="u_budget_status" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Budget Total" label="Budget Total" max_length="40" name="u_budget_total" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Budget Type" label="Budget Type" max_length="40" name="u_budget_type" type="string"/>
         <element attributes="import_attribute_name=Budget Version" label="Budget Version" max_length="40" name="u_budget_version" type="integer"/>
