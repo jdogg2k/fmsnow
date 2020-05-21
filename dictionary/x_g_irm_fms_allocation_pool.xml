@@ -6,7 +6,38 @@
         <element label="Appropriation Type" mandatory="true" max_length="32" name="appropriation_type_ref" reference="x_g_irm_fms_appropriation_type" type="reference"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;if (current.pool_status != &quot;Received&quot;) return 0;&#13;&#10;    var items = new GlideRecord('x_g_irm_fms_allocation_pool');&#13;&#10;    items.addQuery('pool_parent_ref', current.sys_id);&#13;&#10;    items.query();&#13;&#10;    var total = 0;&#13;&#10;    while (items.next()) {&#13;&#10;        total += parseFloat(items.receive_amt);&#13;&#10;    }&#13;&#10;    return total; &#13;&#10;})(current);" label="Distributed Amount" max_length="20" name="distributed_amt" read_only="true" type="currency" virtual="true"/>
         <element choice="3" choice_field="fy" choice_table="x_g_irm_fms_project_allocation" default="javascript:new Date().getFullYear();" label="FY" mandatory="true" max_length="40" name="fy" type="integer">
-            <choice/>
+            <choice>
+                <element inactive_on_update="false" label="2000" sequence="0" value="2000"/>
+                <element inactive_on_update="false" label="2001" sequence="1" value="2001"/>
+                <element inactive_on_update="false" label="2002" sequence="2" value="2002"/>
+                <element inactive_on_update="false" label="2003" sequence="3" value="2003"/>
+                <element inactive_on_update="false" label="2004" sequence="4" value="2004"/>
+                <element inactive_on_update="false" label="2005" sequence="5" value="2005"/>
+                <element inactive_on_update="false" label="2006" sequence="6" value="2006"/>
+                <element inactive_on_update="false" label="2007" sequence="7" value="2007"/>
+                <element inactive_on_update="false" label="2008" sequence="8" value="2008"/>
+                <element inactive_on_update="false" label="2009" sequence="9" value="2009"/>
+                <element inactive_on_update="false" label="2010" sequence="10" value="2010"/>
+                <element inactive_on_update="false" label="2011" sequence="11" value="2011"/>
+                <element inactive_on_update="false" label="2012" sequence="12" value="2012"/>
+                <element inactive_on_update="false" label="2013" sequence="13" value="2013"/>
+                <element inactive_on_update="false" label="2014" sequence="14" value="2014"/>
+                <element inactive_on_update="false" label="2015" sequence="15" value="2015"/>
+                <element inactive_on_update="false" label="2016" sequence="16" value="2016"/>
+                <element inactive_on_update="false" label="2017" sequence="17" value="2017"/>
+                <element inactive_on_update="false" label="2018" sequence="18" value="2018"/>
+                <element inactive_on_update="false" label="2019" sequence="19" value="2019"/>
+                <element inactive_on_update="false" label="2020" sequence="20" value="2020"/>
+                <element inactive_on_update="false" label="2021" sequence="21" value="2021"/>
+                <element inactive_on_update="false" label="2022" sequence="22" value="2022"/>
+                <element inactive_on_update="false" label="2023" sequence="23" value="2023"/>
+                <element inactive_on_update="false" label="2024" sequence="24" value="2024"/>
+                <element inactive_on_update="false" label="2025" sequence="25" value="2025"/>
+                <element inactive_on_update="false" label="2026" sequence="26" value="2026"/>
+                <element inactive_on_update="false" label="2027" sequence="27" value="2027"/>
+                <element inactive_on_update="false" label="2028" sequence="28" value="2028"/>
+                <element inactive_on_update="false" label="2029" sequence="29" value="2029"/>
+            </choice>
         </element>
         <element choice="1" label="FY Qtr" mandatory="true" max_length="40" name="fy_qtr" type="integer">
             <choice>
@@ -58,7 +89,7 @@
         <element label="Receive Date" max_length="40" name="receive_date" type="glide_date"/>
         <element label="Request Amount" max_length="20" name="request_amt" type="currency"/>
         <element label="Request Date" max_length="40" name="request_date" type="glide_date"/>
-        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;return current.allocated_amt + current.distributed_amt;  // return the calculated value&#13;&#10;})(current);" label="Unassigned Amount" max_length="20" name="unassigned_amt" read_only="true" type="currency" virtual="true"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var curReceived = parseFloat(current.receive_amt);&#13;&#10;&#9;var curTotal = parseFloat(current.allocated_amt) + parseFloat(current.distributed_amt);&#13;&#10;&#9;return curReceived - curTotal;  // return the calculated value&#13;&#10;})(current);" label="Unassigned Amount" max_length="20" name="unassigned_amt" read_only="true" type="currency" virtual="true"/>
         <index name="index">
             <element name="appropriation_type_ref"/>
         </index>

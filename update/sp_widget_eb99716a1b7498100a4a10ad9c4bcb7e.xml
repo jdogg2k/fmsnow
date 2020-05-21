@@ -5,20 +5,20 @@
     /* widget controller */
     var c = this;
     c.targetOrg = c.data.selectedOrg;
-	c.userAuth = $rootScope.userAuth;
+    c.userAuth = $rootScope.userAuth;
 
     var poolManager = new AGAllocationPoolGridFactory();
 
     c.addNew = function () {
         poolManager.editRow("-1", "organization_ref=" + c.targetOrg, c.data.tableName);
     }
-	
+
     c.exportExcel = function () {
         poolManager.exportExcel();
     }
-	
-	c.canAdd = function() { 
-		/*if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) {
+
+    c.canAdd = function () {
+        /*if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) {
 			if (c.userAuth.orgs.indexOf(c.targetOrg) >= 0) 
 				return true;
 			else
@@ -26,46 +26,37 @@
 		}
 		else
             return false;*/
-            
-            return true;
-	}
 
-	c.canEdit = function(auth, data) {
-		/*if (auth.orgs.indexOf(data.organization_ref_rawval) >= 0) 
+        return true;
+    }
+
+    c.canEdit = function (auth, data) {
+        /*if (auth.orgs.indexOf(data.organization_ref_rawval) >= 0) 
 			return true;
 		else
             return false;*/
-            return true; 
-	}
+        return true;
+    }
 
-	c.canDelete = function(auth, data) { return c.canEdit(auth, data); }
+    c.canDelete = function (auth, data) {
+        return c.canEdit(auth, data);
+    }
 
     //define AG Grid columns
-    var poolColumns = [
-        {
+    var poolColumns = [{
             field: 'pool_type',
-            headerName: 'Expand',
-            minWidth: 175,
-            cellRenderer: 'agGroupCellRenderer'
+            headerName: 'Edit / Distribute / Allocate',
+            minWidth: 200,
+            cellRenderer: 'agGroupCellRenderer',
+            showRowGroup: true,
+            cellRendererParams: {
+                suppressCount: true,
+                checkbox: false,
+                innerRenderer: 'myGroupCellRenderer',
+                suppressDoubleClickExpand: true,
+                suppressEnterExpand: true
+            }
         },
-        {
-            field: 'edit',
-            headerName: 'Edit',
-            maxWidth: 50,
-            cellStyle: {
-                textAlign: 'center'
-            },
-			suppressMenu: true,
-			sortable: false,
-            cellRenderer: 'editCell',
-			cellRendererParams: function(params) { 
-				return { "show": c.canEdit(c.userAuth, params.data) }; 
-			}
-        },
-        /*{
-            field: 'pool_type',
-            headerName: 'Pool Type'
-        },*/
         {
             field: 'organization_source_ref',
             headerName: 'Source Organization'
@@ -84,7 +75,7 @@
             field: 'fy_qtr',
             headerName: 'Qtr',
             filter: 'agTextColumnFilter',
-            suppressMenu: true, 
+            suppressMenu: true,
             rowGroup: true
         },
         {
@@ -108,20 +99,263 @@
             aggFunc: 'sum'
         },
         {
+            field: 'appropriation_type_ref',
+            headerName: 'Appropriation Type',
+            filter: 'agTextColumnFilter',
+            suppressMenu: true
+        },
+        {
+            field: 'investment_ref',
+            headerName: 'Investment',
+            filter: 'agTextColumnFilter',
+            suppressMenu: true
+        },
+        {
+            field: 'pool_purpose',
+            headerName: 'Pool Purpose'
+        },
+        {
+            field: 'ams_ref_nmbr',
+            headerName: 'AMS Reference'
+        },
+        {
+            field: 'ibis_document',
+            headerName: 'IBIS Document'
+        },
+        {
+            field: 'distributed_amt',
+            headerName: 'Distributed Amount',
+            type: 'currency',
+            aggFunc: 'sum'
+        },
+        {
+            field: 'allocated_amt',
+            headerName: 'Allocated Amount',
+            type: 'currency',
+            aggFunc: 'sum'
+        },
+        {
+            field: 'unassigned_amt',
+            headerName: 'Unassigned Amount',
+            type: 'currency',
+            aggFunc: 'sum',
+            cellStyle: function (params) {
+                if (!params.node.group) {
+                    if (params.value > 0) {
+                        return {
+                            color: 'white',
+                            backgroundColor: 'red',
+                            textAlign: 'right'
+                        };
+                    } else {
+                        return {
+                            color: 'white',
+                            backgroundColor: 'green',
+                            textAlign: 'right'
+                        };
+                    }
+                }
+            }
+        },
+        {
             field: 'delete',
             headerName: 'Del.',
             maxWidth: 50,
             cellStyle: {
                 textAlign: 'center'
             },
-			suppressMenu: true,
-			sortable: false,
+            suppressMenu: true,
+            sortable: false,
             cellRenderer: 'deleteCell',
-			cellRendererParams: function(params) { 
-				return { "show": c.canDelete(c.userAuth, params.data) }; 
-			}
+            cellRendererParams: function (params) {
+                return {
+                    "show": c.canDelete(c.userAuth, params.data)
+                };
+            }
         }
     ]
+
+    var distColumns = [{
+        field: 'organization_ref',
+        headerName: 'Organization'
+    },
+    {
+        field: 'pool_type',
+        headerName: 'Pool Type'
+    },
+    {
+        field: 'fy',
+        headerName: 'FY',
+        filter: 'agTextColumnFilter',
+        suppressMenu: true
+    },
+    {
+        field: 'fy_qtr',
+        headerName: 'Qtr',
+        filter: 'agTextColumnFilter',
+        suppressMenu: true
+    },
+    {
+        field: 'receive_date',
+        headerName: 'Received Date'
+    },
+    {
+        field: 'receive_amt',
+        headerName: 'Received Amount',
+        type: 'currency',
+        aggFunc: 'sum'
+    },
+    {
+        field: 'pool_purpose',
+        headerName: 'Pool Purpose'
+    },
+    {
+        field: 'ams_ref_nmbr',
+        headerName: 'AMS Reference'
+    },
+    {
+        field: 'ibis_document',
+        headerName: 'IBIS Document'
+    },
+    {
+        field: 'distributed_amt',
+        headerName: 'Distributed Amount',
+        type: 'currency',
+        aggFunc: 'sum'
+    },
+    {
+        field: 'allocated_amt',
+        headerName: 'Allocated Amount',
+        type: 'currency',
+        aggFunc: 'sum'
+    },
+    {
+        field: 'unassigned_amt',
+        headerName: 'Unassigned Amount',
+        type: 'currency',
+        aggFunc: 'sum',
+        cellStyle: function (params) {
+            if (!params.node.group) {
+                if (params.value > 0) {
+                    return {
+                        color: 'white',
+                        backgroundColor: 'red',
+                        textAlign: 'right'
+                    };
+                } else {
+                    return {
+                        color: 'white',
+                        backgroundColor: 'green',
+                        textAlign: 'right'
+                    };
+                }
+            }
+        }
+    }];
+
+    var projAllocColumns = [
+        {
+            field: 'edit_projalloc',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+            suppressMenu: true,
+            sortable: false,
+            cellRenderer: 'editCell',
+            cellRendererParams: function(params) {
+                return {
+                    "show": c.canEdit(c.userAuth, params.data)
+                };
+            }
+        },
+        {
+            field: 'allocation_pool_ref',
+            hide: true,
+            rowGroup: true
+        },
+        {
+            field: 'project_ref',
+            headerName: 'Project Name'
+        },
+        {
+            field: 'fund_source',
+            headerName: 'Fund Source'
+        },
+        {
+            field: 'fy',
+            headerName: 'FY'
+        },
+        {
+            field: 'appropriation_ref',
+            headerName: 'Appropriation'
+        },
+        {
+            field: 'allotment',
+            headerName: 'Allotment'
+        },
+        {
+            field: 'allocation_date',
+            headerName: 'Date'
+        },
+        {
+            field: 'allocation_group_ref',
+            headerName: 'Allocation Group'
+        },
+        {
+            field: 'allocation_amt',
+            headerName: 'Amount',
+            cellStyle: {
+                textAlign: 'right'
+            },
+            type: 'currency',
+            aggFunc: 'sum',
+            headerComponentParams: {
+                template: '<div class="ag-cell-label-container" role="presentation">' +
+                    '<span ref="eText" class="ag-header-cell-text" role="columnheader"></span>' +
+                    '</div>'
+            }
+        },
+        {
+            field: 'carryforward',
+            headerName: 'Carry-forward',
+            cellRenderer: 'checkbox'
+        },
+        {
+            field: 'transfer_type_ref',
+            headerName: 'Transfer Type'
+        },
+        {
+            field: 'xfer_project_ref',
+            headerName: 'Other Office / Project'
+        },
+        {
+            field: 'organization_reimburse_ref',
+            headerName: 'Reimburse Organization'
+        },
+        {
+            field: 'agreement_nmbr',
+            headerName: 'Ref/Agreement'
+        },
+        {
+            field: 'delete_project',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+            suppressMenu: true,
+            sortable: false,
+            cellRenderer: 'deleteCell',
+            cellRendererParams: function(params) {
+                return {
+                    "show": c.canDelete(c.userAuth, params.data)
+                };
+            }
+        }
+
+     ];
 
     var pageProps = {
         pageController: c,
@@ -134,12 +368,12 @@
     }
 
     poolManager.setColumns(poolColumns);
-    poolManager.setPageProperties(pageProps);
-    poolManager.setRenderers('allocation_pool_display', [], []); //build renderers and set display field to show on delete attempt
+    poolManager.setPageProperties(pageProps, c.data.projAllocTableName);
+    poolManager.setRenderers('allocation_pool_display', distColumns, projAllocColumns); //build renderers and set display field to show on delete attempt
     poolManager.renderGrid('allocationPoolGrid'); //render grid objects
     poolManager.setGridData(c.data.tableData); //set grid data
     poolManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst));
-	poolManager.fitColumns();
+    poolManager.fitColumns();
 
     $rootScope.$on('OrgChanged', function (event, args) {
         c.server.get({
@@ -158,36 +392,132 @@
     height: calc(100vh - 210px);
     clear: both;
 }
+
 .fms-list-header {
     margin-bottom: 0px !important;
 }
+
 .pageLabel {
     float: left;
     margin-right: 10px;
 }
+
 .row-button {
     cursor: pointer;
 }
+
 .new-button {
     float: left;
 }
+
 .excel-button {
     float: right;
 }
+
 .edit-pencil {
     color: #003ade;
-    font-size: 13px;
+    font-size: 16px;
+    margin-right: 5px;
 }
+
+.action-enabled {
+    color: #0b8800;
+    font-size: 16px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.action-disabled {
+    color: #808080;
+    font-size: 16px;
+    margin-right: 5px;
+}
+
 .delete-x {
     color: #000000;
     font-size: 13px;
 }
+
 .updated-row {
     background-color: #FFFFCC;
 }
+
 .ag-header-cell-label .ag-header-icon.ag-sort-order {
     display: none
-  }</css>
+}
+
+.ag-row-group {
+    font-weight: bold;
+}
+
+.full-width-panel {
+    position: relative;
+    background: #EDF6FF;
+    height: 100%;
+    width: 100%;
+    padding: 5px;
+}
+
+.full-row-details {
+    position: relative;
+    background: #FFFFFF;
+    height: 100%;
+    width: 100%;
+    padding-left: 12px;
+    padding-top: 4px;
+}
+
+.call-record-cell {
+    text-align: right;
+}
+
+.full-width-detail {
+    padding-top: 4px;
+}
+
+.full-width-title {
+    font-size: 10pt;
+    font-weight: bold;
+    float: left;
+}
+
+.contract-button {
+    float: right;
+    margin-top: -13px;
+}
+
+.full-width-details {
+    float: left;
+    padding: 5px;
+    margin: 5px;
+    width: 100%;
+    clear: both;
+}
+
+.details-grid {
+    display: block;
+    clear: both;
+    height: 100px;
+    margin-bottom: 5px;
+}
+
+.full-width-grid-toolbar {
+    top: 4px;
+    left: 30px;
+    margin-left: 150px;
+    display: block;
+    position: absolute;
+}
+
+.full-width-phone-icon {
+    padding-right: 10px;
+}
+
+.full-width-search {
+    border: 1px solid #eee;
+    margin-left: 10px;
+}
+</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -211,6 +541,11 @@
     var session = gs.getSession();
 
     if (input) { //input holds the data coming back to the server
+
+        if (input.mode == "getNewRec") {
+            data.newRec = FMSUtility.getTableData(input.targetTable, "sys_id=" + input.newSysID, true)[0];
+        }
+
         if (input.mode == "deleteRow") {
             FMSUtility.deleteRecord(FMSConstants.TABLE_ALLOCATION_POOL, input.rowID);
         }
@@ -223,8 +558,9 @@
 
 	if (data.selectedOrg.length == 0 && session.getClientData('org_id') && session.getClientData('org_id').length > 0)
 		data.selectedOrg = session.getClientData('org_id');
-    data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_ALLOCATION_POOL, "organization_ref=" + data.selectedOrg, true); 
+    data.tableData = FMSUtility.getAllAllocationData(FMSConstants.TABLE_ALLOCATION_POOL, "organization_ref=" + data.selectedOrg, true); 
     data.tableName = FMSConstants.TABLE_ALLOCATION_POOL;
+    data.projAllocTableName = FMSConstants.TABLE_PROJECT_ALLOCATION;
 
 })();]]></script>
         <servicenow>false</servicenow>
@@ -232,14 +568,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-18 17:12:53</sys_created_on>
         <sys_id>eb99716a1b7498100a4a10ad9c4bcb7e</sys_id>
-        <sys_mod_count>27</sys_mod_count>
+        <sys_mod_count>56</sys_mod_count>
         <sys_name>Allocation Pool Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_eb99716a1b7498100a4a10ad9c4bcb7e</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-18 19:42:54</sys_updated_on>
+        <sys_updated_on>2020-05-20 18:47:12</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">

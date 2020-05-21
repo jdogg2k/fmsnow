@@ -6,7 +6,7 @@
         <element label="Allocation Group" mandatory="true" max_length="32" name="allocation_group_ref" reference="x_g_irm_fms_allocation_group" reference_qual="javascript: &quot;project_ref=&quot; + current.project_ref;" type="reference" use_reference_qualifier="advanced"/>
         <element label="Allocation Pool" mandatory="true" max_length="32" name="allocation_pool_ref" reference="x_g_irm_fms_allocation_pool" reference_qual="javascript: &quot;organization_ref=&quot; + current.project_ref.organization_ref + &quot;^fy=&quot; + current.fy;" type="reference" use_reference_qualifier="advanced"/>
         <element label="Allotment" mandatory="true" max_length="32" name="allotment" reference="x_g_irm_fms_allotment" type="reference"/>
-        <element label="Appropriation" mandatory="true" max_length="32" name="appropriation_ref" reference="x_g_irm_fms_project_appropriation" reference_qual="project_ref=^EQ" reference_qual_condition="project_ref=^EQ" type="reference"/>
+        <element label="Appropriation" mandatory="true" max_length="32" name="appropriation_ref" reference="x_g_irm_fms_project_appropriation" reference_qual="javascript: &quot;project_ref=&quot; + current.project_ref;" type="reference" use_reference_qualifier="advanced"/>
         <element label="Carryforward?" max_length="40" name="carryforward" type="boolean"/>
         <element label="Fund Source" mandatory="true" max_length="16" name="fund_source" type="string"/>
         <element attributes="format=none" choice="3" default="javascript:new Date().getFullYear();" label="FY" mandatory="true" max_length="40" name="fy" type="integer">
