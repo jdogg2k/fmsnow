@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Expense Item" max_length="40" name="x_g_irm_fms_expense_item" type="collection">
-        <element display="true" label="Activity Code" max_length="60" name="activity_code" type="string"/>
+        <element label="Activity Code" max_length="60" name="activity_code" type="string"/>
         <element label="Budget Code" mandatory="true" max_length="32" name="budget_code_ref" reference="x_g_irm_fms_budget_code" type="reference"/>
         <element label="Disabled" max_length="40" name="disabled" type="boolean"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new activity code]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.activity_code.toString() + '\t\t\t\t[' + current.budget_code_ref.budget_code.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" display="true" label="Expense Item display" max_length="256" name="expense_item_display" read_only="true" type="string" virtual="true"/>

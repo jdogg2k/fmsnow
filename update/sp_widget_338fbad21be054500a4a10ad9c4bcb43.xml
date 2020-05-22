@@ -90,12 +90,6 @@
             filter: 'agTextColumnFilter',
             suppressMenu: true
         },
-        //WHERE IS THIS? -- in relationships
-        /*
-        {
-          field: 'parent_piid',
-          headerName: 'Contract PIID'
-        },*/
         {
             field: 'award_level',
             headerName: 'Award Level'
@@ -260,18 +254,13 @@
             headerName: 'Email Address'
         },
         {
-            field: 'notify',
+            field: 'party_notify',
             headerName: 'Notify',
             maxWidth: 80,
             cellStyle: {
                 textAlign: 'center'
             },
-            cellRenderer: function(params) {
-                var input = document.createElement('input');
-                input.type = "checkbox";
-                input.checked = params.value == "true";
-                return input;
-            }
+            cellRenderer: 'checkbox'
         },
         {
             field: 'delete_party',
@@ -373,6 +362,10 @@
 
 .tier-3-row {
     background-color: #90ee90;
+}
+
+.expired-row {
+    background-color: #c5c5c5;
 }
 
 .full-width-panel {
@@ -507,14 +500,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-05 17:24:17</sys_created_on>
         <sys_id>338fbad21be054500a4a10ad9c4bcb43</sys_id>
-        <sys_mod_count>109</sys_mod_count>
+        <sys_mod_count>114</sys_mod_count>
         <sys_name>Contract Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_338fbad21be054500a4a10ad9c4bcb43</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-18 20:02:14</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-22 19:50:55</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

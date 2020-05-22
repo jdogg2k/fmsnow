@@ -7,6 +7,7 @@
 
         var DeleteCellRenderer = function () {};
         var EditCellRenderer = function () {};
+        var CheckBoxRenderer = function () {};
         var DetailCellRenderer = function () {
             this.masterGridApi = null;
             this.masterRowIndex = null;
@@ -40,6 +41,7 @@
             paginationAutoPageSize: true,
 			suppressColumnVirtualisation: true,
             masterDetail: true,
+            keepDetailRows: true,
             detailRowHeight: 375,
             detailCellRenderer: "myDetailCellRenderer",
             onCellClicked: function (params) {
@@ -53,6 +55,16 @@
                     if (params.data) {
                         if (params.data.sys_id) {
                             if (params.data.sys_id == updatedID)
+                                retVal = true;
+                        }
+                    }
+                    return retVal;
+                },
+                'expired-row': function (params) {
+                    var retVal = false;
+                    if (params.data && pageController.tierMode == "Hide") {
+                        if (params.data.priority_tier) {
+                            if (params.data.status_detail == "Expired")
                                 retVal = true;
                         }
                     }
@@ -282,7 +294,8 @@
                     getRowNodeId: function(data) {return data.sys_id; },
                     components: {
                         editCell: EditCellRenderer,
-                        deleteCell: DeleteCellRenderer
+                        deleteCell: DeleteCellRenderer,
+                        checkbox: CheckBoxRenderer
                     }
                 });
             };
@@ -435,6 +448,38 @@
                 if (this.eButton)
                     this.eButton.removeEventListener('click', this.eventListener);
             };
+
+            // gets called once before the renderer is used
+            CheckBoxRenderer.prototype.init = function (params) {
+                if (!params.node.group) {
+                    // create the cell
+                    this.eGui = document.createElement('input');
+                    this.eGui.type = "checkbox";
+                    this.eGui.checked = params.value == "true";
+
+                    if (!('disabled' in params) || params.disabled) {
+
+                        this.eGui.disabled = "true";
+                    }
+                }
+            };
+
+            // gets called once when grid ready to insert the element
+            CheckBoxRenderer.prototype.getGui = function () {
+                return this.eGui;
+            };
+
+            // gets called whenever the user gets the cell to refresh
+            CheckBoxRenderer.prototype.refresh = function (params) {
+
+                // return true to tell the grid we refreshed successfully
+                return true;
+            };
+
+            // gets called when the cell is removed from the grid
+            CheckBoxRenderer.prototype.destroy = function () {
+                // do cleanup
+            };
         }
 
         $rootScope.$on("spModel.uiActionComplete", function (evt, response) {
@@ -485,6 +530,8 @@
                     if (response.isInsert) 
                         dataToUpdate = {add: [savedRec], addIndex: 0};
 
+                    console.table(dataToUpdate);
+
                     detailGridInfo.api.updateRowData(dataToUpdate);
 
                     //highlight the modded record
@@ -506,14 +553,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-07 14:42:15</sys_created_on>
         <sys_id>cead644f1be018501f7e113d9c4bcb71</sys_id>
-        <sys_mod_count>105</sys_mod_count>
+        <sys_mod_count>110</sys_mod_count>
         <sys_name>AGContractGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_cead644f1be018501f7e113d9c4bcb71</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-20 19:04:07</sys_updated_on>
+        <sys_updated_on>2020-05-22 19:49:27</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

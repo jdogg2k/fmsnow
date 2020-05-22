@@ -3,287 +3,302 @@
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>number</element>
-            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">b132a48d1b3454101f7e113d9c4bcbb9</list_id>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>0</position>
             <sum>false</sum>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
-            <sys_id>f932a48d1b3454101f7e113d9c4bcbb9</sys_id>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>790111371b34dc101f7e113d9c4bcbb6</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>tran_date</element>
-            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">b132a48d1b3454101f7e113d9c4bcbb9</list_id>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>1</position>
             <sum>false</sum>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
-            <sys_id>fd32e0cd1b3454101f7e113d9c4bcbd7</sys_id>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>fd0111371b34dc101f7e113d9c4bcbb6</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>fy</element>
-            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">b132a48d1b3454101f7e113d9c4bcbb9</list_id>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>2</position>
             <sum>false</sum>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
-            <sys_id>7132e0cd1b3454101f7e113d9c4bcbd8</sys_id>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>710111371b34dc101f7e113d9c4bcbb7</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>project_ref</element>
-            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">b132a48d1b3454101f7e113d9c4bcbb9</list_id>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>3</position>
             <sum>false</sum>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
-            <sys_id>f132e0cd1b3454101f7e113d9c4bcbd8</sys_id>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>f10111371b34dc101f7e113d9c4bcbb7</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>tran_type</element>
-            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">b132a48d1b3454101f7e113d9c4bcbb9</list_id>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>4</position>
             <sum>false</sum>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
-            <sys_id>7532e0cd1b3454101f7e113d9c4bcbd8</sys_id>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>750111371b34dc101f7e113d9c4bcbb7</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>tran_status</element>
-            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">b132a48d1b3454101f7e113d9c4bcbb9</list_id>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>5</position>
             <sum>false</sum>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
-            <sys_id>f532e0cd1b3454101f7e113d9c4bcbd8</sys_id>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>f50111371b34dc101f7e113d9c4bcbb7</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>account_nmbr</element>
-            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">b132a48d1b3454101f7e113d9c4bcbb9</list_id>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>6</position>
             <sum>false</sum>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
-            <sys_id>7932e0cd1b3454101f7e113d9c4bcbd8</sys_id>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>790111371b34dc101f7e113d9c4bcbb7</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>allotment_ref</element>
-            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">b132a48d1b3454101f7e113d9c4bcbb9</list_id>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>7</position>
             <sum>false</sum>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
-            <sys_id>f932e0cd1b3454101f7e113d9c4bcbd8</sys_id>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>f90111371b34dc101f7e113d9c4bcbb7</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>obligation</element>
-            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">b132a48d1b3454101f7e113d9c4bcbb9</list_id>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>8</position>
             <sum>false</sum>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
-            <sys_id>7d32e0cd1b3454101f7e113d9c4bcbd8</sys_id>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>7d0111371b34dc101f7e113d9c4bcbb7</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>obligation_date</element>
-            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">b132a48d1b3454101f7e113d9c4bcbb9</list_id>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>9</position>
             <sum>false</sum>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
-            <sys_id>fd32e0cd1b3454101f7e113d9c4bcbd8</sys_id>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>fd0111371b34dc101f7e113d9c4bcbb7</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>void</element>
-            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">b132a48d1b3454101f7e113d9c4bcbb9</list_id>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>10</position>
             <sum>false</sum>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
-            <sys_id>7132e0cd1b3454101f7e113d9c4bcbd9</sys_id>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>710111371b34dc101f7e113d9c4bcbb8</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>received_by</element>
-            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">b132a48d1b3454101f7e113d9c4bcbb9</list_id>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>11</position>
             <sum>false</sum>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
-            <sys_id>f132e0cd1b3454101f7e113d9c4bcbd9</sys_id>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>f10111371b34dc101f7e113d9c4bcbb8</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>reconcile_date</element>
-            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">b132a48d1b3454101f7e113d9c4bcbb9</list_id>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>12</position>
             <sum>false</sum>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
-            <sys_id>7532e0cd1b3454101f7e113d9c4bcbd9</sys_id>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>750111371b34dc101f7e113d9c4bcbb8</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>project_appropriation_ref</element>
-            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">b132a48d1b3454101f7e113d9c4bcbb9</list_id>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>13</position>
             <sum>false</sum>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
-            <sys_id>f532e0cd1b3454101f7e113d9c4bcbd9</sys_id>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>f50111371b34dc101f7e113d9c4bcbb8</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>description</element>
-            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">b132a48d1b3454101f7e113d9c4bcbb9</list_id>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>14</position>
             <sum>false</sum>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
-            <sys_id>7932e0cd1b3454101f7e113d9c4bcbd9</sys_id>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>790111371b34dc101f7e113d9c4bcbb8</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>notes</element>
-            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">b132a48d1b3454101f7e113d9c4bcbb9</list_id>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>15</position>
             <sum>false</sum>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
-            <sys_id>f932e0cd1b3454101f7e113d9c4bcbd9</sys_id>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>f90111371b34dc101f7e113d9c4bcbb8</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>contract_ref</element>
-            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">b132a48d1b3454101f7e113d9c4bcbb9</list_id>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>16</position>
             <sum>false</sum>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
-            <sys_id>7d32e0cd1b3454101f7e113d9c4bcbd9</sys_id>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>7d0111371b34dc101f7e113d9c4bcbb8</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>allocation_group_ref</element>
-            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">b132a48d1b3454101f7e113d9c4bcbb9</list_id>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>17</position>
             <sum>false</sum>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
-            <sys_id>fd32e0cd1b3454101f7e113d9c4bcbd9</sys_id>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>fd0111371b34dc101f7e113d9c4bcbb8</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>cost_pool_ref</element>
-            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">b132a48d1b3454101f7e113d9c4bcbb9</list_id>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>18</position>
             <sum>false</sum>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
-            <sys_id>7132e0cd1b3454101f7e113d9c4bcbda</sys_id>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>710111371b34dc101f7e113d9c4bcbb9</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>transaction_total_amt</element>
+            <list_id display_value="x_g_irm_fms_fin_tran" element="NULL" name="x_g_irm_fms_fin_tran" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">350111371b34dc101f7e113d9c4bcbb5</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>19</position>
+            <sum>false</sum>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
+            <sys_id>f10111371b34dc101f7e113d9c4bcbb9</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
@@ -296,19 +311,19 @@
             <relationship/>
             <sum>false</sum>
             <sys_class_name>sys_ui_list</sys_class_name>
-            <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-13 19:00:07</sys_created_on>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-05-22 11:27:56</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
-            <sys_id>b132a48d1b3454101f7e113d9c4bcbb9</sys_id>
+            <sys_id>350111371b34dc101f7e113d9c4bcbb5</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_name>x_g_irm_fms_fin_tran</sys_name>
             <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
             <sys_policy/>
             <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
             <sys_update_name>sys_ui_list_x_g_irm_fms_fin_tran_null</sys_update_name>
-            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-13 19:00:07</sys_updated_on>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-05-22 11:27:56</sys_updated_on>
             <sys_user/>
             <view display_value="Default view" name="NULL">Default view</view>
             <view_name/>

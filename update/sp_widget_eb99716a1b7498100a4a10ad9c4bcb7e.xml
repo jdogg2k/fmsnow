@@ -543,11 +543,33 @@
     if (input) { //input holds the data coming back to the server
 
         if (input.mode == "getNewRec") {
+
             data.newRec = FMSUtility.getTableData(input.targetTable, "sys_id=" + input.newSysID, true)[0];
+
+            var poolRefID = "";
+            if (input.targetTable == FMSConstants.TABLE_PROJECT_ALLOCATION) {
+                poolRefID = data.newRec.allocation_pool_ref_rawval;
+            } else {
+                poolRefID = data.newRec.pool_parent_ref_rawval;
+            }
+
+            data.parentRec = FMSUtility.getTableData(FMSConstants.TABLE_ALLOCATION_POOL, "sys_id=" + poolRefID, true)[0];
         }
 
         if (input.mode == "deleteRow") {
-            FMSUtility.deleteRecord(FMSConstants.TABLE_ALLOCATION_POOL, input.rowID);
+            
+            if (input.delTable != FMSConstants.TABLE_ALLOCATION_POOL) { //removing allocation so let's update parent
+                var deletedRec = new GlideRecord(input.delTable);
+                deletedRec.get(input.rowID);
+                var dParentID = deletedRec.allocation_pool_ref.toString();
+            }    
+                
+            FMSUtility.deleteRecord(input.delTable, input.rowID);
+
+            if (input.delTable != FMSConstants.TABLE_ALLOCATION_POOL) {
+                data.parentRec = FMSUtility.getTableData(FMSConstants.TABLE_ALLOCATION_POOL, "sys_id=" + dParentID, true)[0];
+            }
+
         }
         if (input.mode == "setOrg") {
             data.selectedOrg = input.org_id.toString();
@@ -568,14 +590,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-18 17:12:53</sys_created_on>
         <sys_id>eb99716a1b7498100a4a10ad9c4bcb7e</sys_id>
-        <sys_mod_count>56</sys_mod_count>
+        <sys_mod_count>64</sys_mod_count>
         <sys_name>Allocation Pool Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_eb99716a1b7498100a4a10ad9c4bcb7e</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-20 18:47:12</sys_updated_on>
+        <sys_updated_on>2020-05-22 18:44:05</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">

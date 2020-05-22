@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Financial Transaction" max_length="40" name="x_g_irm_fms_fin_tran" type="collection">
+    <element label="Financial Transaction" max_length="40" name="x_g_irm_fms_fin_tran" sizeclass="9797" type="collection">
         <element label="Account Number" max_length="4" name="account_nmbr" type="string"/>
         <element label="Allocation Group" max_length="32" name="allocation_group_ref" reference="x_g_irm_fms_allocation_group" type="reference"/>
         <element label="Allotment" mandatory="true" max_length="32" name="allotment_ref" reference="x_g_irm_fms_allotment" type="reference"/>
@@ -21,7 +21,23 @@
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;    var items = new GlideRecord('x_g_irm_fms_fin_tran_item');&#13;&#10;    items.addQuery('fin_tran_ref', current.sys_id);&#13;&#10;    items.query();&#13;&#10;    var total = 0;&#13;&#10;    while (items.next()) {&#13;&#10;        total += (parseInt(items.received_qty || items.item_qty)) * (parseFloat(items.actual_cost || items.item_cost));&#13;&#10;    }&#13;&#10;    return total; &#13;&#10;})(current);" label="Transaction Total" max_length="20" name="transaction_total_amt" read_only="true" type="currency" virtual="true"/>
         <element label="Transaction Date" mandatory="true" max_length="40" name="tran_date" type="glide_date"/>
         <element label="Status" mandatory="true" max_length="12" name="tran_status" type="string"/>
-        <element label="Transaction Type" mandatory="true" max_length="16" name="tran_type" type="string"/>
+        <element choice="3" default="PO" label="Transaction Type" mandatory="true" max_length="16" name="tran_type" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Credit Card" value="CC"/>
+                <element inactive_on_update="false" label="Inter-Agency Agreement" value="IAA"/>
+                <element inactive_on_update="false" label="Military Interdepartment Purchase Request" value="MIPR"/>
+                <element inactive_on_update="false" label="Miscellaneous - D9" value="D9"/>
+                <element inactive_on_update="false" label="Miscellaneous - M9" value="M9"/>
+                <element inactive_on_update="false" label="Purchase Order" value="PO"/>
+                <element inactive_on_update="false" label="Training" value="TG"/>
+                <element inactive_on_update="false" label="Transfer Out – External" value="TE"/>
+                <element inactive_on_update="false" label="Transfer Out – Internal" value="TI"/>
+                <element inactive_on_update="false" label="Transfer Out – Office Adjustment" value="TOA"/>
+                <element inactive_on_update="false" label="Transfer Out – Vanguard Labor" value="TVGL"/>
+                <element inactive_on_update="false" label="Transfer Out – Vanguard Travel/ODC" value="TVGT"/>
+                <element inactive_on_update="false" label="Travel Order" value="TO"/>
+            </choice>
+        </element>
         <element label="Void?" max_length="40" name="void" type="boolean"/>
         <index name="index">
             <element name="project_ref"/>

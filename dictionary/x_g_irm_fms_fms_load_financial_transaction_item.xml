@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="sys_import_set_row" label="FMS Load Financial Transaction Item" max_length="40" name="x_g_irm_fms_fms_load_financial_transaction_item" type="collection">
+        <element attributes="import_attribute_name=Actual Cost" label="Actual Cost" max_length="15" name="u_actual_cost" type="decimal"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Delivery Date" label="Delivery Date" max_length="40" name="u_delivery_date" type="glide_date"/>
+        <element attributes="import_attribute_name=Expense Item ID" label="Expense Item ID" max_length="40" name="u_expense_item_id" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Item Cost" label="Item Cost" max_length="40" name="u_item_cost" type="string"/>
+        <element attributes="import_attribute_name=Item Qty" label="Item Qty" max_length="40" name="u_item_qty" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=OMB300Category" label="OMB300Category" max_length="60" name="u_omb300category" type="string"/>
+        <element attributes="import_attribute_name=Post ID" label="Post ID" max_length="40" name="u_post_id" type="integer"/>
+        <element attributes="import_attribute_name=Received Quantity" label="Received Quantity" max_length="40" name="u_received_quantity" type="integer"/>
+        <element attributes="import_attribute_name=Tran ID" label="Tran ID" max_length="40" name="u_tran_id" type="integer"/>
+        <element attributes="import_attribute_name=Tran Item" label="Tran Item" max_length="40" name="u_tran_item" type="integer"/>
+    </element>
+</database>

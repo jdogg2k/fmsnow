@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="OMB Category" max_length="40" name="x_g_irm_fms_omb_category" type="collection">
-        <element label="OMB Category" mandatory="true" max_length="60" name="omb_category" type="string"/>
+        <element display="true" label="OMB Category" mandatory="true" max_length="60" name="omb_category" type="string"/>
         <element label="Organization" mandatory="true" max_length="32" name="organization_ref" reference="x_g_irm_fms_organization" reference_qual="javascript: &quot;sys_idIN&quot; + new OrgHierarchy().getUserOrgs(); " type="reference" use_reference_qualifier="advanced"/>
         <index name="index">
             <element name="organization_ref"/>
