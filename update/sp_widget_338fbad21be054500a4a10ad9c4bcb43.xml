@@ -147,11 +147,13 @@
         },
         {
             field: 'base_value',
-            headerName: 'Base Value'
+            headerName: 'Base Value',
+            type: 'currency'
         },
         {
             field: 'total_value',
-            headerName: 'Total Value'
+            headerName: 'Total Value',
+            type: 'currency'
         },
         {
             field: 'delete',
@@ -500,14 +502,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-05 17:24:17</sys_created_on>
         <sys_id>338fbad21be054500a4a10ad9c4bcb43</sys_id>
-        <sys_mod_count>114</sys_mod_count>
+        <sys_mod_count>115</sys_mod_count>
         <sys_name>Contract Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_338fbad21be054500a4a10ad9c4bcb43</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-22 19:50:55</sys_updated_on>
+        <sys_updated_on>2020-05-28 19:41:14</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

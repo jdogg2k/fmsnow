@@ -41,6 +41,25 @@
 
     var fintranColumnDefs = [
 		{
+            headerName: 'test',
+            sort: 'asc',
+            minWidth: 175,
+   /*         cellRenderer: 'groupCell',    */
+            showRowGroup: true,
+            cellRendererParams: function(params) {
+                return {
+                    "suppressCount": true,
+                    "checkbox": false,
+                    "suppressDoubleClickExpand": true,
+                    "suppressEnterExpand": true,
+                    "showCols": [ { col: 'fy'} ] 
+                };
+            },
+			valueGetter: function(params) {
+				return params.data.fy;
+			}
+		},
+		{
             field: 'edit',
             headerName: 'Edit',
             maxWidth: 50,
@@ -52,7 +71,7 @@
             cellRenderer: 'editCell',
             cellRendererParams: function(params) {
                 return {
-                    "show": c.canEdit(c.userAuth, params.data)
+                    "show": c.canEdit(c.userAuth, params)
                 };
             }
         },
@@ -60,24 +79,32 @@
             field: 'project_ref',
             headerName: 'Project',
             filter: 'agTextColumnFilter',
-			rowGroup: true,
+			sort: 'asc',
+			sortingOrder: 1,
+			rowGroup: true,   
 			hide: true
         },
         {
             field: 'tran_type',
             headerName: 'Tran Type',
-            filter: 'agTextColumnFilter'
-        },
+            filter: 'agTextColumnFilter',
+   			sort: 'asc',
+			sortingOrder: 4
+    },
         {
             field: 'tran_status',
             headerName: 'Status',
-            filter: 'agTextColumnFilter'
+            filter: 'agTextColumnFilter',
+			sort: 'asc',
+			sortingOrder: 3
         },
         {
             field: 'fy',
             headerName: 'FY',
             filter: 'agTextColumnFilter',
-			rowGroup: true,
+			sort: 'asc',
+			sortingOrder: 2,
+	/*		rowGroup: true,    */
 			hide: true
         },
         {
@@ -85,9 +112,16 @@
             headerName: 'Description',
             filter: 'agTextColumnFilter'
         },
+		{
+            field: 'tran_date',
+            headerName: 'Trans. Date',
+            filter: 'agDateColumnFilter',
+			sort: 'desc',
+			sortingOrder: 5
+        },
         {
             field: 'transaction_total_amt',
-            headerName: 'Amount',
+            headerName: 'Tran. Amount',
             cellStyle: {
                 textAlign: 'right'
             },
@@ -130,11 +164,11 @@
         {
             field: 'obligation_date',
             headerName: 'Obligation Date',
-            filter: 'agTextColumnFilter'
+            filter: 'agDateColumnFilter'
         },
         {
             field: 'void',
-            headerName: 'void',
+            headerName: 'Void?',
             cellRenderer: 'checkbox'
         },
         {
@@ -150,6 +184,78 @@
             cellRendererParams: function(params) {
                 return {
                     "show": c.canDelete(c.userAuth, params.data)
+				};
+            }
+        }
+    ];
+
+    var fintranItemDefs = [
+		{
+            field: 'edit_item',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+            suppressMenu: true,
+            sortable: false,
+            cellRenderer: 'editCell',
+            cellRendererParams: function(params) {
+                return {
+                    "show": c.canEdit(c.userAuth, params.data),
+					"table": c.data.itemTableName,
+					"parent": params.data.fin_tran_ref_rawval
+                };
+            }
+        },
+        {
+            field: 'item_qty',
+            headerName: 'Item Quantity',
+            filter: 'agNumberColumnFilter'
+        },
+        {
+            field: 'item_cost',
+            headerName: 'Amount',
+            cellStyle: {
+                textAlign: 'right'
+            },
+   /*         type: 'currency',    */
+            filter: 'agNumberColumnFilter',
+            aggFunc: 'sum',
+            headerComponentParams: {
+                template: '<div class="ag-cell-label-container" role="presentation">' +
+                    '<span ref="eText" class="ag-header-cell-text" role="columnheader"></span>' +
+                    '</div>'
+            }
+        },
+        {
+            field: 'expense_item_ref',
+            headerName: 'Expense Item',
+            filter: 'agTextColumnFilter'
+        },
+        {
+            field: 'post_ref',
+            headerName: 'Post',
+            filter: 'agTextColumnFilter'
+        },
+        {
+            field: 'omb_category_ref',
+            headerName: 'OMB Category',
+            filter: 'agTextColumnFilter'
+        },
+        {
+            field: 'delete_item',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+            cellRenderer: 'deleteCell',
+            cellRendererParams: function(params) {
+                return {
+                    "show": c.canEdit(c.userAuth, params.data),
+					"table": c.data.itemTableName,
+					"parent": params.data.fin_tran_ref_rawval
                 };
             }
         }
@@ -167,6 +273,7 @@
     fintranManager.setColumns(fintranColumnDefs);
     fintranManager.setPageProperties(fintranProps);
     fintranManager.setRenderers('project_ref'); //build renderers and set display field to show on delete attempt
+	fintranManager.setDetailRenderer('Transaction Items', c.data.itemTableName, fintranItemDefs, 'fin_tran_ref');
     fintranManager.renderGrid('fintranGrid'); //render grid objects
     fintranManager.setGridData(c.data.tableData); //set grid data
     fintranManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst));
@@ -201,34 +308,134 @@
     height: calc(100vh - 210px);&#13;
     clear: both;&#13;
 }&#13;
+&#13;
 .fms-list-header {&#13;
     margin-bottom: 0px !important;&#13;
 }&#13;
+&#13;
 .pageLabel {&#13;
     float: left;&#13;
     margin-right: 10px;&#13;
 }&#13;
+&#13;
 .row-button {&#13;
     cursor: pointer;&#13;
 }&#13;
+&#13;
 .new-button {&#13;
     float: left;&#13;
 }&#13;
+&#13;
 .excel-button {&#13;
     float: right;&#13;
 }&#13;
+&#13;
 .edit-pencil {&#13;
     color: #003ade;&#13;
     font-size: 13px;&#13;
 }&#13;
+&#13;
 .delete-x {&#13;
     color: #000000;&#13;
     font-size: 13px;&#13;
 }&#13;
+&#13;
 .updated-row {&#13;
     background-color: #FFFFCC;&#13;
 }&#13;
-</css>
+&#13;
+.tier-1-row {&#13;
+    background-color: #ff707a;&#13;
+}&#13;
+&#13;
+.tier-2-row {&#13;
+    background-color: #ffffe0;&#13;
+}&#13;
+&#13;
+.tier-3-row {&#13;
+    background-color: #90ee90;&#13;
+}&#13;
+&#13;
+.expired-row {&#13;
+    background-color: #c5c5c5;&#13;
+}&#13;
+&#13;
+.full-width-panel {&#13;
+    position: relative;&#13;
+    background: #EDF6FF;&#13;
+    height: 100%;&#13;
+    width: 100%;&#13;
+    padding: 5px;&#13;
+}&#13;
+&#13;
+.call-record-cell {&#13;
+    text-align: right;&#13;
+}&#13;
+&#13;
+.full-width-detail {&#13;
+    padding-top: 4px;&#13;
+}&#13;
+&#13;
+.full-width-title {&#13;
+    font-size: 10pt;&#13;
+    font-weight: bold;&#13;
+    float: left;&#13;
+}&#13;
+&#13;
+.contract-button {&#13;
+    float: right;&#13;
+    margin-top: -13px;&#13;
+}&#13;
+&#13;
+.full-width-details {&#13;
+    float: left;&#13;
+    padding: 5px;&#13;
+    margin: 5px;&#13;
+    width: 100%;&#13;
+    clear: both;&#13;
+}&#13;
+&#13;
+.details-grid {&#13;
+    display: block;&#13;
+    clear: both;&#13;
+    height: 100px;&#13;
+    margin-bottom: 5px;&#13;
+}&#13;
+&#13;
+.full-width-grid-toolbar {&#13;
+    top: 4px;&#13;
+    left: 30px;&#13;
+    margin-left: 150px;&#13;
+    display: block;&#13;
+    position: absolute;&#13;
+}&#13;
+&#13;
+.full-width-phone-icon {&#13;
+    padding-right: 10px;&#13;
+}&#13;
+&#13;
+.full-width-search {&#13;
+    border: 1px solid #eee;&#13;
+    margin-left: 10px;&#13;
+}&#13;
+&#13;
+.ag-react-container {&#13;
+    display: inline-block;&#13;
+    width: 100%;&#13;
+    height: 100%;&#13;
+}&#13;
+&#13;
+.ag-cell-focus,&#13;
+.ag-cell-no-focus {&#13;
+    border: none !important;&#13;
+    box-shadow: none !important;&#13;
+}&#13;
+&#13;
+.ag-cell:focus {&#13;
+    border: none !important;&#13;
+    outline: none;&#13;
+    box-shadow: none !important;&#13;
+}</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -257,6 +464,9 @@
 		data.selectedProj = session.getClientData('proj_id');
 
     if (input) { //input holds the data coming back to the server
+        if (input.mode == "getDetailData") {
+            data[FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM] = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM, input.parentRef + '=' + input.parentID, true); 
+        }
         if (input.mode == "deleteRow") {
             FMSUtility.deleteRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION, input.rowID);
         }
@@ -274,6 +484,7 @@
     data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, filter, true); 
 
     data.tableName = FMSConstants.TABLE_FINANCIAL_TRANSACTION;
+    data.itemTableName = FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM;
 
 })();
 
@@ -285,21 +496,21 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-21 14:05:50</sys_created_on>
         <sys_id>fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>67</sys_mod_count>
         <sys_name>Financial Transaction Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-22 11:20:43</sys_updated_on>
+        <sys_updated_on>2020-05-28 19:13:23</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
     <div class="row">
       <div class="form-group col-sm-12 fms-list-header">
         <div class="fms-header-buttons">
-          <a href="javascript:void(0)" ng-click="c.addNew();" ng-show="c.canAdd()" class="btn btn-info new-button">Add Allocation</a>
+          <a href="javascript:void(0)" ng-click="c.addNew();" ng-show="c.canAdd()" class="btn btn-info new-button">Add Financial Transaction</a>
           <a href="javascript:void(0)" ng-click="c.exportExcel();" class="btn btn-primary excel-button">Export to Excel</a>
         </div>
       </div>

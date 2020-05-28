@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_db_view_table">
+    <sys_db_view_table action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <left_join>true</left_join>
+        <order>200</order>
+        <sys_class_name>sys_db_view_table</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-05-27 18:09:18</sys_created_on>
+        <sys_id>1b8c98691b0954501f7e113d9c4bcbf5</sys_id>
+        <sys_mod_count>16</sys_mod_count>
+        <sys_name>x_g_irm_fms_allocation_group</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_db_view_table_1b8c98691b0954501f7e113d9c4bcbf5</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-27 20:21:48</sys_updated_on>
+        <table>x_g_irm_fms_allocation_group</table>
+        <variable_prefix>grp</variable_prefix>
+        <view display_value="x_g_irm_fms_fin_tran_rpt">f50cd4691b0954501f7e113d9c4bcbe5</view>
+        <where_clause>(grp_sys_id = ft_allocation_group_ref)</where_clause>
+    </sys_db_view_table>
+</record_update>

@@ -8,6 +8,11 @@
         var DeleteCellRenderer = function() {};
         var EditCellRenderer = function() {};
         var CheckBoxRenderer = function() {};
+		var GroupCellRenderer = function () {};
+		var DetailCellRenderer = function () {
+            this.masterGridApi = null;
+            this.masterRowIndex = null;
+        };
 
         function currencyCssFunc(params) {
             if (params.value !== null && params.value !== undefined && params.value < 0) {
@@ -64,6 +69,10 @@
             paginationAutoPageSize: true,
             suppressColumnVirtualisation: true,
             groupMultiAutoColumn: true,
+            masterDetail: true,
+			detailCellRenderer: "myDetailCellRenderer",
+            keepDetailRows: true,
+            detailRowHeight: 375,
             autoGroupColumnDef: {
                 cellRendererParams: {
                     suppressCount: true,
@@ -95,7 +104,9 @@
             components: {
                 editCell: EditCellRenderer,
                 deleteCell: DeleteCellRenderer,
-                checkbox: CheckBoxRenderer
+                checkbox: CheckBoxRenderer,
+				myDetailCellRenderer: DetailCellRenderer,
+                groupCell: GroupCellRenderer
             }
         };
 
@@ -162,6 +173,9 @@
             var gridDiv = document.querySelector('#' + ele);
             new agGrid.Grid(gridDiv, gridOptions);
         };
+        this.setOption = function(opt, optval) {
+            gridOptions[opt] = optval;
+        };
         this.setColumns = function(columnData) {
             gridOptions.columnDefs = columnData;
         };
@@ -204,7 +218,31 @@
             params.columnKeys = exportColumns;
             gridOptions.api.exportDataAsCsv(params);
         };
-        this.setRenderers = function(displayField) {
+		
+
+		GroupCellRenderer.prototype.init = function (params) {
+
+			this.eGui = document.createElement('div');
+
+			if (params.node.group) {
+				this.eGui.innerHTML = params.cellHTML;
+			}
+		};
+
+		GroupCellRenderer.prototype.getGui = function () {
+			return this.eGui;
+		};
+
+		// gets called when the cell is removed from the grid
+		GroupCellRenderer.prototype.destroy = function () {
+			if (this.eButton)
+				this.eButton.removeEventListener('click', this.eventListener);
+			if (this.aButton)
+				this.aButton.removeEventListener('click', this.allocateListener);
+		};
+
+
+		this.setRenderers = function(displayField) {
             EditCellRenderer.prototype.init = function(params) {
 
                 // create the cell
@@ -240,8 +278,6 @@
                 if (this.eButton)
                     this.eButton.removeEventListener('click', this.eventListener);
             };
-
-
 
             // gets called once before the renderer is used
             DeleteCellRenderer.prototype.init = function(params) {
@@ -313,7 +349,91 @@
             CheckBoxRenderer.prototype.destroy = function() {
                 // do cleanup
             };
-        }
+        };
+
+        this.setDetailRenderer = function(detailName, detailTable, detailCols, parentRef) {
+
+			var gridName = detailName.replace(/ /g, '_') + 'Grid';
+			var buttonName = detailName.replace(/ /g, '_') + 'Button';
+
+			DetailCellRenderer.prototype.init = function(params) {
+                // trick to convert string of HTML into DOM object
+                var eTemp = document.createElement('div');
+                eTemp.innerHTML = this.getTemplate(params.data);
+                this.eGui = eTemp.firstElementChild;
+                this.masterGridApi = params.api;
+                this.masterRowIndex = params.data.sys_id;
+                this.setupDetailGrid(detailName, detailTable, detailCols, parentRef, params.api, params.data.sys_id);
+            };
+            DetailCellRenderer.prototype.setupDetailGrid = function(detailName, detailTable, detailCols, parentRef, masterGridApi, targSys) {
+
+                pageController.detailLoading = true;
+
+                var detailGrid = this.eGui.querySelector('#' + gridName);
+                var detailButton = this.eGui.querySelector('#' + buttonName);
+                var detailListener = function() {
+                    editGridRow("-1", parentRef + "=" + targSys, detailTable, "detail_rel_" + targSys);
+                };
+                detailButton.addEventListener('click', detailListener);
+
+                new agGrid.Grid(detailGrid, {
+                    columnDefs: detailCols,
+                    onGridReady: function(params) {
+                        var detailGridId = "detail_rel_" + targSys;
+
+                        var gridInfo = {
+                            id: detailGridId,
+                            api: params.api,
+                            columnApi: params.columnApi
+                        };
+
+                        masterGridApi.addDetailGridInfo(detailGridId, gridInfo);
+                        masterGridApi.getDetailGridInfo(detailGridId).api.showLoadingOverlay(); //show loading message
+
+                        var req = {mode: 'getDetailData', parentRef: parentRef, parentID: targSys}; //build request
+
+                        pageController.server.get(req).then(function(saveResp) { //call to server to get live details data
+                            var detailData = saveResp.data[detailTable]; 
+                            masterGridApi.getDetailGridInfo(detailGridId).api.setRowData(detailData); //set returned data to grid
+                            masterGridApi.getDetailGridInfo(detailGridId).api.hideOverlay(); //hide loading
+                            masterGridApi.getDetailGridInfo(detailGridId).api.sizeColumnsToFit(); //fit columns
+                        });  
+                    },
+                    overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Getting Transaction Item Data ... Stand By...</span>',
+                    getRowNodeId: function(data) {
+                        return data.sys_id;
+                    },
+                    components: {
+                        editCell: EditCellRenderer,
+                        deleteCell: DeleteCellRenderer
+                    }
+                });      
+                
+            };
+            DetailCellRenderer.prototype.getTemplate = function(data) {
+                var template =
+                    '<div class="full-width-panel">' +
+                    '  <div class="full-width-details">' +
+                    '    <div class="full-width-title">' + detailName + '</div>' +
+                    '    <a href="javascript:void(0);" id="' + buttonName + '" class="btn btn-sm btn-info contract-button">Add ' + detailName + '</a>' +
+                    '  </div>' +
+                    '  <div id="' + gridName + '" class="details-grid"></div>' +
+                    '</div>';
+
+                return template;
+            };
+
+            DetailCellRenderer.prototype.getGui = function() {
+                return this.eGui;
+            };
+
+            DetailCellRenderer.prototype.destroy = function() {
+                var relationshipGridId = "detail_rel_" + this.masterRowIndex;
+                this.masterGridApi.getDetailGridInfo(relationshipGridId).api.destroy();
+                this.masterGridApi.removeDetailGridInfo(relationshipGridId);
+
+            };
+        };
 
         $rootScope.$on("spModel.uiActionComplete", function(evt, response) {
 
@@ -347,14 +467,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>239</sys_mod_count>
+        <sys_mod_count>288</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-20 20:17:25</sys_updated_on>
+        <sys_updated_on>2020-05-28 14:00:44</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

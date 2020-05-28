@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function (AGAllocationPoolGridFactory, $timeout) {
+    /* widget controller */
+    var c = this;
+    c.targetOrg = c.data.selectedOrg;
+    c.userAuth = $rootScope.userAuth;
+
+    c.reportData = [];
+
+    c.generateReport = function () {
+        c.server.get({
+            mode: 'buildReport',
+            fy: c.reportOptions.selectedFY
+        }).then(function (reportResults) {
+            c.reportData = reportResults.data.reportData;
+            gridOptions.api.setRowData(c.reportData);
+            gridOptions.api.sizeColumnsToFit();
+        });
+    }
+
+    c.reportOptions = {
+        selGroup1: "project"
+    };
+
+    function currencyCssFunc(params) {
+        if (params.value !== null && params.value !== undefined && params.value < 0) {
+            return {
+                "color": "red",
+                "font-weight": "bold",
+                "text-align": "right"
+            };
+        } else {
+            return {
+                "text-align": "right"
+            };
+        }
+    }
+
+    function currencyFormatter(params) {
+        if (params.value != 0 && (params.value === null || params.value === undefined || params.value == "")) {
+            return null;
+        } else if (isNaN(params.value)) {
+            return '$' + parseFloat(0).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+        } else {
+            if (parseFloat(params.value) >= 0) {
+                return '$' + parseFloat(params.value).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+            } else {
+                return currencyNegative(params.value);
+            }
+        }
+    }
+
+    function currencyNegative(tVal) {
+        return '$(' + parseFloat(tVal).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,").replace("-", "") + ")";
+    }
+
+    var gridOptions = {
+        columnDefs: [{
+                headerName: 'Appropriation',
+                field: 'appropriation',
+                rowGroup: true,
+                enableRowGroup: true,
+                enablePivot: true
+            },
+            {
+                headerName: 'Appropriation Type',
+                field: 'appropriation_type',
+                enableRowGroup: true,
+                enablePivot: true
+            },
+            {
+                headerName: 'Allocation Group',
+                field: 'allocation_group',
+                enableRowGroup: true
+            },
+            {
+                headerName: 'Investment',
+                field: 'investment',
+                enableRowGroup: true
+            },
+            {
+                headerName: 'Organization',
+                field: 'org_name',
+                pivot: true,
+                enablePivot: true
+            },
+            {
+                headerName: 'Project',
+                field: 'project',
+                pivot: true,
+                enablePivot: true
+            },
+            {
+                headerName: 'Allocations',
+                field: 'allocations',
+                aggFunc: 'sum',
+                type: 'currency'
+            },
+            {
+                headerName: 'Reimbursements',
+                field: 'reimbursements',
+                aggFunc: 'sum',
+                type: 'currency'
+            },
+            {
+                headerName: 'Transfer In',
+                field: 'trans_in',
+                aggFunc: 'sum',
+                type: 'currency'
+            },
+            {
+                headerName: 'Transfer Out',
+                field: 'trans_out',
+                aggFunc: 'sum',
+                type: 'currency'
+            },
+            {
+                headerName: 'VG Labor',
+                field: 'vg_labor',
+                aggFunc: 'sum',
+                type: 'currency'
+            },
+            {
+                headerName: 'Off. Adjustments',
+                field: 'off_adjustments',
+                aggFunc: 'sum',
+                type: 'currency'
+            },
+            {
+                headerName: 'Expended',
+                field: 'expended',
+                aggFunc: 'sum',
+                type: 'currency'
+            },
+            {
+                headerName: 'Balance',
+                field: 'balance',
+                aggFunc: 'sum',
+                type: 'currency'
+            }
+        ],
+        defaultColDef: {
+            flex: 1,
+            minWidth: 150,
+            sortable: true,
+            resizable: true,
+        },
+        autoGroupColumnDef: {
+            width: 300,
+            cellRendererParams: {
+                suppressCount: true
+            }
+        },
+        suppressAggFuncInHeader: true,
+        groupMultiAutoColumn: true,
+        pivotMode: true,
+        groupIncludeTotalFooter: true,
+        sideBar: 'columns',
+        columnTypes: {
+            'currency': {
+                valueFormatter: currencyFormatter,
+                cellStyle: currencyCssFunc,
+                cellRenderer: 'agAnimateShowChangeCellRenderer'
+            }
+        }
+    };
+
+
+    c.fiscalYears = [];
+
+    for (var i = 2026; i >= 2000; i--) {
+        c.fiscalYears.push(i.toString());
+    }
+
+    c.reportOptions.selectedFY = getCurrentFinancialYear();
+
+    function getCurrentFinancialYear() {
+        var fiscalyear = "";
+        var today = new Date();
+        if ((today.getMonth() + 1) >= 10) {
+            fiscalyear = (today.getFullYear() + 1);
+        } else {
+            fiscalyear = today.getFullYear();
+        }
+        return fiscalyear.toString();
+    }
+
+    var gridDiv = document.querySelector('#reportGrid');
+    new agGrid.Grid(gridDiv, gridOptions);
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.full-grid {
+    width: 94vw;
+    height: calc(100vh - 210px);
+    clear: both;
+}
+
+.fms-list-header {
+    margin-bottom: 0px !important;
+}
+
+.pageLabel {
+    float: left;
+    margin-right: 10px;
+}
+
+.row-button {
+    cursor: pointer;
+}
+
+.new-button {
+    float: left;
+}
+
+.excel-button {
+    float: right;
+}
+
+.edit-pencil {
+    color: #003ade;
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.action-enabled {
+    color: #0b8800;
+    font-size: 16px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.action-disabled {
+    color: #808080;
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.delete-x {
+    color: #000000;
+    font-size: 13px;
+}
+
+.updated-row {
+    background-color: #FFFFCC;
+}
+
+.ag-header-cell-label .ag-header-icon.ag-sort-order {
+    display: none
+}
+
+.ag-row-group {
+    font-weight: bold;
+}
+
+.full-width-panel {
+    position: relative;
+    background: #EDF6FF;
+    height: 100%;
+    width: 100%;
+    padding: 5px;
+}
+
+.full-row-details {
+    position: relative;
+    background: #FFFFFF;
+    height: 100%;
+    width: 100%;
+    padding-left: 12px;
+    padding-top: 4px;
+}
+
+.call-record-cell {
+    text-align: right;
+}
+
+.full-width-detail {
+    padding-top: 4px;
+}
+
+.full-width-title {
+    font-size: 10pt;
+    font-weight: bold;
+    float: left;
+}
+
+.contract-button {
+    float: right;
+    margin-top: -13px;
+}
+
+.full-width-details {
+    float: left;
+    padding: 5px;
+    margin: 5px;
+    width: 100%;
+    clear: both;
+}
+
+.details-grid {
+    display: block;
+    clear: both;
+    height: 100px;
+    margin-bottom: 5px;
+}
+
+.full-width-grid-toolbar {
+    top: 4px;
+    left: 30px;
+    margin-left: 150px;
+    display: block;
+    position: absolute;
+}
+
+.full-width-phone-icon {
+    padding-right: 10px;
+}
+
+.full-width-search {
+    border: 1px solid #eee;
+    margin-left: 10px;
+}
+
+.control-panel {
+    padding: 5px;
+    background-color: #f5f1df;
+}
+
+.reportSelect {
+    padding: 6px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>allocation_activity_report</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Allocation Activity Report</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function () {
+
+    var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+    var orgName = "";
+    var session = gs.getSession();
+
+    if ($sp.getParameter("org_id") && $sp.getParameter("org_id").length > 0)
+        data.selectedOrgID = $sp.getParameter("org_id");
+	else
+		data.selectedOrgID = session.getClientData('org_id');
+
+    if (input) {
+        if (input.mode == "buildReport") {
+            data.reportData = [];
+
+            //get org name
+            var orgQ = new GlideRecord("x_g_irm_fms_organization");
+            orgQ.addQuery("sys_id", data.selectedOrgID);
+            orgQ.query();
+            if (orgQ.next()){
+                orgName = orgQ.org_name.toString();
+            }                
+
+            //get project allocation data
+            var projQ = new GlideAggregate("x_g_irm_fms_project_allocation");
+            projQ.addEncodedQuery("fy=" + input.fy + "^project_ref.organization_ref=" + data.selectedOrgID);
+            projQ.groupBy("appropriation_ref");
+            projQ.groupBy("allocation_group_ref");
+            projQ.groupBy("project_ref");
+            projQ.groupBy("fund_source");
+            projQ.groupBy("transfer_type_ref");
+            projQ.addAggregate("SUM", "allocation_amt");
+            projQ.query();
+            while (projQ.next()){
+
+                var projVal = projQ.project_ref.toString();
+                var allocGroupVal = projQ.allocation_group_ref.toString();
+                var appropVal = projQ.appropriation_ref.appropriation_ref.toString();
+
+                var reportObj = {};
+                var isExisting = false;
+
+                //check for existing object in the array
+                var existingData = data.reportData.filter(function(el) {
+                    return el.project_ref == projVal && el.allocation_group_ref == allocGroupVal && el.appropriation_ref == appropVal;
+                });
+
+                if (existingData.length > 0){ //use existing object
+                    isExisting = true;
+                    reportObj = existingData[0];
+                }
+                    
+                if (!isExisting) { //new entry to the array, define the default values
+
+                    reportObj.org_name = orgName;
+                    reportObj.project = projQ.project_ref.getDisplayValue();
+                    reportObj.project_ref = projVal;
+                    reportObj.investment = projQ.project_ref.investment.investment.getDisplayValue();
+                    reportObj.appropriation_type = projQ.appropriation_ref.appropriation_ref.appropriation_type.getDisplayValue();
+                    reportObj.appropriation = projQ.appropriation_ref.appropriation_ref.getDisplayValue();
+                    reportObj.appropriation_ref = appropVal;
+                    reportObj.allocation_group = projQ.allocation_group_ref.getDisplayValue();
+                    reportObj.allocation_group_ref = allocGroupVal;
+                    reportObj.allocations = 0;
+                    reportObj.reimbursements = 0;
+                    reportObj.trans_in = 0;
+                    reportObj.trans_out = 0;
+                    reportObj.toaa = 0;
+                    reportObj.toa = 0;
+                    reportObj.vg_labor = 0;
+                    reportObj.off_adjustments = 0;
+                    reportObj.expended = 0;
+                    reportObj.balance = 0;
+
+                    //query the view to pull supporting data
+                    var transQ = new GlideAggregate("x_g_irm_fms_fin_tran_rpt");
+                    transQ.addEncodedQuery("proj_organization_ref=" + data.selectedOrgID + "^ft_fy=" + input.fy + "^ft_void=false^ft_allocation_group_ref=" + reportObj.allocation_group_ref + "^ft_project_appropriation_ref.appropriation_ref=" + reportObj.appropriation_ref);
+                    transQ.groupBy("ft_tran_type");
+                    transQ.addAggregate("SUM", "fti_actual_cost");
+                    transQ.query();
+                    while(transQ.next()){
+                        var actCost = parseFloat(transQ.getAggregate("SUM", "fti_actual_cost"));
+                        if (transQ.ft_tran_type == "TE" || transQ.ft_tran_type == "TI" || transQ.ft_tran_type == "TVGT") {
+                            reportObj.trans_out += actCost;
+                        } else if (transQ.ft_tran_type == "TVGL") {
+                            reportObj.vg_labor += actCost;
+                        } else if (transQ.ft_tran_type == "TOA") {
+                            reportObj.toa += actCost;
+                        } else {
+                            reportObj.expended += actCost;
+                        }
+                    }
+                }
+                
+                if (projQ.fund_source == "Allocation")
+                    reportObj.allocations += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
+                
+                if (projQ.fund_source == "Reimbursement")
+                    reportObj.reimbursements += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
+
+                if (projQ.fund_source == "Transfer In")
+                    reportObj.trans_in += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
+
+                if (projQ.fund_source == "Transfer In" && projQ.transfer_type_ref == '9aa3f65d1b0850501f7e113d9c4bcbe6') //TOAA
+                    reportObj.toaa += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
+
+                if (!isExisting) {
+                    data.reportData.push(reportObj);
+                }
+            }
+
+            //total and make negative
+            data.reportData.forEach(function(item){
+                item.vg_labor = item.vg_labor * -1;
+                item.trans_out = item.trans_out * -1;
+                item.expended = item.expended * -1;
+                item.off_adjustments = (item.toaa - item.toa);
+                item.balance = item.allocations + item.trans_in + item.reimbursements + item.toaa + item.vg_labor + item.toa + item.trans_out + item.expended;
+            });
+
+        }
+    }
+
+
+
+    data.orgData = FMSUtility.getAllAllocationData(FMSConstants.TABLE_ORGANIZATION, '', true);
+    data.orgData.sort(function (a, b) {
+        var x = a.organization_display.toLowerCase();
+        var y = b.organization_display.toLowerCase();
+        if (x < y) {
+            return -1;
+        }
+        if (x > y) {
+            return 1;
+        }
+        return 0;
+    });
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-05-26 15:49:31</sys_created_on>
+        <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
+        <sys_mod_count>87</sys_mod_count>
+        <sys_name>Allocation Activity Report</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-28 18:13:45</sys_updated_on>
+        <template><![CDATA[<div style="width: 100%; height: 100%">
+
+    <div class="container">
+        <div class="control-panel">
+            <div class="row">
+                <div class="col-sm-3 form-group">
+                    <widget id="organization_selection" options='{"hide_widget": false, "hide_project": true}'></widget>
+                </div>
+                <div class="col-sm-3 form-group">
+                    <label for="selFY" class="selectLabel">FY:</label>
+                    <select class="reportSelect" id="selFY" ng-model="c.reportOptions.selectedFY">
+                        <option value="">-Select-</option>
+                        <option ng-repeat="year in c.fiscalYears" value="{{year}}">{{year}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-sm-6 form-group">
+                    <a href="javascript:void(0)" ng-click="c.generateReport();" class="btn btn-info new-button">View
+                        Report</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="reportGrid" class="ag-theme-balham full-grid"></div>
+            </div>
+        </div>
+    </div>
+
+</div>]]></template>
+    </sp_widget>
+</record_update>
