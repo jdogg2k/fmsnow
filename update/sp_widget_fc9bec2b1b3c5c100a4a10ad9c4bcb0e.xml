@@ -11,7 +11,7 @@
     var fintranManager = new AGGridFactory();
 
     c.addNew = function() {
-        fintranManager.editRow("-1", "project_ref=" + c.targetProj);
+        fintranManager.editRow("-1", "project_ref=" + c.targetProj, c.data.tableName);
     }
 
     c.canAdd = function() {
@@ -25,6 +25,7 @@
     }
 
     c.canEdit = function(auth, data) {
+        if (!data) return false;
         if (auth.orgs.indexOf(c.targetOrg) >= 0 && (auth.roles.isOrgAdmin || auth.roles.isAnalyst))
             return true;
         else
@@ -39,12 +40,12 @@
         fintranManager.exportExcel();
     }
 
-    var fintranColumnDefs = [
-		{
+    var fintranColumnDefs = [{
             headerName: 'test',
+            field: 'sys_id',
             sort: 'asc',
             minWidth: 175,
-   /*         cellRenderer: 'groupCell',    */
+            cellRenderer: 'agGroupCellRenderer',
             showRowGroup: true,
             cellRendererParams: function(params) {
                 return {
@@ -52,14 +53,14 @@
                     "checkbox": false,
                     "suppressDoubleClickExpand": true,
                     "suppressEnterExpand": true,
-                    "showCols": [ { col: 'fy'} ] 
+                    "innerRenderer": "myGroupCellRenderer"   
                 };
             },
-			valueGetter: function(params) {
-				return params.data.fy;
-			}
-		},
-		{
+            /*		valueGetter: function(params) {
+            			return params.data.fy;
+            		}   */
+        },
+        {
             field: 'edit',
             headerName: 'Edit',
             maxWidth: 50,
@@ -79,45 +80,44 @@
             field: 'project_ref',
             headerName: 'Project',
             filter: 'agTextColumnFilter',
-			sort: 'asc',
-			sortingOrder: 1,
-			rowGroup: true,   
-			hide: true
+            sort: 'asc',
+            sortingOrder: 1,
+            hide: true
         },
         {
             field: 'tran_type',
             headerName: 'Tran Type',
             filter: 'agTextColumnFilter',
-   			sort: 'asc',
-			sortingOrder: 4
-    },
+            sort: 'asc',
+            sortingOrder: 4
+        },
         {
             field: 'tran_status',
             headerName: 'Status',
             filter: 'agTextColumnFilter',
-			sort: 'asc',
-			sortingOrder: 3
+            sort: 'asc',
+            sortingOrder: 3
         },
         {
             field: 'fy',
             headerName: 'FY',
             filter: 'agTextColumnFilter',
-			sort: 'asc',
-			sortingOrder: 2,
-	/*		rowGroup: true,    */
-			hide: true
+            sort: 'asc',
+            sortingOrder: 2,
+            rowGroup: true,   
+            hide: true
         },
         {
             field: 'description',
             headerName: 'Description',
             filter: 'agTextColumnFilter'
         },
-		{
+        {
             field: 'tran_date',
             headerName: 'Trans. Date',
             filter: 'agDateColumnFilter',
-			sort: 'desc',
-			sortingOrder: 5
+            sort: 'desc',
+            sortingOrder: 5
         },
         {
             field: 'transaction_total_amt',
@@ -138,13 +138,13 @@
             field: 'appropriation_ref',
             headerName: 'Appropriation',
             filter: 'agTextColumnFilter',
-			hide: true
+            hide: true
         },
         {
             field: 'allocation_group_ref',
             headerName: 'Allocation Group',
             filter: 'agTextColumnFilter',
-			hide: true
+            hide: true
         },
         {
             field: 'cost_pool_ref',
@@ -183,14 +183,14 @@
             cellRenderer: 'deleteCell',
             cellRendererParams: function(params) {
                 return {
-                    "show": c.canDelete(c.userAuth, params.data)
-				};
+                    "show": c.canDelete(c.userAuth, params.data),
+                    "banner": !params.node.group ? ("Financial Transaction - " + params.data.fin_tran_display) : null
+                };
             }
         }
     ];
 
-    var fintranItemDefs = [
-		{
+    var fintranItemDefs = [{
             field: 'edit_item',
             headerName: 'Edit',
             maxWidth: 50,
@@ -203,8 +203,9 @@
             cellRendererParams: function(params) {
                 return {
                     "show": c.canEdit(c.userAuth, params.data),
-					"table": c.data.itemTableName,
-					"parent": params.data.fin_tran_ref_rawval
+                    "table": c.data.itemTableName,
+                    "parent": params.data.fin_tran_ref_rawval,
+                    "banner": "Financial Transaction Item"
                 };
             }
         },
@@ -219,7 +220,7 @@
             cellStyle: {
                 textAlign: 'right'
             },
-   /*         type: 'currency',    */
+            /*         type: 'currency',    */
             filter: 'agNumberColumnFilter',
             aggFunc: 'sum',
             headerComponentParams: {
@@ -254,8 +255,9 @@
             cellRendererParams: function(params) {
                 return {
                     "show": c.canEdit(c.userAuth, params.data),
-					"table": c.data.itemTableName,
-					"parent": params.data.fin_tran_ref_rawval
+                    "table": c.data.itemTableName,
+                    "parent": params.data.fin_tran_ref_rawval,
+                    "banner": "Financial Transaction Item - " + params.data.fin_tran_item_display
                 };
             }
         }
@@ -272,8 +274,8 @@
 
     fintranManager.setColumns(fintranColumnDefs);
     fintranManager.setPageProperties(fintranProps);
-    fintranManager.setRenderers('project_ref'); //build renderers and set display field to show on delete attempt
-	fintranManager.setDetailRenderer('Transaction Items', c.data.itemTableName, fintranItemDefs, 'fin_tran_ref');
+    fintranManager.setRenderers(); //build renderers 
+    fintranManager.setDetailRenderer('Transaction Items', c.data.itemTableName, fintranItemDefs, 'fin_tran_ref');
     fintranManager.renderGrid('fintranGrid'); //render grid objects
     fintranManager.setGridData(c.data.tableData); //set grid data
     fintranManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst));
@@ -496,14 +498,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-21 14:05:50</sys_created_on>
         <sys_id>fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_id>
-        <sys_mod_count>67</sys_mod_count>
+        <sys_mod_count>89</sys_mod_count>
         <sys_name>Financial Transaction Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-28 19:13:23</sys_updated_on>
+        <sys_updated_on>2020-06-01 16:56:43</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

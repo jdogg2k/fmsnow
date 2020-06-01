@@ -10,17 +10,55 @@
         <script><![CDATA[var FMSUtilities = Class.create();
 FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
-    getScalar: function(table, column, encQry) { // get single value
+    getScalar: function (table, column, encQry) { // get single value
         var rec = new GlideRecord(table);
         rec.addEncodedQuery(encQry);
         rec.setLimit(1);
         rec.query();
         while (rec.next()) {
-			return rec.getElement(column).toString();
+            return rec.getElement(column).toString();
         }
     },
+    
+    getFilteredOrgs: function() {
+        // build new response xml element for result
+        
+        var orgHelper = new OrgHierarchy();
+        var session = gs.getSession();
+        var selOrg = session.getClientData('org_id');
 
-    getTableData: function(table, encQry, returnSysID) {
+        if (selOrg == undefined)
+            selOrg = orgHelper.getUserOrgs();
+ 
+        return selOrg;
+    },
+
+    /*getFilteredProjects: function() {
+        // build new response xml element for result
+        
+        var session = gs.getSession();
+        var selOrg = session.getClientData('org_id');
+ 
+        var projectQ = new GlideRecord('x_usd29_ams_financ_investment');
+        projectQ.addEncodedQuery("organization_ref=" + selOrg);
+		projectQ.orderBy('project_display');
+		projectQ.query();
+		while(projectQ.next()) {
+			var aName = projectQ.name+'';
+			var aVal = projectQ.sys_id+'';
+			this._addProject(aName, aVal);
+		}
+    },
+    
+    _addProject : function(name, value) {
+		var project = this.newItem("project");
+		project.setAttribute("name", name);
+		project.setAttribute("value", value);
+    },*/
+    
+    //new OrgHierarchy().GetUserOrgs();
+
+    getTableData: function (table, encQry, returnSysID) {
 
         /* JLR - This function will return all non-sys values of any table in FMS - may want to modify so it can accept an optional encoded query
         setting returnSysID to true will force the function to return the sys_id along with all of the table fields*/
@@ -55,16 +93,16 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
             var dataObj = {};
 
-            regFields.forEach(function(field) {
+            regFields.forEach(function (field) {
                 dataObj[field] = tableQuery.getValue(field);
             })
 
-            displayFields.forEach(function(field) {
+            displayFields.forEach(function (field) {
                 dataObj[field] = tableQuery.getDisplayValue(field);
                 dataObj[field + "_rawval"] = tableQuery.getValue(field);
             })
 
-            currencyFields.forEach(function(field) {
+            currencyFields.forEach(function (field) {
                 dataObj[field] = parseFloat(tableQuery.getValue(field));
             })
 
@@ -77,21 +115,21 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         return newArray;
     },
 
-    getAllAllocationData: function(table, encQry) {
+    getAllAllocationData: function (table, encQry) {
 
         /* JLR - This function will return all values for the allocation pools table in FMS and all associated related data */
 
         var allocateData = this.getTableData(table, encQry, true);
         for (var i = 0; i < allocateData.length; i++) {
             var tObj = allocateData[i];
-            
+
             tObj.distributions = this.getTableData(FMSConstants.TABLE_ALLOCATION_POOL, "pool_parent_ref=" + tObj.sys_id, true);
             tObj.projectAllocations = this.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, "allocation_pool_ref=" + tObj.sys_id, true);
         }
         return allocateData;
     },
 
-    getAllContractData: function(table, encQry) {
+    getAllContractData: function (table, encQry) {
 
         /* JLR - This function will return all values for the contracts table in FMS and all associated related data */
 
@@ -105,7 +143,7 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         return contractData;
     },
 
-    saveRecord: function(table, payload, updateID) {
+    saveRecord: function (table, payload, updateID) {
 
         /* JLR - This function will insert or update a record for the specified table based on the payload received.  Pass a sys_id to update or use 'new' for a new record */
 
@@ -135,7 +173,7 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         return updatedID;
     },
 
-    getRecord: function(table, recID) {
+    getRecord: function (table, recID) {
 
         /* JLR - This function will return a single record - used for updating grids client-side */
         var gr = new GlideRecord(table);
@@ -145,7 +183,7 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
     },
 
-    deleteRecord: function(table, deleteID) {
+    deleteRecord: function (table, deleteID) {
 
         /* JLR - This function will delete a record for the specified table based on the payload received.  Pass a table name and sys_id to delete the record */
 
@@ -156,7 +194,36 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
     },
 
-    getOrgTree: function(selID, orgType) {
+    getFiscalYears: function () {
+
+        /* JLR - This function will return the available list of Fiscal Years from the choice table */
+        var years = [];
+        var yearQ = new GlideRecord("sys_choice");
+        yearQ.addEncodedQuery("name=x_g_irm_fms_allocation_pool^element=fy");
+        yearQ.query();
+        while (yearQ.next()) {
+            years.push(yearQ.getValue("value"));
+        }
+
+        return years;
+
+    },
+
+    getCurrentFY: function () {
+
+        /* JLR - This function will return the current fiscal year */
+        var fiscalyear = "";
+        var today = new Date();
+        if ((today.getMonth() + 1) >= 10) {
+            fiscalyear = (today.getFullYear() + 1);
+        } else {
+            fiscalyear = today.getFullYear();
+        }
+        return fiscalyear.toString();
+
+    },
+
+    getOrgTree: function (selID, orgType) {
 
         /* JLR - This function will return a tree object or orgs and their parents */
 
@@ -210,7 +277,7 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
     },
 
-    checkOrgParent: function(existOrg) {
+    checkOrgParent: function (existOrg) {
 
         /* JLR - This function will return a tree object of orgs and their parents */
 
@@ -238,7 +305,7 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
     },
 
-    getOrgChildren: function(orgID, selID) {
+    getOrgChildren: function (orgID, selID) {
 
         /* JLR - This function will return a tree object of orgs and their children */
 
@@ -267,19 +334,19 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
     },
 
-    getOrgForBudget: function(tID) {
+    getOrgForBudget: function (tID) {
         var orgID = "";
 
-        if (tID){
+        if (tID) {
             var gr = new GlideRecord('x_g_irm_fms_budget');
             gr.get(tID);
-            orgID = gr.	project_ref.organization_ref.toString();
+            orgID = gr.project_ref.organization_ref.toString();
         }
 
         return orgID;
-	},
+    },
 
-    getUserAuth: function() {
+    getUserAuth: function () {
 
         var auth = {
             roles: {
@@ -303,13 +370,13 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 18:30:12</sys_created_on>
         <sys_id>c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>90</sys_mod_count>
+        <sys_mod_count>94</sys_mod_count>
         <sys_name>FMSUtilities</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-21 15:19:14</sys_updated_on>
+        <sys_updated_on>2020-06-01 17:32:17</sys_updated_on>
     </sys_script_include>
 </record_update>

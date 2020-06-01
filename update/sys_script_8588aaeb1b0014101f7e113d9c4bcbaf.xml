@@ -28,40 +28,40 @@
         <rest_variables/>
         <role_conditions/>
         <script><![CDATA[(function executeRule(current, previous /*null when async*/ ) {
-    if (current.pool_status.toUpperCase() == "PLANNED" && current.RequestDate.nil()) {
-        current.request_date.setError("Requested Date is required when status is: 'Planned'.");
+    if (current.pool_status.toUpperCase() == "PLANNED" && current.request_date.nil()) {
+        gs.addErrorMessage("Requested Date is required when status is: 'Planned'.");
         current.setAbortAction(true);
     }
-    if (current.pool_status.toUpperCase() == "PLANNED" && current.RequestAmount.nil()) {
-        current.request_amt.setError("Requested Amount is required when status is: 'Planned'.");
+    if (current.pool_status.toUpperCase() == "PLANNED" && current.request_amt.nil()) {
+        gs.addErrorMessage("Requested Amount is required when status is: 'Planned'.");
         current.setAbortAction(true);
     }
     if (current.pool_status.toUpperCase() == "PLANNED" && !current.request_amt.nil() && current.request_amt == 0) {
-        current.request_amt.setError("Requested Amount cannot be zero.");
+        gs.addErrorMessage("Requested Amount cannot be zero.");
         current.setAbortAction(true);
     }
     if (current.pool_status.toUpperCase() == "PLANNED" && !current.receive_amt.nil()) {
-        current.receive_amt.setError("Received Amount is invalid when status is: 'Planned'.");
+        gs.addErrorMessage("Received Amount is invalid when status is: 'Planned'.");
         current.setAbortAction(true);
     }
     if (current.pool_status.toUpperCase() == "PLANNED" && !current.receive_date.nil()) {
-        current.receive_date.setError("Received Date is invalid when status is: 'Planned'.");
+        gs.addErrorMessage("Received Date is invalid when status is: 'Planned'.");
         current.setAbortAction(true);
     }
     if (current.pool_status.toUpperCase() == "RECEIVED" && current.receive_date.nil()) {
-        current.receive_date.setError("Received Date is required when status is: 'Received'.");
+        gs.addErrorMessage("Received Date is required when status is: 'Received'.");
         current.setAbortAction(true);
     }
     if (current.pool_status.toUpperCase() == "RECEIVED" && current.receive_amt.nil()) {
-        current.receive_amt.setError("Received Amount is required when status is: 'Received'.");
+        gs.addErrorMessage("Received Amount is required when status is: 'Received'.");
         current.setAbortAction(true);
     }
     if (current.pool_status.toUpperCase() == "RECEIVED" && !current.receive_amt.nil() && current.receive_amt == 0) {
-        current.receive_amt.setError("Received Amount cannot be zero.");
+        gs.addErrorMessage("Received Amount cannot be zero.");
         current.setAbortAction(true);
     }
     if (!current.pool_status.toUpperCase() == "RECEIVED" && !current.pool_parent_ref.nil()) {
-        current.pool_status.setError("Pools must be 'Received' to be distributed.");
+        gs.addErrorMessage("Pools must be 'Received' to be distributed.");
         current.setAbortAction(true);
     }
     if (current.fy_qtr.nil() && !current.receive_date.nil()) {
@@ -76,15 +76,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>8588aaeb1b0014101f7e113d9c4bcbaf</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name>Allocation Pool Validation</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_8588aaeb1b0014101f7e113d9c4bcbaf</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-04-14 16:55:00</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-29 20:18:12</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>

@@ -8,7 +8,13 @@
         <element label="Allotment" mandatory="true" max_length="32" name="allotment" reference="x_g_irm_fms_allotment" type="reference"/>
         <element label="Appropriation" mandatory="true" max_length="32" name="appropriation_ref" reference="x_g_irm_fms_project_appropriation" reference_qual="javascript: &quot;project_ref=&quot; + current.project_ref;" type="reference" use_reference_qualifier="advanced"/>
         <element label="Carryforward?" max_length="40" name="carryforward" type="boolean"/>
-        <element label="Fund Source" mandatory="true" max_length="16" name="fund_source" type="string"/>
+        <element choice="1" label="Fund Source" mandatory="true" max_length="16" name="fund_source" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Allocation" value="Allocation"/>
+                <element inactive_on_update="false" label="Reimbursement" value="Reimbursement"/>
+                <element inactive_on_update="false" label="Transfer In" value="Transfer In"/>
+            </choice>
+        </element>
         <element attributes="format=none" choice="3" default="javascript:new Date().getFullYear();" label="FY" mandatory="true" max_length="40" name="fy" type="integer">
             <choice>
                 <element inactive_on_update="false" label="2000" value="2000"/>
@@ -46,7 +52,7 @@
         <element label="Notes" max_length="500" name="notes" type="string"/>
         <element label="Reimburse Organization" max_length="32" name="organization_reimburse_ref" reference="x_g_irm_fms_organization" type="reference"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new project allocation]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.project_ref.project_name.toString() + '\t\t\t\t[' + current.allocation_group_ref.group_name.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" display="true" label="Project Allocation display" max_length="256" name="project_allocation_display" read_only="true" type="string" virtual="true"/>
-        <element label="Project" mandatory="true" max_length="32" name="project_ref" reference="x_g_irm_fms_project" reference_qual="javascript: &quot;organization_refIN&quot; + new OrgHierarchy().GetUserOrgs();" type="reference" use_reference_qualifier="advanced"/>
+        <element label="Project" mandatory="true" max_length="32" name="project_ref" reference="x_g_irm_fms_project" reference_qual="javascript: &quot;organization_refIN&quot; + new FMSUtilities().getFilteredOrgs();" type="reference" use_reference_qualifier="advanced"/>
         <element label="Transfer Type" max_length="32" name="transfer_type_ref" reference="x_g_irm_fms_transfer_type" type="reference"/>
         <element label="Transfer Project" max_length="32" name="xfer_project_ref" reference="x_g_irm_fms_project" reference_qual="sys_id!=current.project_ref^EQ" reference_qual_condition="sys_id!=current.project_ref^EQ" type="reference"/>
         <index name="index">

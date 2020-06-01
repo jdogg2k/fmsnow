@@ -29,42 +29,56 @@
         <role_conditions/>
         <script><![CDATA[(function executeRule(current, previous /*null when async*/ ) {
     if (current.project_ref == current.xfer_project_ref) {
-        current.xfer_project_ref.setError("The transfer project code must be different from the project code.");
+        gs.addErrorMessage("The transfer project code must be different from the project code.");
         current.setAbortAction(true);
     }
-    switch (current.fund_source.ToUpperCase()) {
+    switch (current.fund_source.toUpperCase()) {
         case "ALLOCATION":
             {
-                if (!(current.transfer_type.nil() || current.transfer_type.toString().length == 0)) {
-                    current.transfer_type_ref.setError("Allocations may not include a Transfer Type.");
+                if (!(current.transfer_type_ref.nil() || current.transfer_type_ref.toString().length == 0)) {
+                    gs.addErrorMessage("Allocations may not include a Transfer Type.");
                     current.setAbortAction(true);
                 }
                 if (!current.xfer_project_ref.nil()) {
-                    current.xfer_project_ref.setError("Allocations may not include a Transfer Project Code.");
+                    gs.addErrorMessage("Allocations may not include a Transfer Project Code.");
                     current.setAbortAction(true);
                 }
                 if (!current.organization_reimburse_ref.nil()) {
-                    current.organization_reimburse_ref.setError("Allocations may not include a Reimbursement Organization Code.");
+                    gs.addErrorMessage("Allocations may not include a Reimbursement Organization Code.");
                     current.setAbortAction(true);
                 }
-                if (!(current.agreement_nmbr.nil() || current.agreement_number.toString().length == 0)) {
-                    current.agreement_nmbr.setError("Allocations may not include an Agreement Number.");
+                if (!(current.agreement_nmbr.nil() || current.agreement_nmbr.toString().length == 0)) {
+                    gs.addErrorMessage("Allocations may not include an Agreement Number.");
                     current.setAbortAction(true);
                 }
+
+                var targetAmount = parseFloat(current.allocation_amt);
+                var poolAmount = 0;
+                var poolRec = new GlideRecord("x_g_irm_fms_allocation_pool");
+                poolRec.addEncodedQuery("sys_id=" + current.allocation_pool_ref);
+                poolRec.query();
+                if (poolRec.next())
+                    poolAmount = parseFloat(poolRec.unassigned_amt);
+
+                if (targetAmount > poolAmount) {
+                    gs.addErrorMessage("Allocations may not exceed the Allocation Pool's available unassigned amount.  Please re-enter a valid amount.");
+                    current.setAbortAction(true);
+                }
+
                 break;
             }
         case "TRANSFER IN":
             {
-                if (current.transfer_type.nil() || current.transfer_type.toString().length == 0) {
-                    current.transfer_type.setError("Transfer Type is required for all transfers.");
+                if (current.transfer_type_ref.nil() || current.transfer_type_ref.toString().length == 0) {
+                    gs.addErrorMessage("Transfer Type is required for all transfers.");
                     current.setAbortAction(true);
                 }
-                if ((current.xfer_project_ref.nil()) && (current.transfer_type == "Internal" || current.TransferType == "Adjustment")) {
-                    current.xfer_project_ref.setError("Transfer Project Code is required for the selected transfer type.");
+                if ((current.xfer_project_ref.nil()) && (current.transfer_type_ref.getDisplayValue() == "Internal" || current.transfer_type_ref.getDisplayValue() == "Adjustment")) {
+                    gs.addErrorMessage("Transfer Project Code is required for the selected transfer type.");
                     current.setAbortAction(true);
                 }
                 if (!current.organization_reimburse_ref.nil()) {
-                    current.organization_reimburse_ref.setError("Transfers may not include a Reimbursement Organization Code.");
+                    gs.addErrorMessage("Transfers may not include a Reimbursement Organization Code.");
                     current.setAbortAction(true);
                 }
                 break;
@@ -72,19 +86,19 @@
         case "REIMBURSE":
             {
                 if (current.organization_reimburse_ref.nil()) {
-                    current.organization_reimburse_ref("Organization Code is required for all reimbursements.");
+                    gs.addErrorMessage("Organization Code is required for all reimbursements.");
                     current.setAbortAction(true);
                 }
                 if (current.agreement_nmbr.nil() || current.agreement_nmbr.toString().length == 0) {
-                    current.agreement_nmbr.setError("Agreement Number is required for all reimbursements.");
+                    gs.addErrorMessage("Agreement Number is required for all reimbursements.");
                     current.setAbortAction(true);
                 }
-                if (!(current.transfer_type.nil() || current.transfer_type.toString().length == 0)) {
-                    current.transfer_type.setError("Reimbursements may not include a Transfer Type.");
+                if (!(current.transfer_type_ref.nil() || current.transfer_type_ref.toString().length == 0)) {
+                    gs.addErrorMessage("Reimbursements may not include a Transfer Type.");
                     current.setAbortAction(true);
                 }
                 if (!current.xfer_project_ref.nil()) {
-                    current.xfer_project_ref.setError("Reimbursements may not include a Transfer Project Code.");
+                    gs.addErrorMessage("Reimbursements may not include a Transfer Project Code.");
                     current.setAbortAction(true);
                 }
                 break;
@@ -98,15 +112,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>69b920db1bc490101f7e113d9c4bcb2d</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>10</sys_mod_count>
         <sys_name>Project Allocation Validation</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_69b920db1bc490101f7e113d9c4bcb2d</sys_update_name>
-        <sys_updated_by>markeljr@state.gov</sys_updated_by>
-        <sys_updated_on>2020-04-13 12:48:25</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-05-29 20:14:05</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>

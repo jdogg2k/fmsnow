@@ -31,6 +31,20 @@
             return this.eGui;
         };
 
+        var parentPoolFields = [
+            "fy",
+            "fy_qtr",
+            "pool_type",
+            "pool_purpose",
+            "pool_status",
+            "receive_date",
+            "receive_amt",
+            "ibis_document",
+            "investment_ref",
+            "ams_ref_nmbr",
+            "appropriation_type_ref"
+        ];
+
         function getGroupCellRenderer() {
             function GroupCellRenderer() {}
 
@@ -38,27 +52,34 @@
 
                 this.eGui = document.createElement('div');
 
-                if (params.node.group) {
-
+                if (params.node.group == true) {
+                    if(params.node.childrenAfterGroup[0].data) {
                     var fullOrg = params.node.childrenAfterGroup[0].data.organization_ref;
                     var orgPart = fullOrg.replace(/ \[[\s\S]*?\]/g, '');
                     this.eGui.innerHTML =
                         '<span>' +
                         orgPart + " | FY " + params.node.childrenAfterGroup[0].data.fy + " | " + params.node.childrenAfterGroup[0].data.fy_qtr + " Qtr" +
                         '</span>';
+                    }
                 } else {
 
-                    var buttonState = "-disabled";
+                    var distributeState = "-disabled";
+                    var allocateState = "-disabled";
                     var distributeTitle = "Pool is fully distributed/allocated";
                     var allocateTitle = distributeTitle;
-
+                    
                     if (params.data.unassigned_amt > 0) {
-                        buttonState = "-enabled";
-                        distributeTitle = "Distribute";
+                        allocateState = "-enabled";
                         allocateTitle = "Allocate";
+                        if (pageController.data.canDistribute) {
+                            distributeState = "-enabled";
+                            distributeTitle = "Distribute";
+                        } else {
+                            distributeTitle = "There are no Sub-Organizations to distribute to";
+                        }
                     }
 
-                    this.eGui.innerHTML = '<span class="row-button"><i class="fa fa-edit edit-pencil"></i></span><span><i class="fa fa-share-alt action' + buttonState + '" title="' + distributeTitle + '"></i></span><span><i class="fa fa-pie-chart action' + buttonState + '" title="' + allocateTitle + '"></i></span>';
+                    this.eGui.innerHTML = '<span class="row-button"><i class="fa fa-edit edit-pencil"></i></span><span><i class="fa fa-share-alt action' + distributeState + '" title="' + distributeTitle + '"></i></span><span><i class="fa fa-pie-chart action' + allocateState + '" title="' + allocateTitle + '"></i></span>';
 
                     // get references to the elements we want
                     this.eButton = this.eGui.querySelector('.fa-edit');
@@ -78,19 +99,19 @@
                     this.eButton.addEventListener('click', this.eventListener);
 
                     this.allocateListener = function () {
-                        if (buttonState == "-enabled") {
+                        if (allocateState == "-enabled") {
                             var tID = params.data.sys_id;
                             params.node.setExpanded(true);
-                            editGridRow("-1", "allocation_pool_ref=" + tID, projAllocTable, "detail_proj_" + tID);
+                            editGridRow("-1", "allocation_pool_ref=" + tID + "^fund_source=Allocation^allocation_date=" + params.data.receive_date + "^allocation_amt=" + params.data.unassigned_amt, projAllocTable, "detail_proj_" + tID);
                         }
                     }
                     this.aButton.addEventListener('click', this.allocateListener);
 
                     this.distributeListener = function () {
-                        if (buttonState == "-enabled") {
+                        if (distributeState == "-enabled") {
                             var tID = params.data.sys_id;
                             params.node.setExpanded(true);
-                            editGridRow("-1", "pool_parent_ref=" + tID, dataTable, "detail_dist_" + tID);
+                            editGridRow("-1", constructPoolQuery(tID, params.data), dataTable, "detail_dist_" + tID);
                         }
                     }
                     this.dButton.addEventListener('click', this.distributeListener);
@@ -211,6 +232,23 @@
             window.location.href = urlToNav;
         };
 
+        var constructPoolQuery = function (tID, parentData) {
+            var poolQuery = "pool_parent_ref=" + tID;
+
+            parentPoolFields.forEach(function (field) {
+                var dataField = field;
+                if (field.endsWith("_ref"))
+                    dataField = field + "_rawval";
+
+                var dataVal = parentData[dataField];
+                if (dataField == "receive_amt")
+                    dataVal = parentData.unassigned_amt;
+
+                poolQuery += "^" + field + "=" + dataVal;
+            });
+            return poolQuery;
+        }
+
         this.editRow = function (tID, query, table) {
             editGridRow(tID, query, table, null);
         };
@@ -264,7 +302,9 @@
                     var detailGridInfo = gridOptions.api.getDetailGridInfo(detGrid);
                     var rowToDelete = detailGridInfo.api.getDisplayedRowAtIndex(rowIdx);
                     var parentRow = delResp.data.parentRec;
-                    var res = detailGridInfo.api.updateRowData({ remove: [rowToDelete.data] });
+                    var res = detailGridInfo.api.updateRowData({
+                        remove: [rowToDelete.data]
+                    });
 
                     gridOptions.api.forEachNode(function (rowNode, index) {
                         if (rowNode.data) {
@@ -609,69 +649,82 @@
         }
 
         $rootScope.$on("spModel.uiActionComplete", function (evt, response) {
-
-            if (response.isInsert)
-                updatedID = response.sys_id;
-
             $uibModalStack.dismissAll(); //close the modal
 
-            if (activeGrid == null) {
+            var noError = true;
+            if (response.$$uiNotification.length > 0) {
+                if (response.$$uiNotification[0].type == "error")
+                    noError = false;
+            }
 
-                //We need to call back to server side to get latest array of organization records now that we have a new/updated value
-                pageController.server.get({
-                    mode: 'getData' //this mode doesn't really matter, we just need to refresh the data server-side
-                }).then(function (saveResp) {
+            if (noError) {
 
-                    gridOptions.api.setRowData(saveResp.data[dataArray]);
-                    gridOptions.api.sizeColumnsToFit();
+                if (response.isInsert)
+                    updatedID = response.sys_id;
 
-                    //highlight the modded record
-                    gridOptions.api.forEachNode(function (rowNode, index) {
-                        if (rowNode.data.sys_id == updatedID) {
-                            gridOptions.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
-                        }
-                    });
+                if (activeGrid == null) {
 
-                });
+                    //We need to call back to server side to get latest array of organization records now that we have a new/updated value
+                    pageController.server.get({
+                        mode: 'getData' //this mode doesn't really matter, we just need to refresh the data server-side
+                    }).then(function (saveResp) {
 
-            } else {
+                        gridOptions.api.setRowData(saveResp.data[dataArray]);
+                        gridOptions.api.sizeColumnsToFit();
 
-                var detailGridInfo = gridOptions.api.getDetailGridInfo(activeGrid);
-                detailGridInfo.api.showLoadingOverlay();
-
-                if (!response.isInsert)
-                    updatedID = activeRow;
-
-                //GET RECORD DATA
-                pageController.server.get({
-                    mode: 'getNewRec',
-                    newSysID: updatedID,
-                    targetTable: activeTable
-                }).then(function (saveResp) {
-
-                    var savedRec = saveResp.data.newRec;
-                    var updatedParent = saveResp.data.parentRec;
-
-                    var dataToUpdate = {update: [savedRec]};
-
-                    if (response.isInsert) 
-                        dataToUpdate = {add: [savedRec], addIndex: 0};
-
-                    detailGridInfo.api.updateRowData(dataToUpdate);
-
-                    detailGridInfo.api.hideOverlay();
-
-                    gridOptions.api.forEachNode(function (rowNode, index) {
-                        if (rowNode.data) {
-                            if (rowNode.data.sys_id == updatedParent.sys_id) {
-                                rowNode.setDataValue("allocated_amt", updatedParent.allocated_amt);
-                                rowNode.setDataValue("distributed_amt", updatedParent.distributed_amt);
-                                rowNode.setDataValue("unassigned_amt", updatedParent.unassigned_amt);
+                        //highlight the modded record
+                        gridOptions.api.forEachNode(function (rowNode, index) {
+                            if (rowNode.data.sys_id == updatedID) {
+                                gridOptions.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
                             }
-                        }
+                        });
+
                     });
 
-                });
+                } else {
+
+                    var detailGridInfo = gridOptions.api.getDetailGridInfo(activeGrid);
+                    detailGridInfo.api.showLoadingOverlay();
+
+                    if (!response.isInsert)
+                        updatedID = activeRow;
+
+                    //GET RECORD DATA
+                    pageController.server.get({
+                        mode: 'getNewRec',
+                        newSysID: updatedID,
+                        targetTable: activeTable
+                    }).then(function (saveResp) {
+
+                        var savedRec = saveResp.data.newRec;
+                        var updatedParent = saveResp.data.parentRec;
+
+                        var dataToUpdate = {
+                            update: [savedRec]
+                        };
+
+                        if (response.isInsert)
+                            dataToUpdate = {
+                                add: [savedRec],
+                                addIndex: 0
+                            };
+
+                        detailGridInfo.api.updateRowData(dataToUpdate);
+
+                        detailGridInfo.api.hideOverlay();
+
+                        gridOptions.api.forEachNode(function (rowNode, index) {
+                            if (rowNode.data) {
+                                if (rowNode.data.sys_id == updatedParent.sys_id) {
+                                    rowNode.setDataValue("allocated_amt", updatedParent.allocated_amt);
+                                    rowNode.setDataValue("distributed_amt", updatedParent.distributed_amt);
+                                    rowNode.setDataValue("unassigned_amt", updatedParent.unassigned_amt);
+                                }
+                            }
+                        });
+
+                    });
+                }
             }
         });
     };
@@ -682,14 +735,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-18 19:15:39</sys_created_on>
         <sys_id>ceb596e61bf498100a4a10ad9c4bcb26</sys_id>
-        <sys_mod_count>85</sys_mod_count>
+        <sys_mod_count>119</sys_mod_count>
         <sys_name>AGAllocationPoolGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_ceb596e61bf498100a4a10ad9c4bcb26</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-22 19:40:14</sys_updated_on>
+        <sys_updated_on>2020-06-01 16:11:08</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

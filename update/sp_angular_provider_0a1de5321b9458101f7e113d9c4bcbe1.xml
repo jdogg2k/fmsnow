@@ -8,7 +8,6 @@
         var DeleteCellRenderer = function() {};
         var EditCellRenderer = function() {};
         var CheckBoxRenderer = function() {};
-		var GroupCellRenderer = function () {};
 		var DetailCellRenderer = function () {
             this.masterGridApi = null;
             this.masterRowIndex = null;
@@ -46,6 +45,35 @@
             return '$(' + parseFloat(tVal).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,").replace("-", "") + ")";
         }
 
+
+	function getGroupCellRenderer() {
+		function GroupCellRenderer() {}
+		GroupCellRenderer.prototype.init = function (params) {
+
+			this.eGui = document.createElement('div');
+
+			if (params.node.group) {
+				this.eGui.innerHTML = params.value;
+			}
+		};
+
+		GroupCellRenderer.prototype.getGui = function () {
+			return this.eGui;
+		};
+
+		// gets called when the cell is removed from the grid
+		GroupCellRenderer.prototype.destroy = function () {
+			if (this.eButton)
+				this.eButton.removeEventListener('click', this.eventListener);
+			if (this.aButton)
+				this.aButton.removeEventListener('click', this.allocateListener);
+		};
+		return GroupCellRenderer;
+	}
+		
+		var activeGrid = null;
+        var activeTable = "";
+        var activeRow = "";
         var pageController = {};
         var linkField = "sys_id";
         var dataTable = "";
@@ -106,7 +134,7 @@
                 deleteCell: DeleteCellRenderer,
                 checkbox: CheckBoxRenderer,
 				myDetailCellRenderer: DetailCellRenderer,
-                groupCell: GroupCellRenderer
+                myGroupCellRenderer: getGroupCellRenderer()
             }
         };
 
@@ -126,20 +154,31 @@
             window.location.href = urlToNav;
         };
 
-        this.editRow = function(tID, query) {
-            editGridRow(tID, query);
+        this.editRow = function (tID, query, table) {
+            editGridRow(tID, query, table, null, null);
         };
 
-        var editGridRow = function(targetID, query) {
+        var editGridRow = function (targetID, query, table, title, aGrid) {
             var titlePrefix = "New";
-            var wInput = {
-                table: dataTable,
-                sys_id: targetID,
-                view: 'portal'
-            };
+            var modalName = pageName;
+            activeTable = dataTable;
+            activeGrid = null;
 
-            if (query)
-                wInput.query = query;
+            if (aGrid != null)
+                activeGrid = aGrid;
+
+            if (table != null) 
+                activeTable = table;
+
+            if (title != null) 
+                modalName = title;
+
+            var wInput = {
+                table: table,
+                sys_id: targetID,
+                view: 'portal',
+                query: query
+            };
 
             if (targetID != "-1") {
                 titlePrefix = "Edit";
@@ -147,7 +186,7 @@
             }
 
             spModal.open({
-                title: titlePrefix + ' ' + pageName,
+                title: titlePrefix + ' ' + modalName,
                 size: 'lg',
                 widget: 'fms-form-widget',
                 buttons: [],
@@ -155,18 +194,23 @@
             });
         };
 
-        var deleteRow = function(delID) {
+        var deleteRow = function (delID, delTable, detGrid, rowIdx) {
             pageController.server.get({
                 mode: 'deleteRow',
                 rowID: delID,
-                delTable: dataTable
-            }).then(function(delResp) {
-                spUtil.addInfoMessage(pageName + " Deleted Successfully");
-                gridOptions.api.setRowData(delResp.data[dataArray]);
-                gridOptions.api.sizeColumnsToFit();
+                delTable: delTable
+            }).then(function (delResp) {
+                spUtil.addInfoMessage("Record Deleted Successfully");
+                if (detGrid == null){
+                    gridOptions.api.setRowData(delResp.data[dataArray]);
+                    gridOptions.api.sizeColumnsToFit();
+                } else {
+                    var detailGridInfo = gridOptions.api.getDetailGridInfo(detGrid);
+                    var rowToDelete = detailGridInfo.api.getDisplayedRowAtIndex(rowIdx);
+                    var res = detailGridInfo.api.updateRowData({remove: [rowToDelete.data]});
+                }
             });
         };
-
 
         //setting functions called from widget
         this.renderGrid = function(ele) {
@@ -219,42 +263,30 @@
             gridOptions.api.exportDataAsCsv(params);
         };
 		
-
-		GroupCellRenderer.prototype.init = function (params) {
-
-			this.eGui = document.createElement('div');
-
-			if (params.node.group) {
-				this.eGui.innerHTML = params.cellHTML;
-			}
-		};
-
-		GroupCellRenderer.prototype.getGui = function () {
-			return this.eGui;
-		};
-
-		// gets called when the cell is removed from the grid
-		GroupCellRenderer.prototype.destroy = function () {
-			if (this.eButton)
-				this.eButton.removeEventListener('click', this.eventListener);
-			if (this.aButton)
-				this.aButton.removeEventListener('click', this.allocateListener);
-		};
-
-
 		this.setRenderers = function(displayField) {
             EditCellRenderer.prototype.init = function(params) {
 
                 // create the cell
                 this.eGui = document.createElement('div');
-                if (!('show' in params) || params.show) {
+                if ((!('show' in params) || params.show) && params.data) {
 
                     this.eGui.innerHTML = '<span class="row-button"><i class="fa fa-edit edit-pencil"></i></span>';
                     // get references to the elements we want
                     this.eButton = this.eGui.querySelector('.fa-edit');
                     // add event listener to button
                     this.eventListener = function() {
-                        editGridRow(params.data.sys_id);
+						var tField = params.colDef.field;
+						var tID = params.data.sys_id;
+						var tGrid = null;
+						var tTable = dataTable;
+						activeRow = "";
+
+						if ('table' in params) 
+							tTable = params.table;
+						if ('parent' in params) 
+							tGrid = params.parent;
+						activeRow = tID;
+						editGridRow(tID, "", tTable, (params.banner || params.data[displayField] || null), tGrid);
                     };
                     this.eButton.addEventListener('click', this.eventListener);
                 }
@@ -285,17 +317,31 @@
                 // create the cell
                 this.eGui = document.createElement('div');
 
-                if (!('show' in params) || params.show) {
+                if ((!('show' in params) || params.show) && params.data) {
 
                     this.eGui.innerHTML = '<span class="row-button"><i class="fa fa-window-close delete-x"></i></span>';
                     // get references to the elements we want
                     this.eButton = this.eGui.querySelector('.fa-window-close');
                     // add event listener to button
-                    this.eventListener = function() {
-                        if (window.confirm("Are you sure you want to delete " + params.data[displayField] + "?")) { //delete this row
-                            deleteRow(params.data.sys_id);
-                        }
-                    };
+					this.eventListener = function() {
+						var delDispField = displayField;
+						var delTable = dataTable;
+						var tField = params.colDef.field;
+						var detailGridID = null;
+						var deleteIndex = 0;
+
+						if ('table' in params) 
+							delTable = params.table;
+						if ('parent' in params) 
+							detailGridID = params.parent;
+						delDispField = "this record";
+						if (detailGridID != null)
+							deleteIndex = params.rowIndex;
+
+						if (window.confirm("Are you sure you want to delete " + (params.banner || params.data[displayField] || pageName) + "?")) { //delete this row
+							deleteRow(params.data.sys_id, delTable, detailGridID, deleteIndex);
+						}
+					};
                     this.eButton.addEventListener('click', this.eventListener);
                 }
             };
@@ -372,14 +418,14 @@
                 var detailGrid = this.eGui.querySelector('#' + gridName);
                 var detailButton = this.eGui.querySelector('#' + buttonName);
                 var detailListener = function() {
-                    editGridRow("-1", parentRef + "=" + targSys, detailTable, "detail_rel_" + targSys);
+                    editGridRow("-1", parentRef + "=" + targSys, detailTable, detailName, "detail_" + targSys);
                 };
                 detailButton.addEventListener('click', detailListener);
 
                 new agGrid.Grid(detailGrid, {
                     columnDefs: detailCols,
                     onGridReady: function(params) {
-                        var detailGridId = "detail_rel_" + targSys;
+                        var detailGridId = "detail_" + targSys;
 
                         var gridInfo = {
                             id: detailGridId,
@@ -435,29 +481,66 @@
             };
         };
 
-        $rootScope.$on("spModel.uiActionComplete", function(evt, response) {
+        $rootScope.$on("spModel.uiActionComplete", function (evt, response) {
 
             if (response.isInsert)
                 updatedID = response.sys_id;
 
             $uibModalStack.dismissAll(); //close the modal
 
-            //We need to call back to server side to get latest array of organization records now that we have a new/updated value
-            pageController.server.get({
-                mode: 'getData' //this mode doesn't really matter, we just need to refresh the data server-side
-            }).then(function(saveResp) {
+            if (activeGrid == null) {
 
-                gridOptions.api.setRowData(saveResp.data[dataArray]);
-                gridOptions.api.sizeColumnsToFit();
+                //We need to call back to server side to get latest array of records w/ new value
+                pageController.server.get({
+                    mode: 'getData' //this mode doesn't really matter, just refresh the data
+                }).then(function (saveResp) {
 
-                //highlight the modded record
-                gridOptions.api.forEachNode(function(rowNode, index) {
-                    if (rowNode.data.sys_id == updatedID) {
-                        gridOptions.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
-                    }
+                    gridOptions.api.setRowData(saveResp.data[dataArray]);
+                    gridOptions.api.sizeColumnsToFit();
+
+                    //highlight the modded record
+                    gridOptions.api.forEachNode(function (rowNode, index) {
+                        if (rowNode.data.sys_id == updatedID) {
+                            gridOptions.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
+                        }
+                    });
+
                 });
 
-            });
+            } else {
+
+                var detailGridInfo = gridOptions.api.getDetailGridInfo(activeGrid);
+                detailGridInfo.api.showLoadingOverlay();
+
+                if (!response.isInsert)
+                    updatedID = activeRow;
+
+                //GET RECORD DATA
+                pageController.server.get({
+                    mode: 'getNewRec',
+                    newSysID: updatedID,
+                    targetTable: activeTable
+                }).then(function (saveResp) {
+
+                    var savedRec = saveResp.data.newRec;
+
+                    var dataToUpdate = {update: [savedRec]};
+
+                    if (response.isInsert) 
+                        dataToUpdate = {add: [savedRec], addIndex: 0};
+
+                    detailGridInfo.api.updateRowData(dataToUpdate);
+
+                    //highlight the modded record
+                    detailGridInfo.api.forEachNode(function (rowNode, index) {
+                        if (rowNode.data.sys_id == updatedID) {
+                            detailGridInfo.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
+                        }
+                    });
+
+                    detailGridInfo.api.hideOverlay();
+                });
+            }
         });
     };
 
@@ -467,14 +550,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>288</sys_mod_count>
+        <sys_mod_count>329</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-28 14:00:44</sys_updated_on>
+        <sys_updated_on>2020-06-01 17:00:35</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>
