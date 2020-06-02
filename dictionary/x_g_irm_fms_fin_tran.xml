@@ -40,21 +40,24 @@
         </element>
         <element label="Void?" max_length="40" name="void" type="boolean"/>
         <index name="index">
-            <element name="project_ref"/>
+            <element name="number"/>
         </index>
         <index name="index2">
-            <element name="allocation_group_ref"/>
+            <element name="project_ref"/>
         </index>
         <index name="index3">
-            <element name="contract_ref"/>
+            <element name="allocation_group_ref"/>
         </index>
         <index name="index4">
-            <element name="cost_pool_ref"/>
+            <element name="contract_ref"/>
         </index>
         <index name="index5">
-            <element name="project_appropriation_ref"/>
+            <element name="cost_pool_ref"/>
         </index>
         <index name="index6">
+            <element name="project_appropriation_ref"/>
+        </index>
+        <index name="index7">
             <element name="allotment_ref"/>
         </index>
     </element>

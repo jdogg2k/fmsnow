@@ -41,24 +41,20 @@
     }
 
     var fintranColumnDefs = [{
-            headerName: 'test',
+            headerName: 'Project / FY',
             field: 'sys_id',
             sort: 'asc',
             minWidth: 175,
             cellRenderer: 'agGroupCellRenderer',
             showRowGroup: true,
-            cellRendererParams: function(params) {
-                return {
-                    "suppressCount": true,
-                    "checkbox": false,
-                    "suppressDoubleClickExpand": true,
-                    "suppressEnterExpand": true,
-                    "innerRenderer": "myGroupCellRenderer"   
-                };
+            cellRendererParams: {
+                suppressCount: true,
+                checkbox: false,
+                suppressDoubleClickExpand: true,
+                suppressEnterExpand: true,
+                innerRenderer: 'myGroupCellRenderer',
+				banner: { type: 'standard', columns: [{ label: '', name: 'project_ref' }, { label: " | FY: ", name: "fy" }] }
             },
-            /*		valueGetter: function(params) {
-            			return params.data.fy;
-            		}   */
         },
         {
             field: 'edit',
@@ -269,13 +265,14 @@
         dataArray: null,
         pageType: 'Financial Transaction',
         linkedField: '',
-        detailsPage: ''
+        detailsPage: '',
+		childTables: [{ banner: 'Transaction Items', name: c.data.itemTableName, columnDefs: fintranItemDefs, parentRef: 'fin_tran_ref' },
+					 { banner: '=================asdfad===', name: c.data.itemTableName, columnDefs: fintranItemDefs, parentRef: 'fin_tran_ref' }]
     }
 
     fintranManager.setColumns(fintranColumnDefs);
     fintranManager.setPageProperties(fintranProps);
     fintranManager.setRenderers(); //build renderers 
-    fintranManager.setDetailRenderer('Transaction Items', c.data.itemTableName, fintranItemDefs, 'fin_tran_ref');
     fintranManager.renderGrid('fintranGrid'); //render grid objects
     fintranManager.setGridData(c.data.tableData); //set grid data
     fintranManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst));
@@ -498,14 +495,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-21 14:05:50</sys_created_on>
         <sys_id>fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_id>
-        <sys_mod_count>89</sys_mod_count>
+        <sys_mod_count>99</sys_mod_count>
         <sys_name>Financial Transaction Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-01 16:56:43</sys_updated_on>
+        <sys_updated_on>2020-06-02 11:57:16</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
