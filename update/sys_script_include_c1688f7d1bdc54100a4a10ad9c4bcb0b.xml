@@ -33,6 +33,24 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         return selOrg;
     },
 
+    canDeleteOrg: function(orgID) {
+
+        /* JLR - This function will check if any critical financial data is associated with an organization before allowing it to be deleted
+        */
+        var canDelete = true;
+
+        var orgAlloc = this.getTableData(FMSConstants.TABLE_ALLOCATION_POOL, "organization_ref=" + orgID);
+        var orgProjAlloc = this.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, "project_ref.organization_ref=" + orgID);
+        var orgBudget = this.getTableData(FMSConstants.TABLE_BUDGET, "project_ref.organization_ref=" + orgID);
+        var orgContract = this.getTableData(FMSConstants.TABLE_CONTRACT, "organization_ref=" + orgID);
+        var orgTrans = this.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "project_ref.organization_ref=" + orgID);
+        
+        if (orgAlloc.length > 0 || orgProjAlloc.length > 0 || orgBudget.length > 0 || orgContract.length > 0 || orgTrans.length > 0)
+            canDelete = false;
+
+        return canDelete;
+    },
+
     getTableData: function (table, encQry, returnSysID) {
 
         /* JLR - This function will return all non-sys values of any table in FMS - may want to modify so it can accept an optional encoded query
@@ -345,13 +363,13 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 18:30:12</sys_created_on>
         <sys_id>c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>96</sys_mod_count>
+        <sys_mod_count>100</sys_mod_count>
         <sys_name>FMSUtilities</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-01 19:38:14</sys_updated_on>
+        <sys_updated_on>2020-06-02 17:42:33</sys_updated_on>
     </sys_script_include>
 </record_update>

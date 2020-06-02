@@ -43,7 +43,6 @@
     var fintranColumnDefs = [{
             headerName: 'Project / FY',
             field: 'sys_id',
-            sort: 'asc',
             minWidth: 175,
             cellRenderer: 'agGroupCellRenderer',
             showRowGroup: true,
@@ -98,10 +97,9 @@
             field: 'fy',
             headerName: 'FY',
             filter: 'agTextColumnFilter',
-            sort: 'asc',
+            sort: 'desc',
             sortingOrder: 2,
-            rowGroup: true,   
-            hide: true
+            rowGroup: true   
         },
         {
             field: 'description',
@@ -266,9 +264,8 @@
         pageType: 'Financial Transaction',
         linkedField: '',
         detailsPage: '',
-        detailsHeight: 400,
-		childTables: [{ banner: 'Transaction Items', name: c.data.itemTableName, columnDefs: fintranItemDefs, parentRef: 'fin_tran_ref' },
-					 { banner: '=================asdfad===', name: c.data.itemTableName, columnDefs: fintranItemDefs, parentRef: 'fin_tran_ref' }]
+        detailsHeight: 150,
+		childTables: [{ banner: 'Transaction Items', name: c.data.itemTableName, columnDefs: fintranItemDefs, parentRef: 'fin_tran_ref' }]
     }
 
     fintranManager.setColumns(fintranColumnDefs);
@@ -496,14 +493,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-21 14:05:50</sys_created_on>
         <sys_id>fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_id>
-        <sys_mod_count>100</sys_mod_count>
+        <sys_mod_count>104</sys_mod_count>
         <sys_name>Financial Transaction Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-02 15:45:14</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-02 17:29:56</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
