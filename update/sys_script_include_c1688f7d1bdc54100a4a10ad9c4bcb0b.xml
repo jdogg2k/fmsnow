@@ -51,6 +51,63 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         return canDelete;
     },
 
+    canDeleteProj: function(projID) {
+
+        /* JLR - This function will check if any critical financial data is associated with a project before allowing it to be deleted
+        */
+        var canDelete = true;
+
+        var orgProjAlloc = this.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, "project_ref=" + projID);
+        var orgBudget = this.getTableData(FMSConstants.TABLE_BUDGET, "project_ref=" + projID);
+        var orgContract = this.getTableData(FMSConstants.TABLE_CONTRACT, "project_ref=" + projID);
+        var orgTrans = this.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "project_ref=" + projID);
+        
+        if (orgProjAlloc.length > 0 || orgBudget.length > 0 || orgContract.length > 0 || orgTrans.length > 0)
+            canDelete = false;
+
+        return canDelete;
+    },
+
+    canDeleteContract: function(contractID) {
+
+        /* JLR - This function will check if any critical financial data is associated with a contract before allowing it to be deleted
+        */
+        var canDelete = true;
+        var orgTrans = this.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "contract_ref=" + contractID);
+        
+        if (orgTrans.length > 0)
+            canDelete = false;
+
+        return canDelete;
+    },
+
+    canDeleteExpenseItem: function(expID) {
+
+        /* JLR - This function will check if any critical financial data is associated with an expense item before allowing it to be deleted
+        */
+        var canDelete = true;
+        var orgBudget = this.getTableData(FMSConstants.TABLE_BUDGET_ITEM, "expense_item_ref=" + expID);
+        var orgTrans = this.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM, "expense_item_ref=" + expID);
+        
+        if (orgBudget.length > 0 || orgTrans.length > 0)
+            canDelete = false;
+
+        return canDelete;
+    },
+
+    canDeleteOMBCategory: function(catID) {
+
+        /* JLR - This function will check if any critical financial data is associated with a category before allowing it to be deleted
+        */
+        var canDelete = true;
+        var orgTrans = this.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM, "omb_category_ref=" + catID);
+        
+        if (orgTrans.length > 0)
+            canDelete = false;
+
+        return canDelete;
+    },
+
     getTableData: function (table, encQry, returnSysID) {
 
         /* JLR - This function will return all non-sys values of any table in FMS - may want to modify so it can accept an optional encoded query
@@ -363,13 +420,13 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 18:30:12</sys_created_on>
         <sys_id>c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>100</sys_mod_count>
+        <sys_mod_count>104</sys_mod_count>
         <sys_name>FMSUtilities</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-02 17:42:33</sys_updated_on>
+        <sys_updated_on>2020-06-02 19:13:15</sys_updated_on>
     </sys_script_include>
 </record_update>

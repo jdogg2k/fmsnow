@@ -581,7 +581,7 @@
         }
 
         if (input.mode == "deleteRow") {
-            
+            data.selectedFY = input.selectedFY;
             if (input.delTable != FMSConstants.TABLE_ALLOCATION_POOL) { //removing allocation so let's update parent
                 var deletedRec = new GlideRecord(input.delTable);
                 deletedRec.get(input.rowID);
@@ -624,14 +624,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-18 17:12:53</sys_created_on>
         <sys_id>eb99716a1b7498100a4a10ad9c4bcb7e</sys_id>
-        <sys_mod_count>88</sys_mod_count>
+        <sys_mod_count>89</sys_mod_count>
         <sys_name>Allocation Pool Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_eb99716a1b7498100a4a10ad9c4bcb7e</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-01 15:54:43</sys_updated_on>
+        <sys_updated_on>2020-06-02 19:37:00</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">

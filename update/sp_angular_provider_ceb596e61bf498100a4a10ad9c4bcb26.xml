@@ -292,7 +292,8 @@
             pageController.server.get({
                 mode: 'deleteRow',
                 rowID: delID,
-                delTable: delTable
+                delTable: delTable,
+                selectedFY: pageController.data.selectedFY
             }).then(function (delResp) {
                 spUtil.addInfoMessage("Record Deleted Successfully");
                 if (detGrid == null) {
@@ -666,7 +667,8 @@
 
                     //We need to call back to server side to get latest array of organization records now that we have a new/updated value
                     pageController.server.get({
-                        mode: 'getData' //this mode doesn't really matter, we just need to refresh the data server-side
+                        mode: 'getData', //this mode doesn't really matter, we just need to refresh the data server-side
+                        selectedFY: pageController.data.selectedFY
                     }).then(function (saveResp) {
 
                         gridOptions.api.setRowData(saveResp.data[dataArray]);
@@ -735,14 +737,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-18 19:15:39</sys_created_on>
         <sys_id>ceb596e61bf498100a4a10ad9c4bcb26</sys_id>
-        <sys_mod_count>119</sys_mod_count>
+        <sys_mod_count>121</sys_mod_count>
         <sys_name>AGAllocationPoolGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_ceb596e61bf498100a4a10ad9c4bcb26</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-01 16:11:08</sys_updated_on>
+        <sys_updated_on>2020-06-02 19:37:22</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

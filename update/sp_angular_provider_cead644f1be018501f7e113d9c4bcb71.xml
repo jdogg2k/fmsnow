@@ -203,15 +203,19 @@
                 rowID: delID,
                 delTable: delTable
             }).then(function (delResp) {
-                spUtil.addInfoMessage("Record Deleted Successfully");
-                if (detGrid == null){
-                    gridOptions.api.setRowData(delResp.data[dataArray]);
-                    gridOptions.api.sizeColumnsToFit();
+                if (!delResp.data.isError) {
+                    spUtil.addInfoMessage("Record Deleted Successfully");
+                    if (detGrid == null){
+                        gridOptions.api.setRowData(delResp.data[dataArray]);
+                        gridOptions.api.sizeColumnsToFit();
+                    } else {
+                        var detailGridInfo = gridOptions.api.getDetailGridInfo(detGrid);
+                        var rowToDelete = detailGridInfo.api.getDisplayedRowAtIndex(rowIdx);
+                        var res = detailGridInfo.api.updateRowData({remove: [rowToDelete.data]});
+                    }
                 } else {
-                    var detailGridInfo = gridOptions.api.getDetailGridInfo(detGrid);
-                    var rowToDelete = detailGridInfo.api.getDisplayedRowAtIndex(rowIdx);
-                    var res = detailGridInfo.api.updateRowData({remove: [rowToDelete.data]});
-                }
+                    spUtil.addErrorMessage(delResp.data.errorMsg);
+                } 
             });
         };
 
@@ -596,14 +600,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-07 14:42:15</sys_created_on>
         <sys_id>cead644f1be018501f7e113d9c4bcb71</sys_id>
-        <sys_mod_count>119</sys_mod_count>
+        <sys_mod_count>120</sys_mod_count>
         <sys_name>AGContractGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_cead644f1be018501f7e113d9c4bcb71</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-28 19:41:16</sys_updated_on>
+        <sys_updated_on>2020-06-02 18:18:28</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

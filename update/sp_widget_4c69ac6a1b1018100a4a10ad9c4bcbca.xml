@@ -10,7 +10,7 @@
     var expenseManager = new AGGridFactory();
 
     c.addNew = function () {
-        expenseManager.editRow("-1", "organization_ref=" + c.targetOrg);
+        expenseManager.editRow("-1", "organization_ref=" + c.targetOrg, c.data.tableName);
     }
 	
     c.exportExcel = function () {
@@ -197,9 +197,14 @@
 		data.selectedOrg = session.getClientData('org_id');
 
     if (input) { //input holds the data coming back to the server
-        if (input.mode == "deleteRow") {
-            FMSUtility.deleteRecord(FMSConstants.TABLE_EXPENSE_ITEM, input.rowID);
-        }
+        if (input.mode == "deleteRow"){
+			if (FMSUtility.canDeleteExpenseItem(input.rowID)) {
+				FMSUtility.deleteRecord(FMSConstants.TABLE_EXPENSE_ITEM, input.rowID);
+			} else {
+				data.isError = true;
+				data.errorMsg = "This Expense Item cannot be deleted as it is linked to existing budgets or transactions";
+			}
+		}
         if (input.mode == "setOrg") {
             data.selectedOrg = input.org_id.toString();
         }
@@ -216,14 +221,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-23 14:50:54</sys_created_on>
         <sys_id>4c69ac6a1b1018100a4a10ad9c4bcbca</sys_id>
-        <sys_mod_count>222</sys_mod_count>
+        <sys_mod_count>224</sys_mod_count>
         <sys_name>Expense Item Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_4c69ac6a1b1018100a4a10ad9c4bcbca</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-18 19:57:11</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-02 18:30:59</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
