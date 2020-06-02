@@ -109,7 +109,7 @@
             suppressColumnVirtualisation: true,
             groupMultiAutoColumn: true,
             masterDetail: true,
-			detailCellRenderer: "myDetailCellRenderer",
+			detailCellRenderer: 'myDetailCellRenderer',
             keepDetailRows: true,
             detailRowHeight: 200,
             autoGroupColumnDef: {
@@ -258,6 +258,8 @@
             linkField = pageProps.linkedField; //field that should be linked from grid
             detailsPage = pageProps.detailsPage; //details page to point link to
             childTables = pageProps.childTables; //child tables for details section
+            if (pageProps.detailsHeight != null)
+                gridOptions.detailRowHeight = pageProps.detailsHeight; //height of detailGrid
         };
         this.setUpdatedID = function(id) {
             updatedID = id;
@@ -275,26 +277,30 @@
             gridOptions.api.exportDataAsCsv(params);
         };
 		
-        function setDetailRenderer(detailName, detailTable, detailCols, parentRef) {
-
-			var gridName = detailName.replace(/\W/g,'_') + 'Grid';
-			var buttonName = detailName.replace(/\W/g,'_') + 'Button';
+        function setDetailRenderer() {
 
 			DetailCellRenderer.prototype.init = function(params) {
                 // trick to convert string of HTML into DOM object
                 var eTemp = document.createElement('div');
+				if (!childTables) { return; }
+                eTemp.classList.add('full-width-panel');
+				eTemp.innerHTML = '';
 				childTables.forEach(function(table) {
-					eTemp.appendChild(document.createTextNode(this.getTemplate(params.data, table.banner)));
+					eTemp.innerHTML += this.getTemplate(params.data, table.banner);
 				}.bind(this));
-                this.eGui = eTemp.firstElementChild;
+                this.eGui = eTemp;
+				childTables.forEach(function(table) {
+					this.setupDetailGrid(table.banner, table.name, table.columnDefs, table.parentRef, params.api, params.data.sys_id);
+				}.bind(this));
                 this.masterGridApi = params.api;
                 this.masterRowIndex = params.data.sys_id;
-                this.setupDetailGrid(detailName, detailTable, detailCols, parentRef, params.api, params.data.sys_id);
             };
             DetailCellRenderer.prototype.setupDetailGrid = function(detailName, detailTable, detailCols, parentRef, masterGridApi, targSys) {
 
                 pageController.detailLoading = true;
 
+				var gridName = detailName.replace(/\W/g,'_') + 'Grid';
+				var buttonName = detailName.replace(/\W/g,'_') + 'Button';
                 var detailGrid = this.eGui.querySelector('#' + gridName);
                 var detailButton = this.eGui.querySelector('#' + buttonName);
                 var detailListener = function() {
@@ -341,13 +347,11 @@
 				var gridName = detailName.replace(/\W/g,'_') + 'Grid';
 				var buttonName = detailName.replace(/\W/g,'_') + 'Button';
                 var template =
-                    '<div class="full-width-panel">' +
                     '  <div class="full-width-details">' +
                     '    <div class="full-width-title">' + detailName + '</div>' +
                     '    <a href="javascript:void(0);" id="' + buttonName + '" class="btn btn-sm btn-info contract-button">Add ' + detailName + '</a>' +
                     '  </div>' +
-                    '  <div id="' + gridName + '" class="details-grid"></div>' +
-                    '</div>';
+                    '  <div id="' + gridName + '" class="details-grid"></div>';
 
                 return template;
             };
@@ -365,11 +369,14 @@
         }
 		
 		this.setRenderers = function(displayField) {
-			if (childTables.length > 0) {
+			if (childTables) { //loop through detailgrids and build them
 				childTables.forEach(function(table) {
-					setDetailRenderer(table.banner, table.name, table.columnDefs, table.parentRef);
+					setDetailRenderer();
 				});
-			}
+			} else { //this is not a master/detail page
+                gridOptions.masterDetail = false;
+            }
+			
             EditCellRenderer.prototype.init = function(params) {
 
                 // create the cell
@@ -573,14 +580,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>348</sys_mod_count>
+        <sys_mod_count>368</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-02 13:26:09</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-02 15:46:13</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>
