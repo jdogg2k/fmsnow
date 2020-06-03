@@ -113,7 +113,7 @@
             paginationAutoPageSize: true,
             suppressColumnVirtualisation: true,
             groupMultiAutoColumn: true,
-            masterDetail: true,
+            masterDetail: false,
 			detailCellRenderer: 'myDetailCellRenderer',
             keepDetailRows: true,
             detailRowHeight: 200,
@@ -237,8 +237,16 @@
             var gridDiv = document.querySelector('#' + ele);
             new agGrid.Grid(gridDiv, gridOptions);
         };
-        this.setOption = function(opt, optval) {
+        this.setGridOption = function(opt, optval) {
             gridOptions[opt] = optval;
+        };
+        this.setColumnOption = function(opt, optval, colName) {
+			if (gridOptions.columnApi) {
+				if (colName)
+					gridOptions.columnApi.getColumn(colName)[opt](optval);
+				else
+					gridOptions.columnApi[opt](optval);
+			}
         };
         this.setColumns = function(columnData) {
             gridOptions.columnDefs = columnData;
@@ -380,9 +388,8 @@
 		this.setRenderers = function(displayField) {
 			if (childTables) { //then setup the detail renderer
 				setDetailRenderer();
-			} else { //this is not a master/detail page
-                gridOptions.masterDetail = false;
-            }
+				gridOptions.masterDetail = true;
+			} 
 			
             EditCellRenderer.prototype.init = function(params) {
 
@@ -587,14 +594,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>374</sys_mod_count>
+        <sys_mod_count>382</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-02 18:42:48</sys_updated_on>
+        <sys_updated_on>2020-06-03 13:44:01</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

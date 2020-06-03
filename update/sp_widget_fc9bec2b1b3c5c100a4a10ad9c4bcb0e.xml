@@ -76,7 +76,6 @@
             headerName: 'Project',
             filter: 'agTextColumnFilter',
             sort: 'asc',
-            sortingOrder: 1,
             hide: true
         },
         {
@@ -84,21 +83,18 @@
             headerName: 'Tran Type',
             filter: 'agTextColumnFilter',
             sort: 'asc',
-            sortingOrder: 4
         },
         {
             field: 'tran_status',
             headerName: 'Status',
             filter: 'agTextColumnFilter',
             sort: 'asc',
-            sortingOrder: 3
         },
         {
             field: 'fy',
             headerName: 'FY',
             filter: 'agTextColumnFilter',
             sort: 'desc',
-            sortingOrder: 2,
             rowGroup: true   
         },
         {
@@ -111,7 +107,6 @@
             headerName: 'Trans. Date',
             filter: 'agDateColumnFilter',
             sort: 'desc',
-            sortingOrder: 5
         },
         {
             field: 'transaction_total_amt',
@@ -493,14 +488,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-21 14:05:50</sys_created_on>
         <sys_id>fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_id>
-        <sys_mod_count>105</sys_mod_count>
+        <sys_mod_count>111</sys_mod_count>
         <sys_name>Financial Transaction Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-02 18:43:39</sys_updated_on>
+        <sys_updated_on>2020-06-03 11:00:02</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

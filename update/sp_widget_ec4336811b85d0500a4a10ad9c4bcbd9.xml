@@ -406,7 +406,7 @@
             projQ.addEncodedQuery("fy=" + input.fy + "^project_ref.organization_refIN" + allOrgs.join(","));
             projQ.groupBy("appropriation_ref");
             projQ.groupBy("allocation_group_ref");
-            projQ.groupBy("project_ref");
+            projQ.groupBy("project_ref.organization_ref");
             projQ.groupBy("project_ref");
             projQ.groupBy("fund_source");
             projQ.groupBy("transfer_type_ref");
@@ -417,13 +417,14 @@
                 var projVal = projQ.project_ref.toString();
                 var allocGroupVal = projQ.allocation_group_ref.toString();
                 var appropVal = projQ.appropriation_ref.appropriation_ref.toString();
+                var orgVal = projQ.project_ref.organization_ref.toString();
 
                 var reportObj = {};
                 var isExisting = false;
 
                 //check for existing object in the array
                 var existingData = data.reportData.filter(function(el) {
-                    return el.project_ref == projVal && el.allocation_group_ref == allocGroupVal && el.appropriation_ref == appropVal;
+                    return el.project_ref == projVal && el.allocation_group_ref == allocGroupVal && el.appropriation_ref == appropVal && el.org_ref == orgVal;
                 });
 
                 if (existingData.length > 0){ //use existing object
@@ -433,12 +434,14 @@
                     
                 if (!isExisting) { //new entry to the array, define the default values
 
+                    reportObj.org_ref = orgVal;
                     reportObj.org_name = projQ.project_ref.organization_ref.getDisplayValue();
                     reportObj.project = projQ.project_ref.getDisplayValue();
                     reportObj.project_ref = projVal;
                     reportObj.omb_project = projQ.project_ref.omb_project_name.toString();
                     reportObj.investment = projQ.project_ref.investment.investment.getDisplayValue();
                     reportObj.appropriation_type = projQ.appropriation_ref.appropriation_ref.appropriation_type.getDisplayValue();
+                    reportObj.appropriation_type_ref = projQ.appropriation_ref.appropriation_ref.appropriation_type.toString();
                     reportObj.appropriation = projQ.appropriation_ref.appropriation_ref.getDisplayValue();
                     reportObj.appropriation_ref = appropVal;
                     reportObj.allocation_group = projQ.allocation_group_ref.getDisplayValue();
@@ -491,6 +494,40 @@
                 }
             }
 
+            //add in allocations from pools
+            var allocationPoolQuery = new GlideAggregate("x_g_irm_fms_allocation_pool");
+            allocationPoolQuery.addEncodedQuery("organization_refIN" + allOrgs.join(",") + "^pool_type=Apportionment^fy=" + input.fy);
+            allocationPoolQuery.groupBy("organization_ref");
+            allocationPoolQuery.groupBy("appropriation_type_ref");
+            allocationPoolQuery.addAggregate("SUM", "allocated_amt");
+            allocationPoolQuery.query();
+            while(allocationPoolQuery.next()){
+                var newObj = {};
+                newObj.org_ref = allocationPoolQuery.organization_ref.toString();
+                newObj.org_name = allocationPoolQuery.organization_ref.getDisplayValue();
+                newObj.project = "";
+                newObj.project_ref = "";
+                newObj.omb_project = "";
+                newObj.investment = allocationPoolQuery.investment_ref.investment.getDisplayValue();
+                newObj.appropriation_type = allocationPoolQuery.appropriation_type_ref.getDisplayValue();
+                newObj.appropriation_type_ref = allocationPoolQuery.appropriation_type_ref.toString();
+                newObj.appropriation = "";
+                newObj.appropriation_ref = "";
+                newObj.allocation_group = "";
+                newObj.allocation_group_ref = "";
+                newObj.allocations = parseFloat(allocationPoolQuery.getAggregate("SUM", "allocated_amt"));
+                newObj.reimbursements = 0;
+                newObj.trans_in = 0;
+                newObj.trans_out = 0;
+                newObj.toaa = 0;
+                newObj.toa = 0;
+                newObj.vg_labor = 0;
+                newObj.off_adjustments = 0;
+                newObj.expended = 0;
+                newObj.balance = 0;
+                data.reportData.push(newObj);
+            }
+
             //total and make negative
             data.reportData.forEach(function(item){
                 item.vg_labor = item.vg_labor * -1;
@@ -524,14 +561,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>107</sys_mod_count>
+        <sys_mod_count>112</sys_mod_count>
         <sys_name>Allocation Activity Report</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-02 14:25:26</sys_updated_on>
+        <sys_updated_on>2020-06-02 21:01:37</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
