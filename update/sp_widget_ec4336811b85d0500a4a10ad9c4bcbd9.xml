@@ -208,6 +208,12 @@
     var gridDiv = document.querySelector('#reportGrid');
     new agGrid.Grid(gridDiv, gridOptions);
 
+
+    c.generateReport();
+
+    $rootScope.$on('OrgChanged', function(event, args) {
+        c.generateReport();
+    });
 }]]></client_script>
         <controller_as>c</controller_as>
         <css>.full-grid {
@@ -561,14 +567,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>112</sys_mod_count>
+        <sys_mod_count>116</sys_mod_count>
         <sys_name>Allocation Activity Report</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-02 21:01:37</sys_updated_on>
+        <sys_updated_on>2020-06-03 16:42:17</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
@@ -579,15 +585,15 @@
                 </div>
                 <div class="col-sm-3 form-group">
                     <label for="selFY" class="selectLabel">FY:</label>
-                    <select class="reportSelect" id="selFY" ng-model="c.reportOptions.selectedFY">
+                    <select class="reportSelect" id="selFY" ng-model="c.reportOptions.selectedFY" ng-change="c.generateReport();">
                         <option value="">-Select-</option>
                         <option ng-repeat="year in c.fiscalYears" value="{{year}}">{{year}}
                         </option>
                     </select>
                 </div>
                 <div class="col-sm-6 form-group">
-                    <a href="javascript:void(0)" ng-click="c.generateReport();" class="btn btn-info new-button">View
-                        Report</a>
+                    <!--<a href="javascript:void(0)" ng-click="c.generateReport();" class="btn btn-info new-button">View
+                        Report</a>-->
                 </div>
             </div>
         </div>
