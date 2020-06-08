@@ -29,6 +29,7 @@
                 <element inactive_on_update="false" label="Miscellaneous - D9" value="D9"/>
                 <element inactive_on_update="false" label="Miscellaneous - M9" value="M9"/>
                 <element inactive_on_update="false" label="Purchase Order" value="PO"/>
+                <element inactive_on_update="false" label="Reimbursements Outgoing" value="RO"/>
                 <element inactive_on_update="false" label="Training" value="TG"/>
                 <element inactive_on_update="false" label="Transfer Out – External" value="TE"/>
                 <element inactive_on_update="false" label="Transfer Out – Internal" value="TI"/>

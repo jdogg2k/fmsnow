@@ -15,6 +15,9 @@
             <element name="investment"/>
         </index>
         <index name="index3">
+            <element name="project_code"/>
+        </index>
+        <index name="index4">
             <element name="function_code_ref"/>
         </index>
     </element>

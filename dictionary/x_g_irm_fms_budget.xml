@@ -26,12 +26,42 @@
         </element>
         <element label="Budget Version" max_length="40" name="budget_version" read_only="true" type="integer"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;v1.0&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = 'v' + current.budget_version.toString() + '.' + current.budget_revision.toString(); &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" label="Budget Version Revision" max_length="32" name="budget_version_revision" read_only="true" type="string" virtual="true"/>
-        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.budget_source_ref.nil()) {&#13;&#10;&#9;&#9;display = &quot;&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.budget_source_ref.fy.toString() + ' ' + current.budget_source_ref.budget_type.toString() + ' ' + current.budget_source_ref.budget_version_revision; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" label="Created From" max_length="256" name="created_from" read_only="true" type="string" virtual="true"/>
-        <element label="Is Current?" max_length="40" name="current" type="boolean"/>
+        <element label="Is Current?" max_length="40" name="current" read_only="true" type="boolean"/>
         <element attributes="format=none" choice="3" choice_field="fy" choice_table="x_g_irm_fms_project_allocation" default="javascript:new Date().getFullYear();" label="FY" mandatory="true" max_length="40" name="fy" type="integer">
-            <choice/>
+            <choice>
+                <element inactive_on_update="false" label="2000" sequence="0" value="2000"/>
+                <element inactive_on_update="false" label="2001" sequence="1" value="2001"/>
+                <element inactive_on_update="false" label="2002" sequence="2" value="2002"/>
+                <element inactive_on_update="false" label="2003" sequence="3" value="2003"/>
+                <element inactive_on_update="false" label="2004" sequence="4" value="2004"/>
+                <element inactive_on_update="false" label="2005" sequence="5" value="2005"/>
+                <element inactive_on_update="false" label="2006" sequence="6" value="2006"/>
+                <element inactive_on_update="false" label="2007" sequence="7" value="2007"/>
+                <element inactive_on_update="false" label="2008" sequence="8" value="2008"/>
+                <element inactive_on_update="false" label="2009" sequence="9" value="2009"/>
+                <element inactive_on_update="false" label="2010" sequence="10" value="2010"/>
+                <element inactive_on_update="false" label="2011" sequence="11" value="2011"/>
+                <element inactive_on_update="false" label="2012" sequence="12" value="2012"/>
+                <element inactive_on_update="false" label="2013" sequence="13" value="2013"/>
+                <element inactive_on_update="false" label="2014" sequence="14" value="2014"/>
+                <element inactive_on_update="false" label="2015" sequence="15" value="2015"/>
+                <element inactive_on_update="false" label="2016" sequence="16" value="2016"/>
+                <element inactive_on_update="false" label="2017" sequence="17" value="2017"/>
+                <element inactive_on_update="false" label="2018" sequence="18" value="2018"/>
+                <element inactive_on_update="false" label="2019" sequence="19" value="2019"/>
+                <element inactive_on_update="false" label="2020" sequence="20" value="2020"/>
+                <element inactive_on_update="false" label="2021" sequence="21" value="2021"/>
+                <element inactive_on_update="false" label="2022" sequence="22" value="2022"/>
+                <element inactive_on_update="false" label="2023" sequence="23" value="2023"/>
+                <element inactive_on_update="false" label="2024" sequence="24" value="2024"/>
+                <element inactive_on_update="false" label="2025" sequence="25" value="2025"/>
+                <element inactive_on_update="false" label="2026" sequence="26" value="2026"/>
+                <element inactive_on_update="false" label="2027" sequence="27" value="2027"/>
+                <element inactive_on_update="false" label="2028" sequence="28" value="2028"/>
+                <element inactive_on_update="false" label="2029" sequence="29" value="2029"/>
+            </choice>
         </element>
-        <element label="Locked?" max_length="40" name="locked" type="boolean"/>
+        <element label="Locked?" max_length="40" name="locked" read_only="true" type="boolean"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element label="Project" mandatory="true" max_length="32" name="project_ref" reference="x_g_irm_fms_project" reference_qual="javascript: &quot;organization_refIN&quot; + new OrgHierarchy().getUserOrgs();" type="reference" use_reference_qualifier="advanced"/>
         <index name="index">

@@ -38,7 +38,27 @@
         phaseManager.exportExcel();
     }
 
-    var phaseColumnDefs = [{
+    var phaseColumnDefs = [
+		{
+            headerName: 'Budget Code',
+            field: 'sys_id',
+            minWidth: 175,
+            cellRenderer: 'agGroupCellRenderer',
+            showRowGroup: true,
+			sort: 'asc',
+			sortingOrder: 1,
+            cellRendererParams: {
+                suppressCount: true,
+                checkbox: false,
+                suppressDoubleClickExpand: true,
+                suppressEnterExpand: true,
+                innerRenderer: 'myGroupCellRenderer',
+				banner: { type: 'standard', 
+						 columns: [{ label: '', name: 'budget_item_ref.expense_item_ref.budget_code_ref.budget_code' }]
+						} 
+            }
+        },
+		{
             field: 'edit',
             headerName: 'Edit',
             maxWidth: 50,
@@ -52,18 +72,19 @@
 				return { "show": c.canEdit(c.userAuth, params.data) }; 
 			}
         },
+		{
+            field: 'budget_item_ref.expense_item_ref.budget_code_ref.budget_code',
+            headerName: 'Budget Code',
+            filter: 'agTextColumnFilter',
+			rowGroup: true,
+			hide: true
+        },
         {
             field: 'budget_item_ref',
             headerName: 'Expense Item',
             filter: 'agTextColumnFilter',
-					rowGroup: true,
-					enableRowGroup: true
-        },
-        {
-            field: 'fiscal_month_rawval',
-            headerName: 'Phase Month',
- 			sort: 'asc',
-			hidden: true
+			rowGroup: true,
+			enableRowGroup: true
         },
         {
             field: 'fiscal_month',
@@ -71,14 +92,11 @@
             cellStyle: {
                 textAlign: 'right'
             },
-            filter: 'agTextColumnFilter',
 			pivot: true,
 			enablePivot: true,
-            headerComponentParams : {
-              template:
-                '<div class="ag-cell-label-container" role="presentation">' +
-                '<span ref="eText" class="ag-header-cell-text" role="columnheader"></span>' +
-                '</div>'
+            pivotComparator: function(a, b) {
+                var requiredOrder = ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'];
+                return requiredOrder.indexOf(a) - requiredOrder.indexOf(b);
             }
         },
         {
@@ -88,7 +106,7 @@
                 textAlign: 'right'
             },
 			type: 'currency',
-					aggFunc: 'sum',
+			aggFunc: 'sum',
             headerComponentParams : {
               template:
                 '<div class="ag-cell-label-container" role="presentation">' +
@@ -122,11 +140,11 @@
     }
 
     phaseManager.setColumns(phaseColumnDefs);
-	phaseManager.setColumnOption('setPivotMode', true);
+	phaseManager.setGridOption('pivotColumnGroupTotals', 'after');
     phaseManager.setPageProperties(phaseProps);
     phaseManager.setRenderers('expense_item_ref'); //build renderers and set display field to show on delete attempt
     phaseManager.renderGrid('phaseGrid'); //render grid objects
-	phaseManager.setColumnOption('setPivotMode', true);
+    phaseManager.setColumnOption('setPivotMode', true);
     phaseManager.setGridData(c.data.tableData); //set grid data
     phaseManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst));
 	$timeout(function () { phaseManager.fitColumns(); }, 250);
@@ -197,8 +215,10 @@
         }
     }
 
+	
+	var phaseInclude = [ 'budget_item_ref.expense_item_ref.budget_code_ref.budget_code' ];
 	data.budgetOrg = FMSUtility.getScalar(FMSConstants.TABLE_BUDGET, "project_ref.organization_ref", "sys_id=" + data.selectedBudget);
-    data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET_ITEM_PHASE, "budget_item_ref.budget_ref.sys_id=" + data.selectedBudget, true); 
+    data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET_ITEM_PHASE, "budget_item_ref.budget_ref.sys_id=" + data.selectedBudget, true, phaseInclude); 
 
     data.tableName = FMSConstants.TABLE_BUDGET_ITEM_PHASE;
 
@@ -212,14 +232,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-19 12:52:41</sys_created_on>
         <sys_id>8aa78eba1b34d8100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>35</sys_mod_count>
+        <sys_mod_count>78</sys_mod_count>
         <sys_name>Budget Item Phase Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_8aa78eba1b34d8100a4a10ad9c4bcb0b</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-03 16:24:05</sys_updated_on>
+        <sys_updated_on>2020-06-05 12:52:42</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

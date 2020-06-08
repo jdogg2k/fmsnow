@@ -72,8 +72,11 @@
         {
             field: 'fy',
             headerName: 'FY',
-            filter: 'agTextColumnFilter',
-            sort: 'asc',
+            filter: 'agSetColumnFilter',
+			filterParams: { 
+				values: c.data.fiscalYears
+			},
+            sort: 'desc',
 			sortingOrder: 1
         },
         {
@@ -88,18 +91,11 @@
             filter: 'agTextColumnFilter'
         },
         {
-            field: 'budget_version',
-            headerName: 'Budget Version',
+            field: 'budget_version_revision',
+            headerName: 'Version/Revision',
             maxWidth: 80,
             sort: 'desc',
 			sortingOrder: 3
-        },
-        {
-            field: 'budget_revision',
-            headerName: 'Budget Revision',
-            maxWidth: 80,
-            sort: 'desc',
-			sortingOrder: 4
         },
         {
             field: 'current',
@@ -120,9 +116,19 @@
             cellRenderer: 'checkbox'
         },
         {
-            field: 'budget_total',
+            field: 'budget_total_amt',
             headerName: 'Budget Total',
-            suppressMenu: true
+            cellStyle: {
+                textAlign: 'right'
+            },
+            type: 'currency',
+            filter: 'agNumberColumnFilter',
+            aggFunc: 'sum',
+            headerComponentParams: {
+                template: '<div class="ag-cell-label-container" role="presentation">' +
+                    '<span ref="eText" class="ag-header-cell-text" role="columnheader"></span>' +
+                    '</div>'
+            }
         },
         {
             field: 'approved_date',
@@ -141,12 +147,12 @@
             cellStyle: {
                 textAlign: 'center'
             },
-			suppressMenu: true,
-			sortable: false,
-            cellRenderer: 'deleteCell',
-			cellRendererParams: function(params) { 
-				return { "show": c.canDelete(c.userAuth, params.data) }; 
-			}
+						suppressMenu: true,
+						sortable: false,
+									cellRenderer: 'deleteCell',
+						cellRendererParams: function(params) { 
+							return { "show": c.canDelete(c.userAuth, params.data) }; 
+						}
         }
     ];
 
@@ -164,6 +170,7 @@
     budgetManager.setRenderers('budget_type'); //build renderers and set display field to show on delete attempt
     budgetManager.renderGrid('budgetGrid'); //render grid objects
     budgetManager.setGridData(c.data.tableData); //set grid data
+	budgetManager.setGridFilter('fy', 'equals', c.data.selectedFY);
     budgetManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst || c.userAuth.roles.canApprove));
 	$timeout(function () { budgetManager.fitColumns(); }, 250);
 
@@ -259,6 +266,9 @@
         if (input.mode == "setProj") {
             data.selectedProj = input.proj_id.toString();
         }
+    } else {
+        data.fiscalYears = FMSUtility.getFiscalYears();
+        data.selectedFY = FMSUtility.getCurrentFY();
     }
 
 	var filter = "";
@@ -278,14 +288,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-13 11:56:49</sys_created_on>
         <sys_id>415183781b3414100a4a10ad9c4bcb6a</sys_id>
-        <sys_mod_count>16</sys_mod_count>
+        <sys_mod_count>20</sys_mod_count>
         <sys_name>Budget Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_415183781b3414100a4a10ad9c4bcb6a</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-26 11:05:26</sys_updated_on>
+        <sys_updated_on>2020-06-05 12:14:00</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

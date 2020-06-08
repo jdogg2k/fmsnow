@@ -7,7 +7,7 @@
         <element label="Financial Transaction" max_length="32" name="fin_tran_ref" reference="x_g_irm_fms_fin_tran" type="reference"/>
         <element label="Item Cost" max_length="20" name="item_cost" type="currency"/>
         <element label="Item Quantity" mandatory="true" max_length="40" name="item_qty" type="integer"/>
-        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;    total = (parseInt(current.received_qty || current.item_qty)) * (parseFloat(current.actual_cost || current.item_cost));&#13;&#10;    return total; &#13;&#10;})(current);" label="Item Total" max_length="20" name="item_total" read_only="true" type="currency" virtual="true"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;&#13;&#10;&#9;&#13;&#10;})(current);" label="Item Total" max_length="20" name="item_total" read_only="true" type="currency"/>
         <element label="OMB Category" max_length="32" name="omb_category_ref" reference="x_g_irm_fms_omb_category" reference_qual="javascript:&quot;organization_refIN&quot; + new OrgHierarchy().getOrgParents(current.fin_tran_ref.project_ref.organization_ref)" type="reference" use_reference_qualifier="advanced"/>
         <element label="Post" max_length="32" name="post_ref" reference="x_g_irm_fms_post" type="reference"/>
         <element label="Received Quantity" max_length="40" name="received_qty" type="integer"/>

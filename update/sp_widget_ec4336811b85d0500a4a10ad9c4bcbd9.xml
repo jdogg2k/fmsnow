@@ -24,6 +24,13 @@
         selGroup1: "project"
     };
 
+    c.toggleExpand = function(mode) {
+        gridOptions.api.forEachNode(function(rowNode, index) {
+            if (rowNode.group)
+                rowNode.setExpanded(mode);
+        });
+    }
+
     function currencyCssFunc(params) {
         if (params.value !== null && params.value !== undefined && params.value < 0) {
             return {
@@ -216,148 +223,149 @@
     });
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.full-grid {
-    width: 94vw;
-    height: calc(100vh - 210px);
-    clear: both;
-}
-
-.fms-list-header {
-    margin-bottom: 0px !important;
-}
-
-.pageLabel {
-    float: left;
-    margin-right: 10px;
-}
-
-.row-button {
-    cursor: pointer;
-}
-
-.new-button {
-    float: left;
-}
-
-.excel-button {
-    float: right;
-}
-
-.edit-pencil {
-    color: #003ade;
-    font-size: 16px;
-    margin-right: 5px;
-}
-
-.action-enabled {
-    color: #0b8800;
-    font-size: 16px;
-    margin-right: 5px;
-    cursor: pointer;
-}
-
-.action-disabled {
-    color: #808080;
-    font-size: 16px;
-    margin-right: 5px;
-}
-
-.delete-x {
-    color: #000000;
-    font-size: 13px;
-}
-
-.updated-row {
-    background-color: #FFFFCC;
-}
-
-.ag-header-cell-label .ag-header-icon.ag-sort-order {
-    display: none
-}
-
-.ag-row-group {
-    font-weight: bold;
-}
-
-.full-width-panel {
-    position: relative;
-    background: #EDF6FF;
-    height: 100%;
-    width: 100%;
-    padding: 5px;
-}
-
-.full-row-details {
-    position: relative;
-    background: #FFFFFF;
-    height: 100%;
-    width: 100%;
-    padding-left: 12px;
-    padding-top: 4px;
-}
-
-.call-record-cell {
-    text-align: right;
-}
-
-.full-width-detail {
-    padding-top: 4px;
-}
-
-.full-width-title {
-    font-size: 10pt;
-    font-weight: bold;
-    float: left;
-}
-
-.contract-button {
-    float: right;
-    margin-top: -13px;
-}
-
-.full-width-details {
-    float: left;
-    padding: 5px;
-    margin: 5px;
-    width: 100%;
-    clear: both;
-}
-
-.details-grid {
-    display: block;
-    clear: both;
-    height: 100px;
-    margin-bottom: 5px;
-}
-
-.full-width-grid-toolbar {
-    top: 4px;
-    left: 30px;
-    margin-left: 150px;
-    display: block;
-    position: absolute;
-}
-
-.full-width-phone-icon {
-    padding-right: 10px;
-}
-
-.full-width-search {
-    border: 1px solid #eee;
-    margin-left: 10px;
-}
-
-.control-panel {
-    padding: 5px;
-    background-color: #f5f1df;
-}
-
-.reportSelect {
-    padding: 6px 12px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
+        <css>.full-grid {&#13;
+    width: 94vw;&#13;
+    height: calc(100vh - 210px);&#13;
+    clear: both;&#13;
+}&#13;
+&#13;
+.fms-list-header {&#13;
+    margin-bottom: 0px !important;&#13;
+}&#13;
+&#13;
+.pageLabel {&#13;
+    float: left;&#13;
+    margin-right: 10px;&#13;
+}&#13;
+&#13;
+.row-button {&#13;
+    cursor: pointer;&#13;
+}&#13;
+&#13;
+.new-button {&#13;
+    float: right;&#13;
+    margin-right: 5px;&#13;
+}&#13;
+&#13;
+.excel-button {&#13;
+    float: right;&#13;
+}&#13;
+&#13;
+.edit-pencil {&#13;
+    color: #003ade;&#13;
+    font-size: 16px;&#13;
+    margin-right: 5px;&#13;
+}&#13;
+&#13;
+.action-enabled {&#13;
+    color: #0b8800;&#13;
+    font-size: 16px;&#13;
+    margin-right: 5px;&#13;
+    cursor: pointer;&#13;
+}&#13;
+&#13;
+.action-disabled {&#13;
+    color: #808080;&#13;
+    font-size: 16px;&#13;
+    margin-right: 5px;&#13;
+}&#13;
+&#13;
+.delete-x {&#13;
+    color: #000000;&#13;
+    font-size: 13px;&#13;
+}&#13;
+&#13;
+.updated-row {&#13;
+    background-color: #FFFFCC;&#13;
+}&#13;
+&#13;
+.ag-header-cell-label .ag-header-icon.ag-sort-order {&#13;
+    display: none&#13;
+}&#13;
+&#13;
+.ag-row-group {&#13;
+    font-weight: bold;&#13;
+}&#13;
+&#13;
+.full-width-panel {&#13;
+    position: relative;&#13;
+    background: #EDF6FF;&#13;
+    height: 100%;&#13;
+    width: 100%;&#13;
+    padding: 5px;&#13;
+}&#13;
+&#13;
+.full-row-details {&#13;
+    position: relative;&#13;
+    background: #FFFFFF;&#13;
+    height: 100%;&#13;
+    width: 100%;&#13;
+    padding-left: 12px;&#13;
+    padding-top: 4px;&#13;
+}&#13;
+&#13;
+.call-record-cell {&#13;
+    text-align: right;&#13;
+}&#13;
+&#13;
+.full-width-detail {&#13;
+    padding-top: 4px;&#13;
+}&#13;
+&#13;
+.full-width-title {&#13;
+    font-size: 10pt;&#13;
+    font-weight: bold;&#13;
+    float: left;&#13;
+}&#13;
+&#13;
+.contract-button {&#13;
+    float: right;&#13;
+    margin-top: -13px;&#13;
+}&#13;
+&#13;
+.full-width-details {&#13;
+    float: left;&#13;
+    padding: 5px;&#13;
+    margin: 5px;&#13;
+    width: 100%;&#13;
+    clear: both;&#13;
+}&#13;
+&#13;
+.details-grid {&#13;
+    display: block;&#13;
+    clear: both;&#13;
+    height: 100px;&#13;
+    margin-bottom: 5px;&#13;
+}&#13;
+&#13;
+.full-width-grid-toolbar {&#13;
+    top: 4px;&#13;
+    left: 30px;&#13;
+    margin-left: 150px;&#13;
+    display: block;&#13;
+    position: absolute;&#13;
+}&#13;
+&#13;
+.full-width-phone-icon {&#13;
+    padding-right: 10px;&#13;
+}&#13;
+&#13;
+.full-width-search {&#13;
+    border: 1px solid #eee;&#13;
+    margin-left: 10px;&#13;
+}&#13;
+&#13;
+.control-panel {&#13;
+    padding: 5px;&#13;
+    background-color: #f5f1df;&#13;
+}&#13;
+&#13;
+.reportSelect {&#13;
+    padding: 6px 12px;&#13;
+    font-size: 14px;&#13;
+    border: 1px solid #ccc;&#13;
+    border-radius: 4px;&#13;
+}&#13;
 </css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -380,6 +388,35 @@
     var orgName = "";
     var session = gs.getSession();
 
+    /*var appropriationsChecked = [];
+
+    function getSupportingData(reportObj, tOrgs, tFY) {
+        //query the view to pull supporting data
+        var transQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
+        transQ.addEncodedQuery("proj_organization_refIN" + tOrgs + "^ft_fy=" + tFY + "^ft_void=false^ft_project_appropriation_ref.appropriation_ref=" + reportObj.appropriation_ref);
+        transQ.groupBy("ft_tran_type");
+        transQ.addAggregate("SUM", "fti_item_total");
+        transQ.query();
+        while(transQ.next()){
+
+            var actCost = parseFloat(transQ.getAggregate("SUM", "fti_item_total"));
+            if (transQ.ft_tran_type == "TE" || transQ.ft_tran_type == "TI" || transQ.ft_tran_type == "TVGT") {
+                reportObj.trans_out += actCost;
+            } else if (transQ.ft_tran_type == "TVGL") {
+                reportObj.vg_labor += actCost;
+            } else if (transQ.ft_tran_type == "TOA") {
+                reportObj.toa += actCost;
+            } else {
+                reportObj.expended += actCost;
+            }
+
+        }
+
+        appropriationsChecked.push(reportObj.appropriation_ref);
+
+        return reportObj;
+    }*/
+
     if ($sp.getParameter("org_id") && $sp.getParameter("org_id").length > 0)
         data.selectedOrgID = $sp.getParameter("org_id");
 	else
@@ -390,7 +427,7 @@
             data.reportData = [];
 
             //get org name
-            var orgQ = new GlideRecord("x_g_irm_fms_organization");
+            var orgQ = new GlideRecord(FMSConstants.TABLE_ORGANIZATION);
             orgQ.addQuery("sys_id", data.selectedOrgID);
             orgQ.query();
             if (orgQ.next()){
@@ -400,7 +437,7 @@
             var allOrgs = [];
             allOrgs.push(data.selectedOrgID);
             
-            var subOrgs = new GlideRecord("x_g_irm_fms_organization");
+            var subOrgs = new GlideRecord(FMSConstants.TABLE_ORGANIZATION);
             subOrgs.addEncodedQuery("organization_parent_ref=" + data.selectedOrgID);
             subOrgs.query();
             while (subOrgs.next()){
@@ -408,7 +445,7 @@
             } 
 
             //get project allocation data
-            var projQ = new GlideAggregate("x_g_irm_fms_project_allocation");
+            var projQ = new GlideAggregate(FMSConstants.TABLE_PROJECT_ALLOCATION);
             projQ.addEncodedQuery("fy=" + input.fy + "^project_ref.organization_refIN" + allOrgs.join(","));
             projQ.groupBy("appropriation_ref");
             projQ.groupBy("allocation_group_ref");
@@ -419,7 +456,7 @@
             projQ.addAggregate("SUM", "allocation_amt");
             projQ.query();
             while (projQ.next()){
-
+                
                 var projVal = projQ.project_ref.toString();
                 var allocGroupVal = projQ.allocation_group_ref.toString();
                 var appropVal = projQ.appropriation_ref.appropriation_ref.toString();
@@ -462,25 +499,7 @@
                     reportObj.off_adjustments = 0;
                     reportObj.expended = 0;
                     reportObj.balance = 0;
-
-                    //query the view to pull supporting data
-                    var transQ = new GlideAggregate("x_g_irm_fms_fin_tran_rpt");
-                    transQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_void=false^ft_allocation_group_ref=" + reportObj.allocation_group_ref + "^ft_project_appropriation_ref.appropriation_ref=" + reportObj.appropriation_ref);
-                    transQ.groupBy("ft_tran_type");
-                    transQ.addAggregate("SUM", "fti_actual_cost");
-                    transQ.query();
-                    while(transQ.next()){
-                        var actCost = parseFloat(transQ.getAggregate("SUM", "fti_actual_cost"));
-                        if (transQ.ft_tran_type == "TE" || transQ.ft_tran_type == "TI" || transQ.ft_tran_type == "TVGT") {
-                            reportObj.trans_out += actCost;
-                        } else if (transQ.ft_tran_type == "TVGL") {
-                            reportObj.vg_labor += actCost;
-                        } else if (transQ.ft_tran_type == "TOA") {
-                            reportObj.toa += actCost;
-                        } else {
-                            reportObj.expended += actCost;
-                        }
-                    }
+                    
                 }
                 
                 if (projQ.fund_source == "Allocation")
@@ -501,13 +520,14 @@
             }
 
             //add in allocations from pools
-            var allocationPoolQuery = new GlideAggregate("x_g_irm_fms_allocation_pool");
+            /*var allocationPoolQuery = new GlideAggregate(FMSConstants.TABLE_ALLOCATION_POOL);
             allocationPoolQuery.addEncodedQuery("organization_refIN" + allOrgs.join(",") + "^pool_type=Apportionment^fy=" + input.fy);
             allocationPoolQuery.groupBy("organization_ref");
             allocationPoolQuery.groupBy("appropriation_type_ref");
             allocationPoolQuery.addAggregate("SUM", "allocated_amt");
             allocationPoolQuery.query();
             while(allocationPoolQuery.next()){
+                
                 var newObj = {};
                 newObj.org_ref = allocationPoolQuery.organization_ref.toString();
                 newObj.org_name = allocationPoolQuery.organization_ref.getDisplayValue();
@@ -531,7 +551,101 @@
                 newObj.off_adjustments = 0;
                 newObj.expended = 0;
                 newObj.balance = 0;
+
+                //link in Appropriations based on type
+                var poolToAppropriation = new GlideRecord(FMSConstants.TABLE_APPROPRIATION);
+                poolToAppropriation.addEncodedQuery("appropriation_type=" + newObj.appropriation_type_ref);
+                poolToAppropriation.query();
+                if (poolToAppropriation.next()) {
+                    newObj.appropriation = poolToAppropriation.getDisplayValue("appropriation_display");
+                    newObj.appropriation_ref = poolToAppropriation.sys_id.toString();
+
+                    var checkedJoin = appropriationsChecked.join(",");
+                    if (checkedJoin.indexOf(newObj.appropriation_ref) == -1)
+                        newObj = getSupportingData(newObj, allOrgs.join(","), input.fy);
+                }
+
                 data.reportData.push(newObj);
+
+            }*/
+
+            //Get supporting info
+            var endQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
+            /*var endQS = "";
+            appropriationsChecked.forEach(function(appVal){
+                endQS += "^ft_project_appropriation_ref.appropriation_ref!=" + appVal;
+            });*/
+            endQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_void=false");
+            endQ.groupBy("ft_allocation_group_ref");
+            endQ.groupBy("ft_project_ref");
+            endQ.groupBy("ft_project_appropriation_ref");
+            endQ.groupBy("proj_organization_ref");
+            endQ.groupBy("proj_investment");
+            endQ.groupBy("ft_tran_type");
+            endQ.addAggregate("SUM", "fti_item_total");
+            endQ.query();
+            while(endQ.next()){
+
+                var endprojVal = endQ.ft_project_ref.toString();
+                var endallocGroupVal = endQ.ft_allocation_group_ref.toString();
+                var endappropVal = endQ.ft_project_appropriation_ref.appropriation_ref.toString();
+                var endorgVal = endQ.proj_organization_ref.toString();
+
+                var endObj = {};
+                var isExists = false;
+
+                //check for existing object in the array
+                var prevData = data.reportData.filter(function(el) {
+                    return el.project_ref == endprojVal && el.allocation_group_ref == endallocGroupVal && el.appropriation_ref == endappropVal && el.org_ref == endorgVal;
+                });
+
+                if (prevData.length > 0){ //use existing object
+                    isExists = true;
+                    endObj = prevData[0];
+                }
+                    
+                if (!isExists) { //new entry to the array, define the default values
+                    endObj.org_ref = endorgVal;
+                    endObj.org_name = endQ.proj_organization_ref.getDisplayValue();
+                    endObj.project = endQ.ft_project_ref.getDisplayValue();
+                    endObj.project_ref = endprojVal;
+                    endObj.omb_project = endQ.ft_project_ref.omb_project_name.toString();
+                    endObj.investment = endQ.proj_investment.investment.getDisplayValue();
+                    //endObj.appropriation_type = endQ.ft_project_appropriation_ref.appropriation_ref.appropration_type.getDisplayValue();
+                    //endObj.appropriation_type_ref = endQ.ft_project_appropriation_ref.appropriation_ref.appropration_type.toString();
+                    endObj.appropriation_type = "";
+                    endObj.appropriation_type_ref = "";
+                    endObj.appropriation = endQ.ft_project_appropriation_ref.appropriation_ref.getDisplayValue();
+                    endObj.appropriation_ref = endappropVal;
+                    endObj.allocation_group = endQ.ft_allocation_group_ref.getDisplayValue();
+                    endObj.allocation_group_ref = endallocGroupVal;
+                    endObj.allocations = 0;
+                    endObj.reimbursements = 0;
+                    endObj.trans_in = 0;
+                    endObj.trans_out = 0;
+                    endObj.toaa = 0;
+                    endObj.toa = 0;
+                    endObj.vg_labor = 0;
+                    endObj.off_adjustments = 0;
+                    endObj.expended = 0;
+                    endObj.balance = 0;
+                }
+
+                var finalCost = parseFloat(endQ.getAggregate("SUM", "fti_item_total"));
+                if (endQ.ft_tran_type == "TE" || endQ.ft_tran_type == "TI" || endQ.ft_tran_type == "TVGT") {
+                    endObj.trans_out += finalCost;
+                } else if (endQ.ft_tran_type == "TVGL") {
+                    endObj.vg_labor += finalCost;
+                } else if (endQ.ft_tran_type == "TOA") {
+                    endObj.toa += finalCost;
+                } else {
+                    endObj.expended += finalCost;
+                }
+
+                if (!isExists) {
+                    data.reportData.push(endObj);
+                }
+
             }
 
             //total and make negative
@@ -542,6 +656,14 @@
                 item.off_adjustments = (item.toaa - item.toa);
                 item.balance = item.allocations + item.trans_in + item.reimbursements + item.toaa + item.vg_labor + item.toa + item.trans_out + item.expended;
             });
+
+            /*data.budgetTest = [];
+            var newgr = new GlideRecord(FMSConstants.TABLE_ORGANIZATION);
+            //newgr.addEncodedQuery("budget_item_ref=827451231bfc5c100a4a10ad9c4bcb8c");
+            newgr.query();
+            while (newgr.next()) {
+                data.budgetTest.push(newgr.org_code);
+            }*/
 
         }
     }
@@ -567,14 +689,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>116</sys_mod_count>
+        <sys_mod_count>178</sys_mod_count>
         <sys_name>Allocation Activity Report</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-03 16:42:17</sys_updated_on>
+        <sys_updated_on>2020-06-05 17:53:42</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
@@ -592,8 +714,8 @@
                     </select>
                 </div>
                 <div class="col-sm-6 form-group">
-                    <!--<a href="javascript:void(0)" ng-click="c.generateReport();" class="btn btn-info new-button">View
-                        Report</a>-->
+                    <a href="javascript:void(0)" ng-click="c.toggleExpand(false);" class="btn btn-info new-button">Collapse All Rows</a>
+                    <a href="javascript:void(0)" ng-click="c.toggleExpand(true);" class="btn btn-info new-button">Expand All Rows</a>
                 </div>
             </div>
         </div>

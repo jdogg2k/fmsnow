@@ -108,7 +108,14 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         return canDelete;
     },
 
-    getTableData: function (table, encQry, returnSysID) {
+    convertToObject: function (obj, str) {
+        str = str.split(".");
+        for (var i = 0; i < str.length; i++)
+            obj = obj[str[i]];
+        return obj;
+    },
+
+    getTableData: function (table, encQry, returnSysID, dotInclude) {
 
         /* JLR - This function will return all non-sys values of any table in FMS - may want to modify so it can accept an optional encoded query
         setting returnSysID to true will force the function to return the sys_id along with all of the table fields*/
@@ -118,6 +125,7 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         //build field arrays
         var regFields = [];
         var currencyFields = [];
+        var dotWalkFields = [];
         var dictionaryQ = new GlideRecord("sys_dictionary");
         dictionaryQ.addEncodedQuery("internal_type!=reference^elementNOT LIKEsys_^internal_type!=collection^internal_type!=boolean^choiceISEMPTY^name=" + table);
         dictionaryQ.query();
@@ -132,8 +140,14 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         displayQ.addEncodedQuery("name=" + table + "^internal_type=reference^NQname=" + table + "^internal_type=boolean^NQname=" + table + "^choiceIN3,1,2");
         displayQ.query();
         while (displayQ.next()) {
-            displayFields.push(displayQ.getValue("element"));
+            var dispField = {}
+            dispField.field = displayQ.getValue("element");
+            dispField.isInteger = (displayQ.getValue("internal_type") == "integer");
+            displayFields.push(dispField);
         }
+
+        if (dotInclude !== undefined && dotInclude != false)
+            dotWalkFields = dotInclude
 
         var tableQuery = new GlideRecord(table);
         if (encQry !== undefined && encQry != '')
@@ -147,14 +161,29 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
                 dataObj[field] = tableQuery.getValue(field);
             })
 
-            displayFields.forEach(function (field) {
-                dataObj[field] = tableQuery.getDisplayValue(field);
-                dataObj[field + "_rawval"] = tableQuery.getValue(field);
+            displayFields.forEach(function (obj) {
+                dataObj[obj.field] = tableQuery.getDisplayValue(obj.field);
+                var fieldVal = tableQuery.getValue(obj.field);
+                if (obj.isInteger)
+                    fieldVal = parseInt(tableQuery.getValue(obj.field));
+                dataObj[obj.field + "_rawval"] = fieldVal;
             })
 
             currencyFields.forEach(function (field) {
                 dataObj[field] = parseFloat(tableQuery.getValue(field));
-            })
+            });
+            var obj = { a: { b: 1, c : { d : 3, e : 4}, f: 5 } };
+                var str = 'a.c.d';
+                var val = this.convertToObject(obj, str);
+
+            dotWalkFields.forEach(function (field) {
+                var str = field.split(".");
+                var tQ = tableQuery;
+                for (var i = 0; i < str.length; i++)
+                    tQ = tQ[str[i]];
+                        
+                dataObj[field] = tQ.toString();
+            });
 
             if (returnSysID !== undefined && returnSysID != false)
                 dataObj.sys_id = tableQuery.getDisplayValue("sys_id");
@@ -420,13 +449,13 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 18:30:12</sys_created_on>
         <sys_id>c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>104</sys_mod_count>
+        <sys_mod_count>121</sys_mod_count>
         <sys_name>FMSUtilities</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-02 19:13:15</sys_updated_on>
+        <sys_updated_on>2020-06-04 18:32:05</sys_updated_on>
     </sys_script_include>
 </record_update>
