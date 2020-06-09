@@ -115,6 +115,16 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         return obj;
     },
 
+    getFields: function(gr) {
+        var elements = gr.getElements();
+        var flds = [];
+        for (var i=0; i<elements.length; i++) {
+            var element = elements[i];
+            flds.push(element.getName());
+        }
+        return flds;
+    },
+
     getTableData: function (table, encQry, returnSysID, dotInclude) {
 
         /* JLR - This function will return all non-sys values of any table in FMS - may want to modify so it can accept an optional encoded query
@@ -225,7 +235,7 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
     saveRecord: function (table, payload, updateID) {
 
         /* JLR - This function will insert or update a record for the specified table based on the payload received.  Pass a sys_id to update or use 'new' for a new record */
-
+/*test*/
         var mode = "insert";
         if (updateID != "new")
             mode = "update";
@@ -262,7 +272,56 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
     },
 
-    deleteRecord: function (table, deleteID) {
+    insertRecord: function(tableName, newRow) {
+        /* JLR - This function will insert a new record in the database and return the new sys_id */
+        var newGR = new GlideRecord(tableName);
+        newGR.initialize();
+
+        var fieldNames = this.getFields(newGR);
+
+        for (var i = 0; i <= fieldNames.length; i++) {
+            newGR.setValue(fieldNames[i], newRow[fieldNames[i]]);
+        }
+     
+        var newID = newGR.insert();
+
+        return newID;
+    },
+
+    updateRecord: function(tableName, updatedRow) {
+        /* JLR - This function will save any changed values of a record back to the record in the database */
+        var returnData = {};
+
+        var currentRow = new GlideRecord(tableName);
+        currentRow.addQuery("sys_id", updatedRow.sys_id);
+        currentRow.query();
+        if (currentRow.next()) {
+            var fieldNames = this.getFields(currentRow);
+
+            for (var i = 0; i <= fieldNames.length; i++) {
+                var fieldName = fieldNames[i];
+                if (fieldName != undefined && !fieldName.startsWith("sys") && !fieldName.endsWith("_display")) { //we're not messing with system or display fields
+                    var newValue = updatedRow[fieldNames[i]];
+
+                    if (fieldName.endsWith("_ref"))
+                        newValue = updatedRow[fieldNames[i] + "_rawval"];
+
+                    if (currentRow.getValue(fieldName) != newValue && newValue != undefined && newValue != null) {
+                        currentRow.setValue(fieldName, newValue);
+                    }
+                    returnData[fieldName] = currentRow.getValue(fieldName);
+                }
+            }
+
+            returnData.sys_id = currentRow.getValue("sys_id");
+        
+            currentRow.update();
+        }
+
+        return returnData;
+    },
+
+	deleteRecord: function (table, deleteID) {
 
         /* JLR - This function will delete a record for the specified table based on the payload received.  Pass a table name and sys_id to delete the record */
 
@@ -449,13 +508,13 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 18:30:12</sys_created_on>
         <sys_id>c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>121</sys_mod_count>
+        <sys_mod_count>140</sys_mod_count>
         <sys_name>FMSUtilities</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-04 18:32:05</sys_updated_on>
+        <sys_updated_on>2020-06-09 19:22:43</sys_updated_on>
     </sys_script_include>
 </record_update>

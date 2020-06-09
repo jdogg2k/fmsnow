@@ -67,7 +67,8 @@
         columnDefs: [{
                 headerName: 'Appropriation',
                 field: 'appropriation',
-                rowGroup: true,
+                rowGroup: true, 
+                rowGroupIndex: 1,
                 enableRowGroup: true,
                 enablePivot: true
             },
@@ -90,9 +91,10 @@
             {
                 headerName: 'Organization',
                 field: 'org_name',
-                pivot: true,
                 enablePivot: true,
-                enableRowGroup: true
+                enableRowGroup: true,
+                rowGroup: true, 
+                rowGroupIndex: 0
             },
             {
                 headerName: 'Project',
@@ -201,6 +203,52 @@
 
     c.reportOptions.selectedFY = getCurrentFinancialYear();
 
+    c.exportToCsv = function() {
+       gridOptions.api.exportDataAsCsv({
+            columnGroups: true,
+            //customFooter: getGridTotals() NOTE WILL WORK WITH NEW AG GRID LICENSE
+       });
+    }
+
+    function getGridTotals() {
+        var hasColumns = false;
+        var totalCounts = {};
+        gridOptions.api.forEachNode(function(rowNode, index) {
+            if (rowNode.group && rowNode.level == 0){
+                if (!hasColumns) {
+                    for (var prop in rowNode.aggData) {
+                        if (Object.prototype.hasOwnProperty.call(rowNode.aggData, prop)) {
+                            totalCounts[prop] = 0;
+                        }
+                    }
+                    hasColumns = true;
+                }
+                for (var prop in rowNode.aggData) {
+                    if (Object.prototype.hasOwnProperty.call(rowNode.aggData, prop)) {
+                        totalCounts[prop] += rowNode.aggData[prop];
+                    }
+                }
+            }
+        });
+
+        var totalCols = [];
+        var mergeCount = 0;
+        var allCols = gridOptions.columnApi.getAllDisplayedColumns();
+        allCols.forEach(function(col){
+            if (col.aggFunc != undefined) {
+                totalCols.push({ data: { type: 'Number', value: totalCounts[col.colId] } });
+            } else {
+                mergeCount++;
+            }
+        });
+
+        return [
+            [],
+            [{ data: { type: 'String', value: 'Grand Total' }, mergeAcross: mergeCount }, totalCols]
+        ];
+
+      };
+      
     function getCurrentFinancialYear() {
         var fiscalyear = "";
         var today = new Date();
@@ -384,6 +432,7 @@
         <roles/>
         <script><![CDATA[(function () {
 
+    var OrgHierarchy = new x_g_irm_fms.OrgHierarchy(); //org helper
     var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
     var orgName = "";
     var session = gs.getSession();
@@ -434,15 +483,8 @@
                 orgName = orgQ.org_name.toString();
             }   
 
-            var allOrgs = [];
+            var allOrgs = OrgHierarchy.getOrgChildren(data.selectedOrgID);
             allOrgs.push(data.selectedOrgID);
-            
-            var subOrgs = new GlideRecord(FMSConstants.TABLE_ORGANIZATION);
-            subOrgs.addEncodedQuery("organization_parent_ref=" + data.selectedOrgID);
-            subOrgs.query();
-            while (subOrgs.next()){
-                allOrgs.push(subOrgs.getValue("sys_id"));
-            } 
 
             //get project allocation data
             var projQ = new GlideAggregate(FMSConstants.TABLE_PROJECT_ALLOCATION);
@@ -657,7 +699,13 @@
                 item.balance = item.allocations + item.trans_in + item.reimbursements + item.toaa + item.vg_labor + item.toa + item.trans_out + item.expended;
             });
 
-            /*data.budgetTest = [];
+           /*var testInsert = {'organization_ref': '2d4bc03d1bc090500a4a10ad9c4bcbff','cost_pool_name': 'MORE NEW STUFF','cost_pool_desc': 'Something to test here'};
+            var testUpdate = {'sys_id': 'd9e88ba11b599c100a4a10ad9c4bcb68','cost_pool_desc': 'cost pools are so much fun','disabled': 'false'};
+
+            data.myUpdate = FMSUtility.updateTableRow("x_g_irm_fms_cost_pool", testUpdate);
+
+            data.insertedID = FMSUtility.insertTableRow("x_g_irm_fms_cost_pool", testInsert);
+
             var newgr = new GlideRecord(FMSConstants.TABLE_ORGANIZATION);
             //newgr.addEncodedQuery("budget_item_ref=827451231bfc5c100a4a10ad9c4bcb8c");
             newgr.query();
@@ -689,14 +737,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>178</sys_mod_count>
+        <sys_mod_count>209</sys_mod_count>
         <sys_name>Allocation Activity Report</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-05 17:53:42</sys_updated_on>
+        <sys_updated_on>2020-06-09 20:31:25</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
@@ -714,6 +762,7 @@
                     </select>
                 </div>
                 <div class="col-sm-6 form-group">
+                    <a href="javascript:void(0)" ng-click="c.exportToCsv();" class="btn btn-success new-button">Export to Excel</a>
                     <a href="javascript:void(0)" ng-click="c.toggleExpand(false);" class="btn btn-info new-button">Collapse All Rows</a>
                     <a href="javascript:void(0)" ng-click="c.toggleExpand(true);" class="btn btn-info new-button">Expand All Rows</a>
                 </div>
