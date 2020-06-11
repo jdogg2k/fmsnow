@@ -109,7 +109,7 @@
             field: 'tran_date',
             headerName: 'Trans. Date',
             filter: 'agDateColumnFilter',
-            sort: 'desc',
+			sort: 'desc'
         },
         {
             field: 'transaction_total_amt',
@@ -203,17 +203,34 @@
         },
         {
             field: 'item_qty',
-            headerName: 'Item Quantity',
-            filter: 'agNumberColumnFilter'
+            headerName: 'Order Quantity'
         },
         {
-            field: 'item_cost',
-            headerName: 'Amount',
+            field: 'estimated_cost',
+            headerName: 'Estimated Cost',
             cellStyle: {
                 textAlign: 'right'
             },
-            /*         type: 'currency',    */
-            filter: 'agNumberColumnFilter',
+            type: 'currency',  
+            aggFunc: 'sum',
+            headerComponentParams: {
+                template: '<div class="ag-cell-label-container" role="presentation">' +
+                    '<span ref="eText" class="ag-header-cell-text" role="columnheader"></span>' +
+                    '</div>'
+            }
+        },
+        {
+            field: 'received_qty',
+            headerName: 'Received Quantity',
+            filter: 'agNumberColumnFilter'
+        },
+        {
+            field: 'actual_cost',
+            headerName: 'Actual Cost',
+            cellStyle: {
+                textAlign: 'right'
+            },
+            type: 'currency',  
             aggFunc: 'sum',
             headerComponentParams: {
                 template: '<div class="ag-cell-label-container" role="presentation">' +
@@ -496,14 +513,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-21 14:05:50</sys_created_on>
         <sys_id>fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_id>
-        <sys_mod_count>116</sys_mod_count>
+        <sys_mod_count>120</sys_mod_count>
         <sys_name>Financial Transaction Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-04 19:37:42</sys_updated_on>
+        <sys_updated_on>2020-06-11 13:30:21</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

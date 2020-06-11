@@ -50,23 +50,20 @@
 		function GroupCellRenderer() {}
 		GroupCellRenderer.prototype.init = function (params) {
 
-			this.eGui = document.createElement('div');
+			var tempDiv = document.createElement('div');
+			var display = '';
 
-			if (params.node.group) {
-				if(params.node.childrenAfterGroup[0].data && params.banner) {
-					if ('type' in params.banner && params.banner.type == "standard") {
-						var display = '';
+			if ('type' in params.banner && params.banner.type == "standard") {
+				if (params.node.group) {
+					if(params.node.childrenAfterGroup[0].data) {
 						params.banner.columns.forEach(function(item) {
 							display += item.label + " " + params.node.childrenAfterGroup[0].data[item.name] + " ";
 						});
-						this.eGui.innerHTML = '<span>' + display + '</span>';
-					}
+					} else { display += params.node.key; }
 				}
-			} else {
-				if ('type' in params.banner && params.banner.type == "standard") {
-					this.eGui.innerHTML = '<span class="ag-row-group-indent-1"></span>';
-				}
+				tempDiv.innerHTML = '<span style="font-weight: bold;">' + display + '</span>';
 			}
+			this.eGui = tempDiv.firstChild;
 		};
 
 		GroupCellRenderer.prototype.getGui = function () {
@@ -77,8 +74,6 @@
 		GroupCellRenderer.prototype.destroy = function () {
 			if (this.eButton)
 				this.eButton.removeEventListener('click', this.eventListener);
-			if (this.aButton)
-				this.aButton.removeEventListener('click', this.allocateListener);
 		};
 		return GroupCellRenderer;
 	}
@@ -115,9 +110,10 @@
 			suppressFieldDotNotation: true,
             suppressColumnVirtualisation: true,
 			stopEditingWhenGridLosesFocus: true,			
-            groupMultiAutoColumn: true,
+            groupMultiAutoColumn: false,
             masterDetail: false,
 			detailCellRenderer: 'myDetailCellRenderer',
+			groupRowRenderer: 'agGroupCellRenderer',
             keepDetailRows: true,
             detailRowHeight: 200,
 			overlayNoRowsTemplate: '<span style="padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow;">No data found</span>',
@@ -652,14 +648,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>420</sys_mod_count>
+        <sys_mod_count>434</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-09 19:10:37</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-11 12:46:15</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>
