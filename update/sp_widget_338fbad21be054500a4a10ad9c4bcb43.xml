@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function(AGContractGridFactory, spModal, $timeout,AGGridFactory) {
+        <client_script><![CDATA[function(spModal, $timeout, AGGridFactory) {
     /* widget controller */
     var c = this;
     c.targetOrg = c.data.selectedOrg;
     c.userAuth = $rootScope.userAuth;
     c.tierMode = "Hide";
 
-   var contractManager = new AGContractGridFactory();
+   var contractManager = new AGGridFactory();
 	
 
     c.addNew = function() {
@@ -16,9 +16,9 @@
 			    
     }
 
-    c.canAdd = function() {
+    c.canAdd = function () {
         if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) {
-            if (c.userAuth.orgs.indexOf(c.data.selectedOrg) >= 0)
+            if (c.userAuth.orgs.indexOf(c.targetOrg) >= 0)
                 return true;
             else
                 return false;
@@ -26,8 +26,9 @@
             return false;
     }
 
-    c.canEdit = function(auth, data) {
-        if (auth.orgs.indexOf(data.selectedOrg) >= 0)
+    c.canEdit = function (auth, data) {
+        if (!data) return false;
+        if (auth.orgs.indexOf(c.targetOrg) >= 0 && (auth.roles.isOrgAdmin || auth.roles.isAnalyst))
             return true;
         else
             return false;
@@ -75,7 +76,7 @@
             cellRenderer: 'editCell',
             cellRendererParams: function(params) {
                 return {
-                    "show": c.canEdit(c.userAuth, params.data)
+                    "show": c.canEdit(c.userAuth, params)
                 };
             }
         },
@@ -172,14 +173,15 @@
             cellRenderer: 'deleteCell',
             cellRendererParams: function(params) {
                 return {
-                    "show": c.canDelete(c.userAuth, params.data)
+                    "show": c.canDelete(c.userAuth, params.data),
+                    "banner": !params.node.group ? ("Contract - " + params.data.contract_display) : null
                 };
             }
         }
     ];
 
     var contractRelationshipDefs = [{
-            field: 'edit_relationship',
+            field: 'edit_item',
             headerName: 'Edit',
             maxWidth: 50,
             cellStyle: {
@@ -190,7 +192,10 @@
             cellRenderer: 'editCell',
             cellRendererParams: function(params) {
                 return {
-                    "show": c.canEdit(c.userAuth, params.data)
+                    "show": c.canEdit(c.userAuth, params.data),
+                    "table": c.data.relationshipTableName,
+                    "parent": params.data.contract_ref_rawval,
+                    "banner": "Contract Relationship"
                 };
             }
         },
@@ -215,7 +220,7 @@
             headerName: 'Classification'
         },
         {
-            field: 'delete_relationship',
+            field: 'delete_item',
             headerName: 'Del.',
             maxWidth: 50,
             cellStyle: {
@@ -224,16 +229,19 @@
             suppressMenu: true,
             sortable: false,
             cellRenderer: 'deleteCell',
-            cellRendererParams: function(params) {
+            cellRendererParams: function (params) {
                 return {
-                    "show": c.canDelete(c.userAuth, params.data)
+                    "show": c.canEdit(c.userAuth, params.data),
+                    "table": c.data.relationshipTableName,
+                    "parent": params.data.contract_ref_rawval,
+                    "banner": "Contract Relationship - " + params.data.contract_contract_display
                 };
             }
         }
     ];
 
     var contractPartyDefs = [{
-            field: 'edit_party',
+            field: 'edit_item',
             headerName: 'Edit',
             maxWidth: 50,
             cellStyle: {
@@ -244,7 +252,10 @@
             cellRenderer: 'editCell',
             cellRendererParams: function(params) {
                 return {
-                    "show": c.canEdit(c.userAuth, params.data)
+                    "show": c.canEdit(c.userAuth, params.data),
+                    "table": c.data.partyTableName,
+                    "parent": params.data.contract_ref_rawval,
+                    "banner": "Contract Party"
                 };
             }
         },
@@ -270,13 +281,21 @@
             cellRenderer: 'checkbox'
         },
         {
-            field: 'delete_party',
+            field: 'delete_item',
             headerName: 'Del.',
             maxWidth: 50,
             cellStyle: {
                 textAlign: 'center'
             },
-            cellRenderer: 'deleteCell'
+            cellRenderer: 'deleteCell',
+            cellRendererParams: function (params) {
+                return {
+                    "show": c.canEdit(c.userAuth, params.data),
+                    "table": c.data.partyTableName,
+                    "parent": params.data.contract_ref_rawval,
+                    "banner": "Contract Party - " + params.data.contract_party_display
+                };
+            }
         }
     ];
 
@@ -286,12 +305,61 @@
         dataArray: null,
         pageType: 'Contract',
         linkedField: '',
-        detailsPage: ''
+        detailsPage: '',
+        detailsHeight: 375,
+        detailsHTML: '<div class="full-width-details">' +
+        '    <div class="full-width-detail"><b>Purpose: </b>[purpose]</div>' +
+        '    <div class="full-width-detail"><b>Status: </b>[status_detail]</div>' +
+        '  </div>',
+        childTables: [{
+            banner: 'Contract Party',
+            name: c.data.partyTableName,
+            columnDefs: contractPartyDefs,
+            parentRef: 'contract_ref',
+        },
+        {
+            banner: 'Contract Relationship',
+            name: c.data.relationshipTableName,
+            columnDefs: contractRelationshipDefs,
+            parentRef: 'contract_ref'
+        }],
+        rowClassFunc: function(params) {
+            if (params.data) {
+                if (params.data.sys_id) {
+                    if (params.data.sys_id == contractManager.updatedID)
+                        return 'updated-row';
+                }
+                if (params.data && c.tierMode == "Hide") {
+                    if (params.data.operational_status) {
+                        if (params.data.operational_status == "Expired")
+                            return 'expired-row';
+                    }
+                }
+                if (params.data && c.tierMode == "Hide") {
+                    if (params.data.priority_tier) {
+                        if (params.data.priority_tier == "4")
+                            return 'tier-3-row';
+                    }
+                }
+                if (params.data && c.tierMode == "Hide") {
+                    if (params.data.priority_tier) {
+                        if (params.data.priority_tier == "3")
+                            return 'tier-2-row';
+                    }
+                }
+                if (params.data && c.tierMode == "Hide") {
+                    if (params.data.priority_tier) {
+                        if (params.data.priority_tier == "2")
+                            return 'tier-1-row';
+                    }
+                }
+            }
+        }
     }
 
     contractManager.setColumns(contractColumnDefs);
-    contractManager.setPageProperties(contractProps, c.data.partyTableName, c.data.relationshipTableName);
-    contractManager.setRenderers('contract_display', contractPartyDefs, contractRelationshipDefs); //build renderers and set display field to show on delete attempt and set details columns
+    contractManager.setPageProperties(contractProps);
+    contractManager.setRenderers('contract_display'); //build renderers and set display field to show on delete attempt and set details columns
     contractManager.renderGrid('contractGrid'); //render grid objects
     contractManager.setGridData(c.data.tableData); //set grid data
     contractManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst));
@@ -397,7 +465,7 @@
     float: left;
 }
 
-.contract-button {
+.details-button {
     float: right;
     margin-top: -13px;
 }
@@ -479,6 +547,9 @@
 		data.selectedProj = session.getClientData('proj_id');
 
     if (input) { //input holds the data coming back to the server
+        if (input.mode == "getDetailData") {
+            data[input.detailTable] = FMSUtility.getTableData(input.detailTable, input.parentRef + '=' + input.parentID, true);
+        }
         if (input.mode == "getNewRec") {
            data.newRec = FMSUtility.getTableData(input.targetTable, "sys_id=" + input.newSysID, true)[0];
         }
@@ -512,14 +583,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-05 17:24:17</sys_created_on>
         <sys_id>338fbad21be054500a4a10ad9c4bcb43</sys_id>
-        <sys_mod_count>125</sys_mod_count>
+        <sys_mod_count>143</sys_mod_count>
         <sys_name>Contract Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_338fbad21be054500a4a10ad9c4bcb43</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-11 21:20:21</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-12 17:10:09</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

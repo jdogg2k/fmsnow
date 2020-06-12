@@ -102,6 +102,7 @@
         var dataArray = "tableData";
         var pageName = "";
         var detailsPage = "";
+        var detailsHTML = "";
         var childTables = {};
         var updatedID = "";
         var gridOptions = {
@@ -116,7 +117,7 @@
             },
             suppressAggFuncInHeader: true,
             groupSuppressAutoColumn: true,
-            groupDefaultExpanded: 1,
+            groupDefaultExpanded: 0,
             rowSelection: 'single',
             floatingFilter: true,
             pagination: true,
@@ -166,17 +167,13 @@
                 }).then(function (saveResp) {
 
                 });
-			},
-			rowClassRules: {
-                'updated-row': function(params) {
-                    var retVal = false;
-                    if (params.data) {
-                        if (params.data.sys_id) {
-                            if (params.data.sys_id == updatedID)
-                                retVal = true;
-                        }
+            },
+            getRowClass: function(params) {
+                if (params.data) {
+                    if (params.data.sys_id) {
+                        if (params.data.sys_id == updatedID)
+                            return 'updated-row';
                     }
-                    return retVal;
                 }
             },
             columnTypes: {
@@ -355,6 +352,9 @@
         this.setGridData = function(rowData) {
             gridOptions.api.setRowData(rowData);
         };
+        this.refreshGrid = function() {
+            gridOptions.api.redrawRows();
+        };
         this.setPageProperties = function(pageProps) {
             pageController = pageProps.pageController; //link to page controller
             dataTable = pageProps.tableName; //SNOW table name
@@ -364,8 +364,14 @@
             linkField = pageProps.linkedField; //field that should be linked from grid
             detailsPage = pageProps.detailsPage; //details page to point link to
             childTables = pageProps.childTables; //child tables for details section
+            if (pageProps.detailsHTML != null)
+                detailsHTML = pageProps.detailsHTML; //html to add above details grids
             if (pageProps.detailsHeight != null)
                 gridOptions.detailRowHeight = pageProps.detailsHeight; //height of detailGrid
+            if (pageProps.groupDefaultExpanded != null)
+                gridOptions.groupDefaultExpanded = pageProps.groupDefaultExpanded; //expand default
+            if (pageProps.rowClassFunc != null)
+                gridOptions.getRowClass = pageProps.rowClassFunc; //set row class definitions
         };
         this.setUpdatedID = function(id) {
             updatedID = id;
@@ -382,6 +388,17 @@
             params.columnKeys = exportColumns;
             gridOptions.api.exportDataAsCsv(params);
         };
+
+        function replaceVariables(data, html) {
+            //here we take variable names in brackets from HTML passed from grid widget and replace them with values from the params.data object in AG Grid
+            var z = [];
+            var exp = new RegExp(/(?<=\[).*?(?=\])/gm);
+            while(null != (z=exp.exec(html))) {
+                var matcher = "[" + z[0] + "]";
+                html = html.replace(matcher, data[z[0]]);
+            }
+            return html;            
+        }
 		
         function setDetailRenderer() {
 
@@ -390,9 +407,13 @@
                 var eTemp = document.createElement('div');
 				if (!childTables) { return; }
                 eTemp.classList.add('full-width-panel');
-				eTemp.innerHTML = '';
+                eTemp.innerHTML = '';
+                if (detailsHTML != "") {
+                    detailsHTML = replaceVariables(params.data, detailsHTML);
+                    eTemp.innerHTML += detailsHTML;
+                }
 				childTables.forEach(function(table) {
-					eTemp.innerHTML += this.getTemplate(params.data, table.banner);
+					eTemp.innerHTML += this.getTemplate(table.banner);
 				}.bind(this));
                 this.eGui = eTemp;
 				childTables.forEach(function(table) {
@@ -410,14 +431,14 @@
                 var detailGrid = this.eGui.querySelector('#' + gridName);
                 var detailButton = this.eGui.querySelector('#' + buttonName);
                 var detailListener = function() {
-                    editGridRow("-1", parentRef + "=" + targSys, detailTable, detailName, "detail_" + targSys);
+                    editGridRow("-1", parentRef + "=" + targSys, detailTable, detailName, "detail_" + detailTable + targSys);
                 };
                 detailButton.addEventListener('click', detailListener);
 
                 new agGrid.Grid(detailGrid, {
                     columnDefs: detailCols,
                     onGridReady: function(params) {
-                        var detailGridId = "detail_" + gridName + targSys;
+                        var detailGridId = "detail_" + detailTable + targSys;
 
                         var gridInfo = {
                             id: detailGridId,
@@ -425,10 +446,12 @@
                             columnApi: params.columnApi
                         };
 
+                        console.log(detailGridId);
+
                         masterGridApi.addDetailGridInfo(detailGridId, gridInfo);
                         masterGridApi.getDetailGridInfo(detailGridId).api.showLoadingOverlay(); //show loading message
 
-                        var req = {mode: 'getDetailData', parentRef: parentRef, parentID: targSys}; //build request
+                        var req = {mode: 'getDetailData', parentRef: parentRef, parentID: targSys, detailTable: detailTable}; //build request
 
                         pageController.server.get(req).then(function(saveResp) { //call to server to get live details data
                             var detailData = saveResp.data[detailTable]; 
@@ -441,6 +464,12 @@
                     getRowNodeId: function(data) {
                         return data.sys_id;
                     },
+                    columnTypes: {
+                        'currency': {
+                            valueFormatter: currencyFormatter,
+                            cellStyle: currencyCssFunc
+                        }
+                    },
                     components: {
                         editCell: EditCellRenderer,
                         deleteCell: DeleteCellRenderer,
@@ -449,10 +478,14 @@
                 });      
                 
             };
-            DetailCellRenderer.prototype.getTemplate = function(data, detailName) {
+            DetailCellRenderer.prototype.getTemplate = function(detailName) {
 				var gridName = detailName.replace(/\W/g,'_') + 'Grid';
 				var buttonName = detailName.replace(/\W/g,'_') + 'Button';
-                var template =
+                var template = '';
+
+
+
+                template +=
                     '  <div class="full-width-details">' +
                     '    <div class="full-width-title">' + detailName + '</div>' +
                     '    <a href="javascript:void(0);" id="' + buttonName + '" class="btn btn-sm btn-info details-button">Add ' + detailName + '</a>' +
@@ -499,8 +532,9 @@
 
 						if ('table' in params) 
 							tTable = params.table;
-						if ('parent' in params) 
-							tGrid = params.parent;
+						if ('parent' in params)
+                            tGrid = "detail_" + tTable + params.parent;
+
 						activeRow = tID;
 						if (!('editType' in params) || params.editType == 'popup')
 							editGridRow(tID, "", tTable, (params.banner || pageName || null), tGrid);
@@ -552,7 +586,7 @@
 						if ('table' in params) 
 							delTable = params.table;
 						if ('parent' in params) 
-							detailGridID = params.parent;
+							detailGridID = "detail_" + params.table + params.parent;
 						delDispField = "this record";
 						if (detailGridID != null)
 							deleteIndex = params.rowIndex;
@@ -688,14 +722,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>439</sys_mod_count>
+        <sys_mod_count>473</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-11 19:53:11</sys_updated_on>
+        <sys_updated_on>2020-06-12 17:08:45</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

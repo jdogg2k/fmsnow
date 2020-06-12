@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_ng_pro_sp_widget">
     <m2m_sp_ng_pro_sp_widget action="INSERT_OR_UPDATE">
-        <sp_angular_provider display_value="AGContractGridFactory">cead644f1be018501f7e113d9c4bcb71</sp_angular_provider>
+        <sp_angular_provider display_value="AGGridFactory">0a1de5321b9458101f7e113d9c4bcbe1</sp_angular_provider>
         <sp_widget display_value="Contract Grid">338fbad21be054500a4a10ad9c4bcb43</sp_widget>
         <sys_class_name>m2m_sp_ng_pro_sp_widget</sys_class_name>
         <sys_created_by>RoseJL@state.gov</sys_created_by>
-        <sys_created_on>2020-05-07 14:42:52</sys_created_on>
-        <sys_id>47cde4cb1be018501f7e113d9c4bcbfa</sys_id>
+        <sys_created_on>2020-06-12 14:19:50</sys_created_on>
+        <sys_id>64c10eaa1b55d0101f7e113d9c4bcbd6</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name>AGContractGridFactory.Contract Grid</sys_name>
+        <sys_name>AGGridFactory.Contract Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
-        <sys_update_name>m2m_sp_ng_pro_sp_widget_47cde4cb1be018501f7e113d9c4bcbfa</sys_update_name>
+        <sys_update_name>m2m_sp_ng_pro_sp_widget_64c10eaa1b55d0101f7e113d9c4bcbd6</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-07 14:42:52</sys_updated_on>
+        <sys_updated_on>2020-06-12 14:19:50</sys_updated_on>
     </m2m_sp_ng_pro_sp_widget>
 </record_update>
