@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function($scope, AGGridFactory, $timeout) {
+        <client_script><![CDATA[function ($scope, AGGridFactory, $timeout) {
     /* widget controller */
     var c = this;
     c.targetOrg = c.data.selectedOrg;
@@ -10,11 +10,11 @@
 
     var fintranManager = new AGGridFactory();
 
-    c.addNew = function() {
+    c.addNew = function () {
         fintranManager.editRow("-1", "project_ref=" + c.targetProj, c.data.tableName);
     }
 
-    c.canAdd = function() {
+    c.canAdd = function () {
         if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) {
             if (c.userAuth.orgs.indexOf(c.targetOrg) >= 0)
                 return true;
@@ -24,7 +24,7 @@
             return false;
     }
 
-    c.canEdit = function(auth, data) {
+    c.canEdit = function (auth, data) {
         if (!data) return false;
         if (auth.orgs.indexOf(c.targetOrg) >= 0 && (auth.roles.isOrgAdmin || auth.roles.isAnalyst))
             return true;
@@ -32,11 +32,11 @@
             return false;
     }
 
-    c.canDelete = function(auth, data) {
+    c.canDelete = function (auth, data) {
         return c.canEdit(auth, data);
     }
 
-    c.exportExcel = function() {
+    c.exportExcel = function () {
         fintranManager.exportExcel();
     }
 
@@ -52,7 +52,16 @@
                 suppressDoubleClickExpand: true,
                 suppressEnterExpand: true,
                 innerRenderer: 'myGroupCellRenderer',
-				banner: { type: 'standard', columns: [{ label: '', name: 'project_ref' }, { label: " | FY: ", name: "fy" }] }
+                banner: {
+                    type: 'standard',
+                    columns: [{
+                        label: '',
+                        name: 'project_ref'
+                    }, {
+                        label: " | FY: ",
+                        name: "fy"
+                    }]
+                }
             },
         },
         {
@@ -65,7 +74,7 @@
             suppressMenu: true,
             sortable: false,
             cellRenderer: 'editCell',
-            cellRendererParams: function(params) {
+            cellRendererParams: function (params) {
                 return {
                     "show": c.canEdit(c.userAuth, params)
                 };
@@ -94,11 +103,11 @@
             field: 'fy',
             headerName: 'FY',
             filter: 'agSetColumnFilter',
-			filterParams: { 
-				values: c.data.fiscalYears
-			},
+            filterParams: {
+                values: c.data.fiscalYears
+            },
             sort: 'desc',
-            rowGroup: true   
+            rowGroup: true
         },
         {
             field: 'description',
@@ -108,9 +117,37 @@
         {
             field: 'tran_date',
             headerName: 'Trans. Date',
-            filter: 'agDateColumnFilter',
-			sort: 'desc'
+					  type:'date',
+            sort: 'desc'
         },
+        /*
+        {
+            field: 'tran_date',
+            headerName: 'Trans. Date',
+            filter: 'agDateColumnFilter',
+            filterParams: {
+                // provide comparator function
+                comparator: function (targetDay, cellValue) {
+                    var cellDate = new Date(cellValue + " 00:00:00");
+
+                    var tdate = formatDate(targetDay);
+                    var cdate = formatDate(cellDate)
+
+                    var retVal = 1;
+
+                    if (cellDate < targetDay) {
+                        retVal = -1;
+                    }
+                    if (cdate == tdate) {
+                        retVal = 0;
+                    }
+
+                    return retVal;
+                }
+            },
+            //valueFormatter: dateFormatter,
+            sort: 'desc'
+        }, */
         {
             field: 'transaction_total_amt',
             headerName: 'Tran. Amount',
@@ -156,7 +193,7 @@
         {
             field: 'obligation_date',
             headerName: 'Obligation Date',
-            filter: 'agDateColumnFilter'
+            type: 'date'
         },
         {
             field: 'void',
@@ -173,7 +210,7 @@
             suppressMenu: true,
             sortable: false,
             cellRenderer: 'deleteCell',
-            cellRendererParams: function(params) {
+            cellRendererParams: function (params) {
                 return {
                     "show": c.canDelete(c.userAuth, params.data),
                     "banner": !params.node.group ? ("Financial Transaction - " + params.data.fin_tran_display) : null
@@ -192,7 +229,7 @@
             suppressMenu: true,
             sortable: false,
             cellRenderer: 'editCell',
-            cellRendererParams: function(params) {
+            cellRendererParams: function (params) {
                 return {
                     "show": c.canEdit(c.userAuth, params.data),
                     "table": c.data.itemTableName,
@@ -211,7 +248,7 @@
             cellStyle: {
                 textAlign: 'right'
             },
-            type: 'currency',  
+            type: 'currency',
             aggFunc: 'sum',
             headerComponentParams: {
                 template: '<div class="ag-cell-label-container" role="presentation">' +
@@ -230,7 +267,7 @@
             cellStyle: {
                 textAlign: 'right'
             },
-            type: 'currency',  
+            type: 'currency',
             aggFunc: 'sum',
             headerComponentParams: {
                 template: '<div class="ag-cell-label-container" role="presentation">' +
@@ -261,7 +298,7 @@
                 textAlign: 'center'
             },
             cellRenderer: 'deleteCell',
-            cellRendererParams: function(params) {
+            cellRendererParams: function (params) {
                 return {
                     "show": c.canEdit(c.userAuth, params.data),
                     "table": c.data.itemTableName,
@@ -280,7 +317,12 @@
         linkedField: '',
         detailsPage: '',
         detailsHeight: 150,
-		childTables: [{ banner: 'Transaction Items', name: c.data.itemTableName, columnDefs: fintranItemDefs, parentRef: 'fin_tran_ref' }]
+        childTables: [{
+            banner: 'Transaction Items',
+            name: c.data.itemTableName,
+            columnDefs: fintranItemDefs,
+            parentRef: 'fin_tran_ref'
+        }]
     }
 
     fintranManager.setColumns(fintranColumnDefs);
@@ -288,28 +330,28 @@
     fintranManager.setRenderers(); //build renderers 
     fintranManager.renderGrid('fintranGrid'); //render grid objects
     fintranManager.setGridData(c.data.tableData); //set grid data
-	fintranManager.setGridFilter('fy', 'equals', c.data.selectedFY);
+    fintranManager.setGridFilter('fy', 'equals', c.data.selectedFY);
     fintranManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst));
-    $timeout(function() {
+    $timeout(function () {
         fintranManager.fitColumns();
     }, 250);
 
-    $rootScope.$on('OrgChanged', function(event, args) {
+    $rootScope.$on('OrgChanged', function (event, args) {
         c.targetOrg = args.org_id;
         c.server.get({
             mode: "setOrg",
             org_id: args.org_id
-        }).then(function(resp) {
+        }).then(function (resp) {
             fintranManager.setGridData(resp.data.tableData); //set grid data
         });
     });
 
-    $rootScope.$on('ProjChanged', function(event, args) {
+    $rootScope.$on('ProjChanged', function (event, args) {
         c.targetProj = args.proj_id;
         c.server.get({
             mode: "setProj",
             proj_id: args.proj_id
-        }).then(function(resp) {
+        }).then(function (resp) {
             fintranManager.setGridData(resp.data.tableData); //set grid data
         });
     });
@@ -513,14 +555,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-21 14:05:50</sys_created_on>
         <sys_id>fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_id>
-        <sys_mod_count>120</sys_mod_count>
+        <sys_mod_count>144</sys_mod_count>
         <sys_name>Financial Transaction Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-11 13:30:21</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-11 21:11:28</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

@@ -100,13 +100,15 @@
                 headerName: 'Project',
                 field: 'project',
                 pivot: false,
-                enablePivot: true
+                enablePivot: true,
+                enableRowGroup: true,
             },
             {
                 headerName: 'OMB Project',
                 field: 'omb_project',
                 pivot: false,
-                enablePivot: true
+                enablePivot: true,
+                enableRowGroup: true,
             },
             {
                 headerName: 'Allocations',
@@ -437,35 +439,6 @@
     var orgName = "";
     var session = gs.getSession();
 
-    /*var appropriationsChecked = [];
-
-    function getSupportingData(reportObj, tOrgs, tFY) {
-        //query the view to pull supporting data
-        var transQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
-        transQ.addEncodedQuery("proj_organization_refIN" + tOrgs + "^ft_fy=" + tFY + "^ft_void=false^ft_project_appropriation_ref.appropriation_ref=" + reportObj.appropriation_ref);
-        transQ.groupBy("ft_tran_type");
-        transQ.addAggregate("SUM", "fti_item_total");
-        transQ.query();
-        while(transQ.next()){
-
-            var actCost = parseFloat(transQ.getAggregate("SUM", "fti_item_total"));
-            if (transQ.ft_tran_type == "TE" || transQ.ft_tran_type == "TI" || transQ.ft_tran_type == "TVGT") {
-                reportObj.trans_out += actCost;
-            } else if (transQ.ft_tran_type == "TVGL") {
-                reportObj.vg_labor += actCost;
-            } else if (transQ.ft_tran_type == "TOA") {
-                reportObj.toa += actCost;
-            } else {
-                reportObj.expended += actCost;
-            }
-
-        }
-
-        appropriationsChecked.push(reportObj.appropriation_ref);
-
-        return reportObj;
-    }*/
-
     if ($sp.getParameter("org_id") && $sp.getParameter("org_id").length > 0)
         data.selectedOrgID = $sp.getParameter("org_id");
 	else
@@ -561,56 +534,6 @@
                 }
             }
 
-            //add in allocations from pools
-            /*var allocationPoolQuery = new GlideAggregate(FMSConstants.TABLE_ALLOCATION_POOL);
-            allocationPoolQuery.addEncodedQuery("organization_refIN" + allOrgs.join(",") + "^pool_type=Apportionment^fy=" + input.fy);
-            allocationPoolQuery.groupBy("organization_ref");
-            allocationPoolQuery.groupBy("appropriation_type_ref");
-            allocationPoolQuery.addAggregate("SUM", "allocated_amt");
-            allocationPoolQuery.query();
-            while(allocationPoolQuery.next()){
-                
-                var newObj = {};
-                newObj.org_ref = allocationPoolQuery.organization_ref.toString();
-                newObj.org_name = allocationPoolQuery.organization_ref.getDisplayValue();
-                newObj.project = "";
-                newObj.project_ref = "";
-                newObj.omb_project = "";
-                newObj.investment = allocationPoolQuery.investment_ref.investment.getDisplayValue();
-                newObj.appropriation_type = allocationPoolQuery.appropriation_type_ref.getDisplayValue();
-                newObj.appropriation_type_ref = allocationPoolQuery.appropriation_type_ref.toString();
-                newObj.appropriation = "";
-                newObj.appropriation_ref = "";
-                newObj.allocation_group = "";
-                newObj.allocation_group_ref = "";
-                newObj.allocations = parseFloat(allocationPoolQuery.getAggregate("SUM", "allocated_amt"));
-                newObj.reimbursements = 0;
-                newObj.trans_in = 0;
-                newObj.trans_out = 0;
-                newObj.toaa = 0;
-                newObj.toa = 0;
-                newObj.vg_labor = 0;
-                newObj.off_adjustments = 0;
-                newObj.expended = 0;
-                newObj.balance = 0;
-
-                //link in Appropriations based on type
-                var poolToAppropriation = new GlideRecord(FMSConstants.TABLE_APPROPRIATION);
-                poolToAppropriation.addEncodedQuery("appropriation_type=" + newObj.appropriation_type_ref);
-                poolToAppropriation.query();
-                if (poolToAppropriation.next()) {
-                    newObj.appropriation = poolToAppropriation.getDisplayValue("appropriation_display");
-                    newObj.appropriation_ref = poolToAppropriation.sys_id.toString();
-
-                    var checkedJoin = appropriationsChecked.join(",");
-                    if (checkedJoin.indexOf(newObj.appropriation_ref) == -1)
-                        newObj = getSupportingData(newObj, allOrgs.join(","), input.fy);
-                }
-
-                data.reportData.push(newObj);
-
-            }*/
-
             //Get supporting info
             var endQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
             /*var endQS = "";
@@ -699,20 +622,6 @@
                 item.balance = item.allocations + item.trans_in + item.reimbursements + item.toaa + item.vg_labor + item.toa + item.trans_out + item.expended;
             });
 
-           /*var testInsert = {'organization_ref': '2d4bc03d1bc090500a4a10ad9c4bcbff','cost_pool_name': 'MORE NEW STUFF','cost_pool_desc': 'Something to test here'};
-            var testUpdate = {'sys_id': 'd9e88ba11b599c100a4a10ad9c4bcb68','cost_pool_desc': 'cost pools are so much fun','disabled': 'false'};
-
-            data.myUpdate = FMSUtility.updateTableRow("x_g_irm_fms_cost_pool", testUpdate);
-
-            data.insertedID = FMSUtility.insertTableRow("x_g_irm_fms_cost_pool", testInsert);
-
-            var newgr = new GlideRecord(FMSConstants.TABLE_ORGANIZATION);
-            //newgr.addEncodedQuery("budget_item_ref=827451231bfc5c100a4a10ad9c4bcb8c");
-            newgr.query();
-            while (newgr.next()) {
-                data.budgetTest.push(newgr.org_code);
-            }*/
-
         }
     }
 
@@ -737,14 +646,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>209</sys_mod_count>
+        <sys_mod_count>211</sys_mod_count>
         <sys_name>Allocation Activity Report</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-09 20:31:25</sys_updated_on>
+        <sys_updated_on>2020-06-12 13:41:25</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
