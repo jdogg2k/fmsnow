@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function (AGAllocationPoolGridFactory, $timeout) {
+        <client_script><![CDATA[function (AGGridFactory, $timeout) {
     /* widget controller */
     var c = this;
     c.targetOrg = c.data.selectedOrg;
     c.userAuth = $rootScope.userAuth;
 
-    var poolManager = new AGAllocationPoolGridFactory();
+    var poolManager = new AGGridFactory();
 
     c.addNew = function () {
         poolManager.editRow("-1", "organization_ref=" + c.targetOrg, c.data.tableName);
@@ -29,9 +29,10 @@
     }
 
     c.canEdit = function (auth, data) {
-        if (auth.orgs.indexOf(c.targetOrg) >= 0) 
-			return true;
-		else
+        if (!data) return false;
+        if (auth.orgs.indexOf(c.targetOrg) >= 0 && (auth.roles.isOrgAdmin || auth.roles.isAnalyst))
+            return true;
+        else
             return false;
     }
 
@@ -59,6 +60,9 @@
                 suppressCount: true,
                 checkbox: false,
                 innerRenderer: 'myGroupCellRenderer',
+                banner: {
+                    type: 'allocationpool'
+                },
                 suppressDoubleClickExpand: true,
                 suppressEnterExpand: true
             }
@@ -177,7 +181,8 @@
             cellRenderer: 'deleteCell',
             cellRendererParams: function (params) {
                 return {
-                    "show": c.canDelete(c.userAuth, params.data)
+                    "show": c.canDelete(c.userAuth, params.data),
+                    "banner": !params.node.group ? ("Allocation Pool - " + params.data.allocation_pool_display) : null
                 };
             }
         }
@@ -264,7 +269,7 @@
 
     var projAllocColumns = [
         {
-            field: 'edit_projalloc',
+            field: 'edit_item',
             headerName: 'Edit',
             maxWidth: 50,
             cellStyle: {
@@ -274,9 +279,16 @@
             sortable: false,
             cellRenderer: 'editCell',
             cellRendererParams: function(params) {
-                return {
-                    "show": c.canEdit(c.userAuth, params.data)
-                };
+                if (params.data) {
+                    return {
+                    "show": c.canEdit(c.userAuth, params.data),
+                    "table": c.data.projAllocTableName,
+                    "parent": params.data.allocation_pool_ref_rawval,
+                    "banner": "Project Allocation"
+                    };
+                } else {
+                    return {};
+                } 
             }
         },
         {
@@ -349,7 +361,7 @@
             headerName: 'Ref/Agreement'
         },
         {
-            field: 'delete_project',
+            field: 'delete_item',
             headerName: 'Del.',
             maxWidth: 50,
             cellStyle: {
@@ -359,9 +371,16 @@
             sortable: false,
             cellRenderer: 'deleteCell',
             cellRendererParams: function(params) {
-                return {
-                    "show": c.canDelete(c.userAuth, params.data)
-                };
+                if (params.data) {
+                    return {
+                    "show": c.canEdit(c.userAuth, params.data),
+                    "table": c.data.projAllocTableName,
+                    "parent": params.data.allocation_pool_ref_rawval,
+                    "banner": "Project Allocation - " + params.data.project_allocation_display
+                    };
+                } else {
+                    return {};
+                } 
             }
         }
 
@@ -374,12 +393,31 @@
         pageType: 'Allocation Pool',
         linkedField: '',
         detailsPage: '',
-        usePaging: true
+        groupDefaultExpanded: 1,
+        detailsHeight: 375,
+        detailsHTML: '<div class="full-width-details">' +
+        '    <div class="full-width-detail">[pool_notes]</div>' +
+        '  </div>',
+        childTables: [{
+            banner: 'Project Allocation',
+            name: c.data.projAllocTableName,
+            columnDefs: projAllocColumns,
+            parentRef: 'allocation_pool_ref',
+            showButton: false
+        },
+        {
+            banner: 'Distribution',
+            name: c.data.tableName,
+            columnDefs: distColumns,
+            parentRef: 'pool_parent_ref',
+            showButton: false
+        }],
+        showTotals: true
     }
 
     poolManager.setColumns(poolColumns);
-    poolManager.setPageProperties(pageProps, c.data.projAllocTableName);
-    poolManager.setRenderers('allocation_pool_display', distColumns, projAllocColumns); //build renderers and set display field to show on delete attempt
+    poolManager.setPageProperties(pageProps);
+    poolManager.setRenderers('allocation_pool_display'); //build renderers and set display field to show on delete attempt
     poolManager.renderGrid('allocationPoolGrid'); //render grid objects
     poolManager.setGridData(c.data.tableData); //set grid data
     poolManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst));
@@ -492,7 +530,7 @@
     float: left;
 }
 
-.contract-button {
+.details-button {
     float: right;
     margin-top: -13px;
 }
@@ -557,11 +595,9 @@
         <roles/>
         <script><![CDATA[(function() {
 
-	data.selectedOrg = "";
-    var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
-
+    data.selectedOrg = "";
     
-
+    var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
     var session = gs.getSession();
 
     if (input) { //input holds the data coming back to the server
@@ -569,7 +605,9 @@
         if (input.mode == "getData") {
             data.selectedFY = input.selectedFY;
         }
-
+        if (input.mode == "getDetailData") {
+            data[input.detailTable] = FMSUtility.getTableData(input.detailTable, input.parentRef + '=' + input.parentID, true);
+        }
         if (input.mode == "getNewRec") {
 
             data.newRec = FMSUtility.getTableData(input.targetTable, "sys_id=" + input.newSysID, true)[0];
@@ -628,14 +666,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-18 17:12:53</sys_created_on>
         <sys_id>eb99716a1b7498100a4a10ad9c4bcb7e</sys_id>
-        <sys_mod_count>92</sys_mod_count>
+        <sys_mod_count>108</sys_mod_count>
         <sys_name>Allocation Pool Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_eb99716a1b7498100a4a10ad9c4bcb7e</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-11 21:44:10</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-12 20:09:22</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">

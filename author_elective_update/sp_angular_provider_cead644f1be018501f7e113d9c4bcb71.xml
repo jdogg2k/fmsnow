@@ -1,0 +1,1252 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_angular_provider">
+    <sp_angular_provider action="DELETE">
+        <name>AGContractGridFactory</name>
+        <script><![CDATA[function AGContractGridFactory($http, $rootScope, spUtil, spModal, $uibModalStack) {
+
+    var AGContractGridFactory = function () {
+
+        var DeleteCellRenderer = function () {};
+        var EditCellRenderer = function () {};
+        var CheckBoxRenderer = function () {};
+        var DetailCellRenderer = function () {
+            this.masterGridApi = null;
+            this.masterRowIndex = null;
+        }
+
+        function currencyCssFunc(params) {
+            if (params.value !== null && params.value !== undefined && params.value < 0) {
+                return {
+                    "color": "red",
+                    "font-weight": "bold",
+                    "text-align": "right"
+                };
+            } else {
+                return {
+                    "text-align": "right"
+                };
+            }
+        }
+
+        function currencyFormatter(params) {
+            if (params.value != 0 && (params.value === null || params.value === undefined || params.value == "")) {
+                return null;
+            } else if (isNaN(params.value)) {
+                return '$' + parseFloat(0).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+            } else {
+                if (parseFloat(params.value) >= 0) {
+                    return '$' + parseFloat(params.value).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                } else {
+                    return currencyNegative(params.value);
+                }
+            }
+        }
+
+        function currencyNegative(tVal) {
+            return '$(' + parseFloat(tVal).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,").replace("-", "") + ")";
+        }
+
+        var activeGrid = null;
+        var activeTable = "";
+        var activeRow = "";
+        var partyTable = "";
+        var relationshipTable = "";
+        var pageController = {};
+        var linkField = "sys_id";
+        var dataTable = "";
+        var dataArray = "tableData";
+        var pageName = "";
+        var detailsPage = "";
+        var updatedID = "";
+        var gridOptions = {
+            defaultColDef: {
+                editable: false,
+                sortable: true,
+                resizable: true,
+                filter: false,
+                flex: 1,
+                minWidth: 100,
+            },
+            suppressRowClickSelection: true,
+            rowSelection: 'multiple',
+            floatingFilter: true,
+            pagination: true,
+            paginationAutoPageSize: true,
+			suppressColumnVirtualisation: true,
+            masterDetail: true,
+            keepDetailRows: true,
+            detailRowHeight: 375,
+            detailCellRenderer: "myDetailCellRenderer",
+            onCellClicked: function (params) {
+                if (params.data && params.data.sys_id && params.colDef.field == linkField) {
+                    launchRowDetails(params.data.sys_id);
+                }
+            },
+            rowClassRules: {
+                'updated-row': function (params) {
+                    var retVal = false;
+                    if (params.data) {
+                        if (params.data.sys_id) {
+                            if (params.data.sys_id == updatedID)
+                                retVal = true;
+                        }
+                    }
+                    return retVal;
+                },
+                'expired-row': function (params) {
+                    var retVal = false;
+                    if (params.data && pageController.tierMode == "Hide") {
+                        if (params.data.operational_status) {
+                            if (params.data.operational_status == "Expired")
+                                retVal = true;
+                        }
+                    }
+                    return retVal;
+                },
+                'tier-3-row': function (params) {
+                    var retVal = false;
+                    if (params.data && pageController.tierMode == "Hide") {
+                        if (params.data.priority_tier) {
+                            if (params.data.priority_tier == "4")
+                                retVal = true;
+                        }
+                    }
+                    return retVal;
+                },
+                'tier-2-row': function (params) {
+                    var retVal = false;
+                    if (params.data && pageController.tierMode == "Hide") {
+                        if (params.data.priority_tier) {
+                            if (params.data.priority_tier == "3")
+                                retVal = true;
+                        }
+                    }
+                    return retVal;
+                },
+                'tier-1-row': function (params) {
+                    var retVal = false;
+                    if (params.data && pageController.tierMode == "Hide") {
+                        if (params.data.priority_tier) {
+                            if (params.data.priority_tier == "2")
+                                retVal = true;
+                        }
+                    }
+                    return retVal;
+                }
+            },
+            getRowNodeId: function(data) {return data.sys_id; },
+            columnTypes: {
+                'currency': {
+                    valueFormatter: currencyFormatter,
+                    cellStyle: currencyCssFunc,
+                    cellRenderer: 'agAnimateShowChangeCellRenderer'
+                }
+            },
+            components: {
+                editCell: EditCellRenderer,
+                deleteCell: DeleteCellRenderer,
+                myDetailCellRenderer: DetailCellRenderer
+            }
+        };
+
+        var launchRowDetails = function (rowID) {
+            var urlToNav = "/fms?id=" + detailsPage + "&org_id=" + rowID;
+            window.location.href = urlToNav;
+        };
+
+        this.editRow = function (tID, query, table) {
+            editGridRow(tID, query, table, null);
+        };
+
+        var editGridRow = function (targetID, query, table, aGrid) {
+            var titlePrefix = "New";
+            var modalName = pageName;
+            activeTable = dataTable;
+            activeGrid = null;
+
+            if (aGrid != null)
+                activeGrid = aGrid;
+
+            if (table.indexOf("contract_") > -1) {
+                if (table.indexOf("contract_party") > -1) {
+                    modalName = "Contract Party";
+                    activeTable = partyTable;
+                } else {
+                    modalName = "Contract Relationship";
+                    activeTable = relationshipTable;
+                }
+            }
+
+            var wInput = {
+                table: table,
+                sys_id: targetID,
+                view: 'portal',
+                query: query
+            };
+
+            if (targetID != "-1") {
+                titlePrefix = "Edit";
+                updatedID = targetID;
+            }
+
+            spModal.open({
+                title: titlePrefix + ' ' + modalName,
+                size: 'lg',
+                widget: 'fms-form-widget',
+                buttons: [],
+                widgetInput: wInput
+            });
+        };
+
+        var deleteRow = function (delID, delTable, detGrid, rowIdx) {
+            pageController.server.get({
+                mode: 'deleteRow',
+                rowID: delID,
+                delTable: delTable
+            }).then(function (delResp) {
+                if (!delResp.data.isError) {
+                    spUtil.addInfoMessage("Record Deleted Successfully");
+                    if (detGrid == null){
+                        gridOptions.api.setRowData(delResp.data[dataArray]);
+                        gridOptions.api.sizeColumnsToFit();
+                    } else {
+                        var detailGridInfo = gridOptions.api.getDetailGridInfo(detGrid);
+                        var rowToDelete = detailGridInfo.api.getDisplayedRowAtIndex(rowIdx);
+                        var res = detailGridInfo.api.updateRowData({remove: [rowToDelete.data]});
+                    }
+                } else {
+                    spUtil.addErrorMessage(delResp.data.errorMsg);
+                } 
+            });
+        };
+
+
+        //setting functions called from widget
+        this.renderGrid = function (ele) {
+            var gridDiv = document.querySelector('#' + ele);
+            new agGrid.Grid(gridDiv, gridOptions);
+        };
+        this.setColumns = function (columnData) {
+            gridOptions.columnDefs = columnData;
+        };
+        this.fitColumns = function () {
+			/*var allColumnIds = [];
+			gridOptions.columnApi.getAllColumns().forEach(function(column) {
+				allColumnIds.push(column.colId);
+			});
+            gridOptions.columnApi.autoSizeColumns(allColumnIds);*/
+            gridOptions.api.sizeColumnsToFit();
+        };
+        this.setColumnsVisible = function (cols, show) {
+            if (gridOptions.columnApi) gridOptions.columnApi.setColumnsVisible(cols, show);
+        };
+        this.setGridData = function (rowData) {
+            gridOptions.api.setRowData(rowData);
+        };
+        this.refreshGrid = function() {
+            gridOptions.api.redrawRows();
+        };
+        this.setPageProperties = function (pageProps, pTable, rTable) {
+            pageController = pageProps.pageController; //link to page controller
+            dataTable = pageProps.tableName; //SNOW table name
+            if (pageProps.dataArray != null)
+                dataArray = pageProps.dataArray; //name of data array variable from widget Server Script
+            pageName = pageProps.pageType; //object type for page
+            linkField = pageProps.linkedField; //field that should be linked from grid
+            detailsPage = pageProps.detailsPage; //details page to point link to
+            partyTable = pTable;
+            relationshipTable = rTable;
+        };
+        this.setUpdatedID = function (id) {
+            updatedID = id;
+        };
+
+        this.exportExcel = function () {
+            var params = {};
+            var exportColumns = [];
+            var allCols = gridOptions.columnApi.getAllColumns();
+            allCols.forEach(function (col) {
+                if (col.colId != "edit" && col.colId != "delete")
+                    exportColumns.push(col.colId);
+            });
+            params.columnKeys = exportColumns;
+            gridOptions.api.exportDataAsCsv(params);
+        };
+        this.setRenderers = function (displayField, partyColumns, relationshipColumns) {
+
+            DetailCellRenderer.prototype.init = function (params) {
+                // trick to convert string of HTML into DOM object
+                var eTemp = document.createElement('div');
+                eTemp.innerHTML = this.getTemplate(params.data);
+                this.eGui = eTemp.firstElementChild;
+                this.masterGridApi = params.api;
+                this.masterRowIndex = params.data.sys_id;
+                this.setupDetailGrid(params.data.contractParties, partyColumns, params.data.contractContracts, relationshipColumns, params.api, params.data.sys_id);
+            };
+
+            DetailCellRenderer.prototype.setupDetailGrid = function (partyData, partyCols, relationshipData, relationshipCols, masterGridApi, targSys) {
+                var relationshipDetailGrid = this.eGui.querySelector('#relationshipGrid');
+                var partyDetailGrid = this.eGui.querySelector('#partyGrid');
+                var relationshipButton = this.eGui.querySelector('#relationshipButton');
+                var partyButton = this.eGui.querySelector('#partyButton');
+                var relationshipListener = function () {
+                    editGridRow("-1", "contract_ref=" + targSys, relationshipTable, "detail_rel_" + targSys);
+                };
+                relationshipButton.addEventListener('click', relationshipListener);
+                var partyListener = function () {
+                    editGridRow("-1", "contract_ref=" + targSys, partyTable, "detail_part_" + targSys);
+                };
+                partyButton.addEventListener('click', partyListener);
+
+                new agGrid.Grid(relationshipDetailGrid, {
+                    columnDefs: relationshipCols,
+                    rowData: relationshipData,
+                    onGridReady: function (params) {
+                        var detailGridId = "detail_rel_" + targSys;
+
+                        var gridInfo = {
+                            id: detailGridId,
+                            api: params.api,
+                            columnApi: params.columnApi
+                        };
+                        masterGridApi.addDetailGridInfo(detailGridId, gridInfo);
+                        masterGridApi.getDetailGridInfo(detailGridId).api.sizeColumnsToFit();
+                        
+                    },
+                    overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Please wait ..... processing edits...</span>',
+                    getRowNodeId: function(data) {return data.sys_id; },
+                    components: {
+                        editCell: EditCellRenderer,
+                        deleteCell: DeleteCellRenderer
+                    }
+                });
+                new agGrid.Grid(partyDetailGrid, {
+                    columnDefs: partyCols,
+                    rowData: partyData,
+                    onGridReady: function (params) {
+                        var detailGridId = "detail_part_" + targSys;
+
+                        var gridInfo = {
+                            id: detailGridId,
+                            api: params.api,
+                            columnApi: params.columnApi
+                        };
+                        masterGridApi.addDetailGridInfo(detailGridId, gridInfo);
+                        masterGridApi.getDetailGridInfo(detailGridId).api.sizeColumnsToFit();
+                    },
+                    overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Please wait ..... processing edits...</span>',
+                    getRowNodeId: function(data) {return data.sys_id; },
+                    components: {
+                        editCell: EditCellRenderer,
+                        deleteCell: DeleteCellRenderer,
+                        checkbox: CheckBoxRenderer
+                    }
+                });
+            };
+
+            DetailCellRenderer.prototype.getTemplate = function (data) {
+                var template =
+                    '<div class="full-width-panel">' +
+                    '  <div class="full-width-details">' +
+                    '    <div class="full-width-detail"><b>Purpose: </b>' + data.purpose + '</div>' +
+                    '    <div class="full-width-detail"><b>Status: </b>' + data.status_detail + '</div>' +
+                    '  </div>' +
+                    '  <div class="full-width-details">' +
+                    '    <div class="full-width-title">Contract Relationships</div>' +
+                    '    <a href="javascript:void(0);" id="relationshipButton" class="btn btn-sm btn-info contract-button">Add Contract Relationship</a>' +
+                    '  </div>' +
+                    '  <div id="relationshipGrid" class="details-grid"></div>' +
+                    '  <div class="full-width-details">' +
+                    '    <div class="full-width-title">Contract Parties</div>' +
+                    '    <a href="javascript:void(0);" id="partyButton" class="btn btn-sm btn-info contract-button">Add Contract Party</a>' +
+                    '  </div>' +
+                    '  <div id="partyGrid" class="details-grid"></div>' +
+                    '</div>';
+
+                return template;
+            };
+
+            DetailCellRenderer.prototype.getGui = function () {
+                return this.eGui;
+            };
+
+            DetailCellRenderer.prototype.destroy = function () {
+                var relationshipGridId = "detail_rel_" + this.masterRowIndex;
+                this.masterGridApi.getDetailGridInfo(relationshipGridId).api.destroy();
+                this.masterGridApi.removeDetailGridInfo(relationshipGridId);
+
+                var partyGridId = "detail_part_" + this.masterRowIndex;
+                this.masterGridApi.getDetailGridInfo(partyGridId).api.destroy();
+                this.masterGridApi.removeDetailGridInfo(partyGridId);
+            };
+
+            EditCellRenderer.prototype.init = function (params) {
+
+                // create the cell
+                this.eGui = document.createElement('div');
+
+                this.eGui.innerHTML = '<span class="row-button"><i class="fa fa-edit edit-pencil"></i></span>';
+                // get references to the elements we want
+                this.eButton = this.eGui.querySelector('.fa-edit');
+                // add event listener to button
+                this.eventListener = function () {
+                    var tField = params.colDef.field;
+                    var tID = params.data.sys_id;
+                    var tGrid = null;
+                    var tTable = dataTable;
+                    activeRow = "";
+
+                    if (tField.indexOf("party") > -1) {
+                        tTable = partyTable;
+                        tGrid = "detail_part_" + params.data.contract_ref_rawval;
+                        activeRow = tID;
+                    }
+                    if (tField.indexOf("relationship") > -1) {
+                        tTable = relationshipTable;
+                        tGrid = "detail_rel_" + params.data.contract_ref_rawval;
+                        activeRow = tID;
+                    }
+
+                    editGridRow(tID, "", tTable, tGrid);
+                };
+                this.eButton.addEventListener('click', this.eventListener);
+
+            };
+
+            // gets called once when grid ready to insert the element
+            EditCellRenderer.prototype.getGui = function () {
+                return this.eGui;
+            };
+
+            // gets called whenever the user gets the cell to refresh
+            EditCellRenderer.prototype.refresh = function (params) {
+
+                // return true to tell the grid we refreshed successfully
+                return true;
+            };
+
+            // gets called when the cell is removed from the grid
+            EditCellRenderer.prototype.destroy = function () {
+                // do cleanup, remove event listener from button
+                if (this.eButton)
+                    this.eButton.removeEventListener('click', this.eventListener);
+            };
+
+
+
+            // gets called once before the renderer is used
+            DeleteCellRenderer.prototype.init = function (params) {
+
+                // create the cell
+                this.eGui = document.createElement('div');
+
+                this.eGui.innerHTML = '<span class="row-button"><i class="fa fa-window-close delete-x"></i></span>';
+                // get references to the elements we want
+                this.eButton = this.eGui.querySelector('.fa-window-close');
+                // add event listener to button
+                this.eventListener = function () {
+                    var delDispField = displayField;
+                    var delTable = dataTable;
+                    var tField = params.colDef.field;
+                    var detailGridID = null;
+                    var deleteIndex = 0;
+
+
+                    if (tField.indexOf("party") > -1) {
+                        delTable = partyTable;
+                        delDispField = "party_name";
+                        detailGridID = "detail_part_" + params.data.contract_ref_rawval;
+                    }
+                    if (tField.indexOf("relationship") > -1) {
+                        delTable = relationshipTable;
+                        delDispField = "contract_rel_ref";
+                        detailGridID = "detail_rel_" + params.data.contract_ref_rawval;
+                    }
+
+                    if (detailGridID != null)
+                        deleteIndex = params.rowIndex;
+
+                    if (window.confirm("Are you sure you want to delete " + params.data[delDispField] + "?")) { //delete this row
+                        deleteRow(params.data.sys_id, delTable, detailGridID, deleteIndex);
+                    }
+                };
+                this.eButton.addEventListener('click', this.eventListener);
+
+            };
+
+            // gets called once when grid ready to insert the element
+            DeleteCellRenderer.prototype.getGui = function () {
+                return this.eGui;
+            };
+
+            // gets called whenever the user gets the cell to refresh
+            DeleteCellRenderer.prototype.refresh = function (params) {
+
+                // return true to tell the grid we refreshed successfully
+                return true;
+            };
+
+            // gets called when the cell is removed from the grid
+            DeleteCellRenderer.prototype.destroy = function () {
+                // do cleanup, remove event listener from button
+                if (this.eButton)
+                    this.eButton.removeEventListener('click', this.eventListener);
+            };
+
+            // gets called once before the renderer is used
+            CheckBoxRenderer.prototype.init = function (params) {
+                if (!params.node.group) {
+                    // create the cell
+                    this.eGui = document.createElement('input');
+                    this.eGui.type = "checkbox";
+                    this.eGui.checked = params.value == "true";
+
+                    if (!('disabled' in params) || params.disabled) {
+
+                        this.eGui.disabled = "true";
+                    }
+                }
+            };
+
+            // gets called once when grid ready to insert the element
+            CheckBoxRenderer.prototype.getGui = function () {
+                return this.eGui;
+            };
+
+            // gets called whenever the user gets the cell to refresh
+            CheckBoxRenderer.prototype.refresh = function (params) {
+                if (!params.node.group) {
+                    this.eGui.checked = params.value == "true";
+                    if (!('disabled' in params) || params.disabled) {
+
+                        this.eGui.disabled = "true";
+                    }
+                }
+                // return true to tell the grid we refreshed successfully
+                return true;
+            };
+
+            // gets called when the cell is removed from the grid
+            CheckBoxRenderer.prototype.destroy = function () {
+                // do cleanup
+            };
+        }
+
+        $rootScope.$on("spModel.uiActionComplete", function (evt, response) {
+
+            if (response.isInsert)
+                updatedID = response.sys_id;
+
+            $uibModalStack.dismissAll(); //close the modal
+
+            if (activeGrid == null) {
+
+                //We need to call back to server side to get latest array of organization records now that we have a new/updated value
+                pageController.server.get({
+                    mode: 'getData' //this mode doesn't really matter, we just need to refresh the data server-side
+                }).then(function (saveResp) {
+
+                    gridOptions.api.setRowData(saveResp.data[dataArray]);
+                    gridOptions.api.sizeColumnsToFit();
+
+                    //highlight the modded record
+                    gridOptions.api.forEachNode(function (rowNode, index) {
+                        if (rowNode.data.sys_id == updatedID) {
+                            gridOptions.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
+                        }
+                    });
+
+                });
+
+            } else {
+
+                var detailGridInfo = gridOptions.api.getDetailGridInfo(activeGrid);
+                detailGridInfo.api.showLoadingOverlay();
+
+                if (!response.isInsert)
+                    updatedID = activeRow;
+
+                //GET RECORD DATA
+                pageController.server.get({
+                    mode: 'getNewRec',
+                    newSysID: updatedID,
+                    targetTable: activeTable
+                }).then(function (saveResp) {
+
+                    var savedRec = saveResp.data.newRec;
+
+                    var dataToUpdate = {update: [savedRec]};
+
+                    if (response.isInsert) 
+                        dataToUpdate = {add: [savedRec], addIndex: 0};
+
+                    detailGridInfo.api.updateRowData(dataToUpdate);
+
+                    //highlight the modded record
+                    detailGridInfo.api.forEachNode(function (rowNode, index) {
+                        if (rowNode.data.sys_id == updatedID) {
+                            detailGridInfo.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
+                        }
+                    });
+
+                    detailGridInfo.api.hideOverlay();
+                });
+            }
+        });
+    };
+
+    return (AGContractGridFactory);
+}]]></script>
+        <sys_class_name>sp_angular_provider</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-05-07 14:42:15</sys_created_on>
+        <sys_id>cead644f1be018501f7e113d9c4bcb71</sys_id>
+        <sys_mod_count>120</sys_mod_count>
+        <sys_name>AGContractGridFactory</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_angular_provider_cead644f1be018501f7e113d9c4bcb71</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-02 18:18:28</sys_updated_on>
+        <type>service</type>
+    </sp_angular_provider>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sp_angular_provider_cead644f1be018501f7e113d9c4bcb71</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_angular_provider"&gt;&lt;sp_angular_provider action="INSERT_OR_UPDATE"&gt;&lt;name&gt;AGContractGridFactory&lt;/name&gt;&lt;script&gt;&lt;![CDATA[function AGContractGridFactory($http, $rootScope, spUtil, spModal, $uibModalStack) {
+
+    var AGContractGridFactory = function () {
+
+        var DeleteCellRenderer = function () {};
+        var EditCellRenderer = function () {};
+        var CheckBoxRenderer = function () {};
+        var DetailCellRenderer = function () {
+            this.masterGridApi = null;
+            this.masterRowIndex = null;
+        }
+
+        function currencyCssFunc(params) {
+            if (params.value !== null &amp;&amp; params.value !== undefined &amp;&amp; params.value &lt; 0) {
+                return {
+                    "color": "red",
+                    "font-weight": "bold",
+                    "text-align": "right"
+                };
+            } else {
+                return {
+                    "text-align": "right"
+                };
+            }
+        }
+
+        function currencyFormatter(params) {
+            if (params.value != 0 &amp;&amp; (params.value === null || params.value === undefined || params.value == "")) {
+                return null;
+            } else if (isNaN(params.value)) {
+                return '$' + parseFloat(0).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+            } else {
+                if (parseFloat(params.value) &gt;= 0) {
+                    return '$' + parseFloat(params.value).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                } else {
+                    return currencyNegative(params.value);
+                }
+            }
+        }
+
+        function currencyNegative(tVal) {
+            return '$(' + parseFloat(tVal).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,").replace("-", "") + ")";
+        }
+
+        var activeGrid = null;
+        var activeTable = "";
+        var activeRow = "";
+        var partyTable = "";
+        var relationshipTable = "";
+        var pageController = {};
+        var linkField = "sys_id";
+        var dataTable = "";
+        var dataArray = "tableData";
+        var pageName = "";
+        var detailsPage = "";
+        var updatedID = "";
+        var gridOptions = {
+            defaultColDef: {
+                editable: false,
+                sortable: true,
+                resizable: true,
+                filter: false,
+                flex: 1,
+                minWidth: 100,
+            },
+            suppressRowClickSelection: true,
+            rowSelection: 'multiple',
+            floatingFilter: true,
+            pagination: true,
+            paginationAutoPageSize: true,
+			suppressColumnVirtualisation: true,
+            masterDetail: true,
+            keepDetailRows: true,
+            detailRowHeight: 375,
+            detailCellRenderer: "myDetailCellRenderer",
+            onCellClicked: function (params) {
+                if (params.data &amp;&amp; params.data.sys_id &amp;&amp; params.colDef.field == linkField) {
+                    launchRowDetails(params.data.sys_id);
+                }
+            },
+            rowClassRules: {
+                'updated-row': function (params) {
+                    var retVal = false;
+                    if (params.data) {
+                        if (params.data.sys_id) {
+                            if (params.data.sys_id == updatedID)
+                                retVal = true;
+                        }
+                    }
+                    return retVal;
+                },
+                'expired-row': function (params) {
+                    var retVal = false;
+                    if (params.data &amp;&amp; pageController.tierMode == "Hide") {
+                        if (params.data.operational_status) {
+                            if (params.data.operational_status == "Expired")
+                                retVal = true;
+                        }
+                    }
+                    return retVal;
+                },
+                'tier-3-row': function (params) {
+                    var retVal = false;
+                    if (params.data &amp;&amp; pageController.tierMode == "Hide") {
+                        if (params.data.priority_tier) {
+                            if (params.data.priority_tier == "4")
+                                retVal = true;
+                        }
+                    }
+                    return retVal;
+                },
+                'tier-2-row': function (params) {
+                    var retVal = false;
+                    if (params.data &amp;&amp; pageController.tierMode == "Hide") {
+                        if (params.data.priority_tier) {
+                            if (params.data.priority_tier == "3")
+                                retVal = true;
+                        }
+                    }
+                    return retVal;
+                },
+                'tier-1-row': function (params) {
+                    var retVal = false;
+                    if (params.data &amp;&amp; pageController.tierMode == "Hide") {
+                        if (params.data.priority_tier) {
+                            if (params.data.priority_tier == "2")
+                                retVal = true;
+                        }
+                    }
+                    return retVal;
+                }
+            },
+            getRowNodeId: function(data) {return data.sys_id; },
+            columnTypes: {
+                'currency': {
+                    valueFormatter: currencyFormatter,
+                    cellStyle: currencyCssFunc,
+                    cellRenderer: 'agAnimateShowChangeCellRenderer'
+                }
+            },
+            components: {
+                editCell: EditCellRenderer,
+                deleteCell: DeleteCellRenderer,
+                myDetailCellRenderer: DetailCellRenderer
+            }
+        };
+
+        var launchRowDetails = function (rowID) {
+            var urlToNav = "/fms?id=" + detailsPage + "&amp;org_id=" + rowID;
+            window.location.href = urlToNav;
+        };
+
+        this.editRow = function (tID, query, table) {
+            editGridRow(tID, query, table, null);
+        };
+
+        var editGridRow = function (targetID, query, table, aGrid) {
+            var titlePrefix = "New";
+            var modalName = pageName;
+            activeTable = dataTable;
+            activeGrid = null;
+
+            if (aGrid != null)
+                activeGrid = aGrid;
+
+            if (table.indexOf("contract_") &gt; -1) {
+                if (table.indexOf("contract_party") &gt; -1) {
+                    modalName = "Contract Party";
+                    activeTable = partyTable;
+                } else {
+                    modalName = "Contract Relationship";
+                    activeTable = relationshipTable;
+                }
+            }
+
+            var wInput = {
+                table: table,
+                sys_id: targetID,
+                view: 'portal',
+                query: query
+            };
+
+            if (targetID != "-1") {
+                titlePrefix = "Edit";
+                updatedID = targetID;
+            }
+
+            spModal.open({
+                title: titlePrefix + ' ' + modalName,
+                size: 'lg',
+                widget: 'fms-form-widget',
+                buttons: [],
+                widgetInput: wInput
+            });
+        };
+
+        var deleteRow = function (delID, delTable, detGrid, rowIdx) {
+            pageController.server.get({
+                mode: 'deleteRow',
+                rowID: delID,
+                delTable: delTable
+            }).then(function (delResp) {
+                if (!delResp.data.isError) {
+                    spUtil.addInfoMessage("Record Deleted Successfully");
+                    if (detGrid == null){
+                        gridOptions.api.setRowData(delResp.data[dataArray]);
+                        gridOptions.api.sizeColumnsToFit();
+                    } else {
+                        var detailGridInfo = gridOptions.api.getDetailGridInfo(detGrid);
+                        var rowToDelete = detailGridInfo.api.getDisplayedRowAtIndex(rowIdx);
+                        var res = detailGridInfo.api.updateRowData({remove: [rowToDelete.data]});
+                    }
+                } else {
+                    spUtil.addErrorMessage(delResp.data.errorMsg);
+                } 
+            });
+        };
+
+
+        //setting functions called from widget
+        this.renderGrid = function (ele) {
+            var gridDiv = document.querySelector('#' + ele);
+            new agGrid.Grid(gridDiv, gridOptions);
+        };
+        this.setColumns = function (columnData) {
+            gridOptions.columnDefs = columnData;
+        };
+        this.fitColumns = function () {
+			/*var allColumnIds = [];
+			gridOptions.columnApi.getAllColumns().forEach(function(column) {
+				allColumnIds.push(column.colId);
+			});
+            gridOptions.columnApi.autoSizeColumns(allColumnIds);*/
+            gridOptions.api.sizeColumnsToFit();
+        };
+        this.setColumnsVisible = function (cols, show) {
+            if (gridOptions.columnApi) gridOptions.columnApi.setColumnsVisible(cols, show);
+        };
+        this.setGridData = function (rowData) {
+            gridOptions.api.setRowData(rowData);
+        };
+        this.refreshGrid = function() {
+            gridOptions.api.redrawRows();
+        };
+        this.setPageProperties = function (pageProps, pTable, rTable) {
+            pageController = pageProps.pageController; //link to page controller
+            dataTable = pageProps.tableName; //SNOW table name
+            if (pageProps.dataArray != null)
+                dataArray = pageProps.dataArray; //name of data array variable from widget Server Script
+            pageName = pageProps.pageType; //object type for page
+            linkField = pageProps.linkedField; //field that should be linked from grid
+            detailsPage = pageProps.detailsPage; //details page to point link to
+            partyTable = pTable;
+            relationshipTable = rTable;
+        };
+        this.setUpdatedID = function (id) {
+            updatedID = id;
+        };
+
+        this.exportExcel = function () {
+            var params = {};
+            var exportColumns = [];
+            var allCols = gridOptions.columnApi.getAllColumns();
+            allCols.forEach(function (col) {
+                if (col.colId != "edit" &amp;&amp; col.colId != "delete")
+                    exportColumns.push(col.colId);
+            });
+            params.columnKeys = exportColumns;
+            gridOptions.api.exportDataAsCsv(params);
+        };
+        this.setRenderers = function (displayField, partyColumns, relationshipColumns) {
+
+            DetailCellRenderer.prototype.init = function (params) {
+                // trick to convert string of HTML into DOM object
+                var eTemp = document.createElement('div');
+                eTemp.innerHTML = this.getTemplate(params.data);
+                this.eGui = eTemp.firstElementChild;
+                this.masterGridApi = params.api;
+                this.masterRowIndex = params.data.sys_id;
+                this.setupDetailGrid(params.data.contractParties, partyColumns, params.data.contractContracts, relationshipColumns, params.api, params.data.sys_id);
+            };
+
+            DetailCellRenderer.prototype.setupDetailGrid = function (partyData, partyCols, relationshipData, relationshipCols, masterGridApi, targSys) {
+                var relationshipDetailGrid = this.eGui.querySelector('#relationshipGrid');
+                var partyDetailGrid = this.eGui.querySelector('#partyGrid');
+                var relationshipButton = this.eGui.querySelector('#relationshipButton');
+                var partyButton = this.eGui.querySelector('#partyButton');
+                var relationshipListener = function () {
+                    editGridRow("-1", "contract_ref=" + targSys, relationshipTable, "detail_rel_" + targSys);
+                };
+                relationshipButton.addEventListener('click', relationshipListener);
+                var partyListener = function () {
+                    editGridRow("-1", "contract_ref=" + targSys, partyTable, "detail_part_" + targSys);
+                };
+                partyButton.addEventListener('click', partyListener);
+
+                new agGrid.Grid(relationshipDetailGrid, {
+                    columnDefs: relationshipCols,
+                    rowData: relationshipData,
+                    onGridReady: function (params) {
+                        var detailGridId = "detail_rel_" + targSys;
+
+                        var gridInfo = {
+                            id: detailGridId,
+                            api: params.api,
+                            columnApi: params.columnApi
+                        };
+                        masterGridApi.addDetailGridInfo(detailGridId, gridInfo);
+                        masterGridApi.getDetailGridInfo(detailGridId).api.sizeColumnsToFit();
+                        
+                    },
+                    overlayLoadingTemplate: '&lt;span class="ag-overlay-loading-center"&gt;Please wait ..... processing edits...&lt;/span&gt;',
+                    getRowNodeId: function(data) {return data.sys_id; },
+                    components: {
+                        editCell: EditCellRenderer,
+                        deleteCell: DeleteCellRenderer
+                    }
+                });
+                new agGrid.Grid(partyDetailGrid, {
+                    columnDefs: partyCols,
+                    rowData: partyData,
+                    onGridReady: function (params) {
+                        var detailGridId = "detail_part_" + targSys;
+
+                        var gridInfo = {
+                            id: detailGridId,
+                            api: params.api,
+                            columnApi: params.columnApi
+                        };
+                        masterGridApi.addDetailGridInfo(detailGridId, gridInfo);
+                        masterGridApi.getDetailGridInfo(detailGridId).api.sizeColumnsToFit();
+                    },
+                    overlayLoadingTemplate: '&lt;span class="ag-overlay-loading-center"&gt;Please wait ..... processing edits...&lt;/span&gt;',
+                    getRowNodeId: function(data) {return data.sys_id; },
+                    components: {
+                        editCell: EditCellRenderer,
+                        deleteCell: DeleteCellRenderer,
+                        checkbox: CheckBoxRenderer
+                    }
+                });
+            };
+
+            DetailCellRenderer.prototype.getTemplate = function (data) {
+                var template =
+                    '&lt;div class="full-width-panel"&gt;' +
+                    '  &lt;div class="full-width-details"&gt;' +
+                    '    &lt;div class="full-width-detail"&gt;&lt;b&gt;Purpose: &lt;/b&gt;' + data.purpose + '&lt;/div&gt;' +
+                    '    &lt;div class="full-width-detail"&gt;&lt;b&gt;Status: &lt;/b&gt;' + data.status_detail + '&lt;/div&gt;' +
+                    '  &lt;/div&gt;' +
+                    '  &lt;div class="full-width-details"&gt;' +
+                    '    &lt;div class="full-width-title"&gt;Contract Relationships&lt;/div&gt;' +
+                    '    &lt;a href="javascript:void(0);" id="relationshipButton" class="btn btn-sm btn-info contract-button"&gt;Add Contract Relationship&lt;/a&gt;' +
+                    '  &lt;/div&gt;' +
+                    '  &lt;div id="relationshipGrid" class="details-grid"&gt;&lt;/div&gt;' +
+                    '  &lt;div class="full-width-details"&gt;' +
+                    '    &lt;div class="full-width-title"&gt;Contract Parties&lt;/div&gt;' +
+                    '    &lt;a href="javascript:void(0);" id="partyButton" class="btn btn-sm btn-info contract-button"&gt;Add Contract Party&lt;/a&gt;' +
+                    '  &lt;/div&gt;' +
+                    '  &lt;div id="partyGrid" class="details-grid"&gt;&lt;/div&gt;' +
+                    '&lt;/div&gt;';
+
+                return template;
+            };
+
+            DetailCellRenderer.prototype.getGui = function () {
+                return this.eGui;
+            };
+
+            DetailCellRenderer.prototype.destroy = function () {
+                var relationshipGridId = "detail_rel_" + this.masterRowIndex;
+                this.masterGridApi.getDetailGridInfo(relationshipGridId).api.destroy();
+                this.masterGridApi.removeDetailGridInfo(relationshipGridId);
+
+                var partyGridId = "detail_part_" + this.masterRowIndex;
+                this.masterGridApi.getDetailGridInfo(partyGridId).api.destroy();
+                this.masterGridApi.removeDetailGridInfo(partyGridId);
+            };
+
+            EditCellRenderer.prototype.init = function (params) {
+
+                // create the cell
+                this.eGui = document.createElement('div');
+
+                this.eGui.innerHTML = '&lt;span class="row-button"&gt;&lt;i class="fa fa-edit edit-pencil"&gt;&lt;/i&gt;&lt;/span&gt;';
+                // get references to the elements we want
+                this.eButton = this.eGui.querySelector('.fa-edit');
+                // add event listener to button
+                this.eventListener = function () {
+                    var tField = params.colDef.field;
+                    var tID = params.data.sys_id;
+                    var tGrid = null;
+                    var tTable = dataTable;
+                    activeRow = "";
+
+                    if (tField.indexOf("party") &gt; -1) {
+                        tTable = partyTable;
+                        tGrid = "detail_part_" + params.data.contract_ref_rawval;
+                        activeRow = tID;
+                    }
+                    if (tField.indexOf("relationship") &gt; -1) {
+                        tTable = relationshipTable;
+                        tGrid = "detail_rel_" + params.data.contract_ref_rawval;
+                        activeRow = tID;
+                    }
+
+                    editGridRow(tID, "", tTable, tGrid);
+                };
+                this.eButton.addEventListener('click', this.eventListener);
+
+            };
+
+            // gets called once when grid ready to insert the element
+            EditCellRenderer.prototype.getGui = function () {
+                return this.eGui;
+            };
+
+            // gets called whenever the user gets the cell to refresh
+            EditCellRenderer.prototype.refresh = function (params) {
+
+                // return true to tell the grid we refreshed successfully
+                return true;
+            };
+
+            // gets called when the cell is removed from the grid
+            EditCellRenderer.prototype.destroy = function () {
+                // do cleanup, remove event listener from button
+                if (this.eButton)
+                    this.eButton.removeEventListener('click', this.eventListener);
+            };
+
+
+
+            // gets called once before the renderer is used
+            DeleteCellRenderer.prototype.init = function (params) {
+
+                // create the cell
+                this.eGui = document.createElement('div');
+
+                this.eGui.innerHTML = '&lt;span class="row-button"&gt;&lt;i class="fa fa-window-close delete-x"&gt;&lt;/i&gt;&lt;/span&gt;';
+                // get references to the elements we want
+                this.eButton = this.eGui.querySelector('.fa-window-close');
+                // add event listener to button
+                this.eventListener = function () {
+                    var delDispField = displayField;
+                    var delTable = dataTable;
+                    var tField = params.colDef.field;
+                    var detailGridID = null;
+                    var deleteIndex = 0;
+
+
+                    if (tField.indexOf("party") &gt; -1) {
+                        delTable = partyTable;
+                        delDispField = "party_name";
+                        detailGridID = "detail_part_" + params.data.contract_ref_rawval;
+                    }
+                    if (tField.indexOf("relationship") &gt; -1) {
+                        delTable = relationshipTable;
+                        delDispField = "contract_rel_ref";
+                        detailGridID = "detail_rel_" + params.data.contract_ref_rawval;
+                    }
+
+                    if (detailGridID != null)
+                        deleteIndex = params.rowIndex;
+
+                    if (window.confirm("Are you sure you want to delete " + params.data[delDispField] + "?")) { //delete this row
+                        deleteRow(params.data.sys_id, delTable, detailGridID, deleteIndex);
+                    }
+                };
+                this.eButton.addEventListener('click', this.eventListener);
+
+            };
+
+            // gets called once when grid ready to insert the element
+            DeleteCellRenderer.prototype.getGui = function () {
+                return this.eGui;
+            };
+
+            // gets called whenever the user gets the cell to refresh
+            DeleteCellRenderer.prototype.refresh = function (params) {
+
+                // return true to tell the grid we refreshed successfully
+                return true;
+            };
+
+            // gets called when the cell is removed from the grid
+            DeleteCellRenderer.prototype.destroy = function () {
+                // do cleanup, remove event listener from button
+                if (this.eButton)
+                    this.eButton.removeEventListener('click', this.eventListener);
+            };
+
+            // gets called once before the renderer is used
+            CheckBoxRenderer.prototype.init = function (params) {
+                if (!params.node.group) {
+                    // create the cell
+                    this.eGui = document.createElement('input');
+                    this.eGui.type = "checkbox";
+                    this.eGui.checked = params.value == "true";
+
+                    if (!('disabled' in params) || params.disabled) {
+
+                        this.eGui.disabled = "true";
+                    }
+                }
+            };
+
+            // gets called once when grid ready to insert the element
+            CheckBoxRenderer.prototype.getGui = function () {
+                return this.eGui;
+            };
+
+            // gets called whenever the user gets the cell to refresh
+            CheckBoxRenderer.prototype.refresh = function (params) {
+                if (!params.node.group) {
+                    this.eGui.checked = params.value == "true";
+                    if (!('disabled' in params) || params.disabled) {
+
+                        this.eGui.disabled = "true";
+                    }
+                }
+                // return true to tell the grid we refreshed successfully
+                return true;
+            };
+
+            // gets called when the cell is removed from the grid
+            CheckBoxRenderer.prototype.destroy = function () {
+                // do cleanup
+            };
+        }
+
+        $rootScope.$on("spModel.uiActionComplete", function (evt, response) {
+
+            if (response.isInsert)
+                updatedID = response.sys_id;
+
+            $uibModalStack.dismissAll(); //close the modal
+
+            if (activeGrid == null) {
+
+                //We need to call back to server side to get latest array of organization records now that we have a new/updated value
+                pageController.server.get({
+                    mode: 'getData' //this mode doesn't really matter, we just need to refresh the data server-side
+                }).then(function (saveResp) {
+
+                    gridOptions.api.setRowData(saveResp.data[dataArray]);
+                    gridOptions.api.sizeColumnsToFit();
+
+                    //highlight the modded record
+                    gridOptions.api.forEachNode(function (rowNode, index) {
+                        if (rowNode.data.sys_id == updatedID) {
+                            gridOptions.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
+                        }
+                    });
+
+                });
+
+            } else {
+
+                var detailGridInfo = gridOptions.api.getDetailGridInfo(activeGrid);
+                detailGridInfo.api.showLoadingOverlay();
+
+                if (!response.isInsert)
+                    updatedID = activeRow;
+
+                //GET RECORD DATA
+                pageController.server.get({
+                    mode: 'getNewRec',
+                    newSysID: updatedID,
+                    targetTable: activeTable
+                }).then(function (saveResp) {
+
+                    var savedRec = saveResp.data.newRec;
+
+                    var dataToUpdate = {update: [savedRec]};
+
+                    if (response.isInsert) 
+                        dataToUpdate = {add: [savedRec], addIndex: 0};
+
+                    detailGridInfo.api.updateRowData(dataToUpdate);
+
+                    //highlight the modded record
+                    detailGridInfo.api.forEachNode(function (rowNode, index) {
+                        if (rowNode.data.sys_id == updatedID) {
+                            detailGridInfo.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
+                        }
+                    });
+
+                    detailGridInfo.api.hideOverlay();
+                });
+            }
+        });
+    };
+
+    return (AGContractGridFactory);
+}]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sp_angular_provider&lt;/sys_class_name&gt;&lt;sys_created_by&gt;RoseJL@state.gov&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-05-07 14:42:15&lt;/sys_created_on&gt;&lt;sys_id&gt;cead644f1be018501f7e113d9c4bcb71&lt;/sys_id&gt;&lt;sys_mod_count&gt;120&lt;/sys_mod_count&gt;&lt;sys_name&gt;AGContractGridFactory&lt;/sys_name&gt;&lt;sys_package display_value="FMS" source="x_g_irm_fms"&gt;c728dd331b3fc8100a4a10ad9c4bcbb6&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="FMS"&gt;c728dd331b3fc8100a4a10ad9c4bcbb6&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_angular_provider_cead644f1be018501f7e113d9c4bcb71&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;RoseJL@state.gov&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-06-02 18:18:28&lt;/sys_updated_on&gt;&lt;type&gt;service&lt;/type&gt;&lt;/sp_angular_provider&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>430509291</payload_hash>
+        <record_name>AGContractGridFactory</record_name>
+        <reverted_from/>
+        <source>569811731b3fc8100a4a10ad9c4bcb1a</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-06-02 18:18:28</sys_created_on>
+        <sys_id>327893171bc594100a4a10ad9c4bcbfb</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172764193780000001</sys_recorded_at>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-02 18:18:28</sys_updated_on>
+        <type>Widget Angular Provider</type>
+        <update_guid>7a7893170dc59410642d4bef3fb044fa</update_guid>
+        <update_guid_history>7a7893170dc59410642d4bef3fb044fa:430509291,727bfdf9830d10108bcfe5861ff622b1:2103947209,bdca35f9b40d1010c35b74fffff7d8b8:-2006188205,8c8a35f9df0d1010efce93ba3ed7afb3:-747074494,b9d37c71a54d10108987c9e3a1935f69:-1556779535,d71234314f4d1010ffecd8cd3252030d:256502129,bcd13431924d10109ad9113231a7bd09:76617126,8171f479d00d10108729e17691272441:-2006684259,fe2206098b81d05092bbe58c1fe500b6:289662652,24610e411b81d050b2ed0fde4da91aa1:-1421811034,48d3cb739a34dc101d19de57d8f341c9:289662652,2da14fff17f0dc10f683e9339d0d109c:1654804052,5dce727f60f0dc100b4ef07b124a6139:316815349,6c8e327f88f0dc1002b08db62c2b1961:736016770,3798a23bcfb0dc1099f543186fd954b2:289756470,6c46685bc1bc1c10f2a74643363025c5:-1966756537,7d66fd66b77498101e2ef83bb2a05182:1415390826,0d8ea8115a7c54103310e0391b0e6b4f:-42216489,473de81d463c54101fe8400568dda4d0:1314843887,8d0ba41d1a3c541013ae0b2ce1c1d650:1321014902,98f9a8d9f53c5410aa986c1f08db840c:472157548,39e824d9c43c54108ebd3746685b76d5:1314843887,4c47a65845bc901050308f90fb812046:-50284763,3117ae5020bc9010944e9d2da8f5f8ae:-1907635041,c546ae50d6bc90101b2d1be5228646a9:518621151,e6c5aa50fcbc90101eb3acd9abd8a534:-1814203283,429edad8c87c9010ec6403bb0b74bbf9:-1306277003,b6fd5a982c7c9010c5c54bb6985a1d9f:1638463221,ef1079dceeb890109253095186c1ddf1:2090021555,d15a2d9467b89010c1d758d412e331b2:-1430906930,e60a2d944fb89010d1dbb2acc441fdad:-599847493,42b9ed54dfb8901009515fc320fb8b3f:991815016,6e49a9d023b89010df54870ce45caf5d:1776818764,54e6edd0b9b890101ae410f1d79c0f76:696208114,3835a5dcca789010ab32e4d2022a2603:-22297625,54a4e590d2b89010a2d95841126027ba:-1067185824,7244a55c73789010cf3a18d810b87b63:151192874,bb1461dc8d7890105825ff59ba209240:1863627201,03a361dc427890100dedadedd81e599e:-2015667807,a28365dc4378901029ca0d17d88793fc:1945469633,0a23251ca8789010e3f08f8f131c23a7:1863627201,3d62691ccc789010c6bbafd68ae3eb58:-2114806141,642169183f789010df3daf6e1f05db8f:-1581811556,fcf0e9d479789010786c8f2ddb06cc6c:541041936,8de025d47a789010e02487ed34b30963:1347042187,93202154a6789010844f89456e2396e0:-1500525112,a44f1154a578901051757b6586193fda:-1853474694,d5ee5550f37890104845e89df358fdb0:1286503375,246ed55883389010c0d9a0ef021ebce7:865158416,f4fc8bd71ee85850620e2ff806558e04:-1497246866,982a4f1706e85850b839653c166409d9:1200303673,46f803d395e85850f35c2ad576fc0825:-622863117,d838cbd311e858507fde03d80d9ba72d:-1975311654,e6f1439fada85850d3416f53ee9e9c97:-751436871,024ffa9bdfa85850cd0358ba98fd8b83:1823597831,2aae3e5b0ea8585019cbf2bce07f173f:1068769497,112eb25b41a8585011c43879f65fdac8:2012978337,f59db65b29a85850bfb3944f61e57c0d:1620336667,f15cb697b3a85850f3d5f7211645251e:879001655,2a8bbad716a85850ee20e58b5a43024f:-1392255684,901b7e1713a8585065c658dca937563f:2122655311,fb28721738a8585058409aa406da7434:1843456624,86a7fe9380a8585075d32629a5b2bb78:-440058040,0c57b293e7a85850fbbc9ff05d40de67:-543155275,df45b2931ba858509efef6e626026b13:-1687752011,0794f653b6a85850e09ba3c64df35962:-1306912530,11947adfb068585021e414aa44c3b8ba:2011531927,3264f6136ea858500eeaf785e45af8cd:2003047008,43ef26dba06858504c22d2dde9b8402b:2011531927,760f26db1f685850ae729e3d00397126:938247225,8d0c625b186858505d1ad2f33090a1be:1478610672,5c62e213ab6858502a0518fc6070aafc:1962973174,e80262df872858501b8dc8294573d758:-885919424,ccc162df95285850f976248dd9dea253:-2022470852,2c3122dfc6285850282337a518635b75:1341096479,3d1122df0a285850ef82b78470fe3a6e:1292840860,15d06a5f38285850c07d0190da950d96:1962973174,8d8f5a5fd12858509365abaa03298f8b:1140138224,570f9e1f36285850a92f16b0e910ab32:261196884,4fce5e1f632858502279c566529106bd:1371769336,86add6db232858504a9a4c6e5277ca81:1739806450,a98d5adb57285850f142df54e3368edf:2078331737,c36d569b5b2858509edc96a4d0eecfd7:-1294518751,12eb5a5b2d2858506a6d65eca3f71abc:1983747739,3c6b125ba52858509ea190399d5f7314:-729844394,6afa125bc8285850d8514541e1acab0e:1240888590,17ca921bfa2858501487450ab238ee91:12912446,539a1e1be72858501e4085ff488888fb:1272065764,251a921bd8285850e6052d3b1f964d5a:-1472658961,0a785e97b22858502ba96db6dce1e8e4:-927521887,4e08d257c82858509f81383144fa0d00:528947954,941796578b285850ee76e8cacb1079ea:1324234618,5dc65a177d285850cc5ced02de450347:810798426,54110e536de4585070895b6b26665047:1461342318,c3c04213a3e45850963d100f45330193:-238228574,bb7479570ba4585042776bd46dd58c24:73495926,cc44751718a45850ac37fa8d9e869085:904483018,ebb9e103d3281850cdd73e19cb8da7cb:-806553319,1439adcfa1e418503cd48e0a3db9c706:-772774506,1d09210321281850af6e68519139232c:-590591138,b6a7654f48e4185088e9fa7830869b3d:1465800826,bf966d4f79e418509a5be02d74877717:-1014728819,3c75a58b36e418501971a05e217eebc1:1481535108,c35cd90701e41850812e231dcd584a57:-510205319,4a4c590760e41850f2056fd6e307e364:-1697628112,ad2b19c3ebe41850b1b4b3a3259ee1bc:1153398655,a6fa1d8368e41850d93b8d741df79136:-682093218,7aaa5983f6e41850d469ca42e3c59f4e:-885820657,3621d54baaa4185027a759b36d930565:-327959731,8420d9877aa418502fa8a4f4f42225a4:-1061698574,947f4d87e1a4185077ad27c1326ca849:147433203,b1edcd0729a41850609fc8c728e734e8:-1050167531,5cadc507cba4185029f947bd0ce057ef:-1548430655,aedbc50783a418503bf690c23e3831e9:-25097834,0c0b0983afa418509142d34614be0736:1100749046,12ca0dc3f8a4185029d2a8dcc697fad3:996322881,754a05c3eea41850625fca49e79ed8b4:1860169455,12ec38cf3524185058f474d68db0250e:-1777327198,53cb384b6124185080dc4eda348cb7fe:-1540427959,d110748fd5e018501a1b12fb38f3a06b:-1453366940,06ad644ffde01850a01b82091ae87573:1108286109</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="AGContractGridFactory">fa24f5ef1b5d90101f7e113d9c4bcb97</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-06-15 15:54:22</sys_created_on>
+        <sys_db_object display_value="" name="sp_angular_provider">sp_angular_provider</sys_db_object>
+        <sys_id>49463032bee24378b63f00e095efda40</sys_id>
+        <sys_metadata>cead644f1be018501f7e113d9c4bcb71</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>AGContractGridFactory</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sp_angular_provider_cead644f1be018501f7e113d9c4bcb71</sys_update_name>
+        <sys_update_version display_value="sp_angular_provider_cead644f1be018501f7e113d9c4bcb71">327893171bc594100a4a10ad9c4bcbfb</sys_update_version>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-15 15:54:22</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

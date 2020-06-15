@@ -3,154 +3,279 @@
         <name>AGGridFactory</name>
         <script><![CDATA[function AGGridFactory($http, $rootScope, spUtil, spModal, $uibModalStack, $timeout) {
 
-    var AGGridFactory = function() {
+	var AGGridFactory = function () {
 
-        var DeleteCellRenderer = function() {};
-        var EditCellRenderer = function() {};
-        var CheckBoxRenderer = function() {};
+		var DeleteCellRenderer = function () {};
+		var EditCellRenderer = function () {};
+		var CheckBoxRenderer = function () {};
 		var DetailCellRenderer = function () {
-            this.masterGridApi = null;
-            this.masterRowIndex = null;
-        };
+			this.masterGridApi = null;
+			this.masterRowIndex = null;
+		};
 
-        function currencyCssFunc(params) {
-            if (params.value !== null && params.value !== undefined && params.value < 0) {
-                return {
-                    "color": "red",
-                    "font-weight": "bold",
-                    "text-align": "right"
-                };
-            } else {
-                return {
-                    "text-align": "right"
-                };
-            }
-        }
+		function dateCompareFunc(targetDay, cellValue) {
+			var cellDate = new Date(cellValue + " 00:00:00");
 
-        function currencyFormatter(params) {
-            if (params.value != 0 && (params.value === null || params.value === undefined || params.value == "")) {
-                return null;
-            } else if (isNaN(params.value)) {
-                return '$' + parseFloat(0).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-            } else {
-                if (parseFloat(params.value) >= 0) {
-                    return '$' + parseFloat(params.value).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-                } else {
-                    return currencyNegative(params.value);
-                }
-            }
-        }
+			var tdate = formatDate(targetDay);
+			var cdate = formatDate(cellDate)
 
-        function currencyNegative(tVal) {
-            return '$(' + parseFloat(tVal).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,").replace("-", "") + ")";
-        }
+			var retVal = 1;
 
-        function formatDate(date) {
-            var d = new Date(date),
-                month = '' + (d.getMonth() + 1),
-                day = '' + d.getDate(),
-                year = d.getFullYear();
-        
-            if (month.length < 2) 
-                month = '0' + month;
-            if (day.length < 2) 
-                day = '0' + day;
-        
-            return [year, month, day].join('-');
-        }
-
-
-	function getGroupCellRenderer() {
-		function GroupCellRenderer() {}
-		GroupCellRenderer.prototype.init = function (params) {
-
-			var tempDiv = document.createElement('div');
-			var display = '';
-
-			if ('type' in params.banner && params.banner.type == "standard") {
-				if (params.node.group) {
-					if(params.node.childrenAfterGroup[0].data) {
-						params.banner.columns.forEach(function(item) {
-							display += item.label + " " + params.node.childrenAfterGroup[0].data[item.name] + " ";
-						});
-					} else { display += params.node.key; }
-				}
-				tempDiv.innerHTML = '<span style="font-weight: bold;">' + display + '</span>';
+			if (cellDate < targetDay) {
+				retVal = -1;
 			}
-			this.eGui = tempDiv.firstChild;
-		};
+			if (cdate == tdate) {
+				retVal = 0;
+			}
 
-		GroupCellRenderer.prototype.getGui = function () {
-			return this.eGui;
-		};
+			return retVal;
+		}
 
-		// gets called when the cell is removed from the grid
-		GroupCellRenderer.prototype.destroy = function () {
-			if (this.eButton)
-				this.eButton.removeEventListener('click', this.eventListener);
-		};
-		return GroupCellRenderer;
-	}
+		function currencyCssFunc(params) {
+			if (params.value !== null && params.value !== undefined && params.value < 0) {
+				return {
+					"color": "red",
+					"font-weight": "bold",
+					"text-align": "right"
+				};
+			} else {
+				return {
+					"text-align": "right"
+				};
+			}
+		}
+
+		function currencyFormatter(params) {
+			if (params.value != 0 && (params.value === null || params.value === undefined || params.value == "")) {
+				return null;
+			} else if (isNaN(params.value)) {
+				return '$' + parseFloat(0).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+			} else {
+				if (parseFloat(params.value) >= 0) {
+					return '$' + parseFloat(params.value).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+				} else {
+					return currencyNegative(params.value);
+				}
+			}
+		}
+
+		function currencyNegative(tVal) {
+			return '$(' + parseFloat(tVal).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,").replace("-", "") + ")";
+		}
+
+		function formatDate(date) {
+			var d = new Date(date),
+				month = '' + (d.getMonth() + 1),
+				day = '' + d.getDate(),
+				year = d.getFullYear();
+
+			if (month.length < 2)
+				month = '0' + month;
+			if (day.length < 2)
+				day = '0' + day;
+
+			return [year, month, day].join('-');
+		}
+
+		var allocationParentFields = [
+            "fy",
+            "fy_qtr",
+            "pool_type",
+            "pool_purpose",
+            "pool_status",
+            "receive_date",
+            "receive_amt",
+            "ibis_document",
+            "investment_ref",
+            "ams_ref_nmbr",
+            "appropriation_type_ref"
+		];
 		
+		function constructAllocationPoolQuery(tID, parentData) {
+            var poolQuery = "pool_parent_ref=" + tID;
+
+            allocationParentFields.forEach(function (field) {
+                var dataField = field;
+                if (field.endsWith("_ref"))
+                    dataField = field + "_rawval";
+
+                var dataVal = parentData[dataField];
+                if (dataField == "receive_amt")
+                    dataVal = parentData.unassigned_amt;
+
+                poolQuery += "^" + field + "=" + dataVal;
+            });
+            return poolQuery;
+        }
+
+		function getGroupCellRenderer() {
+			function GroupCellRenderer() {}
+			GroupCellRenderer.prototype.init = function (params) {
+
+				var tempDiv = document.createElement('div');
+
+				var display = '';
+
+				if ('type' in params.banner && params.banner.type == "standard") {
+					if (params.node.group) {
+						if (params.node.childrenAfterGroup[0].data) {
+							params.banner.columns.forEach(function (item) {
+								display += item.label + " " + params.node.childrenAfterGroup[0].data[item.name] + " ";
+							});
+						} else {
+							display += params.node.key;
+						}
+					}
+					tempDiv.innerHTML = '<span style="font-weight: bold;">' + display + '</span>';
+				} else if ('type' in params.banner && params.banner.type == "allocationpool") {
+
+					if (params.node.group) {
+						if (params.node.childrenAfterGroup[0].data) {
+							var fullOrg = params.node.childrenAfterGroup[0].data.organization_ref;
+							var orgPart = fullOrg.replace(/ \[[\s\S]*?\]/g, '');
+							tempDiv.innerHTML =
+								'<span>' +
+								orgPart + " | FY " + params.node.childrenAfterGroup[0].data.fy + " | " + params.node.childrenAfterGroup[0].data.fy_qtr + " Qtr" +
+								'</span>';
+						}
+					} else {
+
+						var distributeState = "-disabled";
+						var allocateState = "-disabled";
+						var distributeTitle = "Pool is fully distributed/allocated";
+						var allocateTitle = distributeTitle;
+
+						if (params.data.unassigned_amt > 0) {
+							allocateState = "-enabled";
+							allocateTitle = "Allocate";
+							if (pageController.data.canDistribute) {
+								distributeState = "-enabled";
+								distributeTitle = "Distribute";
+							} else {
+								distributeTitle = "There are no Sub-Organizations to distribute to";
+							}
+						}
+
+						tempDiv.innerHTML = '<span class="row-button"><i class="fa fa-edit edit-pencil"></i></span><span><i class="fa fa-share-alt action' + distributeState + '" title="' + distributeTitle + '"></i></span><span><i class="fa fa-pie-chart action' + allocateState + '" title="' + allocateTitle + '"></i></span>';
+
+						// get references to the elements we want
+						this.eButton = tempDiv.querySelector('.fa-edit');
+						this.aButton = tempDiv.querySelector('.fa-pie-chart');
+						this.dButton = tempDiv.querySelector('.fa-share-alt');
+
+						// add event listener to buttons
+						this.eventListener = function () {
+							var tField = params.colDef.field;
+							var tID = params.data.sys_id;
+							var tGrid = null;
+							var tTable = dataTable;
+							activeRow = "";
+
+							editGridRow(tID, "", tTable, tGrid);
+						};
+						this.eButton.addEventListener('click', this.eventListener);
+
+						this.allocateListener = function () {
+							if (allocateState == "-enabled") {
+								var tID = params.data.sys_id;
+								params.node.setExpanded(true);
+								editGridRow("-1", "allocation_pool_ref=" + tID + "^fund_source=Allocation^allocation_date=" + params.data.receive_date + "^allocation_amt=" + params.data.unassigned_amt, childTables[0].name, childTables[0].banner, "detail_" + childTables[0].name + tID);
+							}
+						}
+						this.aButton.addEventListener('click', this.allocateListener);
+
+						this.distributeListener = function () {
+							if (distributeState == "-enabled") {
+								var tID = params.data.sys_id;
+								params.node.setExpanded(true);
+								editGridRow("-1", constructAllocationPoolQuery(tID, params.data), childTables[1].name, childTables[1].banner, "detail_" + childTables[1].name + tID);
+							}
+						}
+						this.dButton.addEventListener('click', this.distributeListener);
+					}
+
+				}
+
+				this.eGui = tempDiv;
+			};
+
+			GroupCellRenderer.prototype.getGui = function () {
+				return this.eGui;
+			};
+
+			// gets called when the cell is removed from the grid
+			GroupCellRenderer.prototype.destroy = function () {
+				if (this.eButton)
+					this.eButton.removeEventListener('click', this.eventListener);
+				if (this.aButton)
+					this.aButton.removeEventListener('click', this.allocateListener);
+			};
+			return GroupCellRenderer;
+		}
+
 		var oldEditVal = null;
 		var activeGrid = null;
-        var activeTable = "";
-        var activeRow = "";
-        var pageController = {};
-        var linkField = "sys_id";
-        var dataTable = "";
-        var dataArray = "tableData";
-        var pageName = "";
-        var detailsPage = "";
-        var detailsHTML = "";
-        var childTables = {};
-        var updatedID = "";
-        var gridOptions = {
-            defaultColDef: {
-                editable: false,
-                sortable: true,
-                resizable: true,
-                filter: false,
-                flex: 1,
-                minWidth: 100,
-				filterParams: { newRowsAction: 'keep'}
-            },
-            suppressAggFuncInHeader: true,
-            groupSuppressAutoColumn: true,
-            groupDefaultExpanded: 0,
-            rowSelection: 'single',
-            floatingFilter: true,
-            pagination: true,
+		var activeTable = "";
+		var activeRow = "";
+		var pageController = {};
+		var linkField = "sys_id";
+		var dataTable = "";
+		var dataArray = "tableData";
+		var pageName = "";
+		var detailsPage = "";
+		var detailsHTML = "";
+		var childTables = {};
+		var updatedID = "";
+		var gridOptions = {
+			defaultColDef: {
+				editable: false,
+				sortable: true,
+				resizable: true,
+				filter: false,
+				flex: 1,
+				minWidth: 100,
+				filterParams: {
+					newRowsAction: 'keep'
+				}
+			},
+			suppressAggFuncInHeader: true,
+			groupSuppressAutoColumn: true,
+			groupDefaultExpanded: 0,
+			rowSelection: 'single',
+			floatingFilter: true,
+			pagination: true,
 			paginateChildRows: true,
-            paginationAutoPageSize: true,
+			paginationAutoPageSize: true,
 			suppressFieldDotNotation: true,
-            suppressColumnVirtualisation: true,
-			stopEditingWhenGridLosesFocus: true,			
-            groupMultiAutoColumn: false,
-            masterDetail: false,
+			suppressColumnVirtualisation: true,
+			stopEditingWhenGridLosesFocus: true,
+			groupMultiAutoColumn: false,
+			masterDetail: false,
 			detailCellRenderer: 'myDetailCellRenderer',
 			groupRowRenderer: 'agGroupCellRenderer',
-            keepDetailRows: true,
-            detailRowHeight: 200,
+			keepDetailRows: true,
+			detailRowHeight: 200,
 			overlayNoRowsTemplate: '<span style="padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow;">No data found</span>',
 			autoGroupColumnDef: {
-                cellRendererParams: {
-                    suppressCount: true,
-                }
-            },
-            onCellClicked: function(params) {
-                if (params.data && params.data.sys_id && params.colDef.field == linkField) {
-                    launchRowDetails(params.data.sys_id);
-                }
-				if (params.columnApi.getAllDisplayedColumns().filter(function (col) { 
-					return col.getColDef().cellRendererParams; }).some(function(item) { 
-					if (typeof item.colDef.cellRendererParams === "function" &&
-						item.colDef.cellRendererParams(params).editType &&
-						item.colDef.cellRendererParams(params).editType == 'inline') return true; }))
+				cellRendererParams: {
+					suppressCount: true
+				}
+			},
+			onCellClicked: function (params) {
+				if (params.data && params.data.sys_id && params.colDef.field == linkField) {
+					launchRowDetails(params.data.sys_id);
+				}
+				if (params.columnApi.getAllDisplayedColumns().filter(function (col) {
+						return col.getColDef().cellRendererParams;
+					}).some(function (item) {
+						if (typeof item.colDef.cellRendererParams === "function" &&
+							item.colDef.cellRendererParams(params).editType &&
+							item.colDef.cellRendererParams(params).editType == 'inline') return true;
+					}))
 					inlineEdit(activeTable, params.node.rowIndex);
-            },
+			},
 			onCellEditingStarted: function (event) {
-				oldEditVal = event.value; 
+				oldEditVal = event.value;
 			},
 			onCellEditingStopped: function (event) {
 				var newValue = event.value;
@@ -159,167 +284,169 @@
 						newValue = oldEditVal;
 				}
 			},
-			onRowValueChanged: function(event) {
-                pageController.server.get({
-                    mode: 'updateRow',
+			onRowValueChanged: function (event) {
+				pageController.server.get({
+					mode: 'updateRow',
 					table: activeTable,
 					row: event.data
-                }).then(function (saveResp) {
+				}).then(function (saveResp) {
 
-                });
-            },
-            getRowClass: function(params) {
-                if (params.data) {
-                    if (params.data.sys_id) {
-                        if (params.data.sys_id == updatedID)
-                            return 'updated-row';
-                    }
-                }
-                //optional classes here can be added in the widget code
-            },
-            columnTypes: {
-                'currency': {
-                    valueFormatter: currencyFormatter,
-                    cellStyle: currencyCssFunc
-                },
-                'date': {
-                    filter: 'agDateColumnFilter',
-                    filterParams: {
-                        // provide comparator function
-                        comparator: function (targetDay, cellValue) {
-                            var cellDate = new Date(cellValue + " 00:00:00");
-
-                            var tdate = formatDate(targetDay);
-                            var cdate = formatDate(cellDate)
-
-                            var retVal = 1;
-
-                            if (cellDate < targetDay) {
-                                retVal = -1;
-                            }
-                            if (cdate == tdate) {
-                                retVal = 0;
-                            }
-
-                            return retVal;
-                        }
-                    }
-                }
-            },
-            components: {
-                editCell: EditCellRenderer,
-                deleteCell: DeleteCellRenderer,
-                checkbox: CheckBoxRenderer,
+				});
+			},
+			getRowClass: function (params) {
+				if (params.data) {
+					if (params.data.sys_id) {
+						if (params.data.sys_id == updatedID)
+							return 'updated-row';
+					}
+				}
+				//optional classes here can be added in the widget code
+			},
+			columnTypes: {
+				'currency': {
+					valueFormatter: currencyFormatter,
+					cellStyle: currencyCssFunc
+				},
+				'date': {
+					filter: 'agDateColumnFilter',
+					filterParams: {
+						// provide comparator function
+						comparator: dateCompareFunc
+					}
+				}
+			},
+			components: {
+				editCell: EditCellRenderer,
+				deleteCell: DeleteCellRenderer,
+				checkbox: CheckBoxRenderer,
 				myDetailCellRenderer: DetailCellRenderer,
-                myGroupCellRenderer: getGroupCellRenderer(),
+				myGroupCellRenderer: getGroupCellRenderer(),
 				numericCellEditor: NumericCellEditor
 			}
-        };
+		};
 
-        var launchRowDetails = function(rowID) {
-            var urlToNav = "/fms?id=" + detailsPage;
-            switch (detailsPage) {
-                case 'organization_detail':
-                    urlToNav += "&org_id=" + rowID;
-                    break;
-                case 'project_detail':
-                    urlToNav += "&proj_id=" + rowID;
-                    break;
-                case 'budget_detail':
-                    urlToNav += "&budget_id=" + rowID;
-                    break;
-            }
-            window.location.href = urlToNav;
-        };
+		var launchRowDetails = function (rowID) {
+			var urlToNav = "/fms?id=" + detailsPage;
+			switch (detailsPage) {
+				case 'organization_detail':
+					urlToNav += "&org_id=" + rowID;
+					break;
+				case 'project_detail':
+					urlToNav += "&proj_id=" + rowID;
+					break;
+				case 'budget_detail':
+					urlToNav += "&budget_id=" + rowID;
+					break;
+			}
+			window.location.href = urlToNav;
+		};
 
-        this.editRow = function (tID, query, table) {
-            editGridRow(tID, query, table, null, null);
-        };
+		this.editRow = function (tID, query, table) {
+			editGridRow(tID, query, table, null, null);
+		};
 
-        var inlineEdit = function (table, row) {
+		var inlineEdit = function (table, row) {
 			activeTable = table;
 			gridOptions.editType = 'fullRow';
 			gridOptions.api.startEditingCell({
 				rowIndex: row,
-				colKey: gridOptions.columnApi.getAllDisplayedColumns().filter(function(col) { return col.getColDef().editable == true; })[0]
+				colKey: gridOptions.columnApi.getAllDisplayedColumns().filter(function (col) {
+					return col.getColDef().editable == true;
+				})[0]
 			});
 		};
 
 		var editGridRow = function (targetID, query, table, title, aGrid) {
-            var titlePrefix = "New";
-            var modalName = pageName;
-            activeTable = dataTable;
-            activeGrid = null;
+			var titlePrefix = "New";
+			var modalName = pageName;
+			activeTable = dataTable;
+			activeGrid = null;
 
-            if (aGrid != null)
-                activeGrid = aGrid;
+			if (aGrid != null)
+				activeGrid = aGrid;
 
-            if (table != null) 
-                activeTable = table;
+			if (table != null)
+				activeTable = table;
 
-            if (title != null) 
-                modalName = title;
+			if (title != null)
+				modalName = title;
 
-            var wInput = {
-                table: activeTable,
-                sys_id: targetID,
-                view: 'portal',
-                query: query
-            };
+			var wInput = {
+				table: activeTable,
+				sys_id: targetID,
+				view: 'portal',
+				query: query
+			};
 
-            if (targetID != "-1") {
-                titlePrefix = "Edit";
-                updatedID = targetID;
-            }
+			if (targetID != "-1") {
+				titlePrefix = "Edit";
+				updatedID = targetID;
+			}
 
-            spModal.open({
-                title: titlePrefix + ' ' + modalName,
-                size: 'lg',
-                widget: 'fms-form-widget',
-                buttons: [],
-                widgetInput: wInput
-            });
-        };
+			spModal.open({
+				title: titlePrefix + ' ' + modalName,
+				size: 'lg',
+				widget: 'fms-form-widget',
+				buttons: [],
+				widgetInput: wInput
+			});
+		};
 
-        var deleteRow = function (delID, delTable, detGrid, rowIdx) {
-            pageController.server.get({
-                mode: 'deleteRow',
-                rowID: delID,
-                delTable: delTable
-            }).then(function (delResp) {
-                if (!delResp.data.isError) {
-                    spUtil.addInfoMessage("Record Deleted Successfully");
-                    if (detGrid == null){
-                        gridOptions.api.setRowData(delResp.data[dataArray]);
-                        gridOptions.api.sizeColumnsToFit();
-                    } else {
-                        var detailGridInfo = gridOptions.api.getDetailGridInfo(detGrid);
-                        var rowToDelete = detailGridInfo.api.getDisplayedRowAtIndex(rowIdx);
-                        var res = detailGridInfo.api.updateRowData({remove: [rowToDelete.data]});
-                    }
-                } else {
-                    spUtil.addErrorMessage(delResp.data.errorMsg);
-                }
-            });
-        };
+		var deleteRow = function (delID, delTable, detGrid, rowIdx) {
+			pageController.server.get({
+				mode: 'deleteRow',
+				rowID: delID,
+				delTable: delTable
+			}).then(function (delResp) {
+				if (!delResp.data.isError) {
+					spUtil.addInfoMessage("Record Deleted Successfully");
+					if (detGrid == null) {
+						gridOptions.api.setRowData(delResp.data[dataArray]);
+						gridOptions.api.sizeColumnsToFit();
+					} else {
 
-        //setting functions called from widget
-        this.renderGrid = function(ele) {
-            var gridDiv = document.querySelector('#' + ele);
-            new agGrid.Grid(gridDiv, gridOptions);
-        };
-        this.setGridOption = function(opt, optval) {
-            gridOptions[opt] = optval;
-        };
-        this.setColumnOption = function(opt, optval, colName) {
+						var detailGridInfo = gridOptions.api.getDetailGridInfo(detGrid);
+						var rowToDelete = detailGridInfo.api.getDisplayedRowAtIndex(rowIdx);
+						var res = detailGridInfo.api.updateRowData({
+							remove: [rowToDelete.data]
+						});
+
+						if (childTables[0].banner == 'Project Allocation') { //special case for Allocation Pool page - need to recalculate/refresh parent
+							var parentRow = delResp.data.parentRec;
+							gridOptions.api.forEachNode(function (rowNode, index) {
+								if (rowNode.data) {
+									if (rowNode.data.sys_id == parentRow.sys_id) {
+										rowNode.setDataValue("allocated_amt", parentRow.allocated_amt);
+										rowNode.setDataValue("distributed_amt", parentRow.distributed_amt);
+										rowNode.setDataValue("unassigned_amt", parentRow.unassigned_amt);
+									}
+								}
+							});
+						}
+					}
+				} else {
+					spUtil.addErrorMessage(delResp.data.errorMsg);
+				}
+			});
+		};
+
+		//setting functions called from widget
+		this.renderGrid = function (ele) {
+			var gridDiv = document.querySelector('#' + ele);
+			new agGrid.Grid(gridDiv, gridOptions);
+		};
+		this.setGridOption = function (opt, optval) {
+			gridOptions[opt] = optval;
+		};
+		this.setColumnOption = function (opt, optval, colName) {
 			if (gridOptions.columnApi) {
 				if (colName)
 					gridOptions.columnApi.getColumn(colName)[opt](optval);
 				else
 					gridOptions.columnApi[opt](optval);
 			}
-        };
-        this.setGridFilter = function(colName, op, val) {
+		};
+		this.setGridFilter = function (colName, op, val) {
 			var colFilter = gridOptions.api.getFilterInstance(colName);
 			if (colFilter.providedFilterParams.colDef.filter == "agSetColumnFilter") {
 				colFilter.selectNothing();
@@ -334,403 +461,477 @@
 				});
 			}
 			gridOptions.api.onFilterChanged();
-        };
-        this.setColumns = function(columnData) {
-            gridOptions.columnDefs = columnData;
-        };
-        this.fitColumns = function() {
-            /*var allColumnIds = [];
+		};
+		this.setColumns = function (columnData) {
+			gridOptions.columnDefs = columnData;
+		};
+		this.fitColumns = function () {
+			/*var allColumnIds = [];
 			gridOptions.columnApi.getAllColumns().forEach(function(column) {
 				allColumnIds.push(column.colId);
 			});
             gridOptions.columnApi.autoSizeColumns(allColumnIds);*/
-            gridOptions.api.sizeColumnsToFit();
+			gridOptions.api.sizeColumnsToFit();
 
-        };
-        this.setColumnsVisible = function(cols, show) {
-            if (gridOptions.columnApi) gridOptions.columnApi.setColumnsVisible(cols, show);
-        };
-        this.setGridData = function(rowData) {
-            gridOptions.api.setRowData(rowData);
-        };
-        this.refreshGrid = function() {
-            gridOptions.api.redrawRows();
-        };
-        this.setPageProperties = function(pageProps) {
-            pageController = pageProps.pageController; //link to page controller
-            dataTable = pageProps.tableName; //SNOW table name
-            if (pageProps.dataArray != null)
-                dataArray = pageProps.dataArray; //name of data array variable from widget Server Script
-            pageName = pageProps.pageType; //object type for page
-            linkField = pageProps.linkedField; //field that should be linked from grid
-            detailsPage = pageProps.detailsPage; //details page to point link to
-            childTables = pageProps.childTables; //child tables for details section
-            if (pageProps.detailsHTML != null)
-                detailsHTML = pageProps.detailsHTML; //html to add above details grids
-            if (pageProps.detailsHeight != null)
-                gridOptions.detailRowHeight = pageProps.detailsHeight; //height of detailGrid
-            if (pageProps.groupDefaultExpanded != null)
-                gridOptions.groupDefaultExpanded = pageProps.groupDefaultExpanded; //expand default
-            if (pageProps.rowClassFunc != null)
-                gridOptions.getRowClass = pageProps.rowClassFunc; //set row class definitions
-        };
-        this.setUpdatedID = function(id) {
-            updatedID = id;
-        };
+		};
+		this.setColumnsVisible = function (cols, show) {
+			if (gridOptions.columnApi) gridOptions.columnApi.setColumnsVisible(cols, show);
+		};
+		this.setGridData = function (rowData) {
+			gridOptions.api.setRowData(rowData);
+		};
+		this.refreshGrid = function () {
+			gridOptions.api.redrawRows();
+		};
+		this.setPageProperties = function (pageProps) {
+			pageController = pageProps.pageController; //link to page controller
+			dataTable = pageProps.tableName; //SNOW table name
+			if (pageProps.dataArray != null)
+				dataArray = pageProps.dataArray; //name of data array variable from widget Server Script
+			pageName = pageProps.pageType; //object type for page
+			linkField = pageProps.linkedField; //field that should be linked from grid
+			detailsPage = pageProps.detailsPage; //details page to point link to
+			childTables = pageProps.childTables; //child tables for details section
+			if (pageProps.detailsHTML != null)
+				detailsHTML = pageProps.detailsHTML; //html to add above details grids
+			if (pageProps.detailsHeight != null)
+				gridOptions.detailRowHeight = pageProps.detailsHeight; //height of detailGrid
+			if (pageProps.groupDefaultExpanded != null)
+				gridOptions.groupDefaultExpanded = pageProps.groupDefaultExpanded; //expand default
+			if (pageProps.rowClassFunc != null)
+				gridOptions.getRowClass = pageProps.rowClassFunc; //set row class definitions
+			if (pageProps.showTotals != null) {
+				if (pageProps.showTotals) {
+					gridOptions.groupIncludeFooter = true;
+					gridOptions.groupIncludeTotalFooter = true;
+				}
+			}
+		};
+		this.setUpdatedID = function (id) {
+			updatedID = id;
+		};
 
-        this.exportExcel = function() {
-            var params = {};
-            var exportColumns = [];
-            var allCols = gridOptions.columnApi.getAllColumns();
-            allCols.forEach(function(col) {
-                if (col.colId != "edit" && col.colId != "delete")
-                    exportColumns.push(col.colId);
-            });
-            params.columnKeys = exportColumns;
-            gridOptions.api.exportDataAsCsv(params);
-        };
+		this.exportExcel = function () {
+			var params = {};
+			var exportColumns = [];
+			var allCols = gridOptions.columnApi.getAllColumns();
+			allCols.forEach(function (col) {
+				if (col.colId != "edit" && col.colId != "delete")
+					exportColumns.push(col.colId);
+			});
+			params.columnKeys = exportColumns;
+			gridOptions.api.exportDataAsCsv(params);
+		};
 
-        function replaceVariables(data, html) {
-            //function to take variable names enclosed in brackets from HTML passed from grid widget and replace them with values from the params.data object in AG Grid
-            var z = [];
-            var exp = new RegExp(/(?<=\[).*?(?=\])/gm);
-            while(null != (z=exp.exec(html))) {
-                var matcher = "[" + z[0] + "]";
-                html = html.replace(matcher, data[z[0]]);
-            }
-            return html;            
-        }
-		
-        function setDetailRenderer() {
+		function replaceVariables(data, html) {
+			//function to take variable names enclosed in brackets from HTML passed from grid widget and replace them with values from the params.data object in AG Grid
+			var z = [];
+			var exp = new RegExp(/(?<=\[).*?(?=\])/gm);
+			while (null != (z = exp.exec(html))) {
+				var matcher = "[" + z[0] + "]";
+				html = html.replace(matcher, data[z[0]]);
+			}
+			return html;
+		}
 
-			DetailCellRenderer.prototype.init = function(params) {
-                // trick to convert string of HTML into DOM object
-                var eTemp = document.createElement('div');
-				if (!childTables) { return; }
-                eTemp.classList.add('full-width-panel');
-                eTemp.innerHTML = '';
-                if (detailsHTML != "") {
-                    detailsHTML = replaceVariables(params.data, detailsHTML);
-                    eTemp.innerHTML += detailsHTML;
-                }
-				childTables.forEach(function(table) {
-					eTemp.innerHTML += this.getTemplate(table.banner);
+		function setDetailRenderer() {
+
+			DetailCellRenderer.prototype.init = function (params) {
+				// trick to convert string of HTML into DOM object
+				var eTemp = document.createElement('div');
+				if (!childTables) {
+					return;
+				}
+				if (params.showButton)
+					eTemp.classList.add('full-width-panel');
+				eTemp.innerHTML = '';
+				if (detailsHTML != "") {
+					detailsHTML = replaceVariables(params.data, detailsHTML);
+					eTemp.innerHTML += detailsHTML;
+				}
+				childTables.forEach(function (table) {
+					var showButton = true;
+					if (table.showButton != null) {
+						if (!table.showButton)
+							showButton = false;
+					}
+					eTemp.innerHTML += this.getTemplate(table.banner, showButton);
 				}.bind(this));
-                this.eGui = eTemp;
-				childTables.forEach(function(table) {
-					this.setupDetailGrid(table.banner, table.name, table.columnDefs, table.parentRef, params.api, params.data.sys_id);
+				this.eGui = eTemp;
+				childTables.forEach(function (table) {
+					var showButton = true;
+					if (table.showButton != null) {
+						if (!table.showButton)
+							showButton = false;
+					}
+					this.setupDetailGrid(table.banner, table.name, table.columnDefs, table.parentRef, params.api, params.data.sys_id, showButton);
 				}.bind(this));
-                this.masterGridApi = params.api;
-                this.masterRowIndex = params.data.sys_id;
-            };
-            DetailCellRenderer.prototype.setupDetailGrid = function(detailName, detailTable, detailCols, parentRef, masterGridApi, targSys) {
+				this.masterGridApi = params.api;
+				this.masterRowIndex = params.data.sys_id;
+			};
+			DetailCellRenderer.prototype.setupDetailGrid = function (detailName, detailTable, detailCols, parentRef, masterGridApi, targSys, showButton) {
 
-                pageController.detailLoading = true;
+				pageController.detailLoading = true;
 
-				var gridName = detailName.replace(/\W/g,'_') + 'Grid';
-				var buttonName = detailName.replace(/\W/g,'_') + 'Button';
-                var detailGrid = this.eGui.querySelector('#' + gridName);
-                var detailButton = this.eGui.querySelector('#' + buttonName);
-                var detailListener = function() {
-                    editGridRow("-1", parentRef + "=" + targSys, detailTable, detailName, "detail_" + detailTable + targSys);
-                };
-                detailButton.addEventListener('click', detailListener);
+				var gridName = detailName.replace(/\W/g, '_') + 'Grid';
+				var buttonName = detailName.replace(/\W/g, '_') + 'Button';
+				var detailGrid = this.eGui.querySelector('#' + gridName);
+				if (showButton) {
+					var detailButton = this.eGui.querySelector('#' + buttonName);
+					var detailListener = function () {
+						editGridRow("-1", parentRef + "=" + targSys, detailTable, detailName, "detail_" + detailTable + targSys);
+					};
+					detailButton.addEventListener('click', detailListener);
+				}
 
-                new agGrid.Grid(detailGrid, {
-                    columnDefs: detailCols,
-                    onGridReady: function(params) {
-                        var detailGridId = "detail_" + detailTable + targSys;
 
-                        var gridInfo = {
-                            id: detailGridId,
-                            api: params.api,
-                            columnApi: params.columnApi
-                        };
+				new agGrid.Grid(detailGrid, {
+					columnDefs: detailCols,
+					onGridReady: function (params) {
+						var detailGridId = "detail_" + detailTable + targSys;
 
-                        console.log(detailGridId);
+						var gridInfo = {
+							id: detailGridId,
+							api: params.api,
+							columnApi: params.columnApi
+						};
 
-                        masterGridApi.addDetailGridInfo(detailGridId, gridInfo);
-                        masterGridApi.getDetailGridInfo(detailGridId).api.showLoadingOverlay(); //show loading message
+						masterGridApi.addDetailGridInfo(detailGridId, gridInfo);
+						masterGridApi.getDetailGridInfo(detailGridId).api.showLoadingOverlay(); //show loading message
 
-                        var req = {mode: 'getDetailData', parentRef: parentRef, parentID: targSys, detailTable: detailTable}; //build request
+						var req = {
+							mode: 'getDetailData',
+							parentRef: parentRef,
+							parentID: targSys,
+							detailTable: detailTable
+						}; //build request
 
-                        pageController.server.get(req).then(function(saveResp) { //call to server to get live details data
-                            var detailData = saveResp.data[detailTable]; 
-                            masterGridApi.getDetailGridInfo(detailGridId).api.setRowData(detailData); //set returned data to grid
-                            masterGridApi.getDetailGridInfo(detailGridId).api.hideOverlay(); //hide loading
-                            masterGridApi.getDetailGridInfo(detailGridId).api.sizeColumnsToFit(); //fit columns
-                        });  
-                    },
-                    overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Getting ' + detailName + ' ... Stand By...</span>',
-                    getRowNodeId: function(data) {
-                        return data.sys_id;
-                    },
-                    columnTypes: {
-                        'currency': {
-                            valueFormatter: currencyFormatter,
-                            cellStyle: currencyCssFunc
-                        }
-                    },
-                    components: {
-                        editCell: EditCellRenderer,
-                        deleteCell: DeleteCellRenderer,
+						pageController.server.get(req).then(function (saveResp) { //call to server to get live details data
+							var detailData = saveResp.data[detailTable];
+							masterGridApi.getDetailGridInfo(detailGridId).api.setRowData(detailData); //set returned data to grid
+							masterGridApi.getDetailGridInfo(detailGridId).api.hideOverlay(); //hide loading
+							masterGridApi.getDetailGridInfo(detailGridId).api.sizeColumnsToFit(); //fit columns
+						});
+					},
+					overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Getting ' + detailName + ' ... Stand By...</span>',
+					overlayNoRowsTemplate: '<span class="ag-overlay-loading-center">There are no ' + detailName + '</span>',
+					getRowNodeId: function (data) {
+						return data.sys_id;
+					},
+					suppressAggFuncInHeader: true,
+					groupSuppressAutoColumn: true,
+					groupIncludeTotalFooter: true,
+					groupDefaultExpanded: -1,
+					groupHideOpenParents: true,
+					columnTypes: {
+						'currency': {
+							valueFormatter: currencyFormatter,
+							cellStyle: currencyCssFunc
+						},
+						'date': {
+							filter: 'agDateColumnFilter',
+							filterParams: {
+								// provide comparator function
+								comparator: dateCompareFunc
+							}
+						}
+					},
+					components: {
+						editCell: EditCellRenderer,
+						deleteCell: DeleteCellRenderer,
 						checkbox: CheckBoxRenderer
-                    }
-                });      
-                
-            };
-            DetailCellRenderer.prototype.getTemplate = function(detailName) {
-				var gridName = detailName.replace(/\W/g,'_') + 'Grid';
-				var buttonName = detailName.replace(/\W/g,'_') + 'Button';
-                var template = '';
+					}
+				});
+
+			};
+			DetailCellRenderer.prototype.getTemplate = function (detailName, showButton) {
+				var gridName = detailName.replace(/\W/g, '_') + 'Grid';
+				var buttonName = detailName.replace(/\W/g, '_') + 'Button';
+				var template = '';
 
 
 
-                template +=
-                    '  <div class="full-width-details">' +
-                    '    <div class="full-width-title">' + detailName + '</div>' +
-                    '    <a href="javascript:void(0);" id="' + buttonName + '" class="btn btn-sm btn-info details-button">Add ' + detailName + '</a>' +
-                    '  </div>' +
-                    '  <div id="' + gridName + '" class="details-grid"></div>';
+				template +=
+					'  <div class="full-width-details">' +
+					'    <div class="full-width-title">' + detailName + '</div>';
 
-                return template;
-            };
+				if (showButton)
+					template += '    <a href="javascript:void(0);" id="' + buttonName + '" class="btn btn-sm btn-info details-button">Add ' + detailName + '</a>';
 
-            DetailCellRenderer.prototype.getGui = function() {
-                return this.eGui;
-            };
+				template += '  </div>' +
+					'  <div id="' + gridName + '" class="details-grid"></div>';
 
-            DetailCellRenderer.prototype.destroy = function() {
-                var relationshipGridId = "detail_rel_" + this.masterRowIndex;
-                this.masterGridApi.getDetailGridInfo(relationshipGridId).api.destroy();
-                this.masterGridApi.removeDetailGridInfo(relationshipGridId);
+				return template;
+			};
 
-            };
-        }
-		
-		this.setRenderers = function(displayField) {
+			DetailCellRenderer.prototype.getGui = function () {
+				return this.eGui;
+			};
+
+			DetailCellRenderer.prototype.destroy = function () {
+				var relationshipGridId = "detail_rel_" + this.masterRowIndex;
+				this.masterGridApi.getDetailGridInfo(relationshipGridId).api.destroy();
+				this.masterGridApi.removeDetailGridInfo(relationshipGridId);
+
+			};
+		}
+
+		this.setRenderers = function (displayField) {
 			if (childTables) { //then setup the detail renderer
 				setDetailRenderer();
 				gridOptions.masterDetail = true;
-			} 
-			
-            EditCellRenderer.prototype.init = function(params) {
+			}
 
-                // create the cell
-                this.eGui = document.createElement('div');
-                if ((!('show' in params) || params.show) && params.data) {
+			EditCellRenderer.prototype.init = function (params) {
 
-                    this.eGui.innerHTML = '<span class="row-button"><i class="fa fa-edit edit-pencil"></i></span>';
-                    // get references to the elements we want
-                    this.eButton = this.eGui.querySelector('.fa-edit');
-                    // add event listener to button
-                    this.eventListener = function() {
+				// create the cell
+				this.eGui = document.createElement('div');
+				if ((!('show' in params) || params.show) && params.data) {
+
+					this.eGui.innerHTML = '<span class="row-button"><i class="fa fa-edit edit-pencil"></i></span>';
+					// get references to the elements we want
+					this.eButton = this.eGui.querySelector('.fa-edit');
+					// add event listener to button
+					this.eventListener = function () {
 						var tField = params.colDef.field;
 						var tID = params.data.sys_id;
 						var tGrid = null;
 						var tTable = dataTable;
 						activeRow = "";
 
-						if ('table' in params) 
+						if ('table' in params)
 							tTable = params.table;
 						if ('parent' in params)
-                            tGrid = "detail_" + tTable + params.parent;
+							tGrid = "detail_" + tTable + params.parent;
 
 						activeRow = tID;
 						if (!('editType' in params) || params.editType == 'popup')
 							editGridRow(tID, "", tTable, (params.banner || pageName || null), tGrid);
 						else
 							inlineEdit(tTable, params.node.rowIndex);
-                    };
-                    this.eButton.addEventListener('click', this.eventListener);
-                }
-            };
-
-            // gets called once when grid ready to insert the element
-            EditCellRenderer.prototype.getGui = function() {
-                return this.eGui;
-            };
-
-            // gets called whenever the user gets the cell to refresh
-            EditCellRenderer.prototype.refresh = function(params) {
-
-                // return true to tell the grid we refreshed successfully
-                return true;
-            };
-
-            // gets called when the cell is removed from the grid
-            EditCellRenderer.prototype.destroy = function() {
-                // do cleanup, remove event listener from button
-                if (this.eButton)
-                    this.eButton.removeEventListener('click', this.eventListener);
-            };
-
-            // gets called once before the renderer is used
-            DeleteCellRenderer.prototype.init = function(params) {
-
-                // create the cell
-                this.eGui = document.createElement('div');
-
-                if ((!('show' in params) || params.show) && params.data) {
-
-                    this.eGui.innerHTML = '<span class="row-button"><i class="fa fa-window-close delete-x"></i></span>';
-                    // get references to the elements we want
-                    this.eButton = this.eGui.querySelector('.fa-window-close');
-                    // add event listener to button
-					this.eventListener = function() {
-						var delDispField = displayField;
-						var delTable = dataTable;
-						var tField = params.colDef.field;
-						var detailGridID = null;
-						var deleteIndex = 0;
-
-						if ('table' in params) 
-							delTable = params.table;
-						if ('parent' in params) 
-							detailGridID = "detail_" + params.table + params.parent;
-						delDispField = "this record";
-						if (detailGridID != null)
-							deleteIndex = params.rowIndex;
-
-						if (window.confirm("Are you sure you want to delete " + (params.banner || pageName) + "?")) { //delete this row
-							deleteRow(params.data.sys_id, delTable, detailGridID, deleteIndex);
-						}
 					};
-                    this.eButton.addEventListener('click', this.eventListener);
-                }
-            };
+					this.eButton.addEventListener('click', this.eventListener);
+				}
+			};
 
-            // gets called once when grid ready to insert the element
-            DeleteCellRenderer.prototype.getGui = function() {
-                return this.eGui;
-            };
+			// gets called once when grid ready to insert the element
+			EditCellRenderer.prototype.getGui = function () {
+				return this.eGui;
+			};
 
-            // gets called whenever the user gets the cell to refresh
-            DeleteCellRenderer.prototype.refresh = function(params) {
+			// gets called whenever the user gets the cell to refresh
+			EditCellRenderer.prototype.refresh = function (params) {
 
-                // return true to tell the grid we refreshed successfully
-                return true;
-            };
+				// return true to tell the grid we refreshed successfully
+				return true;
+			};
 
-            // gets called when the cell is removed from the grid
-            DeleteCellRenderer.prototype.destroy = function() {
-                // do cleanup, remove event listener from button
-                if (this.eButton)
-                    this.eButton.removeEventListener('click', this.eventListener);
-            };
+			// gets called when the cell is removed from the grid
+			EditCellRenderer.prototype.destroy = function () {
+				// do cleanup, remove event listener from button
+				if (this.eButton)
+					this.eButton.removeEventListener('click', this.eventListener);
+			};
 
-            // gets called once before the renderer is used
-            CheckBoxRenderer.prototype.init = function(params) {
+			// gets called once before the renderer is used
+			DeleteCellRenderer.prototype.init = function (params) {
+				if (!params.node.group) {
+					// create the cell
+					this.eGui = document.createElement('div');
 
-                // create the cell
-                this.eGui = document.createElement('input');
-                this.eGui.type = "checkbox";
-                this.eGui.checked = params.value == "true";
+					if ((!('show' in params) || params.show) && params.data) {
 
-                if (!('disabled' in params) || params.disabled) {
+						this.eGui.innerHTML = '<span class="row-button"><i class="fa fa-window-close delete-x"></i></span>';
+						// get references to the elements we want
+						this.eButton = this.eGui.querySelector('.fa-window-close');
+						// add event listener to button
+						this.eventListener = function () {
+							var delDispField = displayField;
+							var delTable = dataTable;
+							var tField = params.colDef.field;
+							var detailGridID = null;
+							var deleteIndex = 0;
 
-                    this.eGui.disabled = "true";
-                }
-            };
+							if ('table' in params)
+								delTable = params.table;
+							if ('parent' in params)
+								detailGridID = "detail_" + params.table + params.parent;
+							delDispField = "this record";
+							if (detailGridID != null)
+								deleteIndex = params.rowIndex;
 
-            // gets called once when grid ready to insert the element
-            CheckBoxRenderer.prototype.getGui = function() {
-                return this.eGui;
-            };
+							if (window.confirm("Are you sure you want to delete " + (params.banner || pageName) + "?")) { //delete this row
+								deleteRow(params.data.sys_id, delTable, detailGridID, deleteIndex);
+							}
+						};
+						this.eButton.addEventListener('click', this.eventListener);
+					}
+				}
+			};
 
-            // gets called whenever the user gets the cell to refresh
-            CheckBoxRenderer.prototype.refresh = function(params) {
+			// gets called once when grid ready to insert the element
+			DeleteCellRenderer.prototype.getGui = function () {
+				return this.eGui;
+			};
 
-                // return true to tell the grid we refreshed successfully
-                return true;
-            };
+			// gets called whenever the user gets the cell to refresh
+			DeleteCellRenderer.prototype.refresh = function (params) {
 
-            // gets called when the cell is removed from the grid
-            CheckBoxRenderer.prototype.destroy = function() {
-                // do cleanup
-            };
-        };
+				// return true to tell the grid we refreshed successfully
+				return true;
+			};
+
+			// gets called when the cell is removed from the grid
+			DeleteCellRenderer.prototype.destroy = function () {
+				// do cleanup, remove event listener from button
+				if (this.eButton)
+					this.eButton.removeEventListener('click', this.eventListener);
+			};
+
+			// gets called once before the renderer is used
+			CheckBoxRenderer.prototype.init = function (params) {
+
+				// create the cell
+				this.eGui = document.createElement('input');
+				this.eGui.type = "checkbox";
+				this.eGui.checked = params.value == "true";
+
+				if (!('disabled' in params) || params.disabled) {
+
+					this.eGui.disabled = "true";
+				}
+			};
+
+			// gets called once when grid ready to insert the element
+			CheckBoxRenderer.prototype.getGui = function () {
+				return this.eGui;
+			};
+
+			// gets called whenever the user gets the cell to refresh
+			CheckBoxRenderer.prototype.refresh = function (params) {
+
+				// return true to tell the grid we refreshed successfully
+				return true;
+			};
+
+			// gets called when the cell is removed from the grid
+			CheckBoxRenderer.prototype.destroy = function () {
+				// do cleanup
+			};
+		};
 
 
-        $rootScope.$on("spModel.uiActionComplete", function (evt, response) {
+		$rootScope.$on("spModel.uiActionComplete", function (evt, response) {
+			$uibModalStack.dismissAll(); //close the modal
 
-            if (response.isInsert)
-                updatedID = response.sys_id;
+			var noError = true;
+			if (response.$$uiNotification.length > 0) {
+				if (response.$$uiNotification[0].type == "error")
+					noError = false;
+			}
 
-            $uibModalStack.dismissAll(); //close the modal
+			if (noError) {
 
-            if (activeGrid == null) {
+				if (response.isInsert)
+					updatedID = response.sys_id;
 
-                //We need to call back to server side to get latest array of records w/ new value
-                pageController.server.get({
-                    mode: 'getData' //this mode doesn't really matter, just refresh the data
-                }).then(function (saveResp) {
+				if (activeGrid == null) {
 
-					var filter = gridOptions.api.getFilterModel();
-					gridOptions.api.setRowData(saveResp.data[dataArray]);
-					gridOptions.api.setFilterModel(filter);              
-                    gridOptions.api.sizeColumnsToFit();
+					//We need to call back to server side to get latest array of records w/ new value
+					pageController.server.get({
+						mode: 'getData' //this mode doesn't really matter, just refresh the data
+					}).then(function (saveResp) {
 
-                    //highlight the modded record
-                    gridOptions.api.forEachNode(function (rowNode, index) {
-                        if (rowNode.data.sys_id == updatedID) {
-                            gridOptions.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
-                        }
-                    });
+						var filter = gridOptions.api.getFilterModel();
+						gridOptions.api.setRowData(saveResp.data[dataArray]);
+						gridOptions.api.setFilterModel(filter);
+						gridOptions.api.sizeColumnsToFit();
 
-                });
+						//highlight the modded record
+						gridOptions.api.forEachNode(function (rowNode, index) {
+							if (rowNode.data.sys_id == updatedID) {
+								gridOptions.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
+							}
+						});
 
-            } else {
+					});
 
-                var detailGridInfo = gridOptions.api.getDetailGridInfo(activeGrid);
-                detailGridInfo.api.showLoadingOverlay();
+				} else {
 
-                if (!response.isInsert)
-                    updatedID = activeRow;
+					var detailGridInfo = gridOptions.api.getDetailGridInfo(activeGrid);
+					detailGridInfo.api.showLoadingOverlay();
 
-                //GET RECORD DATA
-                pageController.server.get({
-                    mode: 'getNewRec',
-                    newSysID: updatedID,
-                    targetTable: activeTable
-                }).then(function (saveResp) {
+					if (!response.isInsert)
+						updatedID = activeRow;
 
-                    var savedRec = saveResp.data.newRec;
+					//GET RECORD DATA
+					pageController.server.get({
+						mode: 'getNewRec',
+						newSysID: updatedID,
+						targetTable: activeTable
+					}).then(function (saveResp) {
 
-                    var dataToUpdate = {update: [savedRec]};
+						var savedRec = saveResp.data.newRec;
 
-                    if (response.isInsert) 
-                        dataToUpdate = {add: [savedRec], addIndex: 0};
+						var dataToUpdate = {
+							update: [savedRec]
+						};
 
-                    detailGridInfo.api.updateRowData(dataToUpdate);
+						if (response.isInsert)
+							dataToUpdate = {
+								add: [savedRec],
+								addIndex: 0
+							};
 
-                    //highlight the modded record
-                    detailGridInfo.api.forEachNode(function (rowNode, index) {
-                        if (rowNode.data.sys_id == updatedID) {
-                            detailGridInfo.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
-                        }
-                    });
+						detailGridInfo.api.updateRowData(dataToUpdate);
+						
+						detailGridInfo.api.hideOverlay();
 
-                    detailGridInfo.api.hideOverlay();
-                });
-            }
-        });
-    };
+						if (childTables[0].banner == 'Project Allocation') { //special case for Allocation Pool details grid
 
-    return (AGGridFactory);
-}]]></script>
+							var updatedParent = saveResp.data.parentRec;
+							gridOptions.api.forEachNode(function (rowNode, index) {
+								if (rowNode.data) {
+									if (rowNode.data.sys_id == updatedParent.sys_id) {
+										rowNode.setDataValue("allocated_amt", updatedParent.allocated_amt);
+										rowNode.setDataValue("distributed_amt", updatedParent.distributed_amt);
+										rowNode.setDataValue("unassigned_amt", updatedParent.unassigned_amt);
+									}
+								}
+							});
+
+						} else { //all other grids
+
+							//highlight the modded record
+							detailGridInfo.api.forEachNode(function (rowNode, index) {
+								if (rowNode.data.sys_id == updatedID) {
+									detailGridInfo.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
+								}
+							});
+
+						}
+						
+					});
+				}
+			}
+		});
+	};
+
+	return (AGGridFactory);
+}
+]]></script>
         <sys_class_name>sp_angular_provider</sys_class_name>
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>475</sys_mod_count>
+        <sys_mod_count>519</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-12 17:29:16</sys_updated_on>
+        <sys_updated_on>2020-06-15 15:51:15</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

@@ -11,11 +11,26 @@
     allocations : false,
     transactions : false
   }
+  c.actionStates = {
+    notes : true,
+    adjust : false,
+    submit : false,
+    approve : false,
+    copy : false,
+    current : false,
+    changes : false
+  }
 
   c.setActiveGrid = function(gridType) {
     if (c.gridStates[gridType] == false){
       $rootScope.$broadcast('BudgetDetailsGridChanged', {grid_type: gridType});
       c.gridStates[gridType] = true;
+    }
+  }
+  c.setActiveAction = function(actionType) {
+    if (c.actionStates[actionType] == false){
+      $rootScope.$broadcast('BudgetDetailsActionChanged', {grid_action: actionType});
+      c.actionStates[actionType] = true;
     }
   }
 
@@ -30,54 +45,54 @@
 
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.newItem {
-    float: right;
-    margin-right: 5px;
-    width: 130px;
-}
-
-.excel-button {
-    float: right;
-    cursor: pointer;
-}
-
-.fms-tabs {
-    float: left;
-}
-
-.row-button {
-    cursor: pointer;
-}
-
-.edit-pencil {
-    color: #003ade;
-    font-size: 13px;
-}
-
-.delete-x {
-    color: #000000;
-    font-size: 13px;
-}
-
-.updated-row {
-    background-color: #FFFFCC;
-}
-
-.ag-header-cell-label .ag-header-icon.ag-sort-order {
-    display: none
-}
-
-.new-button {
-    margin-right: 10px;
-}
-
-.fms-header-buttons {
-    float: right;
-    margin-top: -36px;
-}
-
-.topFilters {
-    margin-left: 37px;
+        <css>.newItem {&#13;
+    float: right;&#13;
+    margin-right: 5px;&#13;
+    width: 130px;&#13;
+}&#13;
+&#13;
+.excel-button {&#13;
+    float: right;&#13;
+    cursor: pointer;&#13;
+}&#13;
+&#13;
+.fms-tabs {&#13;
+    float: left;&#13;
+}&#13;
+&#13;
+.row-button {&#13;
+    cursor: pointer;&#13;
+}&#13;
+&#13;
+.edit-pencil {&#13;
+    color: #003ade;&#13;
+    font-size: 13px;&#13;
+}&#13;
+&#13;
+.delete-x {&#13;
+    color: #000000;&#13;
+    font-size: 13px;&#13;
+}&#13;
+&#13;
+.updated-row {&#13;
+    background-color: #FFFFCC;&#13;
+}&#13;
+&#13;
+.ag-header-cell-label .ag-header-icon.ag-sort-order {&#13;
+    display: none&#13;
+}&#13;
+&#13;
+.new-button {&#13;
+    margin-right: 10px;&#13;
+}&#13;
+&#13;
+.fms-header-buttons {&#13;
+    float: right;&#13;
+    margin-top: -36px;&#13;
+}&#13;
+&#13;
+.topFilters {&#13;
+    margin-left: 37px;&#13;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -115,14 +130,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-15 11:52:52</sys_created_on>
         <sys_id>329351611b7c94100a4a10ad9c4bcb13</sys_id>
-        <sys_mod_count>35</sys_mod_count>
+        <sys_mod_count>63</sys_mod_count>
         <sys_name>Budget Detail</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_329351611b7c94100a4a10ad9c4bcb13</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-12 14:12:03</sys_updated_on>
+        <sys_updated_on>2020-06-15 14:24:47</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
   <widget id="organization_selection" options='{"hide_widget": true, "hide_project": true}'></widget>
   <div class="container">
@@ -175,7 +190,97 @@
       </div>
       <div class="form-group col-md-6">
         <div class="row">
-          tabs area
+          <ul class="nav nav-tabs fms-tabs">
+            <li><a data-toggle="tab" href="#adjust" ng-click="c.setActiveAction('adjust');">Adjust</a></li>
+            <li><a data-toggle="tab" href="#submit" ng-click="c.setActiveAction('submit');">Submit</a>
+            <li><a data-toggle="tab" href="#approve" ng-click="c.setActiveAction('approve');">Approve</a></li>
+            <li><a data-toggle="tab" href="#copy" ng-click="c.setActiveAction('copy');">New/Copy</a>
+            <li><a data-toggle="tab" href="#changes" ng-click="c.setActiveAction('changes');">Changes</a></li>
+            <li><a data-toggle="tab" href="#current" ng-click="c.setActiveAction('current');">Current</a>
+            <li class="active"><a data-toggle="tab" href="#notes" ng-click="c.setActiveAction('notes');">Notes</a>
+          </ul>
+        </div>
+        <div class="row">
+          <div class="tab-content">
+            <div id="adjust" class="tab-pane fade" ng-if="c.actionStates.adjust!='hide'">
+              <div class="row">
+                <div class="col-sm-4 text-right">
+                    <label for="adjustDir" class="selectLabel">Adjust direction:</label>
+                </div>
+                <div class="col-sm-4">
+                  <select class="form-control" id="adjustDir" style="width: 100px;" ng-model="c.data.adjustDir">
+                    <option value="+">Up</option>
+                    <option value="-" selected>Down</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-4 text-right">
+                    <label for="adjustPct" class="selectLabel">Adjust Percentage:</label>
+                </div>
+                <div class="row">
+                  <div class="col-sm-4 text-right">
+                    <input type="text" class="form-control" id="adjustPct" style="width: 100px;" ng-model="c.data.adjustPct">
+                  </div>
+                </div>
+              </div>
+              <div class="row" style="text-align: center;">
+                <a href="javascript:void(0)" ng-click="c.adjustBudget();" class="btn btn-info">Adjust Budget</a>
+              </div>
+            </div>
+            <div id="submit" class="tab-pane fade" ng-if="!c.actionStates.submit!='hide'">
+                <a href="javascript:void(0)" ng-click="c.submitBudget();" class="btn btn-info">Submit Budget for Approval</a>
+            </div>
+            <div id="approve" class="tab-pane fade" ng-if="c.actionStates.approve!='hide'">
+                <a href="javascript:void(0)" ng-click="c.approveBudget();" class="btn btn-info">Approve Budget</a>
+                <a href="javascript:void(0)" ng-click="c.rejectBudget();" class="btn btn-info">Reject Budget</a>
+            </div>
+            <div id="copy" class="tab-pane fade" ng-if="c.actionStates.copy!='hide'">
+              <div class="col-sm-4">
+                <div class="row" style="height: 45px;" />
+                <div class="row" style="text-align: center;">
+                  <a href="javascript:void(0)" ng-click="c.newRevision();" class="btn btn-info">Create New Revision</a>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="row">
+                  <div class="col-sm-2 text-right">
+                    <label for="newFY" class="selectLabel">Fiscal Year:</label>
+                  </div>
+                  <div class="col-sm-4">  
+                    <select class="form-control" id="newFY" style="width: 100px;" ng-model="c.data.newFY">
+                        <option ng-repeat="year in data.fiscalYears" value="{{year}}">{{year}}
+                        </option>
+                    </select>
+                  </div>
+                  <div class="col-sm-2 text-right">
+                    <label for="newType" class="selectLabel">Budget Type:</label>
+                  </div>
+                  <div class="col-sm-4">  
+                    <select class="form-control" id="newType" style="width: 100px;" ng-model="c.data.newType">
+                        <option value="Baseline">Baseline</option>
+                        <option value="Forecast">Forecast</option>
+                        <option value="What If">WhatIf</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row" style="text-align: center;">  
+	              <a href="javascript:void(0)" ng-click="c.newVersion();" class="btn btn-info">Create New Version</a>
+                </div>
+              </div>
+            </div>
+            <div id="changes" class="tab-pane fade" ng-if="c.actionStates.changes!='hide'">
+                <a href="javascript:void(0)" ng-click="c.lockBudget();" class="btn btn-info">Lock Budget</a>
+                <a href="javascript:void(0)" ng-click="c.unlockBudget();" class="btn btn-info">Unlock Budget</a>
+            </div>
+            <div id="current" class="tab-pane fade" ng-if="c.actionStates.current!='hide'">
+                <a href="javascript:void(0)" ng-click="c.makeCurrent();" class="btn btn-info">Make Current</a>
+            </div>
+            <div id="notes" class="tab-pane fade in active" ng-if="c.actionStates.notes!='hide'">
+              <textarea class="form-control" style="display: inline; width: 500px;">{{c.data.selBudget.budget_notes}}</textarea>
+              <a href="javascript:void(0)" ng-click="c.updateNotes();" class="btn btn-info" style="vertical-align: top;">Update Notes</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
