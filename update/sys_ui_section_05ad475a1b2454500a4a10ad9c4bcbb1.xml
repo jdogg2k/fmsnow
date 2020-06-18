@@ -4,13 +4,13 @@
             <element>contract_category</element>
             <position>0</position>
             <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-05 18:58:28</sys_created_on>
-            <sys_id>6f1557121b6454500a4a10ad9c4bcb8c</sys_id>
+            <sys_created_on>2020-06-18 19:54:45</sys_created_on>
+            <sys_id>51f78aa41b6d94101f7e113d9c4bcbc3</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="Categorization" display_value="Categorization" name="x_g_irm_fms_contract" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">05ad475a1b2454500a4a10ad9c4bcbb1</sys_ui_section>
             <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-05 18:58:28</sys_updated_on>
+            <sys_updated_on>2020-06-18 19:54:45</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -18,13 +18,13 @@
             <element>contract_idv_type</element>
             <position>1</position>
             <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-05 18:58:28</sys_created_on>
-            <sys_id>e31557121b6454500a4a10ad9c4bcb8d</sys_id>
+            <sys_created_on>2020-06-18 19:54:45</sys_created_on>
+            <sys_id>d5f78aa41b6d94101f7e113d9c4bcbc3</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="Categorization" display_value="Categorization" name="x_g_irm_fms_contract" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">05ad475a1b2454500a4a10ad9c4bcbb1</sys_ui_section>
             <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-05 18:58:28</sys_updated_on>
+            <sys_updated_on>2020-06-18 19:54:45</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -32,69 +32,97 @@
             <element>contract_non_idv_type</element>
             <position>2</position>
             <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-05 18:58:28</sys_created_on>
-            <sys_id>6b1557121b6454500a4a10ad9c4bcb8d</sys_id>
+            <sys_created_on>2020-06-18 19:54:45</sys_created_on>
+            <sys_id>5df78aa41b6d94101f7e113d9c4bcbc3</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="Categorization" display_value="Categorization" name="x_g_irm_fms_contract" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">05ad475a1b2454500a4a10ad9c4bcbb1</sys_ui_section>
             <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-05 18:58:28</sys_updated_on>
+            <sys_updated_on>2020-06-18 19:54:45</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>project_ref</element>
+            <position>3</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-06-18 19:54:45</sys_created_on>
+            <sys_id>d1f78aa41b6d94101f7e113d9c4bcbc4</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Categorization" display_value="Categorization" name="x_g_irm_fms_contract" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">05ad475a1b2454500a4a10ad9c4bcbb1</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-06-18 19:54:45</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.split</element>
-            <position>3</position>
+            <position>4</position>
             <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-05 18:58:28</sys_created_on>
-            <sys_id>ef1557121b6454500a4a10ad9c4bcb8d</sys_id>
+            <sys_created_on>2020-06-18 19:54:45</sys_created_on>
+            <sys_id>59f78aa41b6d94101f7e113d9c4bcbc4</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="Categorization" display_value="Categorization" name="x_g_irm_fms_contract" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">05ad475a1b2454500a4a10ad9c4bcbb1</sys_ui_section>
             <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-05 18:58:28</sys_updated_on>
+            <sys_updated_on>2020-06-18 19:54:45</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>contract_period</element>
-            <position>4</position>
+            <position>5</position>
             <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-05 18:58:28</sys_created_on>
-            <sys_id>671557121b6454500a4a10ad9c4bcb8e</sys_id>
+            <sys_created_on>2020-06-18 19:54:45</sys_created_on>
+            <sys_id>ddf78aa41b6d94101f7e113d9c4bcbc4</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="Categorization" display_value="Categorization" name="x_g_irm_fms_contract" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">05ad475a1b2454500a4a10ad9c4bcbb1</sys_ui_section>
             <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-05 18:58:28</sys_updated_on>
+            <sys_updated_on>2020-06-18 19:54:45</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>option_years</element>
+            <position>6</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-06-18 19:54:45</sys_created_on>
+            <sys_id>55f78aa41b6d94101f7e113d9c4bcbc5</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Categorization" display_value="Categorization" name="x_g_irm_fms_contract" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">05ad475a1b2454500a4a10ad9c4bcbb1</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-06-18 19:54:45</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>product_service</element>
-            <position>5</position>
+            <position>7</position>
             <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-05 18:58:28</sys_created_on>
-            <sys_id>eb1557121b6454500a4a10ad9c4bcb8e</sys_id>
+            <sys_created_on>2020-06-18 19:54:45</sys_created_on>
+            <sys_id>d9f78aa41b6d94101f7e113d9c4bcbc5</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="Categorization" display_value="Categorization" name="x_g_irm_fms_contract" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">05ad475a1b2454500a4a10ad9c4bcbb1</sys_ui_section>
             <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-05 18:58:28</sys_updated_on>
+            <sys_updated_on>2020-06-18 19:54:45</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>pricing_model</element>
-            <position>6</position>
+            <position>8</position>
             <sys_created_by>RoseJL@state.gov</sys_created_by>
-            <sys_created_on>2020-05-05 18:58:28</sys_created_on>
-            <sys_id>631557121b6454500a4a10ad9c4bcb8f</sys_id>
+            <sys_created_on>2020-06-18 19:54:45</sys_created_on>
+            <sys_id>51f78aa41b6d94101f7e113d9c4bcbc6</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="Categorization" display_value="Categorization" name="x_g_irm_fms_contract" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">05ad475a1b2454500a4a10ad9c4bcbb1</sys_ui_section>
             <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-            <sys_updated_on>2020-05-05 18:58:28</sys_updated_on>
+            <sys_updated_on>2020-06-18 19:54:45</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>

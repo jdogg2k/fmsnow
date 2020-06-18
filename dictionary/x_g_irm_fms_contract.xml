@@ -11,7 +11,7 @@
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var val = new GlideDateTime(current.perform_start_date);&#13;&#10;&#9;if (current.option_years &gt; 0) {&#9;val.addYearsUTC(1); return val; } else { return null; } &#13;&#10;})(current);" label="Base Year End Date" max_length="40" name="base_year_end_date" read_only="true" type="glide_date" virtual="true"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var val = new GlideDateTime(current.perform_start_date);&#13;&#10;&#9;if (current.option_years &gt; 0) {&#9;return current.perform_start_date; } else { return null; } &#13;&#10;})(current);" label="Base Year Start Date" max_length="40" name="base_year_start_date" read_only="true" type="glide_date" virtual="true"/>
         <element label="Comment" max_length="500" name="comment" type="string"/>
-        <element choice="1" label="Contract Category" mandatory="true" max_length="3" name="contract_category" type="string">
+        <element choice="1" label="Contract Category" max_length="3" name="contract_category" type="string">
             <choice>
                 <element inactive_on_update="false" label="Indefinite Delivery Vehicle" value="IDV"/>
                 <element inactive_on_update="false" label="Standalone Contract" value="SA"/>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_g_irm_fms.FMSOrgHelper </api_name>
+        <caller_access/>
+        <client_callable>true</client_callable>
+        <description/>
+        <name>FMSOrgHelper </name>
+        <script><![CDATA[var FMSOrgHelper = Class.create();
+FMSOrgHelper.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+    // 28 to 114
+
+// 369 to 490
+
+getOrgTree: function (selID, orgType) {
+
+    /* JLR - This function will return a tree object or orgs and their parents */
+
+    var allOrgs = {};
+
+    if (orgType == "I") {
+
+        var tableQuery = new GlideRecord("x_g_irm_fms_organization");
+        tableQuery.addEncodedQuery("org_code=180000^org_type=I");
+        tableQuery.query();
+        if (tableQuery.next()) {
+            allOrgs.state = {};
+            allOrgs.text = tableQuery.getValue("org_name");
+            allOrgs.state.selected = false;
+            allOrgs.state.opened = false;
+            allOrgs.org_code = tableQuery.getValue("org_code");
+            allOrgs.sys_id = tableQuery.getValue("sys_id");
+            allOrgs.children = this.getOrgChildren(allOrgs.sys_id, selID);
+            if (allOrgs.sys_id == selID)
+                allOrgs.state.selected = true;
+        }
+
+    } else { //build external}
+
+        var extHome = {};
+
+        var extQuery = new GlideRecord("x_g_irm_fms_organization");
+        extQuery.addEncodedQuery("sys_id=" + selID);
+        extQuery.query();
+
+        if (extQuery.next()) {
+            extHome.state = {};
+            extHome.text = extQuery.getValue("org_name");
+            extHome.state.selected = true;
+            extHome.state.opened = true;
+            extHome.org_code = extQuery.getValue("org_code");
+            extHome.sys_id = extQuery.getValue("sys_id");
+            extHome.parentID = extQuery.getValue("organization_parent_ref");
+            extHome.children = this.getOrgChildren(extHome.sys_id, selID);
+
+            if (extHome.parentID != null) {
+                allOrgs = this.checkOrgParent(extHome);
+            } else {
+                allOrgs = extHome;
+            }
+        }
+
+    }
+
+    return allOrgs;
+
+},
+
+checkOrgParent: function (existOrg) {
+
+    /* JLR - This function will return a tree object of orgs and their parents */
+
+    var orgParent = existOrg;
+
+    var parentQuery = new GlideRecord("x_g_irm_fms_organization");
+    parentQuery.addEncodedQuery("sys_id=" + existOrg.parentID);
+    parentQuery.orderBy("org_name");
+    parentQuery.query();
+    if (parentQuery.next()) {
+
+        var parentObj = {};
+        parentObj.state = {};
+        parentObj.text = parentQuery.getValue("org_name");
+        parentObj.state.selected = false;
+        parentObj.state.opened = false;
+        parentObj.org_code = parentQuery.getValue("org_code");
+        parentObj.sys_id = parentQuery.getValue("sys_id");
+        parentObj.children = [existOrg];
+
+        orgParent = parentObj;
+    }
+
+    return orgParent;
+
+},
+
+getOrgChildren: function (orgID, selID) {
+
+    /* JLR - This function will return a tree object of orgs and their children */
+
+    var orgKids = [];
+
+    var orgQuery = new GlideRecord("x_g_irm_fms_organization");
+    orgQuery.addEncodedQuery("organization_parent_ref=" + orgID);
+    orgQuery.orderBy("org_name");
+    orgQuery.query();
+    while (orgQuery.next()) {
+
+        var kidObj = {};
+        kidObj.state = {};
+        kidObj.text = orgQuery.getValue("org_name");
+        kidObj.state.selected = false;
+        kidObj.state.opened = false;
+        kidObj.org_code = orgQuery.getValue("org_code");
+        kidObj.sys_id = orgQuery.getValue("sys_id");
+        kidObj.children = this.getOrgChildren(kidObj.sys_id, selID);
+        if (kidObj.sys_id == selID)
+            kidObj.state.selected = true;
+        orgKids.push(kidObj);
+    }
+
+    return orgKids;
+
+},
+
+getOrgForBudget: function (tID) {
+    var orgID = "";
+
+    if (tID) {
+        var gr = new GlideRecord('x_g_irm_fms_budget');
+        gr.get(tID);
+        orgID = gr.project_ref.organization_ref.toString();
+    }
+
+    return orgID;
+},
+    type: 'FMSOrgHelper'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2020-06-18 16:30:01</sys_created_on>
+        <sys_id>1a389da01b6150100a4a10ad9c4bcbea</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>FMSOrgHelper </sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_script_include_1a389da01b6150100a4a10ad9c4bcbea</sys_update_name>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-18 17:49:28</sys_updated_on>
+    </sys_script_include>
+</record_update>

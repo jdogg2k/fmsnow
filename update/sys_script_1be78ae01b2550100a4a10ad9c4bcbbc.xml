@@ -11,14 +11,14 @@
         <advanced>true</advanced>
         <change_fields>false</change_fields>
         <client_callable>false</client_callable>
-        <collection>x_g_irm_fms_organization</collection>
+        <collection>x_g_irm_fms_omb_category</collection>
         <condition/>
         <description/>
         <execute_function>false</execute_function>
         <filter_condition/>
         <is_rest>false</is_rest>
         <message/>
-        <name>Organization Validation</name>
+        <name>OMB Category Validation</name>
         <order>100</order>
         <priority>100</priority>
         <rest_method/>
@@ -27,43 +27,34 @@
         <rest_service_text/>
         <rest_variables/>
         <role_conditions/>
-        <script><![CDATA[(function executeRule(current, previous /*null when async*/ ) {
-    var newID = current.org_code;
-    var uniqueCheck = new GlideRecord(FMSConstants.TABLE_ORGANIZATION);
-    uniqueCheck.addQuery("org_code", newID);
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+     var newID = current.omb_category;
+    var uniqueCheck = new GlideRecord(FMSConstants.TABLE_OMB_CATEGORY);
+    uniqueCheck.addQuery("omb_category", newID);
     uniqueCheck.query();
     if (uniqueCheck.next()) { //we have existing records with that ID, notify and cancel update
-        gs.addErrorMessage("Organization Code " + newID + " is not unique. That value already exists on an existing contract.  Update Failed.");
+        gs.addErrorMessage("OMB Category" + newID + " is not unique. That value already exists on an existing OMB Category.  Update Failed.");
         current.setAbortAction(true);
-    }
-    if (!current.organization_parent_ref.nil()) {
-        var hier = new OrgHierarchy();
-        var children = hier.getOrgChildren(current.sys_id);
-        if (children.indexOf(current.organization_parent_ref.toString()) >= 0) {
-            gs.addErrorMessage('Org specified cannot be both a parent and a child/descendent.');
-            current.organization_parent_ref = null;
-            current.state = previous.state;
-            current.setAbortAction(true);
-        }
-    }
+    }	// Add your code here
+
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
-        <sys_created_by>MarkelJR@state.gov</sys_created_by>
-        <sys_created_on>2020-04-15 18:52:38</sys_created_on>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2020-06-18 19:58:43</sys_created_on>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
-        <sys_id>3e935cc81b9810101f7e113d9c4bcb57</sys_id>
-        <sys_mod_count>2</sys_mod_count>
-        <sys_name>Organization Validation</sys_name>
+        <sys_id>1be78ae01b2550100a4a10ad9c4bcbbc</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>OMB Category Validation</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
-        <sys_update_name>sys_script_3e935cc81b9810101f7e113d9c4bcb57</sys_update_name>
+        <sys_update_name>sys_script_1be78ae01b2550100a4a10ad9c4bcbbc</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-18 18:49:32</sys_updated_on>
+        <sys_updated_on>2020-06-18 19:58:43</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>
-    <sys_translated_text action="delete_multiple" query="documentkey=3e935cc81b9810101f7e113d9c4bcb57"/>
+    <sys_translated_text action="delete_multiple" query="documentkey=1be78ae01b2550100a4a10ad9c4bcbbc"/>
 </record_update>

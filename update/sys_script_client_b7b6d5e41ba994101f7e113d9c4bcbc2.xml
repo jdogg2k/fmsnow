@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script_client">
+    <sys_script_client action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <applies_extended>false</applies_extended>
+        <condition/>
+        <description/>
+        <field>aqm_delay_days</field>
+        <global>true</global>
+        <isolate_script>true</isolate_script>
+        <messages/>
+        <name>Contracts Load</name>
+        <order/>
+        <script><![CDATA[function onLoad() {
+
+   var pageID = getUrlVars()['id'];
+   var projReadOnly = true;
+
+   if (pageID == "project_detail") {
+      g_form.setReadOnly("contract_class", true);
+   } else {
+      if (!g_form.isNewRecord()) {
+         projReadOnly = false;
+      }
+   }
+
+   g_form.setReadOnly("project_ref", projReadOnly);
+   g_form.setReadOnly("organization_ref", true);
+
+   function getUrlVars() {
+      var vars = {};
+      var parts = this.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+          vars[key] = value;
+      });
+      return vars;
+  }
+}]]></script>
+        <sys_class_name>sys_script_client</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-06-18 16:20:59</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>b7b6d5e41ba994101f7e113d9c4bcbc2</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>Contracts Load</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_script_client_b7b6d5e41ba994101f7e113d9c4bcbc2</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-18 18:54:27</sys_updated_on>
+        <table>x_g_irm_fms_contract</table>
+        <type>onLoad</type>
+        <ui_type>10</ui_type>
+        <view/>
+    </sys_script_client>
+</record_update>

@@ -3,21 +3,21 @@
         <cleared>false</cleared>
         <disabled>ignore</disabled>
         <field>contract_idv_type</field>
-        <mandatory>ignore</mandatory>
+        <mandatory>false</mandatory>
         <sys_class_name>sys_ui_policy_action</sys_class_name>
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-05 18:56:41</sys_created_on>
         <sys_id>59b49fde1b2454500a4a10ad9c4bcb03</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>contract_idv_type</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_ui_policy_action_59b49fde1b2454500a4a10ad9c4bcb03</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-05 18:56:54</sys_updated_on>
+        <sys_updated_on>2020-06-18 19:30:24</sys_updated_on>
         <table>x_g_irm_fms_contract</table>
-        <ui_policy display_value="Show Standalone Contract Types">d9b41fde1b2454500a4a10ad9c4bcb25</ui_policy>
+        <ui_policy display_value="Contracts - Show Standalone Contract Types">d9b41fde1b2454500a4a10ad9c4bcb25</ui_policy>
         <visible>false</visible>
     </sys_ui_policy_action>
 </record_update>

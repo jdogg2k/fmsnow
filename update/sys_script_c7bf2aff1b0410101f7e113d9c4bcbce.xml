@@ -28,70 +28,23 @@
         <rest_variables/>
         <role_conditions/>
         <script><![CDATA[(function executeRule(current, previous /*null when async*/ ) {
-    if (current.contract_class.toUpperCase() == "TASK ORDER" && current.project_ref.nil()) {
-        current.project_ref.setError("Project is required when Contract Class is 'Task Order'.");
+
+    //check for unique PIID
+    var newID = current.contract_piid;
+    var uniqueCheck = new GlideRecord(FMSConstants.TABLE_CONTRACT);
+    uniqueCheck.addQuery("contract_piid", newID);
+    uniqueCheck.query();
+    if (uniqueCheck.next()){ //we have existing records with that ID, notify and cancel update
+        gs.addErrorMessage("Contract PIID " + newID + " is not unique. That value already exists on an existing contract.  Update Failed.");
         current.setAbortAction(true);
-    }
-    if (current.contract_class.toUpperCase() == "TASK ORDER") {
-        current.contract_category = null;
-        current.contract_idv_type = null;
-        current.contract_nonidv_type = null;
-    } else {
-        current.project_ref = null;
-    }
-    if ((current.contract_class.toUpperCase() == "CONTRACT" || current.contract_class.toUpperCase() == "LETTER") && current.contract_category.toString().length == 0) {
-        current.contract_category.setError("Contract Category is required when for contracts and letters.");
-    }
-    if ((current.contract_category.toString().toUpperCase() == "SA")) {
-        if (current.contract_nonidv_type.toString().length == 0) {
-            current.contract_nonidv_type.setError("Contract Non-IDV Type is required when Contract Category is Standalone Contract.");
-            current.setAbortAction(true);
-        } else
-            current.contract_idv_type = null;
-    }
-    if (current.contract_category.toString().toUpperCase() == "IDV") {
-        if (current.contract_idv_type.toString().length == 0) {
-            current.contract_idv_type.setError("Contract IDV Type is required when Contract Category is IDV.");
-            current.setAbortAction(true);
-        } else
-            current.contract_nonidv_type = null;
-    }
-    if (!current.contract_perform_start_date.nil() & !current.contract_perform_end_date.nil()) {
-        if (current.contract_perform_start_date >= current.contract_perform_end_date) {
-            current.contract_perform_start_date.setError("The performance end date must be AFTER the performance start date.");
-            current.setAbortAction(true);
-        }
-    }
-    if (current.contract_class.toString().toUpperCase() == "CONTRACT" || current.contract_class.toString().toUpperCase() == "LETTER" || current.contract_class.toString().toUpperCase() == "TASK ORDER") {
-        if (current.contract_operational_status.toString().toUpperCase() == "ACTIVE") {
-            if (current.contract_perform_start_date.nil()) {
-                current.contract_perform_start_date.setError("Performance Start Date is required for an 'Active' Contract.");
-                current.setAbortAction(true);
-            }
-            if (current.contract_perform_end_date.nil()) {
-                current.contract_perform_end_date.setError("Performance End Date is required for an 'Active' Contract.");
-                current.setAbortAction(true);
-            }
-            if (current.contract_piid.toString().toUpperCase().startsWith("N/A")) {
-                current.contract_vendor_names = null;
-            } else if (current.contract_vendor_names.toString().length == 0) {
-                current.contract_vendor_names.setError("Vendor Name is required for an 'Active' Contract.");
-                current.setAbortAction(true);
-            }
-        }
-    }
-    if (current.has_risk && current.risk_explanation.toString().Length == 0) {
-        current.risk_explanation.setError("Risk Explanation is required when Has Risk? is true (checked).");
-        current.setAbortAction(true);
-    }
-    if (current.contract_period.toString().toUpperCase() == "BASE + OY") {
-        if (current.option_years == 0)
-            current.option_years.setError("Option Years is required when Contract Period is 'Base + OY'.");
-        current.setAbortAction(true);
-    } else {
-        current.option_years = null;
     }
 
+    if (!current.contract_perform_start_date.nil() & !current.contract_perform_end_date.nil()) {
+        if (current.contract_perform_start_date >= current.contract_perform_end_date) {
+            gs.addErrorMessage("The performance end date must be AFTER the performance start date.");
+            current.setAbortAction(true);
+        }
+    }
 
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
@@ -100,15 +53,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>c7bf2aff1b0410101f7e113d9c4bcbce</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>7</sys_mod_count>
         <sys_name>Contract Validation</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_c7bf2aff1b0410101f7e113d9c4bcbce</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-12 19:49:18</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-18 20:14:44</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>

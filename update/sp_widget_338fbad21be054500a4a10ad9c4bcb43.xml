@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function(spModal, $timeout, AGGridFactory) {
+        <client_script><![CDATA[function($scope, spModal, $timeout, AGGridFactory) {
     /* widget controller */
     var c = this;
     c.targetOrg = c.data.selectedOrg;
@@ -12,7 +12,12 @@
 	
 
     c.addNew = function() {
-        contractManager.editRow("-1", "organization_ref=" + c.targetOrg, c.data.tableName);
+
+        var query = "organization_ref=" + c.targetOrg;
+        var page_id = $scope.page.sys_id;
+        if (page_id == "b36ecf2e1b6094500a4a10ad9c4bcba5") //Project Details page
+            query += "^contract_class=Task Order^project_ref=" + c.data.selectedProj;
+        contractManager.editRow("-1", query, c.data.tableName);
 			    
     }
 
@@ -407,6 +412,7 @@
 	data.selectedOrg = "";
 	data.selectedProj = "";
     var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+	//var FMSPermissions = new x_g_irm_fms.FMSPermissions();
 
     var session = gs.getSession();
 	if (session.getClientData('org_id') && session.getClientData('org_id').length > 0)
@@ -451,14 +457,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-05 17:24:17</sys_created_on>
         <sys_id>338fbad21be054500a4a10ad9c4bcb43</sys_id>
-        <sys_mod_count>147</sys_mod_count>
+        <sys_mod_count>152</sys_mod_count>
         <sys_name>Contract Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_338fbad21be054500a4a10ad9c4bcb43</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-17 18:20:23</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-18 18:30:37</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
