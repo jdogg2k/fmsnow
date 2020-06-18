@@ -1,99 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function ($rootScope) {
-  /* widget controller */
-  var c = this;
+        <client_script><![CDATA[function($rootScope, $location) {
+    /* widget controller */
+    var c = this;
+	c.userAuth = $rootScope.userAuth;
 
-  c.gridStates = {
-    items : true,
-    phasing : false,
-    allocations : false,
-    transactions : false
-  }
-  c.actionStates = {
-    notes : true,
-    adjust : false,
-    submit : false,
-    approve : false,
-    copy : false,
-    current : false,
-    changes : false
-  }
-
-  c.setActiveGrid = function(gridType) {
-    if (c.gridStates[gridType] == false){
-      $rootScope.$broadcast('BudgetDetailsGridChanged', {grid_type: gridType});
-      c.gridStates[gridType] = true;
+    c.gridStates = {
+        items: true,
+        phasing: false,
+        allocations: false,
+        transactions: false
     }
-  }
-  c.setActiveAction = function(actionType) {
-    if (c.actionStates[actionType] == false){
-      $rootScope.$broadcast('BudgetDetailsActionChanged', {grid_action: actionType});
-      c.actionStates[actionType] = true;
+    c.actionStates = {
+        notes: true,
+        adjust: false,
+        submit: false,
+        approve: false,
+        copy: false,
+        current: false,
+        changes: false
     }
-  }
 
-  $rootScope.$on('ProjChanged', function (event, args) {
-    c.server.get({
-      mode: "setProj",
-      proj_id: args.proj_id
-    }).then(function (resp) {
-      c.data.selProj = resp.data.selProj;
+	if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) {
+		c.actionStates.submit = "hide";
+		c.actionStates.adjust = "hide";
+		c.actionStates.changes = "hide";
+	}
+	
+	c.canUpdateNotes = function() {
+        if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+    c.setActiveGrid = function(gridType) {
+        if (c.gridStates[gridType] == false) {
+            $rootScope.$broadcast('BudgetDetailsGridChanged', {
+                grid_type: gridType
+            });
+            c.gridStates[gridType] = true;
+        }
+    }
+    c.setActiveAction = function(actionType) {
+        if (c.actionStates[actionType] == false) {
+            $rootScope.$broadcast('BudgetDetailsActionChanged', {
+                grid_action: actionType
+            });
+            c.actionStates[actionType] = true;
+        }
+    };
+
+    c.showRelated = function(type) {
+        c.server.get({
+            mode: "showRelated",
+            project_id: c.data.selBudget.project_ref_rawval,
+            budget_type: type,
+			budget_fy: c.data.selBudget.fy_rawval
+        }).then(function(resp) {
+            $location.url("/fms?id=budget_detail&budget_id=" + resp.data.selBudget.sys_id);
+        });
+    };
+
+	c.updateNotes = function() {
+        c.server.get({
+            mode: "updateNotes",
+            budget_id: c.data.selBudget.sys_id,
+            budget_notes: c.data.selBudget.budget_notes
+        }).then(function(resp) {
+            c.data.selBudget = resp.data.selBudget;
+        });
+    };
+
+    c.adjustBudget = function() {
+        c.server.get({
+            mode: "adjustBudget",
+            budget_id: c.data.selBudget.sys_id,
+            adjust_pct: c.data.adjustPct * (c.data.adjustDir == "-" ? -1 : 1)
+        }).then(function(resp) {
+            c.data.selBudget = resp.data.selBudget;
+        });
+    };
+
+    c.submitBudget = function() {};
+    c.approveBudget = function() {};
+    c.rejectBudget = function() {};
+    c.newRevsion = function() {};
+    c.newVersion = function() {};
+    c.createExecution = function() {};
+    c.newCopy = function() {};
+    c.lockBudget = function() {};
+    c.unlockBudget = function() {};
+    c.makeCurrentBudget = function() {};
+
+    $rootScope.$on('ProjChanged', function(event, args) {
+        c.server.get({
+            mode: "setProj",
+            proj_id: args.proj_id
+        }).then(function(resp) {
+            c.data.selProj = resp.data.selProj;
+        });
     });
-  });
 
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.newItem {&#13;
-    float: right;&#13;
-    margin-right: 5px;&#13;
-    width: 130px;&#13;
-}&#13;
-&#13;
-.excel-button {&#13;
-    float: right;&#13;
-    cursor: pointer;&#13;
-}&#13;
-&#13;
-.fms-tabs {&#13;
-    float: left;&#13;
-}&#13;
-&#13;
-.row-button {&#13;
-    cursor: pointer;&#13;
-}&#13;
-&#13;
-.edit-pencil {&#13;
-    color: #003ade;&#13;
-    font-size: 13px;&#13;
-}&#13;
-&#13;
-.delete-x {&#13;
-    color: #000000;&#13;
-    font-size: 13px;&#13;
-}&#13;
-&#13;
-.updated-row {&#13;
-    background-color: #FFFFCC;&#13;
-}&#13;
-&#13;
-.ag-header-cell-label .ag-header-icon.ag-sort-order {&#13;
-    display: none&#13;
-}&#13;
-&#13;
-.new-button {&#13;
-    margin-right: 10px;&#13;
-}&#13;
-&#13;
-.fms-header-buttons {&#13;
-    float: right;&#13;
-    margin-top: -36px;&#13;
-}&#13;
-&#13;
-.topFilters {&#13;
-    margin-left: 37px;&#13;
-}</css>
+        <css/>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -111,18 +124,63 @@
         <roles/>
         <script><![CDATA[(function($sp) {
     var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+    var budgetUtil = new x_g_irm_fms.FMSBudgetUtils(); //helper utility for budget
     var session = gs.getSession();
 
     data.selectedProjID = $sp.getParameter("proj_id");
     data.selectedBudgetID = $sp.getParameter("budget_id");
 
+	var filter = "sys_id=" + data.selectedBudgetID;
     if (input) {
         if (input.mode == "setProj") {
             data.selectedProjID = input.proj_id;
         }
+		if (input.mode == "showRelated") {
+			filter = "project_ref=" + input.project_id + "^fy=" + input.budget_fy + "^budget_type=" + input.budget_type;
+		}
+		if (input.mode == "updateNotes") {
+			budgetUtil.updateNotes(input.budget_id, input.budget_notes);
+		}
+		if (input.mode == "adjustBudget") {
+			budgetUtil.adjust(input.budget_id, input.adjust_pct);
+			gs.addInfoMessage("Budget successfully adjusted.");
+		}
+		if (input.mode == "submitBudget") {
+			budgetUtil.submit(input.budget_id);
+		}
+		if (input.mode == "approveBudget") {
+			budgetUtil.approve(input.budget_id);
+		}
+		if (input.mode == "rejectBudget") {
+			budgetUtil.reject(input.budget_id);
+		}
+		if (input.mode == "newRevision") {
+			budgetUtil.newRevision(input.budget_id);
+		}
+		if (input.mode == "newVersion") {
+			budgetUtil.newVersion(input.budget_id);
+		}
+		if (input.mode == "createExecution") {
+			budgetUtil.createExecution(input.budget_id);
+		}
+		if (input.mode == "newCopy") {
+			budgetUtil.newVersion(input.budget_id, input.newFY, input.newType);
+		}
+		if (input.mode == "lockBudget") {
+			budgetUtil.lock(input.budget_id);
+		}
+		if (input.mode == "unlockBudget") {
+			budgetUtil.unlock(input.budget_id);
+		}
+		if (input.mode == "makeCurrent") {
+			budgetUtil.makeCurrent(input.budget_id);
+		}
+    } else {
+        data.fiscalYears = FMSUtility.getFiscalYears();
+        data.selectedFY = FMSUtility.getCurrentFY();
     }
 
-    data.selBudget = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET, "sys_id=" + data.selectedBudgetID)[0]; //get all budget info
+    data.selBudget = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET, filter, true)[0]; //get all budget info
 
 })($sp);]]></script>
         <servicenow>false</servicenow>
@@ -130,19 +188,29 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-15 11:52:52</sys_created_on>
         <sys_id>329351611b7c94100a4a10ad9c4bcb13</sys_id>
-        <sys_mod_count>63</sys_mod_count>
+        <sys_mod_count>105</sys_mod_count>
         <sys_name>Budget Detail</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_329351611b7c94100a4a10ad9c4bcb13</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-15 14:24:47</sys_updated_on>
+        <sys_updated_on>2020-06-18 12:33:50</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
   <widget id="organization_selection" options='{"hide_widget": true, "hide_project": true}'></widget>
   <div class="container">
     <div class="row">
       <div class="form-group col-md-6">
+        <div class="row">
+          <div class="col-sm-2 text-right">
+            Budget ID: 
+          </div>
+          <div class="col-sm-6">
+            {{c.data.selBudget.number}}
+            <span style="background-color: lightgreen; padding-left: 20px;" ng-show="c.data.selBudget.isCurrent">Current</span>
+            <span style="background-color: lightsalmon; padding-left: 20px;" ng-show="c.data.selBudget.isLocked">Locked</span>
+          </div>
+        </div>
         <div class="row">
           <div class="col-sm-2 text-right">
             Project: 
@@ -155,14 +223,17 @@
           <div class="col-sm-2 text-right">
             Budget Type:
           </div>
-          <div class="col-sm-4">
+          <div class="col-sm-6">
             {{c.data.selBudget.budget_type}} {{c.data.selBudget.budget_version_revision}}
-          </div>
-          <div class="col-sm-2 text-right">
-            Budget Status: 
-          </div>
-          <div class="col-sm-4">
-            {{c.data.selBudget.budget_status}}
+            <span style="padding-left: 20px;" ng-show="c.data.selBudget.budget_type == 'Execution' || c.data.selBudget.budget_type == 'Actual'">
+              <a href="javascript:void(0)" ng-click="c.showRelated('Baseline');">Baseline</a>
+            </span>
+            <span style="padding-left: 20px;" ng-show="(c.data.selBudget.budget_type == 'Baseline' && c.data.selBudget.budget_status == 'Approved') || c.data.selBudget.budget_type == 'Actual'">
+              <a href="javascript:void(0)" ng-click="c.showRelated('Execution');">Execution</a>
+            </span>
+            <span style="padding-left: 20px;" ng-show="(c.data.selBudget.budget_type == 'Baseline' && c.data.selBudget.budget_status == 'Approved') || c.data.selBudget.budget_type == 'Execution'">
+              <a href="javascript:void(0)" ng-click="c.showRelated('Actual');">Actual</a>
+            </span>
           </div>
         </div>
         <div class="row">
@@ -176,7 +247,15 @@
             Created from: 
           </div>
           <div class="col-sm-4">
-            {{c.data.selBudget.budget_source_ref}}
+            <a href="/fms?id=budget_detail&budget_id={{c.data.selBudget.budget_source_ref_rawval}}">{{c.data.selBudget.budget_source_ref}}</a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2 text-right">
+            Budget Status: 
+          </div>
+          <div class="col-sm-4">
+            {{c.data.selBudget.budget_status}}
           </div>
         </div>
         <div class="row">
@@ -191,12 +270,12 @@
       <div class="form-group col-md-6">
         <div class="row">
           <ul class="nav nav-tabs fms-tabs">
-            <li><a data-toggle="tab" href="#adjust" ng-click="c.setActiveAction('adjust');">Adjust</a></li>
-            <li><a data-toggle="tab" href="#submit" ng-click="c.setActiveAction('submit');">Submit</a>
-            <li><a data-toggle="tab" href="#approve" ng-click="c.setActiveAction('approve');">Approve</a></li>
-            <li><a data-toggle="tab" href="#copy" ng-click="c.setActiveAction('copy');">New/Copy</a>
-            <li><a data-toggle="tab" href="#changes" ng-click="c.setActiveAction('changes');">Changes</a></li>
-            <li><a data-toggle="tab" href="#current" ng-click="c.setActiveAction('current');">Current</a>
+            <li><a data-toggle="tab" href="#adjust" ng-click="c.setActiveAction('adjust');" ng-if="c.actionStates.adjust!='hide'">Adjust</a></li>
+            <li><a data-toggle="tab" href="#submit" ng-click="c.setActiveAction('submit');" ng-if="c.actionStates.submit!='hide'">Submit</a>
+            <li><a data-toggle="tab" href="#approve" ng-click="c.setActiveAction('approve');" ng-if="c.actionStates.approve!='hide'">Approve</a></li>
+            <li><a data-toggle="tab" href="#copy" ng-click="c.setActiveAction('copy');" ng-if="c.actionStates.copy!='hide'">New/Copy</a>
+            <li><a data-toggle="tab" href="#changes" ng-click="c.setActiveAction('changes');" ng-if="c.actionStates.changes!='hide'">Changes</a></li>
+            <li><a data-toggle="tab" href="#current" ng-click="c.setActiveAction('current');" ng-if="c.actionStates.current!='hide'">Current</a>
             <li class="active"><a data-toggle="tab" href="#notes" ng-click="c.setActiveAction('notes');">Notes</a>
           </ul>
         </div>
@@ -204,59 +283,63 @@
           <div class="tab-content">
             <div id="adjust" class="tab-pane fade" ng-if="c.actionStates.adjust!='hide'">
               <div class="row">
-                <div class="col-sm-4 text-right">
+                <div class="col-sm-4 text-right" style="padding: 0px;">
                     <label for="adjustDir" class="selectLabel">Adjust direction:</label>
                 </div>
-                <div class="col-sm-4">
-                  <select class="form-control" id="adjustDir" style="width: 100px;" ng-model="c.data.adjustDir">
+                <div class="col-sm-2">
+                  <select class="form-control" id="adjustDir" style="width: 100px; padding: 0px;" ng-model="c.data.adjustDir">
                     <option value="+">Up</option>
                     <option value="-" selected>Down</option>
                   </select>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-4 text-right">
-                    <label for="adjustPct" class="selectLabel">Adjust Percentage:</label>
+                <div class="col-sm-2 text-right" style="padding: 0px;">
+                  <label for="adjustPct" class="selectLabel">Adjust %:</label>
                 </div>
-                <div class="row">
-                  <div class="col-sm-4 text-right">
-                    <input type="text" class="form-control" id="adjustPct" style="width: 100px;" ng-model="c.data.adjustPct">
-                  </div>
+                <div class="col-sm-2 text-right" style="padding: 0px;">
+                  <input type="text" class="form-control" id="adjustPct" style="width: 100px;" ng-model="c.data.adjustPct">
                 </div>
               </div>
-              <div class="row" style="text-align: center;">
-                <a href="javascript:void(0)" ng-click="c.adjustBudget();" class="btn btn-info">Adjust Budget</a>
+              <div class="row" style="text-align: center; padding-top: 10px;">
+                <a href="javascript:void(0)" ng-click="c.adjustBudget();" class="btn btn-info" title="Adjusting a budget affects all budget items and phasing amounts.">
+                  Adjust Budget</a>
               </div>
             </div>
             <div id="submit" class="tab-pane fade" ng-if="!c.actionStates.submit!='hide'">
-                <a href="javascript:void(0)" ng-click="c.submitBudget();" class="btn btn-info">Submit Budget for Approval</a>
+                <a href="javascript:void(0)" ng-click="c.submitBudget();" class="btn btn-info" title="Submitting a baseline budget will lock it and prevent further changes.">
+                  Submit Budget for Approval</a>
             </div>
             <div id="approve" class="tab-pane fade" ng-if="c.actionStates.approve!='hide'">
-                <a href="javascript:void(0)" ng-click="c.approveBudget();" class="btn btn-info">Approve Budget</a>
-                <a href="javascript:void(0)" ng-click="c.rejectBudget();" class="btn btn-info">Reject Budget</a>
+                <a href="javascript:void(0)" ng-click="c.approveBudget();" class="btn btn-info" title="Approving a baseline budget will make it the current version.">
+                  Approve Budget</a>
+                <a href="javascript:void(0)" ng-click="c.rejectBudget();" class="btn btn-info" title="Rejecting a baseline budget will unlock it to allow modifications.">
+                  Reject Budget</a>
             </div>
             <div id="copy" class="tab-pane fade" ng-if="c.actionStates.copy!='hide'">
               <div class="col-sm-4">
-                <div class="row" style="height: 45px;" />
                 <div class="row" style="text-align: center;">
-                  <a href="javascript:void(0)" ng-click="c.newRevision();" class="btn btn-info">Create New Revision</a>
+                  <a href="javascript:void(0)" ng-click="c.newRevision();" class="btn btn-info" title="A revision is a minor change to a budget involving adding or removing a few expense items.">
+                    Create New Revision</a>
+                </div>
+                <div class="row" style="text-align: center; padding-top: 10px;">
+                  <a href="javascript:void(0)" ng-click="c.newVersion();" class="btn btn-info" title="A new version is a significant change to a budget involving most or all expense items.">
+                    Create New Version</a>
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-sm-8">
                 <div class="row">
-                  <div class="col-sm-2 text-right">
+                  <div class="col-sm-3 text-right" style="padding: 0px;">
                     <label for="newFY" class="selectLabel">Fiscal Year:</label>
                   </div>
-                  <div class="col-sm-4">  
+                  <div class="col-sm-3">  
                     <select class="form-control" id="newFY" style="width: 100px;" ng-model="c.data.newFY">
                         <option ng-repeat="year in data.fiscalYears" value="{{year}}">{{year}}
                         </option>
                     </select>
                   </div>
-                  <div class="col-sm-2 text-right">
+                  <div class="col-sm-3 text-right" style="padding: 0px;">
                     <label for="newType" class="selectLabel">Budget Type:</label>
                   </div>
-                  <div class="col-sm-4">  
+                  <div class="col-sm-3" style="padding: 0px;">  
                     <select class="form-control" id="newType" style="width: 100px;" ng-model="c.data.newType">
                         <option value="Baseline">Baseline</option>
                         <option value="Forecast">Forecast</option>
@@ -264,21 +347,25 @@
                     </select>
                   </div>
                 </div>
-                <div class="row" style="text-align: center;">  
-	              <a href="javascript:void(0)" ng-click="c.newVersion();" class="btn btn-info">Create New Version</a>
+                <div class="row" style="text-align: center; padding-top: 10px;">  
+	              <a href="javascript:void(0)" ng-click="c.newCopy();" class="btn btn-info" title="Create a new copy when the budget type or fiscal year changes.">
+                    Create New Copy</a>
                 </div>
               </div>
             </div>
             <div id="changes" class="tab-pane fade" ng-if="c.actionStates.changes!='hide'">
-                <a href="javascript:void(0)" ng-click="c.lockBudget();" class="btn btn-info">Lock Budget</a>
-                <a href="javascript:void(0)" ng-click="c.unlockBudget();" class="btn btn-info">Unlock Budget</a>
+                <a href="javascript:void(0)" ng-click="c.lockBudget();" class="btn btn-info" title="Locking a budget will prevent further changes.">
+                  Lock Budget</a>
+                <a href="javascript:void(0)" ng-click="c.unlockBudget();" class="btn btn-info" title="Unlocking a budget will permit changes.">
+                  Unlock Budget</a>
             </div>
             <div id="current" class="tab-pane fade" ng-if="c.actionStates.current!='hide'">
-                <a href="javascript:void(0)" ng-click="c.makeCurrent();" class="btn btn-info">Make Current</a>
+                <a href="javascript:void(0)" ng-click="c.makeCurrent();" class="btn btn-info" title="There is only one current budget for each Budget Type per Fiscal Year, per Project.">
+                  Make Current</a>
             </div>
             <div id="notes" class="tab-pane fade in active" ng-if="c.actionStates.notes!='hide'">
-              <textarea class="form-control" style="display: inline; width: 500px;">{{c.data.selBudget.budget_notes}}</textarea>
-              <a href="javascript:void(0)" ng-click="c.updateNotes();" class="btn btn-info" style="vertical-align: top;">Update Notes</a>
+              <textarea class="form-control" style="display: inline; width: 500px;" ng-model="c.data.selBudget.budget_notes">{{c.data.selBudget.budget_notes}}</textarea>
+              <a href="javascript:void(0)" ng-click="c.updateNotes();" class="btn btn-info" ng-if="c.canUpdateNotes()" style="vertical-align: top;">Update Notes</a>
             </div>
           </div>
         </div>

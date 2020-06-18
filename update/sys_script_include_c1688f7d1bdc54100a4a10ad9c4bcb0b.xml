@@ -10,9 +10,10 @@
         <script><![CDATA[var FMSUtilities = Class.create();
 FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
-    getScalar: function (table, column, encQry) { // get single value
+    getScalar: function (table, column, encQry, orderBy) { // get single value
         var rec = new GlideRecord(table);
         rec.addEncodedQuery(encQry);
+		if (orderBy) { rec.orderByDesc(orderBy); }
         rec.setLimit(1);
         rec.query();
         while (rec.next()) {
@@ -95,6 +96,19 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         return canDelete;
     },
 
+	canDeletecostPool: function(poolID) {
+
+        /* JLR - This function will check if any critical financial data is associated with a category before allowing it to be deleted
+        */
+        var canDelete = true;
+        var orgTrans = this.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "cost_pool_ref=" + poolID);
+        
+        if (orgTrans.length > 0)
+            canDelete = false;
+
+        return canDelete;
+    },
+	
     canDeleteOMBCategory: function(catID) {
 
         /* JLR - This function will check if any critical financial data is associated with a category before allowing it to be deleted
@@ -508,13 +522,13 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 18:30:12</sys_created_on>
         <sys_id>c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>140</sys_mod_count>
+        <sys_mod_count>142</sys_mod_count>
         <sys_name>FMSUtilities</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-09 19:22:43</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-16 17:06:53</sys_updated_on>
     </sys_script_include>
 </record_update>

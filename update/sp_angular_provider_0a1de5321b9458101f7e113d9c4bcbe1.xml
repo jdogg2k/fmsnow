@@ -22,7 +22,7 @@
 			var retVal = 1;
 
 			if (cellDate < targetDay) {
-				retVal = -1;
+				retVal = -1
 			}
 			if (cdate == tdate) {
 				retVal = 0;
@@ -762,6 +762,7 @@
 
 							if (window.confirm("Are you sure you want to delete " + (params.banner || pageName) + "?")) { //delete this row
 								deleteRow(params.data.sys_id, delTable, detailGridID, deleteIndex);
+								
 							}
 						};
 						this.eButton.addEventListener('click', this.eventListener);
@@ -924,14 +925,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>519</sys_mod_count>
+        <sys_mod_count>523</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-15 15:51:15</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-15 19:12:40</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

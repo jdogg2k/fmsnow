@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element extends="sys_import_set_row" label="FMS Load Expense Item" max_length="40" name="x_g_irm_fms_fms_load_expense_item" type="collection">
-        <element attributes="edge_encryption_enabled=true,import_attribute_name=Activity Code" label="Activity Code" max_length="40" name="u_activity_code" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Activity Code" label="Activity Code" max_length="60" name="u_activity_code" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Budget Code" label="Budget Code" max_length="45" name="u_budget_code" type="string"/>
         <element attributes="edge_encryption_enabled=true" label="Budget Code ID" max_length="40" name="u_budget_code_id" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Disabled" label="Disabled" max_length="40" name="u_disabled" type="string"/>

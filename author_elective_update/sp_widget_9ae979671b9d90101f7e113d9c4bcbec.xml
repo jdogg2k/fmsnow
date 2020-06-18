@@ -1,0 +1,1387 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function ($timeout) {
+    /* widget controller */
+    var c = this;
+    c.targetOrg = c.data.selectedOrg;
+    c.userAuth = $rootScope.userAuth;
+
+    c.reportData = [];
+
+    c.generateReport = function () {
+        c.server.get({
+            mode: 'buildReport',
+            fy: c.reportOptions.selectedFY
+        }).then(function (reportResults) {
+            c.reportData = reportResults.data.reportData;
+            gridOptions.api.setRowData(c.reportData);
+            gridOptions.api.sizeColumnsToFit();
+        });
+    }
+
+    c.reportOptions = {
+        selGroup1: "project"
+    };
+
+    c.toggleExpand = function(mode) {
+        gridOptions.api.forEachNode(function(rowNode, index) {
+            if (rowNode.group)
+                rowNode.setExpanded(mode);
+        });
+    }
+
+    function currencyCssFunc(params) {
+        if (params.value !== null && params.value !== undefined && params.value < 0) {
+            return {
+                "color": "red",
+                "font-weight": "bold",
+                "text-align": "right"
+            };
+        } else {
+            return {
+                "text-align": "right"
+            };
+        }
+    }
+
+    function currencyFormatter(params) {
+        if (params.value != 0 && (params.value === null || params.value === undefined || params.value == "")) {
+            return null;
+        } else if (isNaN(params.value)) {
+            return '$' + parseFloat(0).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+        } else {
+            if (parseFloat(params.value) >= 0) {
+                return '$' + parseFloat(params.value).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+            } else {
+                return currencyNegative(params.value);
+            }
+        }
+    }
+
+    function currencyNegative(tVal) {
+        return '$(' + parseFloat(tVal).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,").replace("-", "") + ")";
+    }
+
+    var gridOptions = {
+        columnDefs: [{
+                headerName: 'Appropriation',
+                field: 'appropriation',
+                rowGroup: true, 
+                rowGroupIndex: 1,
+                enableRowGroup: true,
+                enablePivot: true
+            },
+            {
+                headerName: 'Appropriation Type',
+                field: 'appropriation_type',
+                enableRowGroup: true,
+                enablePivot: true
+            },
+            {
+                headerName: 'Allocation Group',
+                field: 'allocation_group',
+                enableRowGroup: true
+            },
+            {
+                headerName: 'Investment',
+                field: 'investment',
+                enableRowGroup: true
+            },
+            {
+                headerName: 'Organization',
+                field: 'org_name',
+                enablePivot: true,
+                enableRowGroup: true,
+                rowGroup: true, 
+                rowGroupIndex: 0
+            },
+            {
+                headerName: 'Project',
+                field: 'project',
+                pivot: false,
+                enablePivot: true,
+                enableRowGroup: true,
+            },
+            {
+                headerName: 'OMB Project',
+                field: 'omb_project',
+                pivot: false,
+                enablePivot: true,
+                enableRowGroup: true,
+            },
+            {
+                headerName: 'Allocations',
+                field: 'allocations',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+            },
+            {
+                headerName: 'Reimbursements',
+                field: 'reimbursements',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+            },
+            {
+                headerName: 'Transfer In',
+                field: 'trans_in',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+            },
+            {
+                headerName: 'Transfer Out',
+                field: 'trans_out',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+            },
+            {
+                headerName: 'VG Labor',
+                field: 'vg_labor',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+            },
+            {
+                headerName: 'Off. Adjustments',
+                field: 'off_adjustments',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+            },
+            {
+                headerName: 'Expended',
+                field: 'expended',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+            },
+            {
+                headerName: 'Balance',
+                field: 'balance',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+            }
+        ],
+        defaultColDef: {
+            flex: 1,
+            minWidth: 150,
+            sortable: true,
+            resizable: true,
+        },
+        autoGroupColumnDef: {
+            width: 300,
+            cellRendererParams: {
+                suppressCount: true
+            }
+        },
+        /*pagination: true,
+        paginationPageSize: 10,*/
+        suppressAggFuncInHeader: true,
+        groupMultiAutoColumn: true,
+        pivotMode: true,
+        groupIncludeFooter: true,
+        groupIncludeTotalFooter: true,
+        sideBar: 'columns',
+        columnTypes: {
+            'currency': {
+                valueFormatter: currencyFormatter,
+                cellStyle: currencyCssFunc,
+                cellRenderer: 'agAnimateShowChangeCellRenderer'
+            }
+        }
+    };
+
+
+    c.fiscalYears = [];
+
+    for (var i = 2026; i >= 2000; i--) {
+        c.fiscalYears.push(i.toString());
+    }
+
+    c.reportOptions.selectedFY = getCurrentFinancialYear();
+
+    c.exportToCsv = function() {
+       gridOptions.api.exportDataAsCsv({
+            columnGroups: true,
+            //customFooter: getGridTotals() NOTE WILL WORK WITH NEW AG GRID LICENSE
+       });
+    }
+
+    function getGridTotals() {
+        var hasColumns = false;
+        var totalCounts = {};
+        gridOptions.api.forEachNode(function(rowNode, index) {
+            if (rowNode.group && rowNode.level == 0){
+                if (!hasColumns) {
+                    for (var prop in rowNode.aggData) {
+                        if (Object.prototype.hasOwnProperty.call(rowNode.aggData, prop)) {
+                            totalCounts[prop] = 0;
+                        }
+                    }
+                    hasColumns = true;
+                }
+                for (var prop in rowNode.aggData) {
+                    if (Object.prototype.hasOwnProperty.call(rowNode.aggData, prop)) {
+                        totalCounts[prop] += rowNode.aggData[prop];
+                    }
+                }
+            }
+        });
+
+        var totalCols = [];
+        var mergeCount = 0;
+        var allCols = gridOptions.columnApi.getAllDisplayedColumns();
+        allCols.forEach(function(col){
+            if (col.aggFunc != undefined) {
+                totalCols.push({ data: { type: 'Number', value: totalCounts[col.colId] } });
+            } else {
+                mergeCount++;
+            }
+        });
+
+        return [
+            [],
+            [{ data: { type: 'String', value: 'Grand Total' }, mergeAcross: mergeCount }, totalCols]
+        ];
+
+      };
+      
+    function getCurrentFinancialYear() {
+        var fiscalyear = "";
+        var today = new Date();
+        if ((today.getMonth() + 1) >= 10) {
+            fiscalyear = (today.getFullYear() + 1);
+        } else {
+            fiscalyear = today.getFullYear();
+        }
+        return fiscalyear.toString();
+    }
+
+    var gridDiv = document.querySelector('#reportGrid');
+    new agGrid.Grid(gridDiv, gridOptions);
+
+
+    c.generateReport();
+
+    $rootScope.$on('OrgChanged', function(event, args) {
+        c.generateReport();
+    });
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.full-grid {&#13;
+    width: 94vw;&#13;
+    height: calc(100vh - 210px);&#13;
+    clear: both;&#13;
+}&#13;
+&#13;
+.fms-list-header {&#13;
+    margin-bottom: 0px !important;&#13;
+}&#13;
+&#13;
+.pageLabel {&#13;
+    float: left;&#13;
+    margin-right: 10px;&#13;
+}&#13;
+&#13;
+.row-button {&#13;
+    cursor: pointer;&#13;
+}&#13;
+&#13;
+.new-button {&#13;
+    float: right;&#13;
+    margin-right: 5px;&#13;
+}&#13;
+&#13;
+.excel-button {&#13;
+    float: right;&#13;
+}&#13;
+&#13;
+.edit-pencil {&#13;
+    color: #003ade;&#13;
+    font-size: 16px;&#13;
+    margin-right: 5px;&#13;
+}&#13;
+&#13;
+.action-enabled {&#13;
+    color: #0b8800;&#13;
+    font-size: 16px;&#13;
+    margin-right: 5px;&#13;
+    cursor: pointer;&#13;
+}&#13;
+&#13;
+.action-disabled {&#13;
+    color: #808080;&#13;
+    font-size: 16px;&#13;
+    margin-right: 5px;&#13;
+}&#13;
+&#13;
+.delete-x {&#13;
+    color: #000000;&#13;
+    font-size: 13px;&#13;
+}&#13;
+&#13;
+.updated-row {&#13;
+    background-color: #FFFFCC;&#13;
+}&#13;
+&#13;
+.ag-header-cell-label .ag-header-icon.ag-sort-order {&#13;
+    display: none&#13;
+}&#13;
+&#13;
+.ag-row-group {&#13;
+    font-weight: bold;&#13;
+}&#13;
+&#13;
+.full-width-panel {&#13;
+    position: relative;&#13;
+    background: #EDF6FF;&#13;
+    height: 100%;&#13;
+    width: 100%;&#13;
+    padding: 5px;&#13;
+}&#13;
+&#13;
+.full-row-details {&#13;
+    position: relative;&#13;
+    background: #FFFFFF;&#13;
+    height: 100%;&#13;
+    width: 100%;&#13;
+    padding-left: 12px;&#13;
+    padding-top: 4px;&#13;
+}&#13;
+&#13;
+.call-record-cell {&#13;
+    text-align: right;&#13;
+}&#13;
+&#13;
+.full-width-detail {&#13;
+    padding-top: 4px;&#13;
+}&#13;
+&#13;
+.full-width-title {&#13;
+    font-size: 10pt;&#13;
+    font-weight: bold;&#13;
+    float: left;&#13;
+}&#13;
+&#13;
+.contract-button {&#13;
+    float: right;&#13;
+    margin-top: -13px;&#13;
+}&#13;
+&#13;
+.full-width-details {&#13;
+    float: left;&#13;
+    padding: 5px;&#13;
+    margin: 5px;&#13;
+    width: 100%;&#13;
+    clear: both;&#13;
+}&#13;
+&#13;
+.details-grid {&#13;
+    display: block;&#13;
+    clear: both;&#13;
+    height: 100px;&#13;
+    margin-bottom: 5px;&#13;
+}&#13;
+&#13;
+.full-width-grid-toolbar {&#13;
+    top: 4px;&#13;
+    left: 30px;&#13;
+    margin-left: 150px;&#13;
+    display: block;&#13;
+    position: absolute;&#13;
+}&#13;
+&#13;
+.full-width-phone-icon {&#13;
+    padding-right: 10px;&#13;
+}&#13;
+&#13;
+.full-width-search {&#13;
+    border: 1px solid #eee;&#13;
+    margin-left: 10px;&#13;
+}&#13;
+&#13;
+.control-panel {&#13;
+    padding: 5px;&#13;
+    background-color: #f5f1df;&#13;
+}&#13;
+&#13;
+.reportSelect {&#13;
+    padding: 6px 12px;&#13;
+    font-size: 14px;&#13;
+    border: 1px solid #ccc;&#13;
+    border-radius: 4px;&#13;
+}&#13;
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>baseline_activity_report</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Baseline Activity Report</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function () {
+
+    var OrgHierarchy = new x_g_irm_fms.OrgHierarchy(); //org helper
+    var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+    var orgName = "";
+    var session = gs.getSession();
+
+    if ($sp.getParameter("org_id") && $sp.getParameter("org_id").length > 0)
+        data.selectedOrgID = $sp.getParameter("org_id");
+	else
+		data.selectedOrgID = session.getClientData('org_id');
+
+    if (input) {
+        if (input.mode == "buildReport") {
+            data.reportData = [];
+
+            //get org name
+            var orgQ = new GlideRecord(FMSConstants.TABLE_ORGANIZATION);
+            orgQ.addQuery("sys_id", data.selectedOrgID);
+            orgQ.query();
+            if (orgQ.next()){
+                orgName = orgQ.org_name.toString();
+            }   
+
+            var allOrgs = OrgHierarchy.getOrgChildren(data.selectedOrgID);
+            allOrgs.push(data.selectedOrgID);
+
+            //get project allocation data
+            var projQ = new GlideAggregate(FMSConstants.TABLE_PROJECT_ALLOCATION);
+            projQ.addEncodedQuery("fy=" + input.fy + "^project_ref.organization_refIN" + allOrgs.join(","));
+            projQ.groupBy("appropriation_ref");
+            projQ.groupBy("allocation_group_ref");
+            projQ.groupBy("project_ref.organization_ref");
+            projQ.groupBy("project_ref");
+            projQ.groupBy("fund_source");
+            projQ.groupBy("transfer_type_ref");
+            projQ.addAggregate("SUM", "allocation_amt");
+            projQ.query();
+            while (projQ.next()){
+                
+                var projVal = projQ.project_ref.toString();
+                var allocGroupVal = projQ.allocation_group_ref.toString();
+                var appropVal = projQ.appropriation_ref.appropriation_ref.toString();
+                var orgVal = projQ.project_ref.organization_ref.toString();
+
+                var reportObj = {};
+                var isExisting = false;
+
+                //check for existing object in the array
+                var existingData = data.reportData.filter(function(el) {
+                    return el.project_ref == projVal && el.allocation_group_ref == allocGroupVal && el.appropriation_ref == appropVal && el.org_ref == orgVal;
+                });
+
+                if (existingData.length > 0){ //use existing object
+                    isExisting = true;
+                    reportObj = existingData[0];
+                }
+                    
+                if (!isExisting) { //new entry to the array, define the default values
+
+                    reportObj.org_ref = orgVal;
+                    reportObj.org_name = projQ.project_ref.organization_ref.getDisplayValue();
+                    reportObj.project = projQ.project_ref.getDisplayValue();
+                    reportObj.project_ref = projVal;
+                    reportObj.omb_project = projQ.project_ref.omb_project_name.toString();
+                    reportObj.investment = projQ.project_ref.investment.investment.getDisplayValue();
+                    reportObj.appropriation_type = projQ.appropriation_ref.appropriation_ref.appropriation_type.getDisplayValue();
+                    reportObj.appropriation_type_ref = projQ.appropriation_ref.appropriation_ref.appropriation_type.toString();
+                    reportObj.appropriation = projQ.appropriation_ref.appropriation_ref.getDisplayValue();
+                    reportObj.appropriation_ref = appropVal;
+                    reportObj.allocation_group = projQ.allocation_group_ref.getDisplayValue();
+                    reportObj.allocation_group_ref = allocGroupVal;
+                    reportObj.allocations = 0;
+                    reportObj.reimbursements = 0;
+                    reportObj.trans_in = 0;
+                    reportObj.trans_out = 0;
+                    reportObj.toaa = 0;
+                    reportObj.toa = 0;
+                    reportObj.vg_labor = 0;
+                    reportObj.off_adjustments = 0;
+                    reportObj.expended = 0;
+                    reportObj.balance = 0;
+                    
+                }
+                
+                if (projQ.fund_source == "Allocation")
+                    reportObj.allocations += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
+                
+                if (projQ.fund_source == "Reimbursement")
+                    reportObj.reimbursements += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
+
+                if (projQ.fund_source == "Transfer In")
+                    reportObj.trans_in += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
+
+                if (projQ.fund_source == "Transfer In" && projQ.transfer_type_ref == '9aa3f65d1b0850501f7e113d9c4bcbe6') //TOAA
+                    reportObj.toaa += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
+
+                if (!isExisting) {
+                    data.reportData.push(reportObj);
+                }
+            }
+
+            //Get supporting info
+            var endQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
+            /*var endQS = "";
+            appropriationsChecked.forEach(function(appVal){
+                endQS += "^ft_project_appropriation_ref.appropriation_ref!=" + appVal;
+            });*/
+            endQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_void=false");
+            endQ.groupBy("ft_allocation_group_ref");
+            endQ.groupBy("ft_project_ref");
+            endQ.groupBy("ft_project_appropriation_ref");
+            endQ.groupBy("proj_organization_ref");
+            endQ.groupBy("proj_investment");
+            endQ.groupBy("ft_tran_type");
+            endQ.addAggregate("SUM", "fti_item_total");
+            endQ.query();
+            while(endQ.next()){
+
+                var endprojVal = endQ.ft_project_ref.toString();
+                var endallocGroupVal = endQ.ft_allocation_group_ref.toString();
+                var endappropVal = endQ.ft_project_appropriation_ref.appropriation_ref.toString();
+                var endorgVal = endQ.proj_organization_ref.toString();
+
+                var endObj = {};
+                var isExists = false;
+
+                //check for existing object in the array
+                var prevData = data.reportData.filter(function(el) {
+                    return el.project_ref == endprojVal && el.allocation_group_ref == endallocGroupVal && el.appropriation_ref == endappropVal && el.org_ref == endorgVal;
+                });
+
+                if (prevData.length > 0){ //use existing object
+                    isExists = true;
+                    endObj = prevData[0];
+                }
+                    
+                if (!isExists) { //new entry to the array, define the default values
+                    endObj.org_ref = endorgVal;
+                    endObj.org_name = endQ.proj_organization_ref.getDisplayValue();
+                    endObj.project = endQ.ft_project_ref.getDisplayValue();
+                    endObj.project_ref = endprojVal;
+                    endObj.omb_project = endQ.ft_project_ref.omb_project_name.toString();
+                    endObj.investment = endQ.proj_investment.investment.getDisplayValue();
+                    //endObj.appropriation_type = endQ.ft_project_appropriation_ref.appropriation_ref.appropration_type.getDisplayValue();
+                    //endObj.appropriation_type_ref = endQ.ft_project_appropriation_ref.appropriation_ref.appropration_type.toString();
+                    endObj.appropriation_type = "";
+                    endObj.appropriation_type_ref = "";
+                    endObj.appropriation = endQ.ft_project_appropriation_ref.appropriation_ref.getDisplayValue();
+                    endObj.appropriation_ref = endappropVal;
+                    endObj.allocation_group = endQ.ft_allocation_group_ref.getDisplayValue();
+                    endObj.allocation_group_ref = endallocGroupVal;
+                    endObj.allocations = 0;
+                    endObj.reimbursements = 0;
+                    endObj.trans_in = 0;
+                    endObj.trans_out = 0;
+                    endObj.toaa = 0;
+                    endObj.toa = 0;
+                    endObj.vg_labor = 0;
+                    endObj.off_adjustments = 0;
+                    endObj.expended = 0;
+                    endObj.balance = 0;
+                }
+
+                var finalCost = parseFloat(endQ.getAggregate("SUM", "fti_item_total"));
+                if (endQ.ft_tran_type == "TE" || endQ.ft_tran_type == "TI" || endQ.ft_tran_type == "TVGT") {
+                    endObj.trans_out += finalCost;
+                } else if (endQ.ft_tran_type == "TVGL") {
+                    endObj.vg_labor += finalCost;
+                } else if (endQ.ft_tran_type == "TOA") {
+                    endObj.toa += finalCost;
+                } else {
+                    endObj.expended += finalCost;
+                }
+
+                if (!isExists) {
+                    data.reportData.push(endObj);
+                }
+
+            }
+
+            //total and make negative
+            data.reportData.forEach(function(item){
+                item.vg_labor = item.vg_labor * -1;
+                item.trans_out = item.trans_out * -1;
+                item.expended = item.expended * -1;
+                item.off_adjustments = (item.toaa - item.toa);
+                item.balance = item.allocations + item.trans_in + item.reimbursements + item.toaa + item.vg_labor + item.toa + item.trans_out + item.expended;
+            });
+
+        }
+    }
+
+
+
+    data.orgData = FMSUtility.getAllAllocationData(FMSConstants.TABLE_ORGANIZATION, '', true);
+    data.orgData.sort(function (a, b) {
+        var x = a.organization_display.toLowerCase();
+        var y = b.organization_display.toLowerCase();
+        if (x < y) {
+            return -1;
+        }
+        if (x > y) {
+            return 1;
+        }
+        return 0;
+    });
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-06-15 16:19:28</sys_created_on>
+        <sys_id>9ae979671b9d90101f7e113d9c4bcbec</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Baseline Activity Report</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_widget_9ae979671b9d90101f7e113d9c4bcbec</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-15 16:23:20</sys_updated_on>
+        <template><![CDATA[<div style="width: 100%; height: 100%">
+
+    <div class="container">
+        <div class="control-panel">
+            <div class="row">
+                <div class="col-sm-3 form-group">
+                    <widget id="organization_selection" options='{"hide_widget": false, "hide_project": true}'></widget>
+                </div>
+                <div class="col-sm-3 form-group">
+                    <label for="selFY" class="selectLabel">FY:</label>
+                    <select class="reportSelect" id="selFY" ng-model="c.reportOptions.selectedFY" ng-change="c.generateReport();">
+                        <option value="">-Select-</option>
+                        <option ng-repeat="year in c.fiscalYears" value="{{year}}">{{year}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-sm-6 form-group">
+                    <a href="javascript:void(0)" ng-click="c.exportToCsv();" class="btn btn-success new-button">Export to Excel</a>
+                    <a href="javascript:void(0)" ng-click="c.toggleExpand(false);" class="btn btn-info new-button">Collapse All Rows</a>
+                    <a href="javascript:void(0)" ng-click="c.toggleExpand(true);" class="btn btn-info new-button">Expand All Rows</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="reportGrid" class="ag-theme-balham full-grid"></div>
+            </div>
+        </div>
+    </div>
+
+</div>]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sp_widget_9ae979671b9d90101f7e113d9c4bcbec</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function ($timeout) {
+    /* widget controller */
+    var c = this;
+    c.targetOrg = c.data.selectedOrg;
+    c.userAuth = $rootScope.userAuth;
+
+    c.reportData = [];
+
+    c.generateReport = function () {
+        c.server.get({
+            mode: 'buildReport',
+            fy: c.reportOptions.selectedFY
+        }).then(function (reportResults) {
+            c.reportData = reportResults.data.reportData;
+            gridOptions.api.setRowData(c.reportData);
+            gridOptions.api.sizeColumnsToFit();
+        });
+    }
+
+    c.reportOptions = {
+        selGroup1: "project"
+    };
+
+    c.toggleExpand = function(mode) {
+        gridOptions.api.forEachNode(function(rowNode, index) {
+            if (rowNode.group)
+                rowNode.setExpanded(mode);
+        });
+    }
+
+    function currencyCssFunc(params) {
+        if (params.value !== null &amp;&amp; params.value !== undefined &amp;&amp; params.value &lt; 0) {
+            return {
+                "color": "red",
+                "font-weight": "bold",
+                "text-align": "right"
+            };
+        } else {
+            return {
+                "text-align": "right"
+            };
+        }
+    }
+
+    function currencyFormatter(params) {
+        if (params.value != 0 &amp;&amp; (params.value === null || params.value === undefined || params.value == "")) {
+            return null;
+        } else if (isNaN(params.value)) {
+            return '$' + parseFloat(0).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+        } else {
+            if (parseFloat(params.value) &gt;= 0) {
+                return '$' + parseFloat(params.value).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+            } else {
+                return currencyNegative(params.value);
+            }
+        }
+    }
+
+    function currencyNegative(tVal) {
+        return '$(' + parseFloat(tVal).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,").replace("-", "") + ")";
+    }
+
+    var gridOptions = {
+        columnDefs: [{
+                headerName: 'Appropriation',
+                field: 'appropriation',
+                rowGroup: true, 
+                rowGroupIndex: 1,
+                enableRowGroup: true,
+                enablePivot: true
+            },
+            {
+                headerName: 'Appropriation Type',
+                field: 'appropriation_type',
+                enableRowGroup: true,
+                enablePivot: true
+            },
+            {
+                headerName: 'Allocation Group',
+                field: 'allocation_group',
+                enableRowGroup: true
+            },
+            {
+                headerName: 'Investment',
+                field: 'investment',
+                enableRowGroup: true
+            },
+            {
+                headerName: 'Organization',
+                field: 'org_name',
+                enablePivot: true,
+                enableRowGroup: true,
+                rowGroup: true, 
+                rowGroupIndex: 0
+            },
+            {
+                headerName: 'Project',
+                field: 'project',
+                pivot: false,
+                enablePivot: true,
+                enableRowGroup: true,
+            },
+            {
+                headerName: 'OMB Project',
+                field: 'omb_project',
+                pivot: false,
+                enablePivot: true,
+                enableRowGroup: true,
+            },
+            {
+                headerName: 'Allocations',
+                field: 'allocations',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+            },
+            {
+                headerName: 'Reimbursements',
+                field: 'reimbursements',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+            },
+            {
+                headerName: 'Transfer In',
+                field: 'trans_in',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+            },
+            {
+                headerName: 'Transfer Out',
+                field: 'trans_out',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+            },
+            {
+                headerName: 'VG Labor',
+                field: 'vg_labor',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+            },
+            {
+                headerName: 'Off. Adjustments',
+                field: 'off_adjustments',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+            },
+            {
+                headerName: 'Expended',
+                field: 'expended',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+            },
+            {
+                headerName: 'Balance',
+                field: 'balance',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+            }
+        ],
+        defaultColDef: {
+            flex: 1,
+            minWidth: 150,
+            sortable: true,
+            resizable: true,
+        },
+        autoGroupColumnDef: {
+            width: 300,
+            cellRendererParams: {
+                suppressCount: true
+            }
+        },
+        /*pagination: true,
+        paginationPageSize: 10,*/
+        suppressAggFuncInHeader: true,
+        groupMultiAutoColumn: true,
+        pivotMode: true,
+        groupIncludeFooter: true,
+        groupIncludeTotalFooter: true,
+        sideBar: 'columns',
+        columnTypes: {
+            'currency': {
+                valueFormatter: currencyFormatter,
+                cellStyle: currencyCssFunc,
+                cellRenderer: 'agAnimateShowChangeCellRenderer'
+            }
+        }
+    };
+
+
+    c.fiscalYears = [];
+
+    for (var i = 2026; i &gt;= 2000; i--) {
+        c.fiscalYears.push(i.toString());
+    }
+
+    c.reportOptions.selectedFY = getCurrentFinancialYear();
+
+    c.exportToCsv = function() {
+       gridOptions.api.exportDataAsCsv({
+            columnGroups: true,
+            //customFooter: getGridTotals() NOTE WILL WORK WITH NEW AG GRID LICENSE
+       });
+    }
+
+    function getGridTotals() {
+        var hasColumns = false;
+        var totalCounts = {};
+        gridOptions.api.forEachNode(function(rowNode, index) {
+            if (rowNode.group &amp;&amp; rowNode.level == 0){
+                if (!hasColumns) {
+                    for (var prop in rowNode.aggData) {
+                        if (Object.prototype.hasOwnProperty.call(rowNode.aggData, prop)) {
+                            totalCounts[prop] = 0;
+                        }
+                    }
+                    hasColumns = true;
+                }
+                for (var prop in rowNode.aggData) {
+                    if (Object.prototype.hasOwnProperty.call(rowNode.aggData, prop)) {
+                        totalCounts[prop] += rowNode.aggData[prop];
+                    }
+                }
+            }
+        });
+
+        var totalCols = [];
+        var mergeCount = 0;
+        var allCols = gridOptions.columnApi.getAllDisplayedColumns();
+        allCols.forEach(function(col){
+            if (col.aggFunc != undefined) {
+                totalCols.push({ data: { type: 'Number', value: totalCounts[col.colId] } });
+            } else {
+                mergeCount++;
+            }
+        });
+
+        return [
+            [],
+            [{ data: { type: 'String', value: 'Grand Total' }, mergeAcross: mergeCount }, totalCols]
+        ];
+
+      };
+      
+    function getCurrentFinancialYear() {
+        var fiscalyear = "";
+        var today = new Date();
+        if ((today.getMonth() + 1) &gt;= 10) {
+            fiscalyear = (today.getFullYear() + 1);
+        } else {
+            fiscalyear = today.getFullYear();
+        }
+        return fiscalyear.toString();
+    }
+
+    var gridDiv = document.querySelector('#reportGrid');
+    new agGrid.Grid(gridDiv, gridOptions);
+
+
+    c.generateReport();
+
+    $rootScope.$on('OrgChanged', function(event, args) {
+        c.generateReport();
+    });
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.full-grid {&amp;#13;
+    width: 94vw;&amp;#13;
+    height: calc(100vh - 210px);&amp;#13;
+    clear: both;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.fms-list-header {&amp;#13;
+    margin-bottom: 0px !important;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.pageLabel {&amp;#13;
+    float: left;&amp;#13;
+    margin-right: 10px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.row-button {&amp;#13;
+    cursor: pointer;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.new-button {&amp;#13;
+    float: right;&amp;#13;
+    margin-right: 5px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.excel-button {&amp;#13;
+    float: right;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.edit-pencil {&amp;#13;
+    color: #003ade;&amp;#13;
+    font-size: 16px;&amp;#13;
+    margin-right: 5px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.action-enabled {&amp;#13;
+    color: #0b8800;&amp;#13;
+    font-size: 16px;&amp;#13;
+    margin-right: 5px;&amp;#13;
+    cursor: pointer;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.action-disabled {&amp;#13;
+    color: #808080;&amp;#13;
+    font-size: 16px;&amp;#13;
+    margin-right: 5px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.delete-x {&amp;#13;
+    color: #000000;&amp;#13;
+    font-size: 13px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.updated-row {&amp;#13;
+    background-color: #FFFFCC;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.ag-header-cell-label .ag-header-icon.ag-sort-order {&amp;#13;
+    display: none&amp;#13;
+}&amp;#13;
+&amp;#13;
+.ag-row-group {&amp;#13;
+    font-weight: bold;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.full-width-panel {&amp;#13;
+    position: relative;&amp;#13;
+    background: #EDF6FF;&amp;#13;
+    height: 100%;&amp;#13;
+    width: 100%;&amp;#13;
+    padding: 5px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.full-row-details {&amp;#13;
+    position: relative;&amp;#13;
+    background: #FFFFFF;&amp;#13;
+    height: 100%;&amp;#13;
+    width: 100%;&amp;#13;
+    padding-left: 12px;&amp;#13;
+    padding-top: 4px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.call-record-cell {&amp;#13;
+    text-align: right;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.full-width-detail {&amp;#13;
+    padding-top: 4px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.full-width-title {&amp;#13;
+    font-size: 10pt;&amp;#13;
+    font-weight: bold;&amp;#13;
+    float: left;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.contract-button {&amp;#13;
+    float: right;&amp;#13;
+    margin-top: -13px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.full-width-details {&amp;#13;
+    float: left;&amp;#13;
+    padding: 5px;&amp;#13;
+    margin: 5px;&amp;#13;
+    width: 100%;&amp;#13;
+    clear: both;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.details-grid {&amp;#13;
+    display: block;&amp;#13;
+    clear: both;&amp;#13;
+    height: 100px;&amp;#13;
+    margin-bottom: 5px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.full-width-grid-toolbar {&amp;#13;
+    top: 4px;&amp;#13;
+    left: 30px;&amp;#13;
+    margin-left: 150px;&amp;#13;
+    display: block;&amp;#13;
+    position: absolute;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.full-width-phone-icon {&amp;#13;
+    padding-right: 10px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.full-width-search {&amp;#13;
+    border: 1px solid #eee;&amp;#13;
+    margin-left: 10px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.control-panel {&amp;#13;
+    padding: 5px;&amp;#13;
+    background-color: #f5f1df;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.reportSelect {&amp;#13;
+    padding: 6px 12px;&amp;#13;
+    font-size: 14px;&amp;#13;
+    border: 1px solid #ccc;&amp;#13;
+    border-radius: 4px;&amp;#13;
+}&amp;#13;
+&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;baseline_activity_report&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]&gt;&lt;/link&gt;&lt;name&gt;Baseline Activity Report&lt;/name&gt;&lt;option_schema/&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function () {
+
+    var OrgHierarchy = new x_g_irm_fms.OrgHierarchy(); //org helper
+    var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+    var orgName = "";
+    var session = gs.getSession();
+
+    if ($sp.getParameter("org_id") &amp;&amp; $sp.getParameter("org_id").length &gt; 0)
+        data.selectedOrgID = $sp.getParameter("org_id");
+	else
+		data.selectedOrgID = session.getClientData('org_id');
+
+    if (input) {
+        if (input.mode == "buildReport") {
+            data.reportData = [];
+
+            //get org name
+            var orgQ = new GlideRecord(FMSConstants.TABLE_ORGANIZATION);
+            orgQ.addQuery("sys_id", data.selectedOrgID);
+            orgQ.query();
+            if (orgQ.next()){
+                orgName = orgQ.org_name.toString();
+            }   
+
+            var allOrgs = OrgHierarchy.getOrgChildren(data.selectedOrgID);
+            allOrgs.push(data.selectedOrgID);
+
+            //get project allocation data
+            var projQ = new GlideAggregate(FMSConstants.TABLE_PROJECT_ALLOCATION);
+            projQ.addEncodedQuery("fy=" + input.fy + "^project_ref.organization_refIN" + allOrgs.join(","));
+            projQ.groupBy("appropriation_ref");
+            projQ.groupBy("allocation_group_ref");
+            projQ.groupBy("project_ref.organization_ref");
+            projQ.groupBy("project_ref");
+            projQ.groupBy("fund_source");
+            projQ.groupBy("transfer_type_ref");
+            projQ.addAggregate("SUM", "allocation_amt");
+            projQ.query();
+            while (projQ.next()){
+                
+                var projVal = projQ.project_ref.toString();
+                var allocGroupVal = projQ.allocation_group_ref.toString();
+                var appropVal = projQ.appropriation_ref.appropriation_ref.toString();
+                var orgVal = projQ.project_ref.organization_ref.toString();
+
+                var reportObj = {};
+                var isExisting = false;
+
+                //check for existing object in the array
+                var existingData = data.reportData.filter(function(el) {
+                    return el.project_ref == projVal &amp;&amp; el.allocation_group_ref == allocGroupVal &amp;&amp; el.appropriation_ref == appropVal &amp;&amp; el.org_ref == orgVal;
+                });
+
+                if (existingData.length &gt; 0){ //use existing object
+                    isExisting = true;
+                    reportObj = existingData[0];
+                }
+                    
+                if (!isExisting) { //new entry to the array, define the default values
+
+                    reportObj.org_ref = orgVal;
+                    reportObj.org_name = projQ.project_ref.organization_ref.getDisplayValue();
+                    reportObj.project = projQ.project_ref.getDisplayValue();
+                    reportObj.project_ref = projVal;
+                    reportObj.omb_project = projQ.project_ref.omb_project_name.toString();
+                    reportObj.investment = projQ.project_ref.investment.investment.getDisplayValue();
+                    reportObj.appropriation_type = projQ.appropriation_ref.appropriation_ref.appropriation_type.getDisplayValue();
+                    reportObj.appropriation_type_ref = projQ.appropriation_ref.appropriation_ref.appropriation_type.toString();
+                    reportObj.appropriation = projQ.appropriation_ref.appropriation_ref.getDisplayValue();
+                    reportObj.appropriation_ref = appropVal;
+                    reportObj.allocation_group = projQ.allocation_group_ref.getDisplayValue();
+                    reportObj.allocation_group_ref = allocGroupVal;
+                    reportObj.allocations = 0;
+                    reportObj.reimbursements = 0;
+                    reportObj.trans_in = 0;
+                    reportObj.trans_out = 0;
+                    reportObj.toaa = 0;
+                    reportObj.toa = 0;
+                    reportObj.vg_labor = 0;
+                    reportObj.off_adjustments = 0;
+                    reportObj.expended = 0;
+                    reportObj.balance = 0;
+                    
+                }
+                
+                if (projQ.fund_source == "Allocation")
+                    reportObj.allocations += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
+                
+                if (projQ.fund_source == "Reimbursement")
+                    reportObj.reimbursements += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
+
+                if (projQ.fund_source == "Transfer In")
+                    reportObj.trans_in += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
+
+                if (projQ.fund_source == "Transfer In" &amp;&amp; projQ.transfer_type_ref == '9aa3f65d1b0850501f7e113d9c4bcbe6') //TOAA
+                    reportObj.toaa += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
+
+                if (!isExisting) {
+                    data.reportData.push(reportObj);
+                }
+            }
+
+            //Get supporting info
+            var endQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
+            /*var endQS = "";
+            appropriationsChecked.forEach(function(appVal){
+                endQS += "^ft_project_appropriation_ref.appropriation_ref!=" + appVal;
+            });*/
+            endQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_void=false");
+            endQ.groupBy("ft_allocation_group_ref");
+            endQ.groupBy("ft_project_ref");
+            endQ.groupBy("ft_project_appropriation_ref");
+            endQ.groupBy("proj_organization_ref");
+            endQ.groupBy("proj_investment");
+            endQ.groupBy("ft_tran_type");
+            endQ.addAggregate("SUM", "fti_item_total");
+            endQ.query();
+            while(endQ.next()){
+
+                var endprojVal = endQ.ft_project_ref.toString();
+                var endallocGroupVal = endQ.ft_allocation_group_ref.toString();
+                var endappropVal = endQ.ft_project_appropriation_ref.appropriation_ref.toString();
+                var endorgVal = endQ.proj_organization_ref.toString();
+
+                var endObj = {};
+                var isExists = false;
+
+                //check for existing object in the array
+                var prevData = data.reportData.filter(function(el) {
+                    return el.project_ref == endprojVal &amp;&amp; el.allocation_group_ref == endallocGroupVal &amp;&amp; el.appropriation_ref == endappropVal &amp;&amp; el.org_ref == endorgVal;
+                });
+
+                if (prevData.length &gt; 0){ //use existing object
+                    isExists = true;
+                    endObj = prevData[0];
+                }
+                    
+                if (!isExists) { //new entry to the array, define the default values
+                    endObj.org_ref = endorgVal;
+                    endObj.org_name = endQ.proj_organization_ref.getDisplayValue();
+                    endObj.project = endQ.ft_project_ref.getDisplayValue();
+                    endObj.project_ref = endprojVal;
+                    endObj.omb_project = endQ.ft_project_ref.omb_project_name.toString();
+                    endObj.investment = endQ.proj_investment.investment.getDisplayValue();
+                    //endObj.appropriation_type = endQ.ft_project_appropriation_ref.appropriation_ref.appropration_type.getDisplayValue();
+                    //endObj.appropriation_type_ref = endQ.ft_project_appropriation_ref.appropriation_ref.appropration_type.toString();
+                    endObj.appropriation_type = "";
+                    endObj.appropriation_type_ref = "";
+                    endObj.appropriation = endQ.ft_project_appropriation_ref.appropriation_ref.getDisplayValue();
+                    endObj.appropriation_ref = endappropVal;
+                    endObj.allocation_group = endQ.ft_allocation_group_ref.getDisplayValue();
+                    endObj.allocation_group_ref = endallocGroupVal;
+                    endObj.allocations = 0;
+                    endObj.reimbursements = 0;
+                    endObj.trans_in = 0;
+                    endObj.trans_out = 0;
+                    endObj.toaa = 0;
+                    endObj.toa = 0;
+                    endObj.vg_labor = 0;
+                    endObj.off_adjustments = 0;
+                    endObj.expended = 0;
+                    endObj.balance = 0;
+                }
+
+                var finalCost = parseFloat(endQ.getAggregate("SUM", "fti_item_total"));
+                if (endQ.ft_tran_type == "TE" || endQ.ft_tran_type == "TI" || endQ.ft_tran_type == "TVGT") {
+                    endObj.trans_out += finalCost;
+                } else if (endQ.ft_tran_type == "TVGL") {
+                    endObj.vg_labor += finalCost;
+                } else if (endQ.ft_tran_type == "TOA") {
+                    endObj.toa += finalCost;
+                } else {
+                    endObj.expended += finalCost;
+                }
+
+                if (!isExists) {
+                    data.reportData.push(endObj);
+                }
+
+            }
+
+            //total and make negative
+            data.reportData.forEach(function(item){
+                item.vg_labor = item.vg_labor * -1;
+                item.trans_out = item.trans_out * -1;
+                item.expended = item.expended * -1;
+                item.off_adjustments = (item.toaa - item.toa);
+                item.balance = item.allocations + item.trans_in + item.reimbursements + item.toaa + item.vg_labor + item.toa + item.trans_out + item.expended;
+            });
+
+        }
+    }
+
+
+
+    data.orgData = FMSUtility.getAllAllocationData(FMSConstants.TABLE_ORGANIZATION, '', true);
+    data.orgData.sort(function (a, b) {
+        var x = a.organization_display.toLowerCase();
+        var y = b.organization_display.toLowerCase();
+        if (x &lt; y) {
+            return -1;
+        }
+        if (x &gt; y) {
+            return 1;
+        }
+        return 0;
+    });
+
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;RoseJL@state.gov&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-06-15 16:19:28&lt;/sys_created_on&gt;&lt;sys_id&gt;9ae979671b9d90101f7e113d9c4bcbec&lt;/sys_id&gt;&lt;sys_mod_count&gt;2&lt;/sys_mod_count&gt;&lt;sys_name&gt;Baseline Activity Report&lt;/sys_name&gt;&lt;sys_package display_value="FMS" source="x_g_irm_fms"&gt;c728dd331b3fc8100a4a10ad9c4bcbb6&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="FMS"&gt;c728dd331b3fc8100a4a10ad9c4bcbb6&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_9ae979671b9d90101f7e113d9c4bcbec&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;RoseJL@state.gov&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-06-15 16:23:20&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div style="width: 100%; height: 100%"&gt;
+
+    &lt;div class="container"&gt;
+        &lt;div class="control-panel"&gt;
+            &lt;div class="row"&gt;
+                &lt;div class="col-sm-3 form-group"&gt;
+                    &lt;widget id="organization_selection" options='{"hide_widget": false, "hide_project": true}'&gt;&lt;/widget&gt;
+                &lt;/div&gt;
+                &lt;div class="col-sm-3 form-group"&gt;
+                    &lt;label for="selFY" class="selectLabel"&gt;FY:&lt;/label&gt;
+                    &lt;select class="reportSelect" id="selFY" ng-model="c.reportOptions.selectedFY" ng-change="c.generateReport();"&gt;
+                        &lt;option value=""&gt;-Select-&lt;/option&gt;
+                        &lt;option ng-repeat="year in c.fiscalYears" value="{{year}}"&gt;{{year}}
+                        &lt;/option&gt;
+                    &lt;/select&gt;
+                &lt;/div&gt;
+                &lt;div class="col-sm-6 form-group"&gt;
+                    &lt;a href="javascript:void(0)" ng-click="c.exportToCsv();" class="btn btn-success new-button"&gt;Export to Excel&lt;/a&gt;
+                    &lt;a href="javascript:void(0)" ng-click="c.toggleExpand(false);" class="btn btn-info new-button"&gt;Collapse All Rows&lt;/a&gt;
+                    &lt;a href="javascript:void(0)" ng-click="c.toggleExpand(true);" class="btn btn-info new-button"&gt;Expand All Rows&lt;/a&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="row"&gt;
+            &lt;div class="col-sm-12"&gt;
+                &lt;div id="reportGrid" class="ag-theme-balham full-grid"&gt;&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>451690415</payload_hash>
+        <record_name>Baseline Activity Report</record_name>
+        <reverted_from/>
+        <source>569811731b3fc8100a4a10ad9c4bcb1a</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-06-15 16:23:20</sys_created_on>
+        <sys_id>b6caf1e71b9d90101f7e113d9c4bcb7e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172b8cad5310000001</sys_recorded_at>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-15 16:23:20</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>fecaf1e71c9d9010f70657d82f66547d</update_guid>
+        <update_guid_history>fecaf1e71c9d9010f70657d82f66547d:451690415,8f1a75a78b9d9010f52563c0a00bff28:-632139455,92e979676d9d90100f75a6b5f388c5ee:-1574750584</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="Baseline Activity Report">3c6106231bdd90101f7e113d9c4bcb7a</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-06-15 16:52:08</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>5e1e4c3405a54ad88df6de0d70d2d224</sys_id>
+        <sys_metadata>9ae979671b9d90101f7e113d9c4bcbec</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Baseline Activity Report</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sp_widget_9ae979671b9d90101f7e113d9c4bcbec</sys_update_name>
+        <sys_update_version display_value="sp_widget_9ae979671b9d90101f7e113d9c4bcbec">b6caf1e71b9d90101f7e113d9c4bcb7e</sys_update_version>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-15 16:52:08</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

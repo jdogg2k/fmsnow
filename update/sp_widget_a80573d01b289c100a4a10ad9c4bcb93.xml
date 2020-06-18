@@ -133,38 +133,7 @@ c.canEdit = function(auth, data) {
 
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.full-grid {
-    width: 94vw;
-    height: calc(100vh - 210px);
-    clear: both;
-}
-.fms-list-header {
-    margin-bottom: 0px !important;
-}
-.pageLabel {
-    float: left;
-    margin-right: 10px;
-}
-.row-button {
-    cursor: pointer;
-}
-.new-button {
-    float: left;
-}
-.excel-button {
-    float: right;
-}
-.edit-pencil {
-    color: #003ade;
-    font-size: 13px;
-}
-.delete-x {
-    color: #000000;
-    font-size: 13px;
-}
-.updated-row {
-    background-color: #FFFFCC;
-}</css>
+        <css/>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -214,22 +183,22 @@ c.canEdit = function(auth, data) {
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-29 16:09:57</sys_created_on>
         <sys_id>a80573d01b289c100a4a10ad9c4bcb93</sys_id>
-        <sys_mod_count>45</sys_mod_count>
+        <sys_mod_count>49</sys_mod_count>
         <sys_name>Project Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_a80573d01b289c100a4a10ad9c4bcb93</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-02 18:25:10</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-17 15:13:01</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
     <div class="row">
       <div class="form-group col-sm-12 fms-list-header">
         <div class="fms-header-buttons">
-          <a href="javascript:void(0)" ng-click="c.addNew();" ng-show="c.canAdd()" class="btn btn-info new-button">Add Project</a>
           <a href="javascript:void(0)" ng-click="c.exportExcel();" class="btn btn-primary excel-button">Export to Excel</a>
+          <a href="javascript:void(0)" ng-click="c.addNew();" ng-show="c.canAdd()" class="btn btn-info new-button">Add Project</a>
         </div>
       </div>
     </div>

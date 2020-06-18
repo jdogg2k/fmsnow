@@ -11,22 +11,27 @@
         <short_description/>
         <size>md</size>
         <sp_column display_value="1">155a7da71b9d90101f7e113d9c4bcb2f</sp_column>
-        <sp_widget display_value="Baseline Activity Report">9ae979671b9d90101f7e113d9c4bcbec</sp_widget>
+        <sp_widget display_value="FMS Reports">ec4336811b85d0500a4a10ad9c4bcbd9</sp_widget>
         <sys_class_name>sp_instance</sys_class_name>
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-06-15 16:21:18</sys_created_on>
         <sys_id>1d5a7da71b9d90101f7e113d9c4bcb31</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_instance_1d5a7da71b9d90101f7e113d9c4bcb31</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-15 16:21:47</sys_updated_on>
+        <sys_updated_on>2020-06-15 17:19:51</sys_updated_on>
         <title/>
         <url/>
-        <widget_parameters/>
+        <widget_parameters><![CDATA[{
+	"report_type": {
+		"value": "baseline",
+		"displayValue": "baseline"
+	}
+}]]></widget_parameters>
     </sp_instance>
     <sys_translated_text action="delete_multiple" query="documentkey=1d5a7da71b9d90101f7e113d9c4bcb31"/>
 </record_update>

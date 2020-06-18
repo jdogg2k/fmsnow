@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_dependency_css_include">
+    <m2m_sp_dependency_css_include action="INSERT_OR_UPDATE">
+        <order>130</order>
+        <sp_css_include display_value="common_stylesheet">53e3ff371b5514101f7e113d9c4bcb48</sp_css_include>
+        <sp_dependency display_value="ag-grid">b352dd901b9810100a4a10ad9c4bcb1b</sp_dependency>
+        <sys_class_name>m2m_sp_dependency_css_include</sys_class_name>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2020-06-16 19:52:35</sys_created_on>
+        <sys_id>0a44f7f71b5514101f7e113d9c4bcb57</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>common_stylesheet.ag-grid</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>m2m_sp_dependency_css_include_0a44f7f71b5514101f7e113d9c4bcb57</sys_update_name>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-16 19:52:49</sys_updated_on>
+    </m2m_sp_dependency_css_include>
+</record_update>
