@@ -15,26 +15,20 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	phaseTable: FMSConstants.TABLE_BUDGET_ITEM_PHASE,
 	FMSUtility: new x_g_irm_fms.FMSUtilities(),              //helper utility for FMS queries
 	
-    getRelatedBudget: function() {
-		gs.addInfoMessage("in get related budget.....");
-		var proj = this.getParameter('proj');
-		var type = this.getParameter('type');
-		var fy = this.getParameter('fy');
-		var approved = this.getParameter('approved');
+    getRelatedBudget: function(proj, type, fy, approved) {
         var bud = new GlideRecord(this.budgetTable);
         bud.addQuery('project_ref', proj);
         bud.addQuery('budget_type', type);
         bud.addQuery('fy', fy);
 		if (approved && approved == true) {
-			bud.addQuery('budget_status', 'Submitted');
-			bud.addOrCondition('budget_status', 'Approved');
+			bud.addQuery('budget_status', 'IN', 'Submitted, Approved');
 		}
 		bud.orderByDesc('isCurrent');
 		bud.setLimit(1);
         bud.query();
         if (!bud.hasNext()) return null;
 		bud.next();
-		return JSON.stringify(bud);
+		return bud;
 	},
 	
 	adjust: function(key, adjustPct) {
@@ -284,13 +278,13 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-06-15 15:53:58</sys_created_on>
         <sys_id>07a331ef1b5d90101f7e113d9c4bcb40</sys_id>
-        <sys_mod_count>46</sys_mod_count>
+        <sys_mod_count>49</sys_mod_count>
         <sys_name>FMSBudgetUtils</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_07a331ef1b5d90101f7e113d9c4bcb40</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-18 18:04:59</sys_updated_on>
+        <sys_updated_on>2020-06-19 11:29:25</sys_updated_on>
     </sys_script_include>
 </record_update>

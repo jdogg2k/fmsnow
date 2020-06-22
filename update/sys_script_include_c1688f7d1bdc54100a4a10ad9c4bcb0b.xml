@@ -34,94 +34,7 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         return selOrg;
     },
 
-    canDeleteOrg: function(orgID) {
-
-        /* JLR - This function will check if any critical financial data is associated with an organization before allowing it to be deleted
-        */
-        var canDelete = true;
-
-        var orgAlloc = this.getTableData(FMSConstants.TABLE_ALLOCATION_POOL, "organization_ref=" + orgID);
-        var orgProjAlloc = this.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, "project_ref.organization_ref=" + orgID);
-        var orgBudget = this.getTableData(FMSConstants.TABLE_BUDGET, "project_ref.organization_ref=" + orgID);
-        var orgContract = this.getTableData(FMSConstants.TABLE_CONTRACT, "organization_ref=" + orgID);
-        var orgTrans = this.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "project_ref.organization_ref=" + orgID);
-        
-        if (orgAlloc.length > 0 || orgProjAlloc.length > 0 || orgBudget.length > 0 || orgContract.length > 0 || orgTrans.length > 0)
-            canDelete = false;
-
-        return canDelete;
-    },
-
-    canDeleteProj: function(projID) {
-
-        /* JLR - This function will check if any critical financial data is associated with a project before allowing it to be deleted
-        */
-        var canDelete = true;
-
-        var orgProjAlloc = this.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, "project_ref=" + projID);
-        var orgBudget = this.getTableData(FMSConstants.TABLE_BUDGET, "project_ref=" + projID);
-        var orgContract = this.getTableData(FMSConstants.TABLE_CONTRACT, "project_ref=" + projID);
-        var orgTrans = this.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "project_ref=" + projID);
-        
-        if (orgProjAlloc.length > 0 || orgBudget.length > 0 || orgContract.length > 0 || orgTrans.length > 0)
-            canDelete = false;
-
-        return canDelete;
-    },
-
-    canDeleteContract: function(contractID) {
-
-        /* JLR - This function will check if any critical financial data is associated with a contract before allowing it to be deleted
-        */
-        var canDelete = true;
-        var orgTrans = this.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "contract_ref=" + contractID);
-        
-        if (orgTrans.length > 0)
-            canDelete = false;
-
-        return canDelete;
-    },
-
-    canDeleteExpenseItem: function(expID) {
-
-        /* JLR - This function will check if any critical financial data is associated with an expense item before allowing it to be deleted
-        */
-        var canDelete = true;
-        var orgBudget = this.getTableData(FMSConstants.TABLE_BUDGET_ITEM, "expense_item_ref=" + expID);
-        var orgTrans = this.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM, "expense_item_ref=" + expID);
-        
-        if (orgBudget.length > 0 || orgTrans.length > 0)
-            canDelete = false;
-
-        return canDelete;
-    },
-
-	canDeletecostPool: function(poolID) {
-
-        /* JLR - This function will check if any critical financial data is associated with a category before allowing it to be deleted
-        */
-        var canDelete = true;
-        var orgTrans = this.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "cost_pool_ref=" + poolID);
-        
-        if (orgTrans.length > 0)
-            canDelete = false;
-
-        return canDelete;
-    },
-	
-    canDeleteOMBCategory: function(catID) {
-
-        /* JLR - This function will check if any critical financial data is associated with a category before allowing it to be deleted
-        */
-        var canDelete = true;
-        var orgTrans = this.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM, "omb_category_ref=" + catID);
-        
-        if (orgTrans.length > 0)
-            canDelete = false;
-
-        return canDelete;
-    },
-
+  
     convertToObject: function (obj, str) {
         str = str.split(".");
         for (var i = 0; i < str.length; i++)
@@ -375,128 +288,6 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
     },
 
-    getOrgTree: function (selID, orgType) {
-
-        /* JLR - This function will return a tree object or orgs and their parents */
-
-        var allOrgs = {};
-
-        if (orgType == "I") {
-
-            var tableQuery = new GlideRecord("x_g_irm_fms_organization");
-            tableQuery.addEncodedQuery("org_code=180000^org_type=I");
-            tableQuery.query();
-            if (tableQuery.next()) {
-                allOrgs.state = {};
-                allOrgs.text = tableQuery.getValue("org_name");
-                allOrgs.state.selected = false;
-                allOrgs.state.opened = false;
-                allOrgs.org_code = tableQuery.getValue("org_code");
-                allOrgs.sys_id = tableQuery.getValue("sys_id");
-                allOrgs.children = this.getOrgChildren(allOrgs.sys_id, selID);
-                if (allOrgs.sys_id == selID)
-                    allOrgs.state.selected = true;
-            }
-
-        } else { //build external}
-
-            var extHome = {};
-
-            var extQuery = new GlideRecord("x_g_irm_fms_organization");
-            extQuery.addEncodedQuery("sys_id=" + selID);
-            extQuery.query();
-
-            if (extQuery.next()) {
-                extHome.state = {};
-                extHome.text = extQuery.getValue("org_name");
-                extHome.state.selected = true;
-                extHome.state.opened = true;
-                extHome.org_code = extQuery.getValue("org_code");
-                extHome.sys_id = extQuery.getValue("sys_id");
-                extHome.parentID = extQuery.getValue("organization_parent_ref");
-                extHome.children = this.getOrgChildren(extHome.sys_id, selID);
-
-                if (extHome.parentID != null) {
-                    allOrgs = this.checkOrgParent(extHome);
-                } else {
-                    allOrgs = extHome;
-                }
-            }
-
-        }
-
-        return allOrgs;
-
-    },
-
-    checkOrgParent: function (existOrg) {
-
-        /* JLR - This function will return a tree object of orgs and their parents */
-
-        var orgParent = existOrg;
-
-        var parentQuery = new GlideRecord("x_g_irm_fms_organization");
-        parentQuery.addEncodedQuery("sys_id=" + existOrg.parentID);
-        parentQuery.orderBy("org_name");
-        parentQuery.query();
-        if (parentQuery.next()) {
-
-            var parentObj = {};
-            parentObj.state = {};
-            parentObj.text = parentQuery.getValue("org_name");
-            parentObj.state.selected = false;
-            parentObj.state.opened = false;
-            parentObj.org_code = parentQuery.getValue("org_code");
-            parentObj.sys_id = parentQuery.getValue("sys_id");
-            parentObj.children = [existOrg];
-
-            orgParent = parentObj;
-        }
-
-        return orgParent;
-
-    },
-
-    getOrgChildren: function (orgID, selID) {
-
-        /* JLR - This function will return a tree object of orgs and their children */
-
-        var orgKids = [];
-
-        var orgQuery = new GlideRecord("x_g_irm_fms_organization");
-        orgQuery.addEncodedQuery("organization_parent_ref=" + orgID);
-        orgQuery.orderBy("org_name");
-        orgQuery.query();
-        while (orgQuery.next()) {
-
-            var kidObj = {};
-            kidObj.state = {};
-            kidObj.text = orgQuery.getValue("org_name");
-            kidObj.state.selected = false;
-            kidObj.state.opened = false;
-            kidObj.org_code = orgQuery.getValue("org_code");
-            kidObj.sys_id = orgQuery.getValue("sys_id");
-            kidObj.children = this.getOrgChildren(kidObj.sys_id, selID);
-            if (kidObj.sys_id == selID)
-                kidObj.state.selected = true;
-            orgKids.push(kidObj);
-        }
-
-        return orgKids;
-
-    },
-
-    getOrgForBudget: function (tID) {
-        var orgID = "";
-
-        if (tID) {
-            var gr = new GlideRecord('x_g_irm_fms_budget');
-            gr.get(tID);
-            orgID = gr.project_ref.organization_ref.toString();
-        }
-
-        return orgID;
-    },
 
     getUserAuth: function () {
 
@@ -522,13 +313,13 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 18:30:12</sys_created_on>
         <sys_id>c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>142</sys_mod_count>
+        <sys_mod_count>143</sys_mod_count>
         <sys_name>FMSUtilities</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-16 17:06:53</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-19 13:40:46</sys_updated_on>
     </sys_script_include>
 </record_update>

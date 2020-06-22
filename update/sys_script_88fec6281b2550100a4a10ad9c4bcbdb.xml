@@ -11,14 +11,14 @@
         <advanced>true</advanced>
         <change_fields>false</change_fields>
         <client_callable>false</client_callable>
-        <collection>x_g_irm_fms_project</collection>
+        <collection>x_g_irm_fms_allocation_group</collection>
         <condition/>
         <description/>
         <execute_function>false</execute_function>
         <filter_condition/>
         <is_rest>false</is_rest>
         <message/>
-        <name>Project Code Unique Validation</name>
+        <name>allocation Group Validation</name>
         <order>100</order>
         <priority>100</priority>
         <rest_method/>
@@ -27,38 +27,35 @@
         <rest_service_text/>
         <rest_variables/>
         <role_conditions/>
-        <script><![CDATA[(function executeRule(current, previous /*null when async*/ ) {
-    
-	var newID = current.project_code;        //Validation for Unique Project Code
-    var uniqueCheck = new GlideRecord(FMSConstants.TABLE_PROJECT);
-	
-    uniqueCheck.addQuery("project_code", newID);
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+    var newID = current.group_name;
+    var uniqueCheck = new GlideRecord(FMSConstants.TABLE_ALLOCATION_GROUP);
+    uniqueCheck.addQuery("group_name", newID);
     uniqueCheck.query();
     if (uniqueCheck.next()) { //we have existing records with that ID, notify and cancel update
-        gs.addErrorMessage("Project Code " + newID + " is not unique. That value already exists on an existing Project.  Update Failed.");
+        gs.addErrorMessage("Allocation Group Name" + newID + " is not unique. That value already exists on an existing llocation Group.  Update Failed.");
         current.setAbortAction(true);
     }
-
-    // Add your code here
+	// Add your code here
 
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
         <sys_created_by>PuriA@state.gov</sys_created_by>
-        <sys_created_on>2020-06-18 18:56:19</sys_created_on>
+        <sys_created_on>2020-06-18 20:28:18</sys_created_on>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
-        <sys_id>8b0ab9e41be150100a4a10ad9c4bcbea</sys_id>
-        <sys_mod_count>2</sys_mod_count>
-        <sys_name>Project Code Unique Validation</sys_name>
+        <sys_id>88fec6281b2550100a4a10ad9c4bcbdb</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>allocation Group Validation</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
-        <sys_update_name>sys_script_8b0ab9e41be150100a4a10ad9c4bcbea</sys_update_name>
+        <sys_update_name>sys_script_88fec6281b2550100a4a10ad9c4bcbdb</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-19 16:39:09</sys_updated_on>
+        <sys_updated_on>2020-06-18 20:28:18</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>
-    <sys_translated_text action="delete_multiple" query="documentkey=8b0ab9e41be150100a4a10ad9c4bcbea"/>
+    <sys_translated_text action="delete_multiple" query="documentkey=88fec6281b2550100a4a10ad9c4bcbdb"/>
 </record_update>

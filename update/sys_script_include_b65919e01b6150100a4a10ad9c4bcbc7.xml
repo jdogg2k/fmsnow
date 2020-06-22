@@ -8,6 +8,8 @@
         <description/>
         <name>FMSPermissions</name>
         <script><![CDATA[var FMSPermissions = Class.create();
+var FMSUtility = new x_g_irm_fms.FMSUtilities();
+
 FMSPermissions.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	canDeleteOrg: function(orgID) {
 
@@ -15,11 +17,11 @@ FMSPermissions.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
     */
     var canDelete = true;
 
-    var orgAlloc = this.getTableData(FMSConstants.TABLE_ALLOCATION_POOL, "organization_ref=" + orgID);
-    var orgProjAlloc = this.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, "project_ref.organization_ref=" + orgID);
-    var orgBudget = this.getTableData(FMSConstants.TABLE_BUDGET, "project_ref.organization_ref=" + orgID);
-    var orgContract = this.getTableData(FMSConstants.TABLE_CONTRACT, "organization_ref=" + orgID);
-    var orgTrans = this.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "project_ref.organization_ref=" + orgID);
+    var orgAlloc = FMSUtility.getTableData(FMSConstants.TABLE_ALLOCATION_POOL, "organization_ref=" + orgID);
+    var orgProjAlloc = FMSUtility.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, "project_ref.organization_ref=" + orgID);
+    var orgBudget = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET, "project_ref.organization_ref=" + orgID);
+    var orgContract = FMSUtility.getTableData(FMSConstants.TABLE_CONTRACT, "organization_ref=" + orgID);
+    var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "project_ref.organization_ref=" + orgID);
     
     if (orgAlloc.length > 0 || orgProjAlloc.length > 0 || orgBudget.length > 0 || orgContract.length > 0 || orgTrans.length > 0)
         canDelete = false;
@@ -33,10 +35,10 @@ canDeleteProj: function(projID) {
     */
     var canDelete = true;
 
-    var orgProjAlloc = this.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, "project_ref=" + projID);
-    var orgBudget = this.getTableData(FMSConstants.TABLE_BUDGET, "project_ref=" + projID);
-    var orgContract = this.getTableData(FMSConstants.TABLE_CONTRACT, "project_ref=" + projID);
-    var orgTrans = this.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "project_ref=" + projID);
+    var orgProjAlloc = FMSUtility.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, "project_ref=" + projID);
+    var orgBudget = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET, "project_ref=" + projID);
+    var orgContract = FMSUtility.getTableData(FMSConstants.TABLE_CONTRACT, "project_ref=" + projID);
+    var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "project_ref=" + projID);
     
     if (orgProjAlloc.length > 0 || orgBudget.length > 0 || orgContract.length > 0 || orgTrans.length > 0)
         canDelete = false;
@@ -49,7 +51,7 @@ canDeleteContract: function(contractID) {
     /* JLR - This function will check if any critical financial data is associated with a contract before allowing it to be deleted
     */
     var canDelete = true;
-    var orgTrans = this.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "contract_ref=" + contractID);
+    var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "contract_ref=" + contractID);
     
     if (orgTrans.length > 0)
         canDelete = false;
@@ -62,8 +64,8 @@ canDeleteExpenseItem: function(expID) {
     /* JLR - This function will check if any critical financial data is associated with an expense item before allowing it to be deleted
     */
     var canDelete = true;
-    var orgBudget = this.getTableData(FMSConstants.TABLE_BUDGET_ITEM, "expense_item_ref=" + expID);
-    var orgTrans = this.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM, "expense_item_ref=" + expID);
+    var orgBudget = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET_ITEM, "expense_item_ref=" + expID);
+    var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM, "expense_item_ref=" + expID);
     
     if (orgBudget.length > 0 || orgTrans.length > 0)
         canDelete = false;
@@ -76,7 +78,7 @@ canDeletecostPool: function(poolID) {
     /* JLR - This function will check if any critical financial data is associated with a category before allowing it to be deleted
     */
     var canDelete = true;
-    var orgTrans = this.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "cost_pool_ref=" + poolID);
+    var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "cost_pool_ref=" + poolID);
     
     if (orgTrans.length > 0)
         canDelete = false;
@@ -89,7 +91,7 @@ canDeleteOMBCategory: function(catID) {
     /* JLR - This function will check if any critical financial data is associated with a category before allowing it to be deleted
     */
     var canDelete = true;
-    var orgTrans = this.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM, "omb_category_ref=" + catID);
+    var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM, "omb_category_ref=" + catID);
     
     if (orgTrans.length > 0)
         canDelete = false;
@@ -103,13 +105,13 @@ canDeleteOMBCategory: function(catID) {
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-06-18 16:32:15</sys_created_on>
         <sys_id>b65919e01b6150100a4a10ad9c4bcbc7</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>FMSPermissions</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_b65919e01b6150100a4a10ad9c4bcbc7</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-18 17:48:58</sys_updated_on>
+        <sys_updated_on>2020-06-19 14:15:57</sys_updated_on>
     </sys_script_include>
 </record_update>

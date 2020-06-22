@@ -22,47 +22,60 @@
         changes: false
     }
 
+	// =========== Secure budget ================
+
 	if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) {
 		c.actionStates.submit = "hide";
 		c.actionStates.adjust = "hide";
 		c.actionStates.changes = "hide";
+		c.canUpdateNotes = false;
 	}
-
+	if ((c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) || 
+		(c.data.selBudget.budget_type == "Execution" || c.data.selBudget.budget_type == "Actual")) {
+		c.actionStates.copy = "hide";
+		c.actionStates.current = "hide";
+		c.actionStates.adjust = "hide";
+		c.actionStates.changes = "hide";
+	}
+	if ((c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) && 
+		(c.data.selBudget.budget_type == "Baseline" && (c.data.selBudget.budget_status == "Working" || c.data.selBudget.budget_status == "Rejected"))) 
+		c.actionStates.submit = false;
+	else
+		c.actionStates.submit = "hide";
+	if (!c.userAuth.roles.isApprove)  
+		c.actionStates.approve = "hide";
+	if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) && c.data.selBudget.current) 
+		c.actionStates.current = false;
 	
 	// The following are ABSOLUTES (business rules - NOT dependent on security)
 	if (c.data.selBudget.budget_status != "Submitted")
 		c.actionStates.approve = "hide";
 	if (c.data.selBudget.budget_status == "Approved")
 		c.actionStates.changes = "hide";
-	checkApprovedBudget(c.data.selBudget.project_ref_rawval, c.data.selBudget.budget_type, c.data.selBudget.fy);
-	if (c.data.selBudget.isLocked)
+	if (c.data.hasApproved) 
+		c.actionStates.current = "hide";
+	if (c.data.selBudget.lLocked) {
 		c.actionStates.adjust = "hide";
-	
-	function checkApprovedBudget(proj, type, fy) {
-		var req = new GlideAjax('x_g_irm_fms.FMSBudgetUtils');
-		req.addParam('sysparm_name','getRelatedBudget');
-		req.addParam('proj', proj);		
-		req.addParam('type', type);		
-		req.addParam('fy', fy);		
-		req.addParam('approved', true);		
-//		req.getXML(hideCurrentAction);
-		req.getXML(function(response) {
-			if (!response) return;
-//			var answer = req.getXMLAnswer();
-			var bud = JSON.parse(response);
-		});
-	}
-	
-	function hideCurrentAction(response) {
-		var answer = response.responseXML.documentElement.getAttribute("answer");
-		var budget = JSON.parse(answer);
-		if (budget) {
-			c.actionStates.current = "hide";
+		if (c.selBudget.budget_type == "Actual") {
+			c.actionStates.changes = "hide";
 		}
 	}
+	// =========== end secure budget ================
 	
 	c.canUpdateNotes = function() {
-		if (c.data.selBudget.isLocked) return false;
+		if (c.data.selBudget.locked) return false;
+        if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst)) return false;
+		return true;
+	}
+
+	c.canLock = function() {
+		if (c.data.selBudget.locked) return false;
+        if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) || c.selBudget.budget_type == "Actual") return false;
+		return true;
+	}
+
+	c.canUnlock = function() {
+		if (c.data.selBudget.locked) return false;
         if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst)) return false;
 		return true;
 	}
@@ -115,16 +128,85 @@
         });
     };
 
-    c.submitBudget = function() {};
-    c.approveBudget = function() {};
-    c.rejectBudget = function() {};
-    c.newRevsion = function() {};
-    c.newVersion = function() {};
-    c.createExecution = function() {};
-    c.newCopy = function() {};
-    c.lockBudget = function() {};
-    c.unlockBudget = function() {};
-    c.makeCurrentBudget = function() {};
+    c.submitBudget = function() {
+        c.server.get({
+            mode: "submit",
+            budget_id: c.data.selBudget.sys_id
+        }).then(function(resp) {
+            c.data.selBudget = resp.data.selBudget;
+        });
+    };
+    c.approveBudget = function() {
+        c.server.get({
+            mode: "approve",
+            budget_id: c.data.selBudget.sys_id
+        }).then(function(resp) {
+            c.data.selBudget = resp.data.selBudget;
+        });
+    };
+    c.rejectBudget = function() {
+        c.server.get({
+            mode: "reject",
+            budget_id: c.data.selBudget.sys_id
+        }).then(function(resp) {
+            c.data.selBudget = resp.data.selBudget;
+        });
+    };
+    c.newRevsion = function() {
+        c.server.get({
+            mode: "newRevision",
+            budget_id: c.data.selBudget.sys_id
+        }).then(function(resp) {
+            c.data.selBudget = resp.data.selBudget;
+        });
+    };
+    c.newVersion = function() {
+        c.server.get({
+            mode: "newVersion",
+            budget_id: c.data.selBudget.sys_id
+        }).then(function(resp) {
+            c.data.selBudget = resp.data.selBudget;
+        });
+    };
+    c.createExecution = function() {
+        c.server.get({
+            mode: "createExecution",
+            budget_id: c.data.selBudget.sys_id
+        }).then(function(resp) {
+            c.data.selBudget = resp.data.selBudget;
+        });
+    };
+    c.newCopy = function(type, fy) {
+        c.server.get({
+            mode: "newCopy",
+            budget_id: c.data.selBudget.sys_id,
+            budget_fy: fy,
+            budget_type: type
+        }).then(function(resp) {
+            c.data.selBudget = resp.data.selBudget;
+        });
+    };
+    c.lockBudget = function() {
+        c.server.get({
+            mode: "lockBudget"
+        }).then(function(resp) {
+            c.data.selBudget = resp.data.selBudget;
+        });
+	};
+    c.unlockBudget = function() {
+        c.server.get({
+            mode: "unlockBudget"
+        }).then(function(resp) {
+            c.data.selBudget = resp.data.selBudget;
+        });
+	};
+    c.makeCurrentBudget = function() {
+        c.server.get({
+            mode: "makeCurrent"
+        }).then(function(resp) {
+            c.data.selBudget = resp.data.selBudget;
+        });
+	};
 
     $rootScope.$on('ProjChanged', function(event, args) {
         c.server.get({
@@ -178,33 +260,42 @@
 		}
 		if (input.mode == "submitBudget") {
 			budgetUtil.submit(input.budget_id);
+			gs.addInfoMessage("Budget successfully submitted.");
 		}
 		if (input.mode == "approveBudget") {
 			budgetUtil.approve(input.budget_id);
+			gs.addInfoMessage("Budget successfully approved.");
 		}
 		if (input.mode == "rejectBudget") {
 			budgetUtil.reject(input.budget_id);
+			gs.addInfoMessage("Budget successfully rejected.");
 		}
 		if (input.mode == "newRevision") {
 			budgetUtil.newRevision(input.budget_id);
+			gs.addInfoMessage("Budget successfully created and display new revision.");
 		}
 		if (input.mode == "newVersion") {
 			budgetUtil.newVersion(input.budget_id);
+			gs.addInfoMessage("Budget successfully created and display new version.");
 		}
 		if (input.mode == "createExecution") {
 			budgetUtil.createExecution(input.budget_id);
 		}
 		if (input.mode == "newCopy") {
 			budgetUtil.newVersion(input.budget_id, input.newFY, input.newType);
+			gs.addInfoMessage("Budget successfully created and display new copy.");
 		}
 		if (input.mode == "lockBudget") {
 			budgetUtil.lock(input.budget_id);
+			gs.addInfoMessage("Budget successfully locked.");
 		}
 		if (input.mode == "unlockBudget") {
 			budgetUtil.unlock(input.budget_id);
+			gs.addInfoMessage("Budget successfully unlocked.");
 		}
 		if (input.mode == "makeCurrent") {
 			budgetUtil.makeCurrent(input.budget_id);
+			gs.addInfoMessage("Budget successfully set as current.");
 		}
     } else {
         data.fiscalYears = FMSUtility.getFiscalYears();
@@ -212,6 +303,7 @@
     }
 
     data.selBudget = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET, filter, true)[0]; //get all budget info
+    data.hasApproved = budgetUtil.getRelatedBudget(data.selBudget.project_ref_rawval, data.selBudget.budget_type, data.selBudget.fy, true);
 
 })($sp);]]></script>
         <servicenow>false</servicenow>
@@ -219,14 +311,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-15 11:52:52</sys_created_on>
         <sys_id>329351611b7c94100a4a10ad9c4bcb13</sys_id>
-        <sys_mod_count>130</sys_mod_count>
+        <sys_mod_count>145</sys_mod_count>
         <sys_name>Budget Detail</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_329351611b7c94100a4a10ad9c4bcb13</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-18 18:17:41</sys_updated_on>
+        <sys_updated_on>2020-06-22 10:43:43</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
   <widget id="organization_selection" options='{"hide_widget": true, "hide_project": true}'></widget>
   <div class="container">
@@ -238,8 +330,8 @@
           </div>
           <div class="col-sm-6">
             {{c.data.selBudget.number}}
-            <span style="background-color: lightgreen; padding-left: 20px;" ng-show="c.data.selBudget.isCurrent">Current</span>
-            <span style="background-color: lightsalmon; padding-left: 20px;" ng-show="c.data.selBudget.isLocked">Locked</span>
+            <span style="background-color: lightgreen; margin-left: 20px;" ng-show="c.data.selBudget.current">Current</span>
+            <span style="background-color: lightsalmon; margin-left: 20px;" ng-show="c.data.selBudget.locked">Locked</span>
           </div>
         </div>
         <div class="row">
@@ -385,9 +477,9 @@
               </div>
             </div>
             <div id="changes" class="tab-pane fade" ng-if="c.actionStates.changes!='hide'">
-                <a href="javascript:void(0)" ng-click="c.lockBudget();" class="btn btn-info" title="Locking a budget will prevent further changes.">
+                <a href="javascript:void(0)" ng-click="c.lockBudget();" class="btn btn-info" ng-if="c.canLock()" title="Locking a budget will prevent further changes.">
                   Lock Budget</a>
-                <a href="javascript:void(0)" ng-click="c.unlockBudget();" class="btn btn-info" title="Unlocking a budget will permit changes.">
+                <a href="javascript:void(0)" ng-click="c.unlockBudget();" class="btn btn-info" ng-if="c.canUnlock()" title="Unlocking a budget will permit changes.">
                   Unlock Budget</a>
             </div>
             <div id="current" class="tab-pane fade" ng-if="c.actionStates.current!='hide'">

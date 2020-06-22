@@ -72,6 +72,8 @@
         <roles/>
         <script><![CDATA[(function($sp) {
     var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+	var FMSOrgHelper = new x_g_irm_fms.FMSOrgHelper();
+	
     var session = gs.getSession();
 
     if ($sp.getParameter("org_id") && $sp.getParameter("org_id").length > 0)
@@ -90,11 +92,11 @@
 
     if (data.selOrg.org_type_rawval == 'I') {
 			//gs.info("org 1 "+FMSUtility.getOrgTree(data.selectedOrgID, "I"));
-        data.orgTreeData = FMSUtility.getOrgTree(data.selectedOrgID, "I");  //get internal data
+        data.orgTreeData = FMSOrgHelper.getOrgTree(data.selectedOrgID, "I");  //get internal data
 			
     } else {
 			//gs.info("org2 "+FMSUtility.getOrgTree(data.selectedOrgID, "E"));
-        data.orgTreeData = FMSUtility.getOrgTree(data.selectedOrgID, "E"); //get external data
+        data.orgTreeData = FMSOrgHelper.getOrgTree(data.selectedOrgID, "E"); //get external data
 			
     }
 
@@ -105,14 +107,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-16 17:52:24</sys_created_on>
         <sys_id>aecf09101b9810100a4a10ad9c4bcb27</sys_id>
-        <sys_mod_count>291</sys_mod_count>
+        <sys_mod_count>293</sys_mod_count>
         <sys_name>Organization Detail</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_aecf09101b9810100a4a10ad9c4bcb27</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-17 18:03:17</sys_updated_on>
+        <sys_updated_on>2020-06-19 15:26:11</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
   <widget id="organization_selection" options='{"hide_widget": true, "hide_project": true}'></widget>
   <div class="container">
