@@ -24,13 +24,13 @@
 
 	// =========== Secure budget ================
 
-	if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) {
+	if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst)) {
 		c.actionStates.submit = "hide";
 		c.actionStates.adjust = "hide";
 		c.actionStates.changes = "hide";
 		c.canUpdateNotes = false;
 	}
-	if ((c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) || 
+	if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) || 
 		(c.data.selBudget.budget_type == "Execution" || c.data.selBudget.budget_type == "Actual")) {
 		c.actionStates.copy = "hide";
 		c.actionStates.current = "hide";
@@ -54,9 +54,9 @@
 		c.actionStates.changes = "hide";
 	if (c.data.hasApproved) 
 		c.actionStates.current = "hide";
-	if (c.data.selBudget.lLocked) {
+	if (c.data.selBudget.locked) {
 		c.actionStates.adjust = "hide";
-		if (c.selBudget.budget_type == "Actual") {
+		if (c.data.selBudget.budget_type == "Actual") {
 			c.actionStates.changes = "hide";
 		}
 	}
@@ -70,7 +70,7 @@
 
 	c.canLock = function() {
 		if (c.data.selBudget.locked) return false;
-        if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) || c.selBudget.budget_type == "Actual") return false;
+        if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) || c.data.selBudget.budget_type == "Actual") return false;
 		return true;
 	}
 
@@ -90,9 +90,6 @@
     }
     c.setActiveAction = function(actionType) {
         if (c.actionStates[actionType] == false) {
-            $rootScope.$broadcast('BudgetDetailsActionChanged', {
-                grid_action: actionType
-            });
             c.actionStates[actionType] = true;
         }
     };
@@ -125,6 +122,9 @@
             adjust_pct: c.data.adjustPct * (c.data.adjustDir == "-" ? -1 : 1)
         }).then(function(resp) {
             c.data.selBudget = resp.data.selBudget;
+            $rootScope.$broadcast('BudgetChanged', {
+                budget_id: c.data.selBudget.sys_id
+            });
         });
     };
 
@@ -152,13 +152,16 @@
             c.data.selBudget = resp.data.selBudget;
         });
     };
-    c.newRevsion = function() {
+    c.newRevision = function() {
         c.server.get({
             mode: "newRevision",
             budget_id: c.data.selBudget.sys_id
         }).then(function(resp) {
             c.data.selBudget = resp.data.selBudget;
-        });
+            $rootScope.$broadcast('BudgetChanged', {
+                budget_id: c.data.selBudget.sys_id
+            });
+		});
     };
     c.newVersion = function() {
         c.server.get({
@@ -166,7 +169,10 @@
             budget_id: c.data.selBudget.sys_id
         }).then(function(resp) {
             c.data.selBudget = resp.data.selBudget;
-        });
+            $rootScope.$broadcast('BudgetChanged', {
+                budget_id: c.data.selBudget.sys_id
+            });
+		});
     };
     c.createExecution = function() {
         c.server.get({
@@ -271,19 +277,23 @@
 			gs.addInfoMessage("Budget successfully rejected.");
 		}
 		if (input.mode == "newRevision") {
-			budgetUtil.newRevision(input.budget_id);
-			gs.addInfoMessage("Budget successfully created and display new revision.");
+			data.selectedBudgetID = budgetUtil.newRevision(input.budget_id);
+			filter = "sys_id=" + data.selectedBudgetID;
+			gs.addInfoMessage("new budget ." + data.selectedBudgetID);
+			gs.addInfoMessage("Budget successfully created and displayed.");
 		}
 		if (input.mode == "newVersion") {
-			budgetUtil.newVersion(input.budget_id);
-			gs.addInfoMessage("Budget successfully created and display new version.");
+			data.selectedBudgetID = budgetUtil.newVersion(input.budget_id);
+			filter = "sys_id=" + data.selectedBudgetID;
+			gs.addInfoMessage("Budget successfully created and displayed.");
 		}
 		if (input.mode == "createExecution") {
 			budgetUtil.createExecution(input.budget_id);
 		}
 		if (input.mode == "newCopy") {
-			budgetUtil.newVersion(input.budget_id, input.newFY, input.newType);
-			gs.addInfoMessage("Budget successfully created and display new copy.");
+			data.selectedBudgetID = budgetUtil.newCopy(input.budget_id, input.newFY, input.newType);
+			filter = "sys_id=" + data.selectedBudgetID;
+			gs.addInfoMessage("Budget successfully copied and displayed.");
 		}
 		if (input.mode == "lockBudget") {
 			budgetUtil.lock(input.budget_id);
@@ -311,14 +321,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-15 11:52:52</sys_created_on>
         <sys_id>329351611b7c94100a4a10ad9c4bcb13</sys_id>
-        <sys_mod_count>145</sys_mod_count>
+        <sys_mod_count>156</sys_mod_count>
         <sys_name>Budget Detail</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_329351611b7c94100a4a10ad9c4bcb13</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-22 10:43:43</sys_updated_on>
+        <sys_updated_on>2020-06-23 14:50:14</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
   <widget id="organization_selection" options='{"hide_widget": true, "hide_project": true}'></widget>
   <div class="container">

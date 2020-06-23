@@ -6,7 +6,7 @@
         <action_insert>true</action_insert>
         <action_query>false</action_query>
         <action_update>true</action_update>
-        <active>true</active>
+        <active>false</active>
         <add_message>false</add_message>
         <advanced>true</advanced>
         <change_fields>false</change_fields>
@@ -29,15 +29,15 @@
         <role_conditions/>
         <script><![CDATA[(function executeRule(current, previous /*null when async*/ ) {
     if (current.item_qty <= 0) {
-        current.item_qty.setError("Item Quantity must be greater than zero.");
+        gs.addErrorMessage("Item Quantity must be greater than zero.");
         current.setAbortAction(true);
     }
     if (!current.received_qty.nil() && current.received_qty <= 0) {
-        current.received_qty.setError("Received Quantity must be greater than or equal to zero.");
+        gs.addErrorMessage("Received Quantity must be greater than or equal to zero.");
         current.setAbortAction(true);
     }
     if (current.item_cost == 0 && current.actual_cost == 0) {
-        current.item_cost.setError("Estimated Cost or Actual Cost is required.");
+        gs.addErrorMessage("Estimated Cost or Actual Cost is required.");
         current.setAbortAction(true);
     }
 })(current, previous);]]></script>
@@ -47,15 +47,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>8479a77f1bc410100a4a10ad9c4bcbb7</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>Financial Transaction Item Validation</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_8479a77f1bc410100a4a10ad9c4bcbb7</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-04-15 15:51:10</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-23 16:05:49</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>

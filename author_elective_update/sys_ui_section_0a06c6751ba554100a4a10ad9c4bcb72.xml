@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_section action="DELETE" caption="New Section" section_id="0a06c6751ba554100a4a10ad9c4bcb72" sys_domain="global" table="x_g_irm_fms_fin_tran_item" version="3" view="">
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>item_qty</element>
+            <position>0</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-06-22 16:58:46</sys_created_on>
+            <sys_id>8606c6751ba554100a4a10ad9c4bcb97</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="New Section" display_value="New Section" name="x_g_irm_fms_fin_tran_item" sys_domain="global" view="Default view">0a06c6751ba554100a4a10ad9c4bcb72</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-06-22 16:58:46</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>received_qty</element>
+            <position>1</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-06-22 16:58:46</sys_created_on>
+            <sys_id>0e06c6751ba554100a4a10ad9c4bcb97</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="New Section" display_value="New Section" name="x_g_irm_fms_fin_tran_item" sys_domain="global" view="Default view">0a06c6751ba554100a4a10ad9c4bcb72</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-06-22 16:58:46</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.split</element>
+            <position>2</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-06-22 16:58:46</sys_created_on>
+            <sys_id>8206c6751ba554100a4a10ad9c4bcb98</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="New Section" display_value="New Section" name="x_g_irm_fms_fin_tran_item" sys_domain="global" view="Default view">0a06c6751ba554100a4a10ad9c4bcb72</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-06-22 16:58:46</sys_updated_on>
+            <sys_user/>
+            <type>.split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>item_cost</element>
+            <position>3</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-06-22 16:58:46</sys_created_on>
+            <sys_id>0a06c6751ba554100a4a10ad9c4bcb98</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="New Section" display_value="New Section" name="x_g_irm_fms_fin_tran_item" sys_domain="global" view="Default view">0a06c6751ba554100a4a10ad9c4bcb72</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-06-22 16:58:46</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>actual_cost</element>
+            <position>4</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-06-22 16:58:46</sys_created_on>
+            <sys_id>8e06c6751ba554100a4a10ad9c4bcb98</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="New Section" display_value="New Section" name="x_g_irm_fms_fin_tran_item" sys_domain="global" view="Default view">0a06c6751ba554100a4a10ad9c4bcb72</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-06-22 16:58:46</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>item_total</element>
+            <position>5</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-06-22 16:58:46</sys_created_on>
+            <sys_id>0606c6751ba554100a4a10ad9c4bcb99</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="New Section" display_value="New Section" name="x_g_irm_fms_fin_tran_item" sys_domain="global" view="Default view">0a06c6751ba554100a4a10ad9c4bcb72</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-06-22 16:58:46</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.end_split</element>
+            <position>6</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-06-22 16:58:46</sys_created_on>
+            <sys_id>8a06c6751ba554100a4a10ad9c4bcb99</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="New Section" display_value="New Section" name="x_g_irm_fms_fin_tran_item" sys_domain="global" view="Default view">0a06c6751ba554100a4a10ad9c4bcb72</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-06-22 16:58:46</sys_updated_on>
+            <sys_user/>
+            <type>.end_split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>omb_category_ref</element>
+            <position>7</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-06-22 16:58:46</sys_created_on>
+            <sys_id>0206c6751ba554100a4a10ad9c4bcb9a</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="New Section" display_value="New Section" name="x_g_irm_fms_fin_tran_item" sys_domain="global" view="Default view">0a06c6751ba554100a4a10ad9c4bcb72</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-06-22 16:58:46</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>post_ref</element>
+            <position>8</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-06-22 16:58:46</sys_created_on>
+            <sys_id>8606c6751ba554100a4a10ad9c4bcb9a</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="New Section" display_value="New Section" name="x_g_irm_fms_fin_tran_item" sys_domain="global" view="Default view">0a06c6751ba554100a4a10ad9c4bcb72</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-06-22 16:58:46</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_section action="DELETE">
+            <caption>New Section</caption>
+            <header>false</header>
+            <name>x_g_irm_fms_fin_tran_item</name>
+            <roles/>
+            <sys_class_name>sys_ui_section</sys_class_name>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-06-22 16:58:45</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>0a06c6751ba554100a4a10ad9c4bcb72</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>New Section</sys_name>
+            <sys_overrides/>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_ui_section_0a06c6751ba554100a4a10ad9c4bcb72</sys_update_name>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-06-22 16:58:45</sys_updated_on>
+            <sys_user/>
+            <title>false</title>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_section>
+    </sys_ui_section>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_ui_section_0a06c6751ba554100a4a10ad9c4bcb72</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_ui_section caption="New Section" section_id="0a06c6751ba554100a4a10ad9c4bcb72" sys_domain="global" table="x_g_irm_fms_fin_tran_item" version="3" view=""><sys_ui_element action="INSERT_OR_UPDATE"><element>item_qty</element><position>0</position><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2020-06-22 16:58:46</sys_created_on><sys_id>8606c6751ba554100a4a10ad9c4bcb97</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="New Section" display_value="New Section" name="x_g_irm_fms_fin_tran_item" sys_domain="global" view="Default view">0a06c6751ba554100a4a10ad9c4bcb72</sys_ui_section><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2020-06-22 16:58:46</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>received_qty</element><position>1</position><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2020-06-22 16:58:46</sys_created_on><sys_id>0e06c6751ba554100a4a10ad9c4bcb97</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="New Section" display_value="New Section" name="x_g_irm_fms_fin_tran_item" sys_domain="global" view="Default view">0a06c6751ba554100a4a10ad9c4bcb72</sys_ui_section><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2020-06-22 16:58:46</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>.split</element><position>2</position><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2020-06-22 16:58:46</sys_created_on><sys_id>8206c6751ba554100a4a10ad9c4bcb98</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="New Section" display_value="New Section" name="x_g_irm_fms_fin_tran_item" sys_domain="global" view="Default view">0a06c6751ba554100a4a10ad9c4bcb72</sys_ui_section><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2020-06-22 16:58:46</sys_updated_on><sys_user/><type>.split</type></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>item_cost</element><position>3</position><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2020-06-22 16:58:46</sys_created_on><sys_id>0a06c6751ba554100a4a10ad9c4bcb98</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="New Section" display_value="New Section" name="x_g_irm_fms_fin_tran_item" sys_domain="global" view="Default view">0a06c6751ba554100a4a10ad9c4bcb72</sys_ui_section><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2020-06-22 16:58:46</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>actual_cost</element><position>4</position><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2020-06-22 16:58:46</sys_created_on><sys_id>8e06c6751ba554100a4a10ad9c4bcb98</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="New Section" display_value="New Section" name="x_g_irm_fms_fin_tran_item" sys_domain="global" view="Default view">0a06c6751ba554100a4a10ad9c4bcb72</sys_ui_section><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2020-06-22 16:58:46</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>item_total</element><position>5</position><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2020-06-22 16:58:46</sys_created_on><sys_id>0606c6751ba554100a4a10ad9c4bcb99</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="New Section" display_value="New Section" name="x_g_irm_fms_fin_tran_item" sys_domain="global" view="Default view">0a06c6751ba554100a4a10ad9c4bcb72</sys_ui_section><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2020-06-22 16:58:46</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>.end_split</element><position>6</position><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2020-06-22 16:58:46</sys_created_on><sys_id>8a06c6751ba554100a4a10ad9c4bcb99</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="New Section" display_value="New Section" name="x_g_irm_fms_fin_tran_item" sys_domain="global" view="Default view">0a06c6751ba554100a4a10ad9c4bcb72</sys_ui_section><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2020-06-22 16:58:46</sys_updated_on><sys_user/><type>.end_split</type></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>omb_category_ref</element><position>7</position><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2020-06-22 16:58:46</sys_created_on><sys_id>0206c6751ba554100a4a10ad9c4bcb9a</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="New Section" display_value="New Section" name="x_g_irm_fms_fin_tran_item" sys_domain="global" view="Default view">0a06c6751ba554100a4a10ad9c4bcb72</sys_ui_section><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2020-06-22 16:58:46</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>post_ref</element><position>8</position><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2020-06-22 16:58:46</sys_created_on><sys_id>8606c6751ba554100a4a10ad9c4bcb9a</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="New Section" display_value="New Section" name="x_g_irm_fms_fin_tran_item" sys_domain="global" view="Default view">0a06c6751ba554100a4a10ad9c4bcb72</sys_ui_section><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2020-06-22 16:58:46</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_section action="INSERT_OR_UPDATE"><caption>New Section</caption><header>false</header><name>x_g_irm_fms_fin_tran_item</name><roles/><sys_class_name>sys_ui_section</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2020-06-22 16:58:45</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>0a06c6751ba554100a4a10ad9c4bcb72</sys_id><sys_mod_count>0</sys_mod_count><sys_name>New Section</sys_name><sys_overrides/><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_ui_section_0a06c6751ba554100a4a10ad9c4bcb72</sys_update_name><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2020-06-22 16:58:45</sys_updated_on><sys_user/><title>false</title><view display_value="Default view" name="NULL">Default view</view><view_name/></sys_ui_section></sys_ui_section></record_update>]]></payload>
+        <payload_hash>1820096731</payload_hash>
+        <record_name>Financial Transaction Item</record_name>
+        <reverted_from/>
+        <source>9879d5b51be154100a4a10ad9c4bcbe0</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-06-22 16:58:46</sys_created_on>
+        <sys_id>c606c6751ba554100a4a10ad9c4bcb9c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172dcf7cb340000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-22 16:58:46</sys_updated_on>
+        <type>Form Layout</type>
+        <update_guid>4206c67504a55410322a4b93f2546e9c</update_guid>
+        <update_guid_history>4206c67504a55410322a4b93f2546e9c:1820096731</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-06-22 17:00:09</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_section">sys_ui_section</sys_db_object>
+        <sys_id>e80645e2c3684ea390b0b778947ed379</sys_id>
+        <sys_metadata>0a06c6751ba554100a4a10ad9c4bcb72</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>New Section</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent display_value="Financial Transaction Item">d598095a1b8014500a4a10ad9c4bcb46</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_ui_section_0a06c6751ba554100a4a10ad9c4bcb72</sys_update_name>
+        <sys_update_version display_value="sys_ui_section_0a06c6751ba554100a4a10ad9c4bcb72">c606c6751ba554100a4a10ad9c4bcb9c</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-22 17:00:09</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

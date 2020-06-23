@@ -29,15 +29,15 @@
         <role_conditions/>
         <script><![CDATA[(function executeRule(current, previous /*null when async*/ ) {
     if (current.tran_status.toUpperCase() == "COMMITTED" && current.obligation.toString().length == 0) {
-        current.obligation.setError("Obligation Number is required when status is 'Committed'.");
+        gs.addErrorMessage("Obligation Number is required when status is 'Committed'.");
         current.setAbortAction(true);
     }
     if (current.tran_status.toUpperCase() == "OBLIGATED" && current.obligation_date.nil()) {
-        current.obligation_date.setError("Obligation Date is required when status is 'Obligated'.");
+        gs.addErrorMessage("Obligation Date is required when status is 'Obligated'.");
         current.setAbortAction(true);
     }
     if (current.tran_status.toUpperCase() == "OBLIGATED" && current.allocation_group_ref.nil()) {
-        current.allocation_group_ref.setError("Allocation Group is required when status is 'Obligated'.");
+        gs.addErrorMessage("Allocation Group is required when status is 'Obligated'.");
         current.setAbortAction(true);
     }
 })(current, previous);]]></script>
@@ -47,15 +47,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>ae09237f1bc410100a4a10ad9c4bcbf5</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>Financial Transaction Validation</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_ae09237f1bc410100a4a10ad9c4bcbf5</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-04-15 15:46:14</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-23 15:17:15</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>

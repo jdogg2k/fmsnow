@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script_client">
+    <sys_script_client action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <applies_extended>false</applies_extended>
+        <condition/>
+        <description/>
+        <field>actual_cost</field>
+        <global>true</global>
+        <isolate_script>true</isolate_script>
+        <messages/>
+        <name>Field Validations</name>
+        <order/>
+        <script><![CDATA[function onSubmit() {
+    //Type appropriate comment here, and begin script below
+    if (g_form.getValue('item_qty') <= 0) {
+        g_form.showErrorBox('item_qty', "Item Quantity must be greater than zero.");
+        return false;
+    }
+    if (g_form.getValue('received_qty') <= 0) {
+        g_form.showErrorBox('received_qty', "Received Quantity must be greater than or equal to zero.");
+        return false;
+    }
+    if (g_form.getValue('item_cost') == 0 && g_form.getValue('actual_cost') == 0) {
+        g_form.showFieldMsg("Estimated Cost or Actual Cost is required.");
+        return false;
+    }
+}]]></script>
+        <sys_class_name>sys_script_client</sys_class_name>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2020-06-23 16:04:55</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>84e043461be594100a4a10ad9c4bcb70</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Field Validations</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_script_client_84e043461be594100a4a10ad9c4bcb70</sys_update_name>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-23 16:04:55</sys_updated_on>
+        <table>x_g_irm_fms_fin_tran_item</table>
+        <type>onSubmit</type>
+        <ui_type>10</ui_type>
+        <view/>
+    </sys_script_client>
+</record_update>

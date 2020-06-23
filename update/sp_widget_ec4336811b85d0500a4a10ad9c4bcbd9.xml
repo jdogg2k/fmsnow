@@ -149,6 +149,48 @@
                 type: 'currency',
                 enableValue: true
 			});
+			colArray.push({
+                headerName: 'Execution',
+                field: 'execution',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+			});
+			colArray.push({
+                headerName: 'Transfer',
+                field: 'transfer',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+			});
+			colArray.push({
+                headerName: 'In Progress',
+                field: 'in_progress',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+			});
+			colArray.push({
+                headerName: 'Initiated',
+                field: 'initiated',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+			});
+			colArray.push({
+                headerName: 'Committed',
+                field: 'committed',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+			});
+			colArray.push({
+                headerName: 'Obligated',
+                field: 'obligated',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+			});
 		}
 
         if (c.data.reportType == "allocation") {
@@ -508,6 +550,32 @@
 	var orgName = "";
 	var session = gs.getSession();
 
+	var setBaselineDefaults = function(calcQ, multiOrgs) {
+		var baseSupObj = {};
+		baseSupObj.expense_item_ref = calcQ.fti_expense_item_ref.toString();
+		baseSupObj.budget_ref = "";
+		baseSupObj.budget_type = "";
+		baseSupObj.org_ref = calcQ.proj_organization_ref.toString();
+		baseSupObj.org_name = calcQ.proj_organization_ref.getDisplayValue();
+		baseSupObj.project = calcQ.ft_project_ref.getDisplayValue();
+		baseSupObj.omb_project = calcQ.ft_project_ref.omb_project_name.toString();
+		baseSupObj.project_ref = calcQ.ft_project_ref.toString();
+		baseSupObj.investment = calcQ.proj_investment.investment.getDisplayValue();
+		baseSupObj.activity_code = calcQ.fti_expense_item_ref.activity_code.toString();
+		if (multiOrgs)
+			baseSupObj.activity_code = calcQ.fti_expense_item_ref.parent_expense_item_ref.activity_code.toString();
+		baseSupObj.budget_code = calcQ.fti_expense_item_ref.budget_code_ref.getDisplayValue();
+		baseSupObj.baseline = 0;
+		baseSupObj.execution = 0;
+		baseSupObj.transfer = 0;
+		baseSupObj.in_progress = 0;
+		baseSupObj.initiated = 0;
+		baseSupObj.committed = 0;
+		baseSupObj.obligated = 0;
+		baseSupObj.balance = 0;
+		return baseSupObj;
+	}
+
 	if ($sp.getParameter("org_id") && $sp.getParameter("org_id").length > 0)
 		data.selectedOrgID = $sp.getParameter("org_id");
 	else
@@ -515,19 +583,19 @@
 
 	if (input) {
 		if (input.mode == "buildReport") {
-            data.reportData = [];
-            
-            //get org name
-            var orgQ = new GlideRecord(FMSConstants.TABLE_ORGANIZATION);
-            orgQ.addQuery("sys_id", data.selectedOrgID);
-            orgQ.query();
-            if (orgQ.next()) {
-                orgName = orgQ.org_name.toString();
-            }
+			data.reportData = [];
 
-            var allOrgs = OrgHierarchy.getOrgChildren(data.selectedOrgID);
-            allOrgs.push(data.selectedOrgID);
-                
+			//get org name
+			var orgQ = new GlideRecord(FMSConstants.TABLE_ORGANIZATION);
+			orgQ.addQuery("sys_id", data.selectedOrgID);
+			orgQ.query();
+			if (orgQ.next()) {
+				orgName = orgQ.org_name.toString();
+			}
+
+			var allOrgs = OrgHierarchy.getOrgChildren(data.selectedOrgID);
+			allOrgs.push(data.selectedOrgID);
+
 			if (data.reportType == "allocation") {
 
 
@@ -693,38 +761,132 @@
 					item.off_adjustments = (item.toaa - item.toa);
 					item.balance = item.allocations + item.trans_in + item.reimbursements + item.toaa + item.vg_labor + item.toa + item.trans_out + item.expended;
 				});
-            }
-            
-            if (data.reportType == "baseline") {
-                var baseQ = new GlideAggregate(FMSConstants.TABLE_BUDGET_ITEM);
-				baseQ.addEncodedQuery("budget_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^budget_ref.fy=" + input.fy + "^budget_ref.budget_type=Baseline");
-                baseQ.groupBy("budget_ref");
-                baseQ.groupBy("expense_item_ref");
-                baseQ.addAggregate("SUM", "budget_amt");
+			}
+
+			if (data.reportType == "baseline") {
+
+				var baseProjects = "";
+				var baseQ = new GlideAggregate(FMSConstants.TABLE_BUDGET_ITEM);
+				baseQ.addEncodedQuery("budget_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^budget_ref.fy=" + input.fy);
+				baseQ.groupBy("budget_ref");
+				baseQ.groupBy("expense_item_ref");
+				baseQ.groupBy("budget_ref.budget_type");
+				baseQ.addAggregate("SUM", "budget_amt");
 				baseQ.query();
+
 				while (baseQ.next()) {
 
-                    var reportObj = {};
-                    reportObj.org_ref = baseQ.budget_ref.project_ref.organization_ref.toString();
-                    reportObj.org_name = baseQ.budget_ref.project_ref.organization_ref.getDisplayValue();
-                    reportObj.project = baseQ.budget_ref.project_ref.getDisplayValue();
-                    reportObj.omb_project = baseQ.budget_ref.project_ref.omb_project_name.toString();
-                    reportObj.project_ref = baseQ.budget_ref.project_ref.toString();
-                    reportObj.investment = baseQ.budget_ref.project_ref.investment.investment.toString();
-                    reportObj.activity_code = baseQ.expense_item_ref.activity_code.toString();
-                    reportObj.act_code = baseQ.expense_item_ref.activity_code.toString();
-                    reportObj.budget_code = baseQ.expense_item_ref.budget_code_ref.getDisplayValue();
-                    reportObj.baseline = parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
-                    reportObj.balance = 0;
-                    
-                    data.reportData.push(reportObj);
-                }
-            }
+					var reportObj = {};
+					var baseExists = false;
+					var budgetRef = baseQ.budget_ref.toString();
+					var expRef = baseQ.expense_item_ref.toString();
+					var typeRef = baseQ.budget_ref.budget_type.toString();
+
+					//check for existing object in the array
+					var existBaseline = data.reportData.filter(function (el) {
+						return el.budget_ref == budgetRef && el.expense_item_ref == expRef && el.budget_type == typeRef;
+					});
+
+					if (existBaseline.length > 0) { //use existing object
+						baseExists = true;
+						reportObj = existBaseline[0];
+					}
+
+					if (!baseExists) { //new entry to the array, define the default values
+
+						reportObj.expense_item_ref = expRef;
+						reportObj.budget_ref = budgetRef;
+						reportObj.budget_type = typeRef;
+						reportObj.org_ref = baseQ.budget_ref.project_ref.organization_ref.toString();
+						reportObj.org_name = baseQ.budget_ref.project_ref.organization_ref.getDisplayValue();
+						reportObj.project = baseQ.budget_ref.project_ref.getDisplayValue();
+						reportObj.omb_project = baseQ.budget_ref.project_ref.omb_project_name.toString();
+						reportObj.project_ref = baseQ.budget_ref.project_ref.toString();
+						reportObj.investment = baseQ.budget_ref.project_ref.investment.investment.toString();
+						reportObj.activity_code = baseQ.expense_item_ref.activity_code.toString();
+						if (allOrgs.length > 1)
+							reportObj.activity_code = baseQ.expense_item_ref.parent_expense_item_ref.activity_code.toString();
+						reportObj.budget_code = baseQ.expense_item_ref.budget_code_ref.getDisplayValue();
+						reportObj.baseline = 0;
+						reportObj.execution = 0;
+						reportObj.transfer = 0;
+						reportObj.in_progress = 0;
+						reportObj.initiated = 0;
+						reportObj.committed = 0;
+						reportObj.obligated = 0;
+						reportObj.balance = 0;
+
+						baseProjects += reportObj.project_ref + ",";
+
+					}
+
+					if (reportObj.budget_type == "Baseline") {
+						reportObj.baseline += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
+					}
+
+					if (reportObj.budget_type == "Execution") {
+						reportObj.execution += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
+					}
+
+					data.reportData.push(reportObj);
+				}
+
+				var calcQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
+				calcQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_tran_type=TVGL^ORft_tran_type=TE^ORft_tran_type=TI^ORft_tran_type=TOA^ORft_tran_type=TVGT^ft_void=false");
+				calcQ.groupBy("ft_project_ref");
+				calcQ.groupBy("fti_expense_item_ref");
+				calcQ.groupBy("proj_organization_ref");
+				calcQ.addAggregate("SUM", "fti_item_total");
+				calcQ.query();
+				while (calcQ.next()) {
+					
+					//if (baseProjects.indexOf(calcQ.ft_project_ref.toString()) > -1) {
+
+						var baseSupObj = {};
+						baseSupObj = setBaselineDefaults(calcQ, (allOrgs.length > 1));
+						baseSupObj.transfer = parseFloat(calcQ.getAggregate("SUM", "fti_item_total"));
+						data.reportData.push(baseSupObj);
+
+					//}
+				}
+
+				var inProgQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
+				inProgQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_tran_type!=TVGL^ft_tran_type!=TE^ft_tran_type!=TI^ft_tran_type!=TOA^ft_tran_type!=TVGT^ft_void=false");
+				inProgQ.groupBy("ft_project_ref");
+				inProgQ.groupBy("fti_expense_item_ref");
+				inProgQ.groupBy("proj_organization_ref");
+				inProgQ.groupBy("ft_tran_status");
+				inProgQ.addAggregate("SUM", "fti_item_total");
+				inProgQ.query();
+				while (inProgQ.next()) {
+
+					var progressObj = {};
+					progressObj = setBaselineDefaults(inProgQ, (allOrgs.length > 1));
+
+					if (inProgQ.ft_tran_status == "In-Progress")
+						progressObj.in_progress = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
+
+					if (inProgQ.ft_tran_status == "Initiated")
+						progressObj.initiated = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
+
+					if (inProgQ.ft_tran_status == "Committed")
+						progressObj.committed = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
+
+					if (inProgQ.ft_tran_status == "Obligated")
+						progressObj.obligated = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
+
+					data.reportData.push(progressObj);
+
+				}
+
+				//calculate balances
+				data.reportData.forEach(function (item) {
+					item.balance = item.execution - (item.transfer + item.in_progress + item.initiated + item.committed + item.obligated);
+				});
+			}
 
 		}
 	}
-
-
 
 	data.orgData = FMSUtility.getAllAllocationData(FMSConstants.TABLE_ORGANIZATION, '', true);
 	data.orgData.sort(function (a, b) {
@@ -746,14 +908,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>275</sys_mod_count>
+        <sys_mod_count>306</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-15 20:23:17</sys_updated_on>
+        <sys_updated_on>2020-06-23 15:42:13</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">

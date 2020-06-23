@@ -14,7 +14,7 @@
                 <element inactive_on_update="false" label="Working" value="Working"/>
             </choice>
         </element>
-        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;    var items = new GlideRecord('x_g_irm_fms_budget_item');&#13;&#10;    items.addQuery('budget_ref', current.sys_id);&#13;&#10;    items.query();&#13;&#10;    var total = 0;&#13;&#10;    while (items.next()) {&#13;&#10;        total += parseFloat(items.budget_amt);&#13;&#10;    }&#13;&#10;    return total; &#13;&#10;})(current);" label="Budget Total" max_length="20" name="budget_total_amt" read_only="true" type="currency" virtual="true"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var total = 0;&#13;&#10;&#9;&#13;&#10;&#9;if (current.budget_type != &quot;&quot;) {&#13;&#10;&#9;&#9;var items = new GlideRecord('x_g_irm_fms_budget_item');&#13;&#10;&#9;&#9;items.addQuery('budget_ref', current.sys_id);&#13;&#10;&#9;&#9;items.query();&#13;&#10;&#9;&#9;while (items.next()) {&#13;&#10;&#9;&#9;&#9;total += parseFloat(items.budget_amt);&#13;&#10;&#9;&#9;}&#13;&#10;&#9;}&#13;&#10;   &#13;&#10;    return total; &#13;&#10;})(current);" label="Budget Total" max_length="20" name="budget_total_amt" read_only="true" type="currency" virtual="true"/>
         <element choice="1" label="Budget Type" mandatory="true" max_length="10" name="budget_type" type="string">
             <choice>
                 <element inactive_on_update="false" label="Actual" value="Actual"/>

@@ -149,6 +149,14 @@
     phaseManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst));
 	$timeout(function () { phaseManager.fitColumns(); }, 250);
 
+    $rootScope.$on('BudgetChanged', function(event, args) {
+        c.server.get({
+            mode: "refresh",
+            budget_id: args.budget_id
+        }).then(function(resp) {
+            phaseManager.setGridData(resp.data.tableData); //set grid data
+        });
+    });
 }]]></client_script>
         <controller_as>c</controller_as>
         <css/>
@@ -200,14 +208,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-19 12:52:41</sys_created_on>
         <sys_id>8aa78eba1b34d8100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>79</sys_mod_count>
+        <sys_mod_count>80</sys_mod_count>
         <sys_name>Budget Item Phase Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_8aa78eba1b34d8100a4a10ad9c4bcb0b</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-17 18:20:11</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-23 12:23:03</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
