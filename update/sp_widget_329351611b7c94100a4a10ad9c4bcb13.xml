@@ -4,7 +4,7 @@
         <client_script><![CDATA[function($rootScope, $location) {
     /* widget controller */
     var c = this;
-	c.userAuth = $rootScope.userAuth;
+    c.userAuth = $rootScope.userAuth;
 
     c.gridStates = {
         items: true,
@@ -22,64 +22,77 @@
         changes: false
     }
 
-	// =========== Secure budget ================
 
-	if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst)) {
-		c.actionStates.submit = "hide";
-		c.actionStates.adjust = "hide";
-		c.actionStates.changes = "hide";
-		c.canUpdateNotes = false;
-	}
-	if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) || 
-		(c.data.selBudget.budget_type == "Execution" || c.data.selBudget.budget_type == "Actual")) {
-		c.actionStates.copy = "hide";
-		c.actionStates.current = "hide";
-		c.actionStates.adjust = "hide";
-		c.actionStates.changes = "hide";
-	}
-	if ((c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) && 
-		(c.data.selBudget.budget_type == "Baseline" && (c.data.selBudget.budget_status == "Working" || c.data.selBudget.budget_status == "Rejected"))) 
-		c.actionStates.submit = false;
-	else
-		c.actionStates.submit = "hide";
-	if (!c.userAuth.roles.isApprove)  
-		c.actionStates.approve = "hide";
-	if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) && c.data.selBudget.current) 
-		c.actionStates.current = false;
-	
-	// The following are ABSOLUTES (business rules - NOT dependent on security)
-	if (c.data.selBudget.budget_status != "Submitted")
-		c.actionStates.approve = "hide";
-	if (c.data.selBudget.budget_status == "Approved")
-		c.actionStates.changes = "hide";
-	if (c.data.hasApproved) 
-		c.actionStates.current = "hide";
-	if (c.data.selBudget.locked) {
-		c.actionStates.adjust = "hide";
-		if (c.data.selBudget.budget_type == "Actual") {
-			c.actionStates.changes = "hide";
+    c.secureBudget = function() {
+		c.actionStates = {
+			notes: true,
+			adjust: false,
+			submit: false,
+			approve: false,
+			copy: false,
+			current: false,
+			changes: false
 		}
-	}
-	// =========== end secure budget ================
-	
-	c.canUpdateNotes = function() {
-		if (c.data.selBudget.locked) return false;
-        if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst)) return false;
-		return true;
-	}
+        // =========== Secure budget ================
+        if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst)) {
+            c.actionStates.submit = "hide";
+            c.actionStates.adjust = "hide";
+            c.actionStates.changes = "hide";
+            c.canUpdateNotes = false;
+        }
+        if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) ||
+            (c.data.selBudget.budget_type == "Execution" || c.data.selBudget.budget_type == "Actual")) {
+            c.actionStates.copy = "hide";
+            c.actionStates.current = "hide";
+            c.actionStates.adjust = "hide";
+            c.actionStates.changes = "hide";
+        }
+        if ((c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) &&
+            (c.data.selBudget.budget_type == "Baseline" && (c.data.selBudget.budget_status == "Working" || c.data.selBudget.budget_status == "Rejected")))
+            c.actionStates.submit = false;
+        else
+            c.actionStates.submit = "hide";
+        if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst || c.userAuth.roles.isApprove))
+            c.actionStates.approve = "hide";
+        if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) && c.data.selBudget.current)
+            c.actionStates.current = false;
+        if (!(c.canLock || c.canUnlock))
+            c.actionStates.changes = "hide";
 
-	c.canLock = function() {
-		if (c.data.selBudget.locked) return false;
+        // The following are ABSOLUTES (business rules - NOT dependent on security)
+        if (c.data.selBudget.budget_status != "Submitted")
+            c.actionStates.approve = "hide";
+        if (c.data.selBudget.budget_status == "Approved")
+            c.actionStates.changes = "hide";
+        if (c.data.hasApproved)
+            c.actionStates.current = "hide";
+        if (c.data.selBudget.locked) {
+            c.actionStates.adjust = "hide";
+            if (c.data.selBudget.budget_type == "Actual") {
+                c.actionStates.changes = "hide";
+            }
+        }
+        // =========== end secure budget ================
+    }
+
+    c.canUpdateNotes = function() {
+        if (c.data.selBudget.locked) return false;
+        if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst)) return false;
+        return true;
+    }
+
+    c.canLock = function() {
+        if (c.data.selBudget.locked) return false;
         if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) || c.data.selBudget.budget_type == "Actual") return false;
-		return true;
-	}
+        return true;
+    }
 
-	c.canUnlock = function() {
-		if (c.data.selBudget.locked) return false;
+    c.canUnlock = function() {
+        if (!c.data.selBudget.locked) return false;
         if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst)) return false;
-		return true;
-	}
-	
+        return true;
+    }
+
     c.setActiveGrid = function(gridType) {
         if (c.gridStates[gridType] == false) {
             $rootScope.$broadcast('BudgetDetailsGridChanged', {
@@ -99,13 +112,13 @@
             mode: "showRelated",
             project_id: c.data.selBudget.project_ref_rawval,
             budget_type: type,
-			budget_fy: c.data.selBudget.fy_rawval
+            budget_fy: c.data.selBudget.fy_rawval
         }).then(function(resp) {
             $location.url("/fms?id=budget_detail&budget_id=" + resp.data.selBudget.sys_id);
         });
     };
 
-	c.updateNotes = function() {
+    c.updateNotes = function() {
         c.server.get({
             mode: "updateNotes",
             budget_id: c.data.selBudget.sys_id,
@@ -130,26 +143,35 @@
 
     c.submitBudget = function() {
         c.server.get({
-            mode: "submit",
+            mode: "submitBudget",
             budget_id: c.data.selBudget.sys_id
         }).then(function(resp) {
             c.data.selBudget = resp.data.selBudget;
+            $rootScope.$broadcast('BudgetChanged', {
+                budget_id: c.data.selBudget.sys_id
+            });
         });
     };
     c.approveBudget = function() {
         c.server.get({
-            mode: "approve",
+            mode: "approveBudget",
             budget_id: c.data.selBudget.sys_id
         }).then(function(resp) {
             c.data.selBudget = resp.data.selBudget;
+            $rootScope.$broadcast('BudgetChanged', {
+                budget_id: c.data.selBudget.sys_id
+            });
         });
     };
     c.rejectBudget = function() {
         c.server.get({
-            mode: "reject",
+            mode: "rejectBudget",
             budget_id: c.data.selBudget.sys_id
         }).then(function(resp) {
             c.data.selBudget = resp.data.selBudget;
+            $rootScope.$broadcast('BudgetChanged', {
+                budget_id: c.data.selBudget.sys_id
+            });
         });
     };
     c.newRevision = function() {
@@ -161,7 +183,7 @@
             $rootScope.$broadcast('BudgetChanged', {
                 budget_id: c.data.selBudget.sys_id
             });
-		});
+        });
     };
     c.newVersion = function() {
         c.server.get({
@@ -172,7 +194,7 @@
             $rootScope.$broadcast('BudgetChanged', {
                 budget_id: c.data.selBudget.sys_id
             });
-		});
+        });
     };
     c.createExecution = function() {
         c.server.get({
@@ -180,6 +202,9 @@
             budget_id: c.data.selBudget.sys_id
         }).then(function(resp) {
             c.data.selBudget = resp.data.selBudget;
+            $rootScope.$broadcast('BudgetChanged', {
+                budget_id: c.data.selBudget.sys_id
+            });
         });
     };
     c.newCopy = function(type, fy) {
@@ -190,29 +215,48 @@
             budget_type: type
         }).then(function(resp) {
             c.data.selBudget = resp.data.selBudget;
+            $rootScope.$broadcast('BudgetChanged', {
+                budget_id: c.data.selBudget.sys_id
+            });
         });
     };
     c.lockBudget = function() {
         c.server.get({
-            mode: "lockBudget"
+            mode: "lockBudget",
+            budget_id: c.data.selBudget.sys_id
         }).then(function(resp) {
             c.data.selBudget = resp.data.selBudget;
+            $rootScope.$broadcast('BudgetChanged', {
+                budget_id: c.data.selBudget.sys_id
+            });
         });
-	};
+    };
     c.unlockBudget = function() {
         c.server.get({
-            mode: "unlockBudget"
+            mode: "unlockBudget",
+            budget_id: c.data.selBudget.sys_id
         }).then(function(resp) {
             c.data.selBudget = resp.data.selBudget;
+            $rootScope.$broadcast('BudgetChanged', {
+                budget_id: c.data.selBudget.sys_id
+            });
         });
-	};
+    };
     c.makeCurrentBudget = function() {
         c.server.get({
-            mode: "makeCurrent"
+            mode: "makeCurrent",
+            budget_id: c.data.selBudget.sys_id
         }).then(function(resp) {
             c.data.selBudget = resp.data.selBudget;
+            $rootScope.$broadcast('BudgetChanged', {
+                budget_id: c.data.selBudget.sys_id
+            });
         });
-	};
+    };
+
+	$rootScope.$on('BudgetChanged', function(event, args) {
+        c.secureBudget();
+    });
 
     $rootScope.$on('ProjChanged', function(event, args) {
         c.server.get({
@@ -223,6 +267,7 @@
         });
     });
 
+	c.secureBudget();
 }]]></client_script>
         <controller_as>c</controller_as>
         <css/>
@@ -258,54 +303,86 @@
 			filter = "project_ref=" + input.project_id + "^fy=" + input.budget_fy + "^budget_type=" + input.budget_type;
 		}
 		if (input.mode == "updateNotes") {
-			budgetUtil.updateNotes(input.budget_id, input.budget_notes);
+			if (budgetUtil.updateNotes(input.budget_id, input.budget_notes))
+				gs.addInfoMessage("Notes updated.");
+			else
+				gs.addErrorMessage("Note update failed.");
 		}
 		if (input.mode == "adjustBudget") {
-			budgetUtil.adjust(input.budget_id, input.adjust_pct);
-			gs.addInfoMessage("Budget successfully adjusted.");
+			if (budgetUtil.adjust(input.budget_id, input.adjust_pct))
+				gs.addInfoMessage("Budget successfully adjusted.");
+			else
+				gs.addErrorMessage("Budget adjustment failed.");
 		}
 		if (input.mode == "submitBudget") {
-			budgetUtil.submit(input.budget_id);
-			gs.addInfoMessage("Budget successfully submitted.");
+			if (budgetUtil.submit(input.budget_id))
+				gs.addInfoMessage("Budget successfully submitted.");
+			else
+				gs.addErrorMessage("Budget submission failed.");
 		}
 		if (input.mode == "approveBudget") {
-			budgetUtil.approve(input.budget_id);
-			gs.addInfoMessage("Budget successfully approved.");
+			if (budgetUtil.approve(input.budget_id))
+				gs.addInfoMessage("Budget successfully approved.");
+			else
+				gs.addErrorMessage("Budget approval failed.");
 		}
 		if (input.mode == "rejectBudget") {
-			budgetUtil.reject(input.budget_id);
-			gs.addInfoMessage("Budget successfully rejected.");
+			if (budgetUtil.reject(input.budget_id))
+				gs.addInfoMessage("Budget successfully rejected.");
+			else
+				gs.addErrorMessage("Budget rejection failed.");
 		}
 		if (input.mode == "newRevision") {
 			data.selectedBudgetID = budgetUtil.newRevision(input.budget_id);
-			filter = "sys_id=" + data.selectedBudgetID;
-			gs.addInfoMessage("new budget ." + data.selectedBudgetID);
-			gs.addInfoMessage("Budget successfully created and displayed.");
+			if (data.selectedBudgetID) {
+				filter = "sys_id=" + data.selectedBudgetID;
+				gs.addInfoMessage("Budget successfully created and displayed.");
+			}
+			else
+				gs.addErrorMessage("Budget creation failed.");
 		}
 		if (input.mode == "newVersion") {
 			data.selectedBudgetID = budgetUtil.newVersion(input.budget_id);
-			filter = "sys_id=" + data.selectedBudgetID;
-			gs.addInfoMessage("Budget successfully created and displayed.");
+			if (data.selectedBudgetID) {
+				filter = "sys_id=" + data.selectedBudgetID;
+				gs.addInfoMessage("Budget successfully created and displayed.");
+			}
+			else
+				gs.addErrorMessage("Budget creation failed.");
 		}
 		if (input.mode == "createExecution") {
-			budgetUtil.createExecution(input.budget_id);
+			data.selectedBudgetID = budgetUtil.createExecution(input.budget_id);
+			if (data.selectedBudgetID) 
+				gs.addInfoMessage("Execution Budget successfully created.");
+			else
+				gs.addErrorMessage("Failed to create Exceuction budget.");
 		}
 		if (input.mode == "newCopy") {
-			data.selectedBudgetID = budgetUtil.newCopy(input.budget_id, input.newFY, input.newType);
-			filter = "sys_id=" + data.selectedBudgetID;
-			gs.addInfoMessage("Budget successfully copied and displayed.");
+			data.selectedBudgetID = budgetUtil.newCopy(input.budget_id, input.budget_fy, input.budget_type);
+			if (data.selectedBudgetID) {
+				filter = "sys_id=" + data.selectedBudgetID;
+				gs.addInfoMessage("Budget successfully copied and displayed.");
+			}
+			else
+				gs.addErrorMessage("Budget copy failed.");
 		}
 		if (input.mode == "lockBudget") {
-			budgetUtil.lock(input.budget_id);
-			gs.addInfoMessage("Budget successfully locked.");
+			if (budgetUtil.lock(input.budget_id))
+				gs.addInfoMessage("Budget successfully locked.");
+			else
+				gs.addErrorMessage("Budget lock failed.");
 		}
 		if (input.mode == "unlockBudget") {
-			budgetUtil.unlock(input.budget_id);
-			gs.addInfoMessage("Budget successfully unlocked.");
+			if (budgetUtil.unlock(input.budget_id))
+				gs.addInfoMessage("Budget successfully unlocked.");
+			else
+				gs.addErrorMessage("Budget unlock failed.");
 		}
 		if (input.mode == "makeCurrent") {
-			budgetUtil.makeCurrent(input.budget_id);
-			gs.addInfoMessage("Budget successfully set as current.");
+			if (budgetUtil.makeCurrent(input.budget_id))
+				gs.addInfoMessage("Budget successfully set as current.");
+			else
+				gs.addErrorMessage("Failed to set current budget.");
 		}
     } else {
         data.fiscalYears = FMSUtility.getFiscalYears();
@@ -321,14 +398,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-15 11:52:52</sys_created_on>
         <sys_id>329351611b7c94100a4a10ad9c4bcb13</sys_id>
-        <sys_mod_count>156</sys_mod_count>
+        <sys_mod_count>189</sys_mod_count>
         <sys_name>Budget Detail</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_329351611b7c94100a4a10ad9c4bcb13</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-23 14:50:14</sys_updated_on>
+        <sys_updated_on>2020-06-24 15:20:36</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
   <widget id="organization_selection" options='{"hide_widget": true, "hide_project": true}'></widget>
   <div class="container">
@@ -458,7 +535,7 @@
                     Create New Version</a>
                 </div>
               </div>
-              <div class="col-sm-8">
+              <div class="col-sm-6">
                 <div class="row">
                   <div class="col-sm-3 text-right" style="padding: 0px;">
                     <label for="newFY" class="selectLabel">Fiscal Year:</label>
@@ -476,12 +553,12 @@
                     <select class="form-control" id="newType" style="width: 100px;" ng-model="c.data.newType">
                         <option value="Baseline">Baseline</option>
                         <option value="Forecast">Forecast</option>
-                        <option value="What If">WhatIf</option>
+                        <option value="WhatIf">What If</option>
                     </select>
                   </div>
                 </div>
                 <div class="row" style="text-align: center; padding-top: 10px;">  
-	              <a href="javascript:void(0)" ng-click="c.newCopy();" class="btn btn-info" title="Create a new copy when the budget type or fiscal year changes.">
+	              <a href="javascript:void(0)" ng-click="c.newCopy(c.data.newType, c.data.newFY);" class="btn btn-info" title="Create a new copy when the budget type or fiscal year changes.">
                     Create New Copy</a>
                 </div>
               </div>

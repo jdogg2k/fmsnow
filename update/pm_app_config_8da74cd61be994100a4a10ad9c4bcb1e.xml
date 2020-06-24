@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="pm_app_config">
+    <pm_app_config action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <app/>
+        <app_name>HR</app_name>
+        <application_menu/>
+        <demand_management>true</demand_management>
+        <demand_role_prefix/>
+        <dmn_demand_table/>
+        <dmn_demand_task_table/>
+        <dmn_stakeholder_register_table/>
+        <idea_table/>
+        <pm_portfolio_goal_table/>
+        <pm_portfolio_issue_table/>
+        <pm_portfolio_project_table/>
+        <pm_portfolio_risk_table/>
+        <pm_portfolio_table/>
+        <pm_program_table/>
+        <pm_program_task_table/>
+        <pm_project_table/>
+        <pm_project_task_table/>
+        <portfolio_role_prefix/>
+        <prefix>hr</prefix>
+        <program_role_prefix/>
+        <project_management>true</project_management>
+        <project_role_prefix/>
+        <project_status_table/>
+        <project_template_table/>
+        <project_template_task_table/>
+        <roles/>
+        <sys_class_name>pm_app_config</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-06-23 21:04:03</sys_created_on>
+        <sys_id>8da74cd61be994100a4a10ad9c4bcb1e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>hr</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>pm_app_config_8da74cd61be994100a4a10ad9c4bcb1e</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-23 21:04:03</sys_updated_on>
+    </pm_app_config>
+</record_update>

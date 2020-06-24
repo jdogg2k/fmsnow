@@ -28,14 +28,7 @@
         <rest_variables/>
         <role_conditions/>
         <script><![CDATA[(function executeRule(current, previous /*null when async*/ ) {
-	var newID = current.number;
-    var uniqueCheck = new GlideRecord(FMSConstants.TABLE_PROJECT_ALLOCATION);
-    uniqueCheck.addQuery("number", newID);
-    uniqueCheck.query();
-    if (uniqueCheck.next()) { //we have existing records with that ID, notify and cancel update
-        gs.addErrorMessage("Project Allocation ID " + newID + " is not unique. That value already exists on an existing Project Allocation.  Update Failed.");
-        current.setAbortAction(true);
-    }
+	
     if (current.project_ref == current.xfer_project_ref) {
         gs.addErrorMessage("The transfer project code must be different from the project code.");
         current.setAbortAction(true);
@@ -120,7 +113,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>69b920db1bc490101f7e113d9c4bcb2d</sys_id>
-        <sys_mod_count>11</sys_mod_count>
+        <sys_mod_count>13</sys_mod_count>
         <sys_name>Project Allocation Validation</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
@@ -128,7 +121,7 @@
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_69b920db1bc490101f7e113d9c4bcb2d</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-18 20:45:06</sys_updated_on>
+        <sys_updated_on>2020-06-24 15:02:37</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>

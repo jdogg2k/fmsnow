@@ -30,14 +30,6 @@
         <script><![CDATA[(function executeRule(current, previous /*null when async*/ ) {
 
     //check for unique PIID
-    var newID = current.contract_piid;
-    var uniqueCheck = new GlideRecord(FMSConstants.TABLE_CONTRACT);
-    uniqueCheck.addQuery("contract_piid", newID);
-    uniqueCheck.query();
-    if (uniqueCheck.next()){ //we have existing records with that ID, notify and cancel update
-        gs.addErrorMessage("Contract PIID " + newID + " is not unique. That value already exists on an existing contract.  Update Failed.");
-        current.setAbortAction(true);
-    }
 
     if (!current.contract_perform_start_date.nil() & !current.contract_perform_end_date.nil()) {
         if (current.contract_perform_start_date >= current.contract_perform_end_date) {
@@ -53,15 +45,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>c7bf2aff1b0410101f7e113d9c4bcbce</sys_id>
-        <sys_mod_count>7</sys_mod_count>
+        <sys_mod_count>8</sys_mod_count>
         <sys_name>Contract Validation</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_c7bf2aff1b0410101f7e113d9c4bcbce</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-18 20:14:44</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-24 15:23:47</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>

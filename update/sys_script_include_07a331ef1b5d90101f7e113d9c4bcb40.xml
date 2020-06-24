@@ -23,7 +23,7 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		if (approved && approved == true) {
 			bud.addQuery('budget_status', 'IN', 'Submitted, Approved');
 		}
-		bud.orderByDesc('isCurrent');
+		bud.orderByDesc('current');
 		bud.setLimit(1);
         bud.query();
         if (!bud.hasNext()) return null;
@@ -54,11 +54,10 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         bud.addQuery('sys_id', key);
 		bud.setLimit(1);
         bud.query();
-        if (!bud.hasNext()) return false;
+        if (!bud.hasNext()) return null;
 		bud.next();
 		bud.setValue('budget_notes', notes);
-		bud.update();
-		return true;
+		return bud.update();
 	},
 
 	submit: function(key) {
@@ -66,12 +65,11 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         bud.addQuery('sys_id', key);
 		bud.setLimit(1);
         bud.query();
-        if (!bud.hasNext()) return false;
+        if (!bud.hasNext()) return null;
 		bud.next();
 		bud.setValue('budget_status', 'Submitted');
-		bud.setValue('isLocked', true);
-		bud.update();
-		return true;
+		bud.setValue('locked', true);
+		return bud.update();
 	},
 
     approve: function(key) {
@@ -79,12 +77,15 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         bud.addQuery('sys_id', key);
 		bud.setLimit(1);
         bud.query();
-        if (!bud.hasNext()) return false;
+        if (!bud.hasNext()) return null;
 		bud.next();
 		bud.setValue('budget_status', 'Approved');
-		bud.setValue('isLocked', true);
-		bud.update();
-		return this.setCurrent(key, bud.getValue('project_ref.sys_id'), bud.getValue('fy'), bud.getValue('budget_type'));
+		bud.setValue('locked', true);
+		var budID = bud.update();
+		if (this.setCurrent(key, bud.getValue('project_ref.sys_id'), bud.getValue('fy'), bud.getValue('budget_type')))
+			return budID;
+		else
+			return null;
 	},
 
     reject: function(key) {
@@ -92,11 +93,11 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         bud.addQuery('sys_id', key);
 		bud.setLimit(1);
         bud.query();
-        if (!bud.hasNext()) return false;
+        if (!bud.hasNext()) return null;
 		bud.next();
 		bud.setValue('budget_status', 'Rejected');
-		bud.setValue('isLocked', false);
-		bud.update();
+		bud.setValue('locked', false);
+		return bud.update();
 	},
 
     newRevision: function(key) {
@@ -106,7 +107,7 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         bud.query();
         if (!bud.hasNext()) return false;
 		bud.next();
-		var lastRev = this.FMSUtility.getScalar(this.budgetTable, 'budget_revision', 'project_ref.sys_idEQ' + bud.project_ref.sys_id + '^fyEQ' + bud.fy + '^budget_typeEQ' + bud.budget_type, 'budget_revision');
+		var lastRev = this.FMSUtility.getScalar(this.budgetTable, 'budget_revision', 'project_ref.sys_id=' + bud.project_ref.sys_id + '^fy=' + bud.fy + '^budget_type=' + bud.budget_type, 'budget_revision');
         var newBudget = new GlideRecord(this.budgetTable);
 		newBudget.project_ref = bud.project_ref.sys_id;
 		newBudget.budget_type = bud.budget_type;
@@ -115,8 +116,8 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		newBudget.budget_version = bud.budget_version;
 		newBudget.budget_revision = parseInt(lastRev) + 1;
 		newBudget.budget_source_ref = key;
-		newBudget.isCurrent = false;
-		newBudget.isLocked = false;
+		newBudget.current = false;
+		newBudget.locked = false;
 		var newID = newBudget.insert();
 		var result = this.copyItems(key, newID);
 		return newID;
@@ -129,7 +130,7 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         bud.query();
         if (!bud.hasNext()) return false;
 		bud.next();
-		var lastVer = this.FMSUtility.getScalar(this.budgetTable, 'budget_version', 'project_ref.sys_idEQ' + bud.project_ref.sys_id + '^fyEQ' + bud.fy + '^budget_typeEQ' + bud.budget_type, 'budget_version');
+		var lastVer = this.FMSUtility.getScalar(this.budgetTable, 'budget_version', 'project_ref.sys_id=' + bud.project_ref.sys_id + '^fy=' + bud.fy + '^budget_type=' + bud.budget_type, 'budget_version');
         var newBudget = new GlideRecord(this.budgetTable);
 		newBudget.project_ref = bud.project_ref.sys_id;
 		newBudget.budget_type = bud.budget_type;
@@ -138,8 +139,8 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		newBudget.budget_version = parseInt(lastVer) + 1;
 		newBudget.budget_revision = 0;
 		newBudget.budget_source_ref = key;
-		newBudget.isCurrent = false;
-		newBudget.isLocked = false;
+		newBudget.current = false;
+		newBudget.locked = false;
 		var newID = newBudget.insert();
 		var result = this.copyItems(key, newID);
 		return newID;
@@ -152,17 +153,17 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         bud.query();
         if (!bud.hasNext()) return false;
 		bud.next();
-		var lastVer = this.FMSUtility.getScalar(this.budgetTable, 'budget_version', 'project_ref.sys_idEQ' + bud.project_ref.sys_id + '^fyEQ' + fy + '^budget_typeEQ' + type);
+		var lastVer = this.FMSUtility.getScalar(this.budgetTable, 'budget_version', 'project_ref.sys_id=' + bud.project_ref.sys_id + '^fy=' + fy + '^budget_type=' + type, 'budget_version');
         var newBudget = new GlideRecord(this.budgetTable);
 		newBudget.project_ref = bud.project_ref.sys_id;
-		newBudget.budget_type = bud.budget_type;
-		newBudget.fy = bud.fy;
+		newBudget.budget_type = type;
+		newBudget.fy = fy;
 		newBudget.budget_status = "Working";
 		newBudget.budget_version = parseInt(lastVer) + 1;
 		newBudget.budget_revision = 0;
 		newBudget.budget_source_ref = key;
-		newBudget.isCurrent = false;   ////should be true if nothing else is current for proj,type,fy
-		newBudget.isLocked = false;
+		newBudget.current = false;   ////should be true if nothing else is current for proj,type,fy
+		newBudget.locked = false;
 		var newID = newBudget.insert();
 		var result = this.copyItems(key, newID);
 		return newID;
@@ -183,8 +184,8 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		newBudget.budget_version = 1;
 		newBudget.budget_revision = 0;
 		newBudget.budget_source_ref = key;
-		newBudget.isCurrent = true;
-		newBudget.isLocked = false;
+		newBudget.current = true;
+		newBudget.locked = false;
 		var newID = newBudget.insert();
 		var result = this.copyItems(key, newID);
 		return newID;
@@ -195,11 +196,10 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         bud.addQuery('sys_id', key);
 		bud.setLimit(1);
         bud.query();
-        if (!bud.hasNext()) return false;
+        if (!bud.hasNext()) return null;
 		bud.next();
-		bud.setValue('isLocked', true);
-		bud.update();
-		return true;
+		bud.setValue('locked', true);
+		return bud.update();
 	},
 
     unlock: function(key) {
@@ -207,11 +207,10 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         bud.addQuery('sys_id', key);
 		bud.setLimit(1);
         bud.query();
-        if (!bud.hasNext()) return false;
+        if (!bud.hasNext()) return null;
 		bud.next();
-		bud.setValue('isLocked', false);
-		bud.update();
-		return true;
+		bud.setValue('locked', false);
+		return bud.update();
 	},
 
     makeCurrent: function(key) {
@@ -226,16 +225,16 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	
     setCurrent: function(key, project, fy, type) {
         var bud = new GlideRecord(this.budgetTable);
-        bud.addQuery('budget_fy', fy);
+        bud.addQuery('fy', fy);
         bud.addQuery('budget_type', type);
         bud.addQuery('project_ref', project);
         bud.query();
         if (!bud.hasNext()) return false;
 		while (bud.next()) {
 			if (bud.getValue('sys_id') == key) 
-				bud.setValue('isCurrent', true);
+				bud.setValue('current', true);
 			else
-				bud.setValue('isCurrent', false);
+				bud.setValue('current', false);
 			bud.update();
 		}
 		return true;
@@ -278,13 +277,13 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-06-15 15:53:58</sys_created_on>
         <sys_id>07a331ef1b5d90101f7e113d9c4bcb40</sys_id>
-        <sys_mod_count>58</sys_mod_count>
+        <sys_mod_count>71</sys_mod_count>
         <sys_name>FMSBudgetUtils</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_07a331ef1b5d90101f7e113d9c4bcb40</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-23 16:16:47</sys_updated_on>
+        <sys_updated_on>2020-06-24 15:07:30</sys_updated_on>
     </sys_script_include>
 </record_update>
