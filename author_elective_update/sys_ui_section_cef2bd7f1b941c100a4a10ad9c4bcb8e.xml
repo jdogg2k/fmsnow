@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_section action="DELETE" caption="" section_id="cef2bd7f1b941c100a4a10ad9c4bcb8e" sys_domain="global" table="x_g_irm_fms_organization" version="3" view="portal">
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>org_code</element>
+            <position>0</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-04-27 17:24:51</sys_created_on>
+            <sys_id>c6f2bd7f1b941c100a4a10ad9c4bcbd1</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_organization" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-27 17:24:51</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>org_desc</element>
+            <position>1</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-04-27 17:24:51</sys_created_on>
+            <sys_id>42f2bd7f1b941c100a4a10ad9c4bcbd2</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_organization" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-27 17:24:51</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.begin_split</element>
+            <position>2</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-04-27 17:24:51</sys_created_on>
+            <sys_id>c6f2bd7f1b941c100a4a10ad9c4bcbd2</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_organization" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-27 17:24:51</sys_updated_on>
+            <sys_user/>
+            <type>.begin_split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>org_name</element>
+            <position>3</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-04-27 17:24:51</sys_created_on>
+            <sys_id>4ef2bd7f1b941c100a4a10ad9c4bcbd2</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_organization" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-27 17:24:51</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>org_type</element>
+            <position>4</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-04-27 17:24:51</sys_created_on>
+            <sys_id>c2f2bd7f1b941c100a4a10ad9c4bcbd3</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_organization" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-27 17:24:51</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.split</element>
+            <position>5</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-04-27 17:24:51</sys_created_on>
+            <sys_id>4af2bd7f1b941c100a4a10ad9c4bcbd3</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_organization" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-27 17:24:51</sys_updated_on>
+            <sys_user/>
+            <type>.split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>organization_parent_ref</element>
+            <position>6</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-04-27 17:24:51</sys_created_on>
+            <sys_id>cef2bd7f1b941c100a4a10ad9c4bcbd3</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_organization" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-27 17:24:51</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_section action="DELETE">
+            <caption/>
+            <header>false</header>
+            <name>x_g_irm_fms_organization</name>
+            <roles/>
+            <sys_class_name>sys_ui_section</sys_class_name>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-04-27 17:24:51</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>x_g_irm_fms_organization</sys_name>
+            <sys_overrides/>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_ui_section_cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_update_name>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-27 17:24:51</sys_updated_on>
+            <sys_user/>
+            <title>false</title>
+            <view display_value="Portal" name="portal">d5d251621b1300101f7e113d9c4bcbdd</view>
+            <view_name/>
+        </sys_ui_section>
+    </sys_ui_section>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_ui_section_cef2bd7f1b941c100a4a10ad9c4bcb8e</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_ui_section caption="" section_id="cef2bd7f1b941c100a4a10ad9c4bcb8e" sys_domain="global" table="x_g_irm_fms_organization" version="3" view="portal"><sys_ui_element action="INSERT_OR_UPDATE"><element>org_code</element><position>0</position><sys_created_by>RoseJL@state.gov</sys_created_by><sys_created_on>2020-04-27 17:24:51</sys_created_on><sys_id>c6f2bd7f1b941c100a4a10ad9c4bcbd1</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_organization" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_ui_section><sys_updated_by>RoseJL@state.gov</sys_updated_by><sys_updated_on>2020-04-27 17:24:51</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>org_desc</element><position>1</position><sys_created_by>RoseJL@state.gov</sys_created_by><sys_created_on>2020-04-27 17:24:51</sys_created_on><sys_id>42f2bd7f1b941c100a4a10ad9c4bcbd2</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_organization" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_ui_section><sys_updated_by>RoseJL@state.gov</sys_updated_by><sys_updated_on>2020-04-27 17:24:51</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>.begin_split</element><position>2</position><sys_created_by>RoseJL@state.gov</sys_created_by><sys_created_on>2020-04-27 17:24:51</sys_created_on><sys_id>c6f2bd7f1b941c100a4a10ad9c4bcbd2</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_organization" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_ui_section><sys_updated_by>RoseJL@state.gov</sys_updated_by><sys_updated_on>2020-04-27 17:24:51</sys_updated_on><sys_user/><type>.begin_split</type></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>org_name</element><position>3</position><sys_created_by>RoseJL@state.gov</sys_created_by><sys_created_on>2020-04-27 17:24:51</sys_created_on><sys_id>4ef2bd7f1b941c100a4a10ad9c4bcbd2</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_organization" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_ui_section><sys_updated_by>RoseJL@state.gov</sys_updated_by><sys_updated_on>2020-04-27 17:24:51</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>org_type</element><position>4</position><sys_created_by>RoseJL@state.gov</sys_created_by><sys_created_on>2020-04-27 17:24:51</sys_created_on><sys_id>c2f2bd7f1b941c100a4a10ad9c4bcbd3</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_organization" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_ui_section><sys_updated_by>RoseJL@state.gov</sys_updated_by><sys_updated_on>2020-04-27 17:24:51</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>.split</element><position>5</position><sys_created_by>RoseJL@state.gov</sys_created_by><sys_created_on>2020-04-27 17:24:51</sys_created_on><sys_id>4af2bd7f1b941c100a4a10ad9c4bcbd3</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_organization" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_ui_section><sys_updated_by>RoseJL@state.gov</sys_updated_by><sys_updated_on>2020-04-27 17:24:51</sys_updated_on><sys_user/><type>.split</type></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>organization_parent_ref</element><position>6</position><sys_created_by>RoseJL@state.gov</sys_created_by><sys_created_on>2020-04-27 17:24:51</sys_created_on><sys_id>cef2bd7f1b941c100a4a10ad9c4bcbd3</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_organization" sys_domain="global" view="d5d251621b1300101f7e113d9c4bcbdd">cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_ui_section><sys_updated_by>RoseJL@state.gov</sys_updated_by><sys_updated_on>2020-04-27 17:24:51</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_section action="INSERT_OR_UPDATE"><caption/><header>false</header><name>x_g_irm_fms_organization</name><roles/><sys_class_name>sys_ui_section</sys_class_name><sys_created_by>RoseJL@state.gov</sys_created_by><sys_created_on>2020-04-27 17:24:51</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_id><sys_mod_count>0</sys_mod_count><sys_name>x_g_irm_fms_organization</sys_name><sys_overrides/><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_ui_section_cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_update_name><sys_updated_by>RoseJL@state.gov</sys_updated_by><sys_updated_on>2020-04-27 17:24:51</sys_updated_on><sys_user/><title>false</title><view display_value="Portal" name="portal">d5d251621b1300101f7e113d9c4bcbdd</view><view_name/></sys_ui_section></sys_ui_section></record_update>]]></payload>
+        <payload_hash>1000116500</payload_hash>
+        <record_name>Organization</record_name>
+        <reverted_from/>
+        <source>569811731b3fc8100a4a10ad9c4bcb1a</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-04-27 17:24:51</sys_created_on>
+        <sys_id>16f2bd7f1b941c100a4a10ad9c4bcbd6</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>171bcab8ba80000001</sys_recorded_at>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-27 17:24:51</sys_updated_on>
+        <type>Form Layout</type>
+        <update_guid>8ef2bd7f34941c10fffb87c24145f6d5</update_guid>
+        <update_guid_history>8ef2bd7f34941c10fffb87c24145f6d5:1000116500</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-06-24 19:37:35</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_section">sys_ui_section</sys_db_object>
+        <sys_id>177547bf49be4000a1c444b6abeb6400</sys_id>
+        <sys_metadata>cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_g_irm_fms_organization</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent display_value="Organization">34ce5b9d1bc050500a4a10ad9c4bcbf2</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_ui_section_cef2bd7f1b941c100a4a10ad9c4bcb8e</sys_update_name>
+        <sys_update_version display_value="sys_ui_section_cef2bd7f1b941c100a4a10ad9c4bcb8e">16f2bd7f1b941c100a4a10ad9c4bcbd6</sys_update_version>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-24 19:37:35</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

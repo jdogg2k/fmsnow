@@ -218,9 +218,12 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         bud.addQuery('sys_id', key);
 		bud.setLimit(1);
         bud.query();
-        if (!bud.hasNext()) return false;
-		bud.next();
-		return this.setCurrent(key, bud.getValue('project_ref.sys_id'), bud.getValue('fy'), bud.getValue('budget_type'));
+        if (!bud.hasNext()) return null;
+		var result = bud.next();
+		if (this.setCurrent(key, bud.getValue('project_ref'), bud.getValue('fy'), bud.getValue('budget_type')))
+			return result;
+		else
+			return null;
 	},
 	
     setCurrent: function(key, project, fy, type) {
@@ -228,16 +231,21 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         bud.addQuery('fy', fy);
         bud.addQuery('budget_type', type);
         bud.addQuery('project_ref', project);
+		bud.orderByDesc('current');
         bud.query();
-        if (!bud.hasNext()) return false;
+		var result = false;
+        if (!bud.hasNext()) return result;
 		while (bud.next()) {
-			if (bud.getValue('sys_id') == key) 
+			if (bud.getValue('sys_id') == key) {
 				bud.setValue('current', true);
-			else
+				result = bud.update();
+			}
+			else if (bud.getValue('current') != false) {
 				bud.setValue('current', false);
-			bud.update();
+				result = bud.update();
+			}
 		}
-		return true;
+		return result;
 	},
 	
 	copyItems: function(from, to) {
@@ -277,13 +285,13 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-06-15 15:53:58</sys_created_on>
         <sys_id>07a331ef1b5d90101f7e113d9c4bcb40</sys_id>
-        <sys_mod_count>71</sys_mod_count>
+        <sys_mod_count>78</sys_mod_count>
         <sys_name>FMSBudgetUtils</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_07a331ef1b5d90101f7e113d9c4bcb40</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-24 15:07:30</sys_updated_on>
+        <sys_updated_on>2020-06-24 17:38:08</sys_updated_on>
     </sys_script_include>
 </record_update>
