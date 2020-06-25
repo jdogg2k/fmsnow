@@ -100,94 +100,145 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		return bud.update();
 	},
 
-    newRevision: function(key) {
+    createBudget: function(sourceID, project, type, fy, ver, rev) {
+		var lastVer;
+		var lastRev;
         var bud = new GlideRecord(this.budgetTable);
-        bud.addQuery('sys_id', key);
-		bud.setLimit(1);
-        bud.query();
-        if (!bud.hasNext()) return false;
-		bud.next();
-		var lastRev = this.FMSUtility.getScalar(this.budgetTable, 'budget_revision', 'project_ref.sys_id=' + bud.project_ref.sys_id + '^fy=' + bud.fy + '^budget_type=' + bud.budget_type, 'budget_revision');
+		if (sourceID) {
+			bud.addQuery('sys_id', sourceID);
+			bud.setLimit(1);
+			bud.query();
+			if (!bud.hasNext()) return null;
+			bud.next();
+			if (project == null) project = bud.project_ref.sys_id;
+			if (type == null) type = bud.budget_type;
+			if (fy == null) fy = bud.fy;
+			if (ver == null && rev == null) ver = bud.budget_version;
+		}
         var newBudget = new GlideRecord(this.budgetTable);
-		newBudget.project_ref = bud.project_ref.sys_id;
-		newBudget.budget_type = bud.budget_type;
-		newBudget.fy = bud.fy;
+		newBudget.project_ref = project;
+		newBudget.budget_type = type;
+		newBudget.fy = fy;
 		newBudget.budget_status = "Working";
-		newBudget.budget_version = bud.budget_version;
-		newBudget.budget_revision = parseInt(lastRev) + 1;
-		newBudget.budget_source_ref = key;
-		newBudget.current = false;
-		newBudget.locked = false;
+		if (!ver) {
+			lastVer = this.FMSUtility.getScalar(this.budgetTable, 'budget_version', 'project_ref.sys_id=' + project + '^fy=' + fy + '^budget_type=' + type, 'budget_version');
+			newBudget.budget_version = parseInt(lastVer) + 1;
+		}
+		else
+			newBudget.budget_version = ver;
+		if (!rev) {
+			lastRev = this.FMSUtility.getScalar(this.budgetTable, 'budget_revision', 'project_ref.sys_id=' + project + '^fy=' + fy + '^budget_type=' + type + '^budget_version=' + newBudget.budget_version, 'budget_revision');
+			newBudget.budget_revision = parseInt(lastRev) + 1;
+		}
+		else 
+			newBudget.budget_revision = rev;
+		newBudget.budget_source_ref = sourceID;
+		newBudget.current = !this.hasCurrent(newBudget.project_ref.sys_id, newBudget.budget_type, newBudget.fy);
+		if (newBudget.budget_type == "Actual")
+			newBudget.locked = true;
+		else
+			newBudget.locked = false;
 		var newID = newBudget.insert();
-		var result = this.copyItems(key, newID);
+		return newID;
+	},
+	
+	newRevision: function(key) {
+ //       var bud = new GlideRecord(this.budgetTable);
+ //       bud.addQuery('sys_id', key);
+//		bud.setLimit(1);
+//        bud.query();
+//        if (!bud.hasNext()) return false;
+//		bud.next();
+//		var lastRev = this.FMSUtility.getScalar(this.budgetTable, 'budget_revision', 'project_ref.sys_id=' + bud.project_ref.sys_id + '^fy=' + bud.fy + '^budget_type=' + bud.budget_type, 'budget_revision');
+//        var newBudget = new GlideRecord(this.budgetTable);
+//		newBudget.project_ref = bud.project_ref.sys_id;
+//		newBudget.budget_type = bud.budget_type;
+//		newBudget.fy = bud.fy;
+//		newBudget.budget_status = "Working";
+//		newBudget.budget_version = bud.budget_version;
+//		newBudget.budget_revision = parseInt(lastRev) + 1;
+//		newBudget.budget_source_ref = key;
+//		newBudget.current = false;
+//		newBudget.locked = false;
+//		var newID = newBudget.insert();
+		var newID = this.createBudget(key, null, null, null, null, null);
+		if (newID) var result = this.copyItems(key, newID);
 		return newID;
 	},
 
     newVersion: function(key) {
-        var bud = new GlideRecord(this.budgetTable);
-        bud.addQuery('sys_id', key);
-		bud.setLimit(1);
-        bud.query();
-        if (!bud.hasNext()) return false;
-		bud.next();
-		var lastVer = this.FMSUtility.getScalar(this.budgetTable, 'budget_version', 'project_ref.sys_id=' + bud.project_ref.sys_id + '^fy=' + bud.fy + '^budget_type=' + bud.budget_type, 'budget_version');
-        var newBudget = new GlideRecord(this.budgetTable);
-		newBudget.project_ref = bud.project_ref.sys_id;
-		newBudget.budget_type = bud.budget_type;
-		newBudget.fy = bud.fy;
-		newBudget.budget_status = "Working";
-		newBudget.budget_version = parseInt(lastVer) + 1;
-		newBudget.budget_revision = 0;
-		newBudget.budget_source_ref = key;
-		newBudget.current = false;
-		newBudget.locked = false;
-		var newID = newBudget.insert();
-		var result = this.copyItems(key, newID);
+//        var bud = new GlideRecord(this.budgetTable);
+//        bud.addQuery('sys_id', key);
+//		bud.setLimit(1);
+//        bud.query();
+//        if (!bud.hasNext()) return false;
+//		bud.next();
+//		var lastVer = this.FMSUtility.getScalar(this.budgetTable, 'budget_version', 'project_ref.sys_id=' + bud.project_ref.sys_id + '^fy=' + bud.fy + '^budget_type=' + bud.budget_type, 'budget_version');
+//        var newBudget = new GlideRecord(this.budgetTable);
+//		newBudget.project_ref = bud.project_ref.sys_id;
+//		newBudget.budget_type = bud.budget_type;
+//		newBudget.fy = bud.fy;
+//		newBudget.budget_status = "Working";
+//		newBudget.budget_version = parseInt(lastVer) + 1;
+//		newBudget.budget_revision = 0;
+//		newBudget.budget_source_ref = key;
+//		newBudget.current = false;
+//		newBudget.locked = false;
+//		var newID = newBudget.insert();
+		var newID = this.createBudget(key, null, null, null, null, 0);
+		if (newID) var result = this.copyItems(key, newID);
 		return newID;
 	},
 
     newCopy: function(key, fy, type) {
-        var bud = new GlideRecord(this.budgetTable);
-        bud.addQuery('sys_id', key);
-		bud.setLimit(1);
-        bud.query();
-        if (!bud.hasNext()) return false;
-		bud.next();
-		var lastVer = this.FMSUtility.getScalar(this.budgetTable, 'budget_version', 'project_ref.sys_id=' + bud.project_ref.sys_id + '^fy=' + fy + '^budget_type=' + type, 'budget_version');
-        var newBudget = new GlideRecord(this.budgetTable);
-		newBudget.project_ref = bud.project_ref.sys_id;
-		newBudget.budget_type = type;
-		newBudget.fy = fy;
-		newBudget.budget_status = "Working";
-		newBudget.budget_version = parseInt(lastVer) + 1;
-		newBudget.budget_revision = 0;
-		newBudget.budget_source_ref = key;
-		newBudget.current = false;   ////should be true if nothing else is current for proj,type,fy
-		newBudget.locked = false;
-		var newID = newBudget.insert();
-		var result = this.copyItems(key, newID);
+//        var bud = new GlideRecord(this.budgetTable);
+//        bud.addQuery('sys_id', key);
+//		bud.setLimit(1);
+//        bud.query();
+//        if (!bud.hasNext()) return false;
+//		bud.next();
+//		var lastVer = this.FMSUtility.getScalar(this.budgetTable, 'budget_version', 'project_ref.sys_id=' + bud.project_ref.sys_id + '^fy=' + fy + '^budget_type=' + type, 'budget_version');
+ //       var newBudget = new GlideRecord(this.budgetTable);
+//		newBudget.project_ref = bud.project_ref.sys_id;
+//		newBudget.budget_type = type;
+//		newBudget.fy = fy;
+//		newBudget.budget_status = "Working";
+//		newBudget.budget_version = parseInt(lastVer) + 1;
+//		newBudget.budget_revision = 0;
+//		newBudget.budget_source_ref = key;
+//		newBudget.current = false;   ////should be true if nothing else is current for proj,type,fy
+//		newBudget.locked = false;
+//		var newID = newBudget.insert();
+		var newID = this.createBudget(key, null, type, fy, null, 0);
+		if (newID) var result = this.copyItems(key, newID);
 		return newID;
 	},
 
     createExecution: function(key) {
-        var bud = new GlideRecord(this.budgetTable);
-        bud.addQuery('sys_id', key);
-		bud.setLimit(1);
-        bud.query();
-        if (!bud.hasNext()) return false;
-		bud.next();
-        var newBudget = new GlideRecord(this.budgetTable);
-		newBudget.project_ref = bud.project_ref;
-		newBudget.budget_type = "Execution";
-		newBudget.fy = bud.fy;
-		newBudget.budget_status = "Working";
-		newBudget.budget_version = 1;
-		newBudget.budget_revision = 0;
-		newBudget.budget_source_ref = key;
-		newBudget.current = true;
-		newBudget.locked = false;
-		var newID = newBudget.insert();
-		var result = this.copyItems(key, newID);
+//        var bud = new GlideRecord(this.budgetTable);
+//        bud.addQuery('sys_id', key);
+//		bud.setLimit(1);
+//        bud.query();
+//        if (!bud.hasNext()) return false;
+//		bud.next();
+//        var newBudget = new GlideRecord(this.budgetTable);
+//		newBudget.project_ref = bud.project_ref;
+//		newBudget.budget_type = "Execution";
+//		newBudget.fy = bud.fy;
+//		newBudget.budget_status = "Working";
+//		newBudget.budget_version = 1;
+//		newBudget.budget_revision = 0;
+//		newBudget.budget_source_ref = key;
+//		newBudget.current = true;
+//		newBudget.locked = false;
+//		var newID = newBudget.insert();
+		var newID = this.createBudget(key, null, "Execution", null, 1, 0);
+		if (newID) var result = this.copyItems(key, newID);
+		return newID;
+	},
+
+    createActual: function(key) {
+		var newID = this.createBudget(key, null, "Actual", null, 1, 0);
 		return newID;
 	},
 
@@ -278,6 +329,21 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		}		
 		return true;
 	},
+	
+	hasCurrent: function(project, type, fy) {
+		if (this.getRelatedBudget(project, type, fy))
+			return true;
+		else
+			return false;
+	},
+	
+    updateActual: function(actualKey, executionKey) {
+	    //  add or remove items on actual based on execution (budget amount = 0, projected amount = execution.budget amount)
+		
+		//  aggregate financial transaction by expense item
+		// update actual with budget amount = expense amount      and   projected amount = execution budget amount - expense amount
+		//    insert missing items,      if there are expenses, then budget amount = 0  and   projected amount = execution budget amount - expense amount
+	},
 
 	type: 'FMSBudgetUtils'
 });]]></script>
@@ -285,13 +351,13 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-06-15 15:53:58</sys_created_on>
         <sys_id>07a331ef1b5d90101f7e113d9c4bcb40</sys_id>
-        <sys_mod_count>78</sys_mod_count>
+        <sys_mod_count>98</sys_mod_count>
         <sys_name>FMSBudgetUtils</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_07a331ef1b5d90101f7e113d9c4bcb40</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-24 17:38:08</sys_updated_on>
+        <sys_updated_on>2020-06-25 17:50:21</sys_updated_on>
     </sys_script_include>
 </record_update>

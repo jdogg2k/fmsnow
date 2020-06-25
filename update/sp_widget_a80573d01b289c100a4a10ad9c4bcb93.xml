@@ -59,6 +59,7 @@ c.canEdit = function(auth, data) {
             field: 'project_code',
             headerName: 'Project Code',
             sort: 'asc',
+					  filter: 'agTextColumnFilter',
             cellStyle: {
                 color: 'blue',
                 'text-decoration': 'underline',
@@ -67,23 +68,28 @@ c.canEdit = function(auth, data) {
         },
         {
             field: 'project_name',
-            headerName: 'Project Name'
+            headerName: 'Project Name',
+					  filter: 'agTextColumnFilter'
         },
         {
             field: 'omb_project_name',
-            headerName: 'OMB Project Name'
+            headerName: 'OMB Project Name',
+					   filter: 'agTextColumnFilter'
         },
         {
             field: 'investment',
-            headerName: 'Investment'
+            headerName: 'Investment',
+					 filter: 'agTextColumnFilter'
         },
         {
             field: 'function_code_ref',
-            headerName: 'Function Code'
+            headerName: 'Function Code',
+					  filter: 'agTextColumnFilter'
         },
         {
             field: 'project_desc',
-            headerName: 'Description'
+            headerName: 'Description',
+					  filter: 'agTextColumnFilter'
         },
         {
             field: 'delete',
@@ -184,14 +190,14 @@ c.canEdit = function(auth, data) {
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-29 16:09:57</sys_created_on>
         <sys_id>a80573d01b289c100a4a10ad9c4bcb93</sys_id>
-        <sys_mod_count>50</sys_mod_count>
+        <sys_mod_count>51</sys_mod_count>
         <sys_name>Project Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_a80573d01b289c100a4a10ad9c4bcb93</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-19 14:05:56</sys_updated_on>
+        <sys_updated_on>2020-06-25 15:28:38</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

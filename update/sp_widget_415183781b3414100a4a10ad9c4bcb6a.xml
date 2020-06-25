@@ -64,7 +64,10 @@
         {
             field: 'budget_type',
             headerName: 'Budget Type',
-            filter: 'agTextColumnFilter',
+            filter: 'agSetColumnFilter',
+            filterParams: {
+                values: [ 'Actual', 'Baseline','Execution', 'Forecast', 'WhatIf' ]
+            },
             sort: 'asc',
             sortingOrder: 2,
             cellStyle: {
@@ -99,7 +102,8 @@
             headerName: 'Version/Revision',
             maxWidth: 80,
             sort: 'desc',
-            sortingOrder: 3
+            sortingOrder: 3,
+					 filter: 'agTextColumnFilter'
         },
         {
             field: 'current',
@@ -118,6 +122,10 @@
             field: 'locked',
             headerName: 'Locked',
             maxWidth: 80,
+					  filter: 'agSetColumnFilter',
+            filterParams: {
+                values: [ true, false ]
+            },
             cellStyle: {
                 textAlign: 'center'
             },
@@ -149,7 +157,8 @@
         {
             field: 'created_from',
             headerName: 'Created From',
-            suppressMenu: true
+            suppressMenu: true,
+					  filter: 'agTextColumnFilter'
         },
         {
             field: 'delete',
@@ -273,14 +282,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-13 11:56:49</sys_created_on>
         <sys_id>415183781b3414100a4a10ad9c4bcb6a</sys_id>
-        <sys_mod_count>36</sys_mod_count>
+        <sys_mod_count>39</sys_mod_count>
         <sys_name>Budget Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_415183781b3414100a4a10ad9c4bcb6a</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-22 18:03:48</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-25 19:10:31</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

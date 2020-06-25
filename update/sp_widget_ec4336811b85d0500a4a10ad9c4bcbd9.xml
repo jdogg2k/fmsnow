@@ -6,14 +6,21 @@
 	var c = this;
 	c.targetOrg = c.data.selectedOrg;
 	c.userAuth = $rootScope.userAuth;
+	c.selectedBudgetType = "Baseline";
 
 	c.reportData = [];
 
 	c.generateReport = function () {
-		c.server.get({
+
+		var reportObj = {
 			mode: 'buildReport',
 			fy: c.selectedFY
-		}).then(function (reportResults) {
+		};
+
+		if (c.data.reportType == "budget_plans")
+			reportObj.budget_type = c.selectedBudgetType;
+
+		c.server.get(reportObj).then(function (reportResults) {
 			c.reportData = reportResults.data.reportData;
 			gridOptions.api.setRowData(c.reportData);
 			gridOptions.api.sizeColumnsToFit();
@@ -86,48 +93,64 @@
 				rowGroup: true,
 				rowGroupIndex: 1,
 				enableRowGroup: true,
-				enablePivot: true
+				enablePivot: true,
+				filter: true
 			});
 			colArray.push({
 				headerName: 'Appropriation Type',
 				field: 'appropriation_type',
 				enableRowGroup: true,
-				enablePivot: true
+				enablePivot: true,
+				filter: true
 			});
 			colArray.push({
 				headerName: 'Allocation Group',
 				field: 'allocation_group',
-				enableRowGroup: true
+				enableRowGroup: true,
+				filter: true
             });
 		}
+
+		if (c.data.reportType == "budget_plans") {
+			colArray.push({
+                headerName: 'Budget',
+                field: 'budget_name',
+				enableRowGroup: true,
+				filter: true
+			});
+		}
 		
-		if (c.data.reportType == "baseline") {
+		if (c.data.reportType == "baseline" || c.data.reportType == "budget_plans") {
             colArray.push({
                 headerName: 'Budget Code',
                 field: 'budget_code',
                 enableRowGroup: true,
 				rowGroup: true,
-				rowGroupIndex: 0
+				rowGroupIndex: 0,
+				filter: true
 			});
 			colArray.push({
                 headerName: 'Activty Code',
                 field: 'activity_code',
                 enableRowGroup: true,
 				rowGroup: true,
-				rowGroupIndex: 1
+				rowGroupIndex: 1,
+				filter: true
 			});
 		}
 
         colArray.push({
             headerName: 'Investment',
             field: 'investment',
-            enableRowGroup: true
+            enableRowGroup: true,
+			filter: true
         });
         colArray.push({
             headerName: 'Organization',
             field: 'org_name',
             enablePivot: true,
-            enableRowGroup: true
+            enableRowGroup: true,
+			filter: true
         });
         colArray.push({
             headerName: 'Project',
@@ -135,6 +158,7 @@
             pivot: false,
             enablePivot: true,
             enableRowGroup: true,
+			filter: true
         });
         colArray.push({
             headerName: 'OMB Project',
@@ -142,7 +166,18 @@
             pivot: false,
             enablePivot: true,
             enableRowGroup: true,
+			filter: true
 		});
+
+		if (c.data.reportType == "budget_plans") {
+			colArray.push({
+                headerName: 'Budget Amount',
+                field: 'budget',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+			});
+		}
 		
 		if (c.data.reportType == "baseline") {
             colArray.push({
@@ -265,7 +300,7 @@
 				flex: 1,
 				minWidth: 150,
 				sortable: true,
-				resizable: true,
+				resizable: true
 			},
 			autoGroupColumnDef: {
 				width: 300,
@@ -280,7 +315,26 @@
 			pivotMode: true,
 			groupIncludeFooter: true,
 			groupIncludeTotalFooter: true,
-			sideBar: 'columns',
+			sideBar: {
+				toolPanels: [
+				  {
+					id: 'columns',
+					labelDefault: 'Columns',
+					labelKey: 'columns',
+					iconKey: 'columns',
+					toolPanel: 'agColumnsToolPanel',
+				  },
+				  {
+					id: 'filters',
+					labelDefault: 'Filters',
+					labelKey: 'filters',
+					iconKey: 'filter',
+					toolPanel: 'agFiltersToolPanel',
+				  },
+				],
+				position: 'right',
+				defaultToolPanel: 'columns',
+			},
 			columnTypes: {
 				'currency': {
 					valueFormatter: currencyFormatter,
@@ -553,7 +607,7 @@
 	var orgName = "";
 	var session = gs.getSession();
 
-	var setBaselineDefaults = function(calcQ, multiOrgs) {
+	var setBaselineDefaults = function (calcQ, multiOrgs) {
 		var baseSupObj = {};
 		baseSupObj.expense_item_ref = calcQ.fti_expense_item_ref.toString();
 		baseSupObj.budget_ref = "";
@@ -766,11 +820,14 @@
 				});
 			}
 
-			if (data.reportType == "baseline") {
+			if (data.reportType == "baseline" || data.reportType == "budget_plans") {
 
 				var baseProjects = "";
+				var baseEQ = "budget_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^budget_ref.fy=" + input.fy;
+				if (data.reportType == "budget_plans")
+					baseEQ += "^budget_ref.budget_type=" + input.budget_type;
 				var baseQ = new GlideAggregate(FMSConstants.TABLE_BUDGET_ITEM);
-				baseQ.addEncodedQuery("budget_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^budget_ref.fy=" + input.fy);
+				baseQ.addEncodedQuery(baseEQ);
 				baseQ.groupBy("budget_ref");
 				baseQ.groupBy("expense_item_ref");
 				baseQ.groupBy("budget_ref.budget_type");
@@ -810,86 +867,96 @@
 						if (allOrgs.length > 1)
 							reportObj.activity_code = baseQ.expense_item_ref.parent_expense_item_ref.activity_code.toString();
 						reportObj.budget_code = baseQ.expense_item_ref.budget_code_ref.getDisplayValue();
-						reportObj.baseline = 0;
-						reportObj.execution = 0;
-						reportObj.transfer = 0;
-						reportObj.in_progress = 0;
-						reportObj.initiated = 0;
-						reportObj.committed = 0;
-						reportObj.obligated = 0;
-						reportObj.balance = 0;
-
-						baseProjects += reportObj.project_ref + ",";
+						if (data.reportType == "baseline") {
+							reportObj.baseline = 0;
+							reportObj.execution = 0;
+							reportObj.transfer = 0;
+							reportObj.in_progress = 0;
+							reportObj.initiated = 0;
+							reportObj.committed = 0;
+							reportObj.obligated = 0;
+							reportObj.balance = 0;
+							baseProjects += reportObj.project_ref + ",";
+						} else {
+							reportObj.budget = 0;
+							reportObj.budget_name = baseQ.budget_ref.project_ref.project_name.toString() + " v" + baseQ.budget_ref.budget_version.toString() + "r" + baseQ.budget_ref.budget_revision.toString();
+						}
 
 					}
 
-					if (reportObj.budget_type == "Baseline") {
-						reportObj.baseline += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
-					}
+					if (data.reportType == "baseline") {
 
-					if (reportObj.budget_type == "Execution") {
-						reportObj.execution += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
+						if (reportObj.budget_type == "Baseline") {
+							reportObj.baseline += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
+						}
+
+						if (reportObj.budget_type == "Execution") {
+							reportObj.execution += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
+						}
+
+					} else {
+						reportObj.budget += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
 					}
 
 					data.reportData.push(reportObj);
 				}
 
-				var calcQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
-				calcQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_tran_type=TVGL^ORft_tran_type=TE^ORft_tran_type=TI^ORft_tran_type=TOA^ORft_tran_type=TVGT^ft_void=false");
-				calcQ.groupBy("ft_project_ref");
-				calcQ.groupBy("fti_expense_item_ref");
-				calcQ.groupBy("proj_organization_ref");
-				calcQ.addAggregate("SUM", "fti_item_total");
-				calcQ.query();
-				while (calcQ.next()) {
-					
-					//if (baseProjects.indexOf(calcQ.ft_project_ref.toString()) > -1) {
+				if (data.reportType == "baseline") {
+
+					var calcQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
+					calcQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_tran_type=TVGL^ORft_tran_type=TE^ORft_tran_type=TI^ORft_tran_type=TOA^ORft_tran_type=TVGT^ft_void=false");
+					calcQ.groupBy("ft_project_ref");
+					calcQ.groupBy("fti_expense_item_ref");
+					calcQ.groupBy("proj_organization_ref");
+					calcQ.addAggregate("SUM", "fti_item_total");
+					calcQ.query();
+					while (calcQ.next()) {
+
+						//if (baseProjects.indexOf(calcQ.ft_project_ref.toString()) > -1) {
 
 						var baseSupObj = {};
 						baseSupObj = setBaselineDefaults(calcQ, (allOrgs.length > 1));
 						baseSupObj.transfer = parseFloat(calcQ.getAggregate("SUM", "fti_item_total"));
 						data.reportData.push(baseSupObj);
 
-					//}
+						//}
+					}
+
+					var inProgQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
+					inProgQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_tran_type!=TVGL^ft_tran_type!=TE^ft_tran_type!=TI^ft_tran_type!=TOA^ft_tran_type!=TVGT^ft_void=false");
+					inProgQ.groupBy("ft_project_ref");
+					inProgQ.groupBy("fti_expense_item_ref");
+					inProgQ.groupBy("proj_organization_ref");
+					inProgQ.groupBy("ft_tran_status");
+					inProgQ.addAggregate("SUM", "fti_item_total");
+					inProgQ.query();
+					while (inProgQ.next()) {
+
+						var progressObj = {};
+						progressObj = setBaselineDefaults(inProgQ, (allOrgs.length > 1));
+
+						if (inProgQ.ft_tran_status == "In-Progress")
+							progressObj.in_progress = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
+
+						if (inProgQ.ft_tran_status == "Initiated")
+							progressObj.initiated = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
+
+						if (inProgQ.ft_tran_status == "Committed")
+							progressObj.committed = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
+
+						if (inProgQ.ft_tran_status == "Obligated")
+							progressObj.obligated = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
+
+						data.reportData.push(progressObj);
+
+					}
+
+					//calculate balances
+					data.reportData.forEach(function (item) {
+						item.balance = item.execution - (item.transfer + item.in_progress + item.initiated + item.committed + item.obligated);
+					});
+
 				}
-
-				var inProgQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
-				inProgQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_tran_type!=TVGL^ft_tran_type!=TE^ft_tran_type!=TI^ft_tran_type!=TOA^ft_tran_type!=TVGT^ft_void=false");
-				inProgQ.groupBy("ft_project_ref");
-				inProgQ.groupBy("fti_expense_item_ref");
-				inProgQ.groupBy("proj_organization_ref");
-				inProgQ.groupBy("ft_tran_status");
-				inProgQ.addAggregate("SUM", "fti_item_total");
-				inProgQ.query();
-				while (inProgQ.next()) {
-
-					var progressObj = {};
-					progressObj = setBaselineDefaults(inProgQ, (allOrgs.length > 1));
-
-					if (inProgQ.ft_tran_status == "In-Progress")
-						progressObj.in_progress = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
-
-					if (inProgQ.ft_tran_status == "Initiated")
-						progressObj.initiated = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
-
-					if (inProgQ.ft_tran_status == "Committed")
-						progressObj.committed = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
-
-					if (inProgQ.ft_tran_status == "Obligated")
-						progressObj.obligated = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
-
-					data.reportData.push(progressObj);
-
-				}
-
-				//calculate balances
-				data.reportData.forEach(function (item) {
-					item.balance = item.execution - (item.transfer + item.in_progress + item.initiated + item.committed + item.obligated);
-				});
-			}
-
-			if (data.reportType == "budget") {
-
 			}
 
 		}
@@ -908,6 +975,18 @@
 		return 0;
 	});
 
+	var budgetTypes = [];
+	var typeQuery = new GlideRecord("sys_choice");
+	typeQuery.addEncodedQuery("name=x_g_irm_fms_budget^element=budget_type");
+	typeQuery.query();
+	while (typeQuery.next()) {
+		var typeObj = {};
+		typeObj.value = typeQuery.value.toString();
+		typeObj.name = typeQuery.label.toString();
+		budgetTypes.push(typeObj);
+	}
+	data.budgetTypes = budgetTypes;
+
 })(options);
 ]]></script>
         <servicenow>false</servicenow>
@@ -915,14 +994,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>308</sys_mod_count>
+        <sys_mod_count>333</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-24 19:32:04</sys_updated_on>
+        <sys_updated_on>2020-06-25 19:09:23</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
@@ -933,11 +1012,18 @@
                     <div class="orgSpan">
                         <widget id="organization_selection" options='{"hide_widget": false, "hide_project": true}'></widget>
                     </div>
-                    <div class="yearSelect">
+                    <div class="yearSelect orgSpan">
                         <label for="selFY" class="selectLabel">FY:</label>
                         <select class="reportSelect" id="selFY" ng-model="c.selectedFY" ng-change="c.generateReport();">
                             <option value="">-Select-</option>
                             <option ng-repeat="year in c.fiscalYears" value="{{year}}">{{year}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="yearSelect orgSpan" ng-if="c.data.reportType == 'budget_plans'">
+                        <label for="selBudgetType" class="selectLabel">Budget Type:</label>
+                        <select class="reportSelect" id="selBudgetType" ng-model="c.selectedBudgetType" ng-change="c.generateReport();">
+                            <option ng-repeat="type in c.data.budgetTypes" value="{{type.value}}">{{type.name}}
                             </option>
                         </select>
                     </div>
