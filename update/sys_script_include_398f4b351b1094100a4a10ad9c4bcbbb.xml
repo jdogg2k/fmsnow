@@ -28,6 +28,7 @@ FMSConstants.TABLE_BUDGET = 'x_g_irm_fms_budget';
 FMSConstants.TABLE_BUDGET_ITEM = 'x_g_irm_fms_budget_item';
 FMSConstants.TABLE_BUDGET_ITEM_PHASE = 'x_g_irm_fms_budget_item_phase';
 FMSConstants.VIEW_FIN_TRAN_REPORT = 'x_g_irm_fms_fin_tran_rpt';
+FMSConstants.VIEW_BUDGET_ITEM_COMPARE = 'x_g_irm_fms_budget_item_compare';
 
 FMSConstants.ROLE_SYSADMIN = 'x_g_irm_fms.sysadmin';
 FMSConstants.ROLE_ORGADMIN = 'x_g_irm_fms.orgadmin';
@@ -39,13 +40,13 @@ FMSConstants.ROLE_READONLY = 'x_g_irm_fms.readonly';]]></script>
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 19:01:23</sys_created_on>
         <sys_id>398f4b351b1094100a4a10ad9c4bcbbb</sys_id>
-        <sys_mod_count>23</sys_mod_count>
+        <sys_mod_count>24</sys_mod_count>
         <sys_name>FMSConstants</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_398f4b351b1094100a4a10ad9c4bcbbb</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-04 15:50:48</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-26 13:22:14</sys_updated_on>
     </sys_script_include>
 </record_update>
