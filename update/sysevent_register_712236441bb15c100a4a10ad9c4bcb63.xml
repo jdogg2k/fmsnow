@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysevent_register">
+    <sysevent_register action="INSERT_OR_UPDATE">
+        <caller_access/>
+        <description>This event will trigger once the current OY start date will be less than 3 months from present date</description>
+        <event_name>x_g_irm_fms.90days</event_name>
+        <fired_by>Contract weekly notifications</fired_by>
+        <queue/>
+        <suffix>90days</suffix>
+        <sys_class_name>sysevent_register</sys_class_name>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2020-06-29 19:57:52</sys_created_on>
+        <sys_id>712236441bb15c100a4a10ad9c4bcb63</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>x_g_irm_fms.90days</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sysevent_register_712236441bb15c100a4a10ad9c4bcb63</sys_update_name>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-29 19:58:42</sys_updated_on>
+        <table>x_g_irm_fms_contract_party</table>
+    </sysevent_register>
+</record_update>

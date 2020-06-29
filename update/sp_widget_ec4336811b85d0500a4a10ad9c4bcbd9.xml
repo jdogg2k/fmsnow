@@ -9,18 +9,64 @@
 	c.hideValues = false;
 	c.userAuth = $rootScope.userAuth;
 	c.selectedBudgetType = "Baseline";
+	c.datesSelected = false;
 
 	c.reportData = [];
+
+	function parseDate(s) {
+		var d = new Date();
+		var retDate = s;
+		var months = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,
+						jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+		
+		if ( Object.prototype.toString.call(s) === "[object Date]" )  {
+			d = s;
+			retDate = d.toISOString().split('T')[0]
+		}
+
+		return retDate;
+		
+	}
+
+	var oldDate = new Date();
+	oldDate.setMonth(oldDate.getMonth() - 3);
+
+	c.startdt = {
+		displayValue: oldDate.toLocaleDateString(),
+		value: oldDate,
+		name: 'startdt'
+	};
+	c.enddt = {
+		displayValue: new Date().toLocaleDateString(),
+		value: new Date(),
+		name: 'enddt'
+	};
+
+	c.setDates = function() {
+		if (!c.datesSelected) {
+			c.datesSelected = true;
+		} else {
+			c.generateReport();
+			c.datesSelected = false;
+		}
+	}
 
 	c.generateReport = function () {
 
 		var reportObj = {
-			mode: 'buildReport',
-			fy: c.selectedFY
+			mode: 'buildReport'
 		};
 
 		if (c.data.reportType == "budget_plans")
 			reportObj.budget_type = c.selectedBudgetType;
+
+		if (c.data.reportType == "financial_transaction") {
+			reportObj.start_date = parseDate(c.startdt.value);
+			reportObj.end_date = parseDate(c.enddt.value);
+		} else {
+			reportObj.fy = c.selectedFY;
+		}
+			
 
 		c.server.get(reportObj).then(function (reportResults) {
 			c.reportData = reportResults.data.reportData;
@@ -98,27 +144,41 @@
 
 	function generateColumns() {
 		var colArray = [];
-		if (c.data.reportType == "allocation") {
-			colArray.push({
+		if (c.data.reportType == "allocation" || c.data.reportType == "financial_transaction") {
+
+			var appropCol = {
 				headerName: 'Appropriation',
-				field: 'appropriation',
-				rowGroup: true,
-				rowGroupIndex: 1,
+				field: 'appropriation',				
 				enableRowGroup: true,
 				enablePivot: true,
 				filter: true
-			});
-			colArray.push({
-				headerName: 'Appropriation Type',
-				field: 'appropriation_type',
-				enableRowGroup: true,
-				enablePivot: true,
-				filter: true
-			});
+			};
+
+			if (c.data.reportType == "financial_transaction") {
+				appropCol.hide = true;
+			} else {
+				appropCol.rowGroup = true;
+				appropCol.rowGroupIndex = 1;
+			}
+
+			colArray.push(appropCol);
+
+			if (c.data.reportType == "allocation") {
+				colArray.push({
+					headerName: 'Appropriation Type',
+					field: 'appropriation_type',
+					enableRowGroup: true,
+					enablePivot: true,
+					hide: c.hideValues,
+					filter: true
+				});
+			}
+
 			colArray.push({
 				headerName: 'Allocation Group',
 				field: 'allocation_group',
 				enableRowGroup: true,
+				hide: c.hideValues,
 				filter: true
             });
 		}
@@ -140,7 +200,8 @@
 				rowGroup: true,
 				rowGroupIndex: 0,
 				filter: true,
-				hide: c.hideValues
+				hide: c.hideValues,
+				minWidth: 175
 			});
 			colArray.push({
                 headerName: 'Activty Code',
@@ -149,7 +210,8 @@
 				rowGroup: true,
 				rowGroupIndex: 1,
 				filter: true,
-				hide: c.hideValues
+				hide: c.hideValues,
+				minWidth: 175
 			});
 		}
 
@@ -203,6 +265,21 @@
                 field: 'trans_amount',
                 aggFunc: 'sum',
                 type: 'currency',
+                enableValue: true
+			});
+			colArray.push({
+                headerName: 'Trans. Date',
+                field: 'trans_date',
+                enableValue: true
+			});
+			colArray.push({
+                headerName: 'Item Number',
+                field: 'item_number',
+                enableValue: true
+			});
+			colArray.push({
+                headerName: 'Item Qty',
+                field: 'item_qty',
                 enableValue: true
 			});
 		}
@@ -268,10 +345,44 @@
 				lockVisible: true
 			});
 			colArray.push({
+                headerName: 'Item Cost',
+                field: 'item_cost',
+                type: 'currency',
+                enableValue: true
+			});
+			colArray.push({
                 headerName: 'Actual Cost',
                 field: 'actual_cost',
                 type: 'currency',
                 enableValue: true
+			});
+			colArray.push({
+                headerName: 'Received Qty',
+                field: 'received_qty',
+                enableValue: true
+			});
+			colArray.push({
+                headerName: 'OMB300 Category',
+                field: 'omb_category',
+				filter: true,
+				enableRowGroup: true,
+                enableValue: true
+			});
+			colArray.push({
+                headerName: 'Allotment',
+				field: 'allotment',
+				enableRowGroup: true,
+				filter: true,
+				hide: true,
+				lockVisible: true
+			});
+			colArray.push({
+                headerName: 'Cost Pool',
+				field: 'cost_pool',
+				enableRowGroup: true,
+				filter: true,
+				hide: true,
+				lockVisible: true
 			});
 			colArray.push({
 				headerName: 'Post',
@@ -299,16 +410,32 @@
 				enableRowGroup: true,
                 enableValue: true
 			});
-			/*colArray.push({
+			colArray.push({
 				headerName: 'PR Number',
-				enableRowGroup: true,
                 field: 'pr_number',
-                enableValue: true
-			});*/
+                enableValue: true,
+				filter: true
+			});
 			colArray.push({
 				headerName: 'Contract PIID',
 				enableRowGroup: true,
                 field: 'contract_piid',
+                enableValue: true
+			});
+			colArray.push({
+				headerName: 'Award Number',
+				enableRowGroup: true,
+                field: 'award_number',
+                enableValue: true
+			});
+			colArray.push({
+                headerName: 'Description',
+				field: 'description',
+                enableValue: true
+			});
+			colArray.push({
+                headerName: 'Quote Vendor Name',
+				field: 'quote_vendor_name',
                 enableValue: true
 			});
 			colArray.push({
@@ -386,7 +513,7 @@
 			columnDefs: generateColumns(),
 			defaultColDef: {
 				flex: 1,
-				minWidth: 150,
+				minWidth: 100,
 				sortable: true,
 				resizable: true
 			},
@@ -671,6 +798,12 @@
 .orgSpan { 
     float: left;
 }
+
+.datePick {
+    float: left;
+    width: 140px !important;
+    margin-left: 5px;
+  }
 </css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -1051,25 +1184,53 @@
 
 			if (data.reportType == "financial_transaction") {
 				var finTranQ = new GlideRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM);
-				finTranQ.addEncodedQuery("fin_tran_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^fin_tran_ref.fy=" + input.fy);
+				finTranQ.addEncodedQuery("fin_tran_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^fin_tran_ref.tran_dateBETWEENjavascript:gs.dateGenerate('" + input.start_date + "','start')@javascript:gs.dateGenerate('" + input.end_date + "','end')");
 				finTranQ.query();
 				while (finTranQ.next()) {
 
 					var finTranObj = {};
 
+					finTranObj.org_ref = finTranQ.fin_tran_ref.project_ref.organization_ref.toString();
+					finTranObj.org_name = finTranQ.fin_tran_ref.project_ref.organization_ref.getDisplayValue();
+					finTranObj.project = finTranQ.fin_tran_ref.project_ref.getDisplayValue();
+					finTranObj.project_ref = finTranQ.fin_tran_ref.project_ref.toString();
+					finTranObj.omb_project = finTranQ.fin_tran_ref.project_ref.omb_project_name.toString();
+					finTranObj.omb_category = finTranQ.omb_category_ref.getDisplayValue();
+					finTranObj.investment = finTranQ.fin_tran_ref.project_ref.investment.getDisplayValue();
+					finTranObj.appropriation = finTranQ.fin_tran_ref.project_appropriation_ref.appropriation_ref.getDisplayValue();
+					finTranObj.appropriation_ref = finTranQ.fin_tran_ref.project_appropriation_ref.appropriation_ref.toString();
+					finTranObj.allocation_group = finTranQ.fin_tran_ref.allocation_group_ref.getDisplayValue();
+					finTranObj.allocation_group_ref = finTranQ.fin_tran_ref.allocation_group_ref.toString();
+					finTranObj.allotment = finTranQ.fin_tran_ref.allotment_ref.allotment.toString();
+					finTranObj.description = finTranQ.fin_tran_ref.description.toString();
+					finTranObj.cost_pool = finTranQ.fin_tran_ref.cost_pool_ref.getDisplayValue();
+					finTranObj.cost_pool_ref = finTranQ.fin_tran_ref.cost_pool_ref.toString();
 					finTranObj.activity_code = finTranQ.expense_item_ref.activity_code.toString();
 					finTranObj.budget_code = finTranQ.expense_item_ref.budget_code_ref.getDisplayValue();
 					finTranObj.trans_status = finTranQ.fin_tran_ref.tran_status.toString();
 					finTranObj.trans_type = finTranQ.fin_tran_ref.tran_type.toString();
+					finTranObj.trans_date = finTranQ.fin_tran_ref.tran_date.toString();
 					finTranObj.obligation = finTranQ.fin_tran_ref.obligation.toString();
 					finTranObj.void = finTranQ.fin_tran_ref.void.toString();
 					finTranObj.post = finTranQ.post_ref.getDisplayValue();
-					//finTranObj.pr_number = finTranQ.fin_tran_ref..toString();
 					finTranObj.contract_piid = finTranQ.fin_tran_ref.contract_ref.contract_piid.toString();
-					//finTranObj.task_order = finTranQ.fin_tran_ref.void.toString();
-					finTranObj.vendor_name = finTranQ.fin_tran_ref.contract_ref.vendor_names.toString();
+					finTranObj.item_number = parseInt(finTranQ.tran_item.toString());
+					finTranObj.item_qty = parseInt(finTranQ.item_qty.toString());
+					finTranObj.received_qty = parseInt(finTranQ.received_qty.toString());
+					finTranObj.item_cost = parseFloat(finTranQ.item_cost.toString());
 					finTranObj.actual_cost = parseFloat(finTranQ.actual_cost.toString());
 					finTranObj.trans_amount = parseFloat(finTranQ.item_total.toString());
+
+					//get PO info
+					var finTranPOQ = new GlideRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM_PO);
+					finTranPOQ.addEncodedQuery("fin_tran_ref=" + finTranQ.fin_tran_ref.toString());
+					finTranPOQ.query();
+					while (finTranPOQ.next()) {
+						finTranObj.award_number = finTranPOQ.award_nmbr.toString();
+						finTranObj.pr_number = finTranPOQ.po_nmbr.toString();
+						finTranObj.vendor_name = finTranPOQ.award_vendor_name.toString();
+						finTranObj.quote_vendor_name = finTranPOQ.quote_vendor_name.toString();
+					}
 
 					data.reportData.push(finTranObj);
 
@@ -1112,14 +1273,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>366</sys_mod_count>
+        <sys_mod_count>426</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-26 19:15:32</sys_updated_on>
+        <sys_updated_on>2020-06-29 21:19:12</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
@@ -1130,13 +1291,24 @@
                     <div class="orgSpan">
                         <widget id="organization_selection" options='{"hide_widget": false, "hide_project": true}'></widget>
                     </div>
-                    <div class="yearSelect orgSpan">
+                    <div class="yearSelect orgSpan" ng-if="c.data.reportType != 'financial_transaction'">
                         <label for="selFY" class="selectLabel">FY:</label>
                         <select class="reportSelect" id="selFY" ng-model="c.selectedFY" ng-change="c.generateReport();">
                             <option value="">-Select-</option>
                             <option ng-repeat="year in c.fiscalYears" value="{{year}}">{{year}}
                             </option>
                         </select>
+                    </div>
+                    <div class="yearSelect orgSpan" ng-if="c.data.reportType == 'financial_transaction'">
+                        <div class="orgSpan">
+                            <label for="startDate" class="selectLabel">Start Date</label>
+                            <sp-date-picker class="datePick" id="startDate" ng-model="c.startdt.value" field="c.startdt" sn-include-time="false" sn-change="c.setDates()"></sp-date-picker>
+                          </div>
+                    
+                          <div class="orgSpan">
+                            <label for="endDate" class="selectLabel">End Date</label>
+                            <sp-date-picker class="datePick" id="endDate" ng-model="c.enddt.value" field="c.enddt" sn-include-time="false" sn-change="c.setDates()"></sp-date-picker>
+                          </div>
                     </div>
                     <div class="yearSelect orgSpan" ng-if="c.data.reportType == 'budget_plans'">
                         <label for="selBudgetType" class="selectLabel">Budget Type:</label>

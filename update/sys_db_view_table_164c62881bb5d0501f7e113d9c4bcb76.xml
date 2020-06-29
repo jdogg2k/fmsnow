@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_db_view_table">
     <sys_db_view_table action="INSERT_OR_UPDATE">
         <active>true</active>
-        <left_join>false</left_join>
-        <order>200</order>
+        <left_join>true</left_join>
+        <order>600</order>
         <sys_class_name>sys_db_view_table</sys_class_name>
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
-        <sys_created_on>2020-06-26 12:27:29</sys_created_on>
-        <sys_id>4afd25031ba9dc101f7e113d9c4bcbf1</sys_id>
-        <sys_mod_count>13</sys_mod_count>
+        <sys_created_on>2020-06-29 19:32:45</sys_created_on>
+        <sys_id>164c62881bb5d0501f7e113d9c4bcb76</sys_id>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>x_g_irm_fms_budget_item</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
-        <sys_update_name>sys_db_view_table_4afd25031ba9dc101f7e113d9c4bcbf1</sys_update_name>
+        <sys_update_name>sys_db_view_table_164c62881bb5d0501f7e113d9c4bcb76</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-29 19:38:03</sys_updated_on>
+        <sys_updated_on>2020-06-29 21:07:50</sys_updated_on>
         <table>x_g_irm_fms_budget_item</table>
-        <variable_prefix>main</variable_prefix>
+        <variable_prefix>alt</variable_prefix>
         <view display_value="x_g_irm_fms_budget_item_compare">0abda1031ba9dc101f7e113d9c4bcbfd</view>
-        <where_clause>bud1_sys_id = main_budget_ref</where_clause>
+        <where_clause>(alt_expense_item_ref = main_expense_item_ref) &amp;&amp; (alt_budget_ref != main_budget_ref)</where_clause>
     </sys_db_view_table>
 </record_update>

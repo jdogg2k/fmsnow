@@ -14,6 +14,7 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	bitemTable: FMSConstants.TABLE_BUDGET_ITEM,
 	bitemView: FMSConstants.VIEW_BUDGET_ITEM_COMPARE,
 	phaseTable: FMSConstants.TABLE_BUDGET_ITEM_PHASE,
+	tranItemTable: FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM,
 	FMSUtility: new x_g_irm_fms.FMSUtilities(),              //helper utility for FMS queries
 	
     getRelatedBudget: function(proj, type, fy, approved) {
@@ -101,7 +102,7 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		return bud.update();
 	},
 
-    createBudget: function(sourceID, project, type, fy, ver, rev) {
+    insertBudget: function(sourceID, project, type, fy, ver, rev) {
 		var lastVer;
 		var lastRev;
         var bud = new GlideRecord(this.budgetTable);
@@ -111,7 +112,7 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 			bud.query();
 			if (!bud.hasNext()) return null;
 			bud.next();
-			if (project == null) project = bud.project_ref.sys_id;
+			if (project == null) project = bud.project_ref;
 			if (type == null) type = bud.budget_type;
 			if (fy == null) fy = bud.fy;
 			if (ver == null && rev == null) ver = bud.budget_version;
@@ -144,31 +145,47 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	},
 	
 	newRevision: function(key) {
-		var newID = this.createBudget(key, null, null, null, null, null);
+		var newID = this.insertBudget(key, null, null, null, null, null);
 		if (newID) var result = this.copyItems(key, newID);
 		return newID;
 	},
 
     newVersion: function(key) {
-		var newID = this.createBudget(key, null, null, null, null, 0);
+		var newID = this.insertBudget(key, null, null, null, null, 0);
 		if (newID) var result = this.copyItems(key, newID);
 		return newID;
 	},
 
     newCopy: function(key, fy, type) {
-		var newID = this.createBudget(key, null, type, fy, null, 0);
+		var newID = this.insertBudget(key, null, type, fy, null, 0);
 		if (newID) var result = this.copyItems(key, newID);
 		return newID;
 	},
 
-    createExecution: function(key) {
-		var newID = this.createBudget(key, null, "Execution", null, 1, 0);
+    createBudget: function(key, project, type, fy) {
+		var newID;
+		if (type == "Actual")
+			newID = this.createActual(key, project, type, fy);
+		else if (type == "Execution")
+			newID = this.createExecution(key, project, type, fy);
+		else
+			newID = this.insertBudget(key, null, type, fy, null, 0);
+		return newID;
+	},
+	
+    createExecution: function(key, project, type, fy) {
+		var newID = this.insertBudget(key, project, "Execution", fy, 1, 0);
 		if (newID) var result = this.copyItems(key, newID);
 		return newID;
 	},
 
-    createActual: function(key) {
-		var newID = this.createBudget(key, null, "Actual", null, 1, 0);
+    createActual: function(key, project, type, fy) {
+		var	exBud = this.getRelatedBudget(project, "Execution", fy);
+		if (!exBud) {
+			gs.addErrorMessage("Execution budget should be created before actual budget.");
+			return null;
+		}
+		var newID = this.insertBudget(key, project, "Actual", fy, 1, 0);
 		return newID;
 	},
 
@@ -268,52 +285,85 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	},
 	
     updateActual: function(actualKey, executionKey) {
-		
-		return;
-			//  add or remove items on actual based on execution (budget amount = 0, projected amount = execution.budget amount)
+			//  Compare budgets and add or remove items on actual based on execution, then 
+			//  Update actual with budget amount = expense amount   and   projected amount = execution budget amount - expense amount
+		if (actualKey == undefined) return false;
+        var bud = new GlideRecord(this.budgetTable);
+        bud.addQuery('sys_id', actualKey);
+		bud.setLimit(1);
+        bud.query();
+		bud.next();
+		if (executionKey == undefined) {
+			exBud = this.getRelatedBudget(bud.project_ref, "Execution", bud.fy);
+			executionKey = exBud.sys_id;
+		}
+		gs.addInfoMessage("ex:   " + executionKey + "  act:   " + actualKey)
 		var qry = "main_budget_ref=" + executionKey + "^ORmain_expense_item_refISEMPTY^alt_budget_ref=" + actualKey + "^ORalt_expense_item_refISEMPTY";
         var compare = new GlideRecord(this.bitemView);
         compare.addEncodedQuery(qry);
 		compare.query();
 		while (compare.next()) {
 			var act = new GlideRecord(this.bitemTable);
-			act.addQuery('sys_id', compare.alt_sys_id);
+			var itemKey;
+			if (compare.main_sys_id.nil()) itemKey = compare.alt_sys_id; else itemKey = compare.main_sys_id; 
+			act.addQuery('sys_id', itemKey);
 			act.setLimit(1);
 			act.query();
-			if (!act.hasNext()) {
+			act.next();
+			gs.addInfoMessage('item: ' + act.expense_item_ref);
+			var expTotal = this.getExpenseTotal(bud.project_ref, bud.fy, act.expense_item_ref);
+			if (compare.alt_sys_id.nil()) {    // item does not exist on actual 
 				act.budget_ref = compare.alt_budget_ref;
 				act.expense_item_ref = compare.main_expense_item_ref;
-				act.budget_amt = 0;
-				act.projected_amt = compare.main_budget_amt;
+				act.budget_amt = expTotal;
+				act.projected_amt = compare.main_budget_amt - expTotal;
 				act.insert();
+			}
+			else if (compare.main_sys_id.nil())  {  // item does not exist on execution 
+				act.deleteRecord();
 			}
 			else {
 				act.next();
-				act.budget_amt = 0;
-				act.projected_amt = compare.main_budget_amt;
+				act.budget_amt = expTotal;
+				act.projected_amt = compare.main_budget_amt - expTotal;
 				act.update();
 			}
+			break;
 		}		
-		
-		
-		//  aggregate financial transaction by expense item
-		// update actual with budget amount = expense amount      and   projected amount = execution budget amount - expense amount
-		//    insert missing items,      if there are expenses, then budget amount = 0  and   projected amount = execution budget amount - expense amount
 	},
-
+    
+	getExpenseTotal: function(project, fy, expense) {
+		var agg = new GlideAggregate(this.tranItemTable);
+		agg.addAggregate('SUM', 'item_total');
+		agg.addQuery('fin_tran_ref.project_ref', project);
+		agg.addQuery('fin_tran_ref.fy', fy);
+		agg.addQuery('expense_item_ref', expense);
+		agg.groupBy('expense_item_ref');
+		agg.query();
+		var expTotal = 0;
+		gs.addInfoMessage(project + '  ' + fy + '  ' + expense);
+		gs.addInfoMessage('  ===next?  ' + agg.hasNext());
+		if (agg.hasNext()) {
+			agg.next();
+			expTotal = agg.getAggregate('SUM', 'item_total');
+		}	
+		gs.addInfoMessage('ref: ' + expense + " total: " + expTotal);
+		return expTotal;
+	},
+	
 	type: 'FMSBudgetUtils'
 });]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-06-15 15:53:58</sys_created_on>
         <sys_id>07a331ef1b5d90101f7e113d9c4bcb40</sys_id>
-        <sys_mod_count>101</sys_mod_count>
+        <sys_mod_count>138</sys_mod_count>
         <sys_name>FMSBudgetUtils</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_07a331ef1b5d90101f7e113d9c4bcb40</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-26 16:04:01</sys_updated_on>
+        <sys_updated_on>2020-06-29 18:09:10</sys_updated_on>
     </sys_script_include>
 </record_update>
