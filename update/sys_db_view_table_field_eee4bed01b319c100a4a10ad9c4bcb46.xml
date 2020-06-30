@@ -14,6 +14,6 @@
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
         <sys_updated_on>2020-06-30 14:48:41</sys_updated_on>
         <table>x_g_irm_fms_budget</table>
-        <view_table display_value="x_g_irm_fms_budget">6e84bad01b319c100a4a10ad9c4bcb76</view_table>
+        <view_table/>
     </sys_db_view_table_field>
 </record_update>

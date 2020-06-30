@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_db_view_table">
+    <sys_db_view_table action="DELETE">
+        <active>true</active>
+        <left_join>false</left_join>
+        <order>100</order>
+        <sys_class_name>sys_db_view_table</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-06-30 12:33:32</sys_created_on>
+        <sys_id>30e59a541bbd5c100a4a10ad9c4bcbea</sys_id>
+        <sys_mod_count>16</sys_mod_count>
+        <sys_name>x_g_irm_fms_budget</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_db_view_table_30e59a541bbd5c100a4a10ad9c4bcbea</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-30 15:15:02</sys_updated_on>
+        <table>x_g_irm_fms_budget</table>
+        <variable_prefix>bud1</variable_prefix>
+        <view display_value="x_g_irm_fms_budget_item_compare">0abda1031ba9dc101f7e113d9c4bcbfd</view>
+        <where_clause/>
+    </sys_db_view_table>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_db_view_table_30e59a541bbd5c100a4a10ad9c4bcbea</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_db_view_table"><sys_db_view_table action="INSERT_OR_UPDATE"><active>true</active><left_join>false</left_join><order>100</order><sys_class_name>sys_db_view_table</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2020-06-30 12:33:32</sys_created_on><sys_id>30e59a541bbd5c100a4a10ad9c4bcbea</sys_id><sys_mod_count>16</sys_mod_count><sys_name>x_g_irm_fms_budget</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_db_view_table_30e59a541bbd5c100a4a10ad9c4bcbea</sys_update_name><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2020-06-30 15:15:02</sys_updated_on><table>x_g_irm_fms_budget</table><variable_prefix>bud1</variable_prefix><view display_value="x_g_irm_fms_budget_item_compare">0abda1031ba9dc101f7e113d9c4bcbfd</view><where_clause/></sys_db_view_table></record_update>]]></payload>
+        <payload_hash>2113366965</payload_hash>
+        <record_name>x_g_irm_fms_budget</record_name>
+        <reverted_from/>
+        <source>882afe181b319c100a4a10ad9c4bcb86</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-06-30 15:15:02</sys_created_on>
+        <sys_id>f80b7e981b319c100a4a10ad9c4bcb8f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17305cbb44a0000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-30 15:15:02</sys_updated_on>
+        <type>View Table</type>
+        <update_guid>340b7e9897319c10fc649da8a68fff8f</update_guid>
+        <update_guid_history>340b7e9897319c10fc649da8a68fff8f:2113366965,829fa69cc6fd5c10f1585659d2095ed8:669084319,37fe229c3dfd5c1053f14abf23a7cd26:-208883427,dbee6e5c6afd5c1046ba88fc01642faa:420915261,db3eee1c7afd5c10515fa5d13d0f624e:-208883427,8e8daed842fd5c10104de3f3e5fd3921:-253321446,000dead81efd5c1043ff1eec0d1c999f:849451424,b2ece6d8e4fd5c10d07d9eb5f35fde93:204572884,405c62d8c9fd5c108e67d54758b9ca13:1943201573,5e1c6e9840fd5c106048551fbc5a0ed1:-930856148,43566654edfd5c10ca79e78e36f7691c:1479812206,13c5ea14e2fd5c10452dec8674f27382:-1553010907,6385aed059fd5c10d04fe85eacca23e4:1935751468,2fd8d2185abd5c104abc3828ff2bd2a2:-1395225692,f4d796d41fbd5c100ac8759ab8d52367:329255960,0d565294adbd5c10f3edc0a962de8dce:-1395225692,32069e5402bd5c10713b7d791198d82a:329255960</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-06-30 15:17:28</sys_created_on>
+        <sys_db_object display_value="" name="sys_db_view_table">sys_db_view_table</sys_db_object>
+        <sys_id>0cd0c64dc9a34ee389fa34a346f46461</sys_id>
+        <sys_metadata>30e59a541bbd5c100a4a10ad9c4bcbea</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_g_irm_fms_budget</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent display_value="x_g_irm_fms_budget_item_compare">0abda1031ba9dc101f7e113d9c4bcbfd</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_db_view_table_30e59a541bbd5c100a4a10ad9c4bcbea</sys_update_name>
+        <sys_update_version display_value="sys_db_view_table_30e59a541bbd5c100a4a10ad9c4bcbea">f80b7e981b319c100a4a10ad9c4bcb8f</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-06-30 15:17:28</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>
