@@ -3,17 +3,62 @@
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>budget_display</element>
-            <list_id display_value="x_g_irm_fms_budget" element="NULL" name="x_g_irm_fms_budget" parent="NULL" relationship="NULL" sys_domain="global" view="74d211621b1300101f7e113d9c4bcbbb">9a334c541b9410101f7e113d9c4bcb79</list_id>
+            <list_id display_value="x_g_irm_fms_budget" element="NULL" name="x_g_irm_fms_budget" parent="NULL" relationship="NULL" sys_domain="global" view="74d211621b1300101f7e113d9c4bcbbb">277b5a981bbd5c100a4a10ad9c4bcb12</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>0</position>
             <sum>false</sum>
             <sys_created_by>MarkelJR@state.gov</sys_created_by>
-            <sys_created_on>2020-04-16 12:17:53</sys_created_on>
-            <sys_id>92334c541b9410101f7e113d9c4bcb7a</sys_id>
+            <sys_created_on>2020-06-30 12:57:21</sys_created_on>
+            <sys_id>2f7b5a981bbd5c100a4a10ad9c4bcb12</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-            <sys_updated_on>2020-04-16 12:17:53</sys_updated_on>
+            <sys_updated_on>2020-06-30 12:57:21</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>budget_type</element>
+            <list_id display_value="x_g_irm_fms_budget" element="NULL" name="x_g_irm_fms_budget" parent="NULL" relationship="NULL" sys_domain="global" view="74d211621b1300101f7e113d9c4bcbbb">277b5a981bbd5c100a4a10ad9c4bcb12</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>1</position>
+            <sum>false</sum>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-06-30 12:57:21</sys_created_on>
+            <sys_id>af7b5a981bbd5c100a4a10ad9c4bcb12</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-06-30 12:57:21</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>fy</element>
+            <list_id display_value="x_g_irm_fms_budget" element="NULL" name="x_g_irm_fms_budget" parent="NULL" relationship="NULL" sys_domain="global" view="74d211621b1300101f7e113d9c4bcbbb">277b5a981bbd5c100a4a10ad9c4bcb12</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>2</position>
+            <sum>false</sum>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-06-30 12:57:21</sys_created_on>
+            <sys_id>237b5a981bbd5c100a4a10ad9c4bcb13</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-06-30 12:57:21</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>project_ref</element>
+            <list_id display_value="x_g_irm_fms_budget" element="NULL" name="x_g_irm_fms_budget" parent="NULL" relationship="NULL" sys_domain="global" view="74d211621b1300101f7e113d9c4bcbbb">277b5a981bbd5c100a4a10ad9c4bcb12</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>3</position>
+            <sum>false</sum>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2020-06-30 12:57:21</sys_created_on>
+            <sys_id>a37b5a981bbd5c100a4a10ad9c4bcb13</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2020-06-30 12:57:21</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
@@ -27,10 +72,10 @@
             <sum>false</sum>
             <sys_class_name>sys_ui_list</sys_class_name>
             <sys_created_by>MarkelJR@state.gov</sys_created_by>
-            <sys_created_on>2020-04-16 12:17:53</sys_created_on>
+            <sys_created_on>2020-06-30 12:57:21</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
-            <sys_id>9a334c541b9410101f7e113d9c4bcb79</sys_id>
+            <sys_id>277b5a981bbd5c100a4a10ad9c4bcb12</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_name>x_g_irm_fms_budget</sys_name>
             <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
@@ -38,7 +83,7 @@
             <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
             <sys_update_name>sys_ui_list_x_g_irm_fms_budget_sys_ref_list</sys_update_name>
             <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-            <sys_updated_on>2020-04-16 12:17:53</sys_updated_on>
+            <sys_updated_on>2020-06-30 12:57:21</sys_updated_on>
             <sys_user/>
             <view display_value="Reference List" name="sys_ref_list">74d211621b1300101f7e113d9c4bcbbb</view>
             <view_name/>

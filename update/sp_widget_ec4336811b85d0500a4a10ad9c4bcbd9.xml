@@ -13,6 +13,31 @@
 
 	c.reportData = [];
 
+	function getCurrentFinancialYear(type) {
+		var startYear = "";
+		var endYear = "";
+		var tDate;
+		var docDate = new Date();
+		if ((docDate.getMonth() + 1) <= 3) {
+		  startYear = docDate.getFullYear() - 1;
+		  endYear = docDate.getFullYear();
+		} else {
+		  startYear = docDate.getFullYear();
+		  endYear = docDate.getFullYear() + 1;
+		}
+
+		startYear--;
+		endYear--;
+
+		if (type == "end") {
+			return new Date(endYear, 8, 30);
+		} else if (type == "start") {
+			return new Date(startYear, 9, 1);
+		} else {
+			return endYear.toString();
+		}
+	  }
+
 	function parseDate(s) {
 		var d = new Date();
 		var retDate = s;
@@ -25,20 +50,16 @@
 		}
 
 		return retDate;
-		
 	}
 
-	var oldDate = new Date();
-	oldDate.setMonth(oldDate.getMonth() - 3);
-
 	c.startdt = {
-		displayValue: oldDate.toLocaleDateString(),
-		value: oldDate,
+		displayValue: getCurrentFinancialYear("start").toLocaleDateString(),
+		value: getCurrentFinancialYear("start"),
 		name: 'startdt'
 	};
 	c.enddt = {
-		displayValue: new Date().toLocaleDateString(),
-		value: new Date(),
+		displayValue: getCurrentFinancialYear("end").toLocaleDateString(),
+		value: getCurrentFinancialYear("end"),
 		name: 'enddt'
 	};
 
@@ -567,7 +588,7 @@
 			c.fiscalYears.push(i.toString());
 		}
 
-		c.selectedFY = getCurrentFinancialYear();
+		c.selectedFY = getCurrentFinancialYear("year");
 
 		c.exportToCsv = function () {
 			gridOptions.api.exportDataAsCsv({
@@ -625,17 +646,6 @@
 			];
 
 		};
-
-		function getCurrentFinancialYear() {
-			var fiscalyear = "";
-			var today = new Date();
-			if ((today.getMonth() + 1) >= 10) {
-				fiscalyear = (today.getFullYear() + 1);
-			} else {
-				fiscalyear = today.getFullYear();
-			}
-			return fiscalyear.toString();
-		}
 
 		var gridDiv = document.querySelector('#reportGrid');
 		new agGrid.Grid(gridDiv, gridOptions);
@@ -1273,14 +1283,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>426</sys_mod_count>
+        <sys_mod_count>433</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-29 21:19:12</sys_updated_on>
+        <sys_updated_on>2020-06-30 15:09:22</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">

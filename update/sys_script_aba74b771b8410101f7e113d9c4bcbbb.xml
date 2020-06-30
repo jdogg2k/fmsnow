@@ -29,13 +29,13 @@
         <role_conditions/>
         <script><![CDATA[(function executeRule(current, previous /*null when async*/ ) {
     var newID = current.party_name;
-    var partyType = current.party_type;
+    var contract = current.contract_ref;
     var uniqueCheck = new GlideRecord(FMSConstants.TABLE_CONTRACT_PARTY);
+    uniqueCheck.addQuery("contract_ref", contract);
     uniqueCheck.addQuery("party_name", newID);
-    uniqueCheck.addQuery("party_type", partyType);
     uniqueCheck.query();
     if (uniqueCheck.next()) { //we have existing records with that ID, notify and cancel update
-        gs.addErrorMessage("Contract Party " + newID + " is not unique. That value of Group Name and Party Type already exists on an existing Contract Party.  Update Failed.");
+        gs.addErrorMessage("Contract Party " + newID + " is not unique. The same Contract Party can't be entered twice on one Contract as Interested Party.  Update Failed.");
         current.setAbortAction(true);
     }
 })(current, previous);]]></script>
@@ -45,7 +45,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>aba74b771b8410101f7e113d9c4bcbbb</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>6</sys_mod_count>
         <sys_name>Contract Party Validation</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
@@ -53,7 +53,7 @@
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_aba74b771b8410101f7e113d9c4bcbbb</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-24 15:21:19</sys_updated_on>
+        <sys_updated_on>2020-06-30 14:39:48</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>

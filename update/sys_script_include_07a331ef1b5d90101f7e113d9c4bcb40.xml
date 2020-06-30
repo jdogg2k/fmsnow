@@ -298,10 +298,12 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 			executionKey = exBud.sys_id;
 		}
 		gs.addInfoMessage("ex:   " + executionKey + "  act:   " + actualKey)
-		var qry = "main_budget_ref=" + executionKey + "^ORmain_expense_item_refISEMPTY^alt_budget_ref=" + actualKey + "^ORalt_expense_item_refISEMPTY";
+//		var qry = "main_budget_ref=" + executionKey + "^ORmain_expense_item_refISEMPTY^alt_budget_ref=" + actualKey + "^ORalt_expense_item_refISEMPTY";
+		var qry = "main_budget_ref=" + executionKey + "^alt_budget_ref=" + actualKey;
         var compare = new GlideRecord(this.bitemView);
         compare.addEncodedQuery(qry);
 		compare.query();
+		gs.addInfoMessage(' row count: ' + compare.getRowCount());
 		while (compare.next()) {
 			var act = new GlideRecord(this.bitemTable);
 			var itemKey;
@@ -312,8 +314,10 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 			act.next();
 			gs.addInfoMessage('item: ' + act.expense_item_ref);
 			var expTotal = this.getExpenseTotal(bud.project_ref, bud.fy, act.expense_item_ref);
+			gs.addInfoMessage(' alt is nil: ' + compare.alt_sys_id.nil());
+			gs.addInfoMessage(' main is nil: ' + compare.main_sys_id.nil());
 			if (compare.alt_sys_id.nil()) {    // item does not exist on actual 
-				act.budget_ref = compare.alt_budget_ref;
+				act.budget_ref = actualKey;
 				act.expense_item_ref = compare.main_expense_item_ref;
 				act.budget_amt = expTotal;
 				act.projected_amt = compare.main_budget_amt - expTotal;
@@ -323,12 +327,10 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 				act.deleteRecord();
 			}
 			else {
-				act.next();
 				act.budget_amt = expTotal;
 				act.projected_amt = compare.main_budget_amt - expTotal;
 				act.update();
 			}
-			break;
 		}		
 	},
     
@@ -357,13 +359,13 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-06-15 15:53:58</sys_created_on>
         <sys_id>07a331ef1b5d90101f7e113d9c4bcb40</sys_id>
-        <sys_mod_count>138</sys_mod_count>
+        <sys_mod_count>142</sys_mod_count>
         <sys_name>FMSBudgetUtils</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_07a331ef1b5d90101f7e113d9c4bcb40</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-29 18:09:10</sys_updated_on>
+        <sys_updated_on>2020-06-30 11:35:29</sys_updated_on>
     </sys_script_include>
 </record_update>
