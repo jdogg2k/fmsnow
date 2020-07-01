@@ -12,7 +12,6 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
 	budgetTable: FMSConstants.TABLE_BUDGET,
 	bitemTable: FMSConstants.TABLE_BUDGET_ITEM,
-	bitemView: FMSConstants.VIEW_BUDGET_ITEM_COMPARE,
 	phaseTable: FMSConstants.TABLE_BUDGET_ITEM_PHASE,
 	tranItemTable: FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM,
 	FMSUtility: new x_g_irm_fms.FMSUtilities(),              //helper utility for FMS queries
@@ -278,10 +277,11 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	},
 	
 	hasCurrent: function(project, type, fy) {
-		if (this.getRelatedBudget(project, type, fy))
-			return true;
-		else
+		var relBud = this.getRelatedBudget(project, type, fy);
+		if (relBud == null || relBud.current != 1)
 			return false;
+		else
+			return true;
 	},
 	
     updateActual: function(actualKey, executionKey) {
@@ -297,43 +297,73 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 			exBud = this.getRelatedBudget(bud.project_ref, "Execution", bud.fy);
 			executionKey = exBud.sys_id;
 		}
-		gs.addInfoMessage("ex:   " + executionKey + "  act:   " + actualKey)
-//		var qry = "main_budget_ref=" + executionKey + "^ORmain_expense_item_refISEMPTY^alt_budget_ref=" + actualKey + "^ORalt_expense_item_refISEMPTY";
-		var qry = "main_budget_ref=" + executionKey + "^alt_budget_ref=" + actualKey;
-        var compare = new GlideRecord(this.bitemView);
-        compare.addEncodedQuery(qry);
-		compare.query();
-		gs.addInfoMessage(' row count: ' + compare.getRowCount());
-		while (compare.next()) {
-			var act = new GlideRecord(this.bitemTable);
-			var itemKey;
-			if (compare.main_sys_id.nil()) itemKey = compare.alt_sys_id; else itemKey = compare.main_sys_id; 
-			act.addQuery('sys_id', itemKey);
-			act.setLimit(1);
-			act.query();
-			act.next();
-			gs.addInfoMessage('item: ' + act.expense_item_ref);
-			var expTotal = this.getExpenseTotal(bud.project_ref, bud.fy, act.expense_item_ref);
-			gs.addInfoMessage(' alt is nil: ' + compare.alt_sys_id.nil());
-			gs.addInfoMessage(' main is nil: ' + compare.main_sys_id.nil());
-			if (compare.alt_sys_id.nil()) {    // item does not exist on actual 
-				act.budget_ref = actualKey;
-				act.expense_item_ref = compare.main_expense_item_ref;
-				act.budget_amt = expTotal;
-				act.projected_amt = compare.main_budget_amt - expTotal;
-				act.insert();
-			}
-			else if (compare.main_sys_id.nil())  {  // item does not exist on execution 
-				act.deleteRecord();
-			}
-			else {
-				act.budget_amt = expTotal;
-				act.projected_amt = compare.main_budget_amt - expTotal;
-				act.update();
-			}
+		gs.addInfoMessage("ex:   " + executionKey + "  act:   " + actualKey);
+		var qry = "budget_ref=" + executionKey;
+        var exItem = new GlideRecord(this.bitemTable);
+        exItem.addEncodedQuery(qry);
+		exItem.query();
+		gs.addInfoMessage(' row count: ' + exItem.getRowCount());
+		while (exItem.next()) {
+//			gs.addInfoMessage('item: ' + exItem.expense_item_ref);
+			var expTotal = this.getExpenseTotal(bud.project_ref, bud.fy, exItem.expense_item_ref);
+			this.updateBudgetItem(actualKey, exItem.expense_item_ref, parseFloat(expTotal), parseFloat(exItem.budget_amt) - parseFloat(expTotal));
 		}		
+		this.removeUnreferenced(actualKey, executionKey);
+		return true;
 	},
     
+    updateBudgetItem: function(budget, expense, budamt, projamt) {
+		// updates or creates a budget item
+		var itm = new GlideRecord(this.bitemTable);
+		itm.addQuery('budget_ref', budget);
+		itm.addQuery('expense_item_ref', expense);
+		itm.setLimit(1);
+		itm.query();
+		gs.addInfoMessage('item: ' + expense);
+		if (!itm.hasNext()) {    // item does not exist  
+			if (!itm.canCreate()) { gs.addInfoMessage('No authority to create budget items.'); return false; }
+			gs.addInfoMessage('..........inserting: ' + expense + '  budget_amt ' + budamt + '   projamt: ' + projamt);
+			itm.budget_ref = budget;
+			itm.expense_item_ref = expense;
+			itm.budget_amt = budamt;
+			itm.projected_amt = projamt;
+			itm.insert();
+		}
+		else {
+			itm.next();
+			if (parseFloat(itm.budget_amt) == budamt && parseFloat(itm.projected_amt) == projamt) return true;
+			if (!itm.canWrite()) { gs.addInfoMessage('No authority to update budget items.'); return false; }
+			gs.addInfoMessage('..........updating: ' + expense + '  budget_amt ' + budamt + '   projamt: ' + projamt);
+			itm.budget_amt = budamt;
+			itm.projected_amt = projamt;
+			itm.update();
+		}
+		return true;
+	},
+	
+    removeUnreferenced: function(target, source) {
+		// removes unreferenced items from target budget
+		var qry = "budget_ref=" + source + "^ORbudget_ref=" + target;
+        var nondup = new GlideAggregate(this.bitemTable);
+        nondup.addEncodedQuery(qry);
+        nondup.addAggregate('COUNT', 'expense_item_ref');
+		nondup.groupBy('expense_item_ref');
+		nondup.query();
+		while (nondup.next()) {
+			if (nondup.getAggregate('COUNT', 'expense_item_ref') > 1) continue;
+			if (!itm.canDelete()) { gs.addInfoMessage('No authority to delete budget items.'); return false; }
+			gs.addInfoMessage(' deleting: ' + nondup.expense_item_ref);
+			var itm = new GlideRecord(this.bitemTable);
+			itm.addQuery('budget_ref', target);
+			itm.addQuery('expense_item_ref', nondup.expense_item_ref);
+			itm.setLimit(1);
+			itm.query();
+			itm.next();
+			itm.deleteRecord();
+		}
+		return true;
+	},
+	
 	getExpenseTotal: function(project, fy, expense) {
 		var agg = new GlideAggregate(this.tranItemTable);
 		agg.addAggregate('SUM', 'item_total');
@@ -343,13 +373,11 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		agg.groupBy('expense_item_ref');
 		agg.query();
 		var expTotal = 0;
-		gs.addInfoMessage(project + '  ' + fy + '  ' + expense);
-		gs.addInfoMessage('  ===next?  ' + agg.hasNext());
 		if (agg.hasNext()) {
 			agg.next();
 			expTotal = agg.getAggregate('SUM', 'item_total');
 		}	
-		gs.addInfoMessage('ref: ' + expense + " total: " + expTotal);
+//		gs.addInfoMessage('ref: ' + expense + " total: " + expTotal);
 		return expTotal;
 	},
 	
@@ -359,13 +387,13 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-06-15 15:53:58</sys_created_on>
         <sys_id>07a331ef1b5d90101f7e113d9c4bcb40</sys_id>
-        <sys_mod_count>142</sys_mod_count>
+        <sys_mod_count>181</sys_mod_count>
         <sys_name>FMSBudgetUtils</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_07a331ef1b5d90101f7e113d9c4bcb40</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-30 11:35:29</sys_updated_on>
+        <sys_updated_on>2020-07-01 14:16:34</sys_updated_on>
     </sys_script_include>
 </record_update>

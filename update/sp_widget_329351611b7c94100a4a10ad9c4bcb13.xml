@@ -33,6 +33,7 @@
 			current: false,
 			changes: false
 		}
+		c.setActiveAction('notes');
         // =========== Secure budget ================
         if (!(c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst)) {
             c.actionStates.submit = "hide";
@@ -106,6 +107,10 @@
             c.actionStates[actionType] = true;
         }
     };
+	
+    c.isActiveAction = function(actionType) {
+        if (c.actionStates[actionType] == true) return 'active'; else return '';
+	}
 
     c.showRelated = function(type) {
         c.server.get({
@@ -399,14 +404,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-15 11:52:52</sys_created_on>
         <sys_id>329351611b7c94100a4a10ad9c4bcb13</sys_id>
-        <sys_mod_count>218</sys_mod_count>
+        <sys_mod_count>229</sys_mod_count>
         <sys_name>Budget Detail</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_329351611b7c94100a4a10ad9c4bcb13</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-29 17:26:29</sys_updated_on>
+        <sys_updated_on>2020-07-01 15:28:17</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
   <widget id="organization_selection" options='{"hide_widget": true, "hide_project": true}'></widget>
   <div class="container">
@@ -481,13 +486,13 @@
       <div class="form-group col-md-6">
         <div class="row">
           <ul class="nav nav-tabs fms-tabs">
-            <li ng-class="{'active' : c.actionStates.adjust}"><a data-toggle="tab" href="#adjust" ng-click="c.setActiveAction('adjust');" ng-if="c.actionStates.adjust!='hide'">Adjust</a></li>
-            <li ng-class="{'active' : c.actionStates.submit}"><a data-toggle="tab" href="#submit" ng-click="c.setActiveAction('submit');" ng-if="c.actionStates.submit!='hide'">Submit</a>
-            <li ng-class="{'active' : c.actionStates.approve}"><a data-toggle="tab" href="#approve" ng-click="c.setActiveAction('approve');" ng-if="c.actionStates.approve!='hide'">Approve</a></li>
-            <li ng-class="{'active' : c.actionStates.copy}"><a data-toggle="tab" href="#copy" ng-click="c.setActiveAction('copy');" ng-if="c.actionStates.copy!='hide'">New/Copy</a>
-            <li ng-class="{'active' : c.actionStates.changes}"><a data-toggle="tab" href="#changes" ng-click="c.setActiveAction('changes');" ng-if="c.actionStates.changes!='hide'">Changes</a></li>
-            <li ng-class="{'active' : c.actionStates.current}"><a data-toggle="tab" href="#current" ng-click="c.setActiveAction('current');" ng-if="c.actionStates.current!='hide'">Current</a>
-            <li ng-class="{'active' : c.actionStates.notes}"><a data-toggle="tab" href="#notes" ng-click="c.setActiveAction('notes');">Notes</a>
+            <li ng-class="{ 'active' : c.actionStates.adjust == true }"><a data-toggle="tab" href="#adjust" ng-click="c.setActiveAction('adjust');" ng-if="c.actionStates.adjust!='hide'">Adjust</a></li>
+            <li ng-class="{ 'active' : c.actionStates.submit == true }"><a data-toggle="tab" href="#submit" ng-click="c.setActiveAction('submit');" ng-if="c.actionStates.submit!='hide'">Submit</a>
+            <li ng-class="{ 'active' : c.actionStates.approve == true }"><a data-toggle="tab" href="#approve" ng-click="c.setActiveAction('approve');" ng-if="c.actionStates.approve!='hide'">Approve</a></li>
+            <li ng-class="{ 'active' : c.actionStates.copy == true }"><a data-toggle="tab" href="#copy" ng-click="c.setActiveAction('copy');" ng-if="c.actionStates.copy!='hide'">New/Copy</a>
+            <li ng-class="c.isActiveAction('changes')"><a data-toggle="tab" href="#changes" ng-click="c.setActiveAction('changes');" ng-if="c.actionStates.changes!='hide'">Changes</a></li>
+            <li ng-class="c.isActiveAction('current')"><a data-toggle="tab" href="#current" ng-click="c.setActiveAction('current');" ng-if="c.actionStates.current!='hide'">Current</a>
+            <li ng-class="c.isActiveAction('notes')"><a data-toggle="tab" href="#notes" ng-click="c.setActiveAction('notes');">Notes</a>
           </ul>
         </div>
         <div class="row">

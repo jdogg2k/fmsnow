@@ -25,37 +25,38 @@ while (gr.next()) {
     var current_oy = new GlideDateTime(gr.contract_ref.current_oy_start_date);
     // 730 duration check & 365 duration check
     var dur_730 = GlideDateTime.subtract(dt, performance_date);
-    var diffrence_perf_730 = parseInt(dur.getDisplayValue());
+    var diffrence_perf_730 = parseInt(dur_730.getDisplayValue());
 
     // 545 duration check
     var dur_545 = GlideDateTime.subtract(dt, Last_oy);
-    var diffrence_oy_545 = parseInt(dur.getDisplayValue());
+    var diffrence_oy_545 = parseInt(dur_545.getDisplayValue());
 
     // 90 duration check
     var dur_90 = GlideDateTime.subtract(dt, current_oy);
-    var diffrence_oy_90 = parseInt(dur.getDisplayValue());
+    var diffrence_oy_90 = parseInt(dur_90.getDisplayValue());
 
-
+    //gs.info("schedule job 1 "+diffrence_perf_730 +"record  "+gr.contract_ref.contract_display);
     var days_730, days_365, days_545, days_90;
-    var gr1 = new GlideRecord("x_g_irm_fms_notification");
-    //gr1.addQuery("name", "value");
-    gr1.query();
-    while (gr1.next()) {
-        if (gr1.sys_id == '9ed2cc351bc090500a4a10ad9c4bcbf9') {
-            days_730 = gr1.basis_relative_days;
-        }
-        if (gr1.sys_id == '1ad2cc351bc090500a4a10ad9c4bcbf9') {
-            days_545 = gr1.basis_relative_days;
-        }
-        if (gr1.sys_id == '52d2cc351bc090500a4a10ad9c4bcbfa') {
-            days_365 = gr1.basis_relative_days;
-        }
-        if (gr1.sys_id == '16d2cc351bc090500a4a10ad9c4bcbf8') {
-            days_90 = gr1.basis_relative_days;
-        }
 
-    }
+        var gr1 = new GlideRecord("x_g_irm_fms_notification");
+     //gr1.addQuery("name", "value");
+     gr1.query();
+     while (gr1.next()) {
+         if (gr1.sys_id == '9ed2cc351bc090500a4a10ad9c4bcbf9') {
+             days_730 = gr1.basis_relative_days.toString();
+         }
+         if (gr1.sys_id == '1ad2cc351bc090500a4a10ad9c4bcbf9') {
+             days_545 = gr1.basis_relative_days.toString();
+         }
+         if (gr1.sys_id == '52d2cc351bc090500a4a10ad9c4bcbfa') {
+             days_365 = gr1.basis_relative_days.toString();
+         }
+         if (gr1.sys_id == '16d2cc351bc090500a4a10ad9c4bcbf8') {
+             days_90 = gr1.basis_relative_days.toString();
+         }
 
+     }
+     gs.info("schedule job 1.5 " + "record  " + " " + days_730 + " " + days_545 + " " + days_365 + " " + days_90);
     days_730 = days_730.split('-');
     days_730 = parseInt(days_730[1]);
 
@@ -68,25 +69,63 @@ while (gr.next()) {
     days_90 = days_90.split('-');
     days_90 = parseInt(days_90[1]);
 
+    var user_730 = [];
+    var user_545 = [];
+    var user_365 = [];
+    var user_90 = [];
+    gs.info("schedule job 2 " + "record  " + gr.contract_ref.sys_id + " " + days_730 + " " + days_545 + " " + days_365 + " " + days_90);
+    //var record_to_updtae;
+    var gr_flag = new GlideRecord("x_g_irm_fms_contract");
+    gr_flag.addQuery("sys_id", gr.contract_ref.sys_id);
+    //gr_flag.add
+    gr_flag.query();
+    if (gr_flag.next()) {
+        //record_to_updtae = gr_flag;
 
-    //730 days check
-    if (diffrence_perf_750 <= days_730 && diffrence_perf_750 >= 366) {
+        gs.info("schedule job 3 " + "record  " + gr_flag.contract_display);
 
-    }
 
-    //545 days check
-    if (diffrence_oy_545 <= days_545) {
+        //730 days check
+        if (diffrence_perf_730 <= days_730 && diffrence_perf_730 >= 366) {
+            user_730.push(gr.party_email + "");
+            gs.eventQueue('x_g_irm_fms.730days', gr_flag, user_730.toString());
+            gr_flag.days_730 = true;
+            gr_flag.update();
+            gs.info("schedule job 730 " + gr_flag.contract_display + "user array  " + user_730.toString());
 
-    }
+        }
 
-    //365 days check
-    if (diffrence_perf_750 <= days_365) {
+        //545 days check
+        if (diffrence_oy_545 <= days_545) {
+            user_545.push(gr.party_email + "");
+            gs.eventQueue('x_g_irm_fms.545days', gr_flag, user_545.toString());
+            gr_flag.days_545 = true;
+            gr_flag.update();
+            gs.info('schedule job 545 ' + gr.contract_ref.getDisplayValue() + " " + user_545.toString());
 
-    }
-	
-	//90 days check
-	 if (diffrence_oy_90 <= days_90) {
 
+        }
+
+        //365 days check
+        if (diffrence_perf_730 <= days_365) {
+            user_365.push(gr.party_email + "");
+            gs.eventQueue('x_g_irm_fms.365days', gr_flag, user_365.toString());
+            gr_flag.days_365 = true;
+            gr_flag.update();
+            gs.info('schedule job  365 ' + gr.contract_ref.getDisplayValue() + " " + user_365.toString());
+
+
+        }
+
+        //90 days check
+        if (diffrence_oy_90 <= days_90) {
+            user_90.push(gr.party_email + "");
+            gs.eventQueue('x_g_irm_fms.90days', gr_flag, user_90.toString());
+            gr_flag.days_90 = true;
+            gr_flag.update();
+            gs.info('schedule job 90 ' + gr.contract_ref.getDisplayValue() + " " + user_90.toString());
+
+        }
     }
 
 }]]></script>
@@ -94,14 +133,14 @@ while (gr.next()) {
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-06-29 19:05:01</sys_created_on>
         <sys_id>0565960c1b315c100a4a10ad9c4bcbf0</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>16</sys_mod_count>
         <sys_name>Contract weekly notifications</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sysauto_script_0565960c1b315c100a4a10ad9c4bcbf0</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-29 19:06:20</sys_updated_on>
+        <sys_updated_on>2020-07-01 16:04:04</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>
