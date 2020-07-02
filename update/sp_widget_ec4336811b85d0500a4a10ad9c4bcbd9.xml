@@ -90,6 +90,7 @@
 
 		c.server.get(reportObj).then(function (reportResults) {
 			c.reportData = reportResults.data.reportData;
+			gridOptions.api.setColumnDefs(generateColumns());
 			gridOptions.api.setRowData(c.reportData);
 			gridOptions.api.sizeColumnsToFit();
 			if (c.data.reportType == "financial_transaction"){
@@ -122,6 +123,10 @@
 			  break;
 			case "funding_due_in":
 			  title = "Funding Due-In";
+			  break;
+			case "monthly_expenditure":
+			  title = "Monthly Expenditure";
+
 
 		}
 		title += " Report";
@@ -561,7 +566,7 @@
                 enableValue: true
             });
 		}
-		if (c.data.reportType == "allocation" || c.data.reportType == "baseline") {
+		if (c.data.reportType == "allocation" || c.data.reportType == "baseline" || (c.data.reportType == "budget_plans" && c.selectedBudgetType == "Actual")) {
 			colArray.push({
 				headerName: 'Balance',
 				field: 'balance',
@@ -1119,8 +1124,27 @@
 
 				var baseProjects = "";
 				var baseEQ = "budget_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^budget_ref.fy=" + input.fy;
-				if (data.reportType == "budget_plans")
-					baseEQ += "^budget_ref.budget_type=" + input.budget_type;
+				if (data.reportType == "budget_plans") {
+
+					if (input.budget_type == "Actual") {
+						baseEQ += "^budget_ref.budget_typeINActual,Execution";
+
+						//filter on actual budget's project
+						var actualQuery = new GlideRecord(FMSConstants.TABLE_BUDGET);
+						actualQuery.addEncodedQuery("project_ref.organization_refIN" + allOrgs.join(",") + "^fy=" + input.fy + "^budget_type=Actual");
+						actualQuery.query();
+						if (actualQuery.next()) {
+							baseEQ += "^budget_ref.project_ref=" + actualQuery.project_ref.toString();
+						}
+						
+					} else {
+						baseEQ += "^budget_ref.budget_type=" + input.budget_type;
+						if (input.budget_type == "baseline")
+							baseEQ += "^budget_ref.budget_status=Approved";
+					}
+
+				}
+					
 				var baseQ = new GlideAggregate(FMSConstants.TABLE_BUDGET_ITEM);
 				baseQ.addEncodedQuery(baseEQ);
 				baseQ.groupBy("budget_ref");
@@ -1173,7 +1197,9 @@
 							reportObj.balance = 0;
 							baseProjects += reportObj.project_ref + ",";
 						} else {
+							reportObj.execution = 0;
 							reportObj.budget = 0;
+							reportObj.balance = 0;
 							reportObj.budget_name = baseQ.budget_ref.project_ref.project_name.toString() + " v" + baseQ.budget_ref.budget_version.toString() + "r" + baseQ.budget_ref.budget_revision.toString();
 						}
 
@@ -1190,7 +1216,18 @@
 						}
 
 					} else {
-						reportObj.budget += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
+
+						if (input.budget_type == "Actual") {
+							if (reportObj.budget_type == "Actual") {
+								reportObj.budget += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
+							}
+	
+							if (reportObj.budget_type == "Execution") {
+								reportObj.execution += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
+							}
+						} else {
+							reportObj.budget += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
+						}
 					}
 
 					data.reportData.push(reportObj);
@@ -1251,6 +1288,13 @@
 						item.balance = item.execution - (item.transfer + item.in_progress + item.initiated + item.committed + item.obligated);
 					});
 
+				} else {
+					if (input.budget_type == "Actual") {
+						//calculate balances
+						data.reportData.forEach(function (item) {
+							item.balance = (item.execution - item.budget);
+						});
+					}
 				}
 
 			}
@@ -1461,14 +1505,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>464</sys_mod_count>
+        <sys_mod_count>485</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-01 16:17:52</sys_updated_on>
+        <sys_updated_on>2020-07-02 18:09:44</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
