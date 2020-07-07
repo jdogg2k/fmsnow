@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function ($scope,AGGridFactory) {
+    /* widget controller */
+    var c = this;
+	c.userAuth = c.data.userAuth;
+
+    var approTypeManager = new AGGridFactory();
+	
+	c.addNew = function() {
+        approTypeManager.editRow("-1", "", c.data.tableName);
+    }
+	//alert(c.addNew());
+
+	c.canAdd = function() { 
+		if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin) 
+			return true;
+		else
+			return false;
+	}
+
+	c.canEdit = function(auth, data) {
+		if (c.userAuth.roles.isSysAdmin || auth.orgs.indexOf(data.sys_id) >= 0) 
+			return true;
+		else
+			return false;
+	}
+
+	c.canDelete = function(auth, data) { return c.canEdit(auth, data); }
+    
+    c.exportExcel = function() {
+       approTypeManager.exportExcel();
+	}
+
+    approTypeManager.setColumns ([{
+            field: 'edit',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            }, 
+			suppressMenu: true,
+			sortable: false,
+			cellRenderer: 'editCell',
+			cellRendererParams: function(params) {
+				//alert(params.data);
+				return { "show": c.canEdit(c.userAuth, params.data) }; 
+			}
+        },
+        {
+            field: 'appropriation_type',
+            headerName: 'Appropriation Type',
+            filter: 'agTextColumnFilter'
+        },				
+				{
+            field: 'appropriation_type_desc',
+            headerName: 'Description',
+            filter: 'agTextColumnFilter'
+        },													
+        {
+            field: 'delete',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+			suppressMenu: true,
+			sortable: false,
+            cellRenderer: 'deleteCell',
+			cellRendererParams: function(params) { 
+				return { "show": c.canDelete(c.userAuth, params.data), "banner": "Organization - " + params.data.organization_display }; 
+			}
+        }
+    ]);
+//alert(c.data.tableName);
+    var pageProps = {
+        pageController: c, 
+        tableName: c.data.tableName, 
+        dataArray: null, 
+        pageType: 'Organization', 
+        linkedField: 'org_code', 
+        detailsPage: 'lookup_table',
+        usePaging: false
+    }
+	//	alert(tableName);
+
+    approTypeManager.setPageProperties(pageProps);
+    approTypeManager.setRenderers(); //build renderers 
+    approTypeManager.renderGrid('approtypeLookup'); //render grid objects
+    approTypeManager.setGridData(c.data.tableData); //set grid data
+    approTypeManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin));
+    approTypeManager.fitColumns();
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>appropriation_type_lookup_table</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Appropriation Type Lookup Table</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[
+(function() {
+
+    var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+	var FMSPermissions = new x_g_irm_fms.FMSPermissions();
+//	var FMSConstants = new x_g_irm_fms.FMSConstants();
+    
+    if (input) { //input holds the data coming back to the server
+
+		if (input.mode == "deleteRow"){
+			if (FMSPermissions.canDeleteOrg(input.rowID)) {
+				FMSUtility.deleteRecord(FMSConstants.TABLE_APPROPRIATION_TYPE, input.rowID);
+			} else {
+				data.isError = true;
+				data.errorMsg = "This Org cannot be deleted as it is linked to existing allocations, budgets, contracts or transactions";
+			}
+		}
+
+	}
+	
+	data.userAuth = FMSUtility.getUserAuth();
+	data.tableName = FMSConstants.TABLE_APPROPRIATION_TYPE;
+//	gs.addInfoMessage('fms '+data.tableName);
+    data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_APPROPRIATION_TYPE, "", true); //get all org info
+
+})();
+]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2020-07-07 16:13:26</sys_created_on>
+        <sys_id>013bcf2a1b3dd0100a4a10ad9c4bcb5c</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>Appropriation Type Lookup Table</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_widget_013bcf2a1b3dd0100a4a10ad9c4bcb5c</sys_update_name>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-07 16:27:46</sys_updated_on>
+        <template><![CDATA[<div style="width: 100%; height: 100%">
+
+  <div class="container">
+    <div class="row">
+      <div class="form-group col-sm-12 fms-list-header">
+        <div class="fms-header-buttons">
+          <a href="javascript:void(0)" ng-click="c.exportExcel();" class="btn btn-primary excel-button">Export to Excel</a>
+          <a href="javascript:void(0)" ng-click="c.addNew();" ng-show="c.canAdd()" class="btn btn-info new-button">Add Appropriation Type</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+
+        <div id="approtypeLookup" class="ag-theme-balham full-grid"></div>
+
+      </div>
+    </div>
+  </div>
+
+</div>]]></template>
+    </sp_widget>
+</record_update>

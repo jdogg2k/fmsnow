@@ -85,8 +85,9 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		bud.next();
 		bud.setValue('budget_status', 'Approved');
 		bud.setValue('locked', true);
+		bud.setValue('approved_date', new GlideDateTime());
 		var budID = bud.update();
-		if (this.setCurrent(key, bud.getValue('project_ref.sys_id'), bud.getValue('fy'), bud.getValue('budget_type')))
+		if (this.setCurrent(key, bud.getValue('project_ref'), bud.getValue('fy'), bud.getValue('budget_type')))
 			return budID != null;
 		else
 			return false;
@@ -221,7 +222,7 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         bud.addQuery('sys_id', key);
 		bud.setLimit(1);
         bud.query();
-        if (!bud.hasNext()) return null;
+        if (!bud.hasNext()) return false;
 		var result = bud.next();
 		if (this.setCurrent(key, bud.getValue('project_ref'), bud.getValue('fy'), bud.getValue('budget_type')))
 			return true;
@@ -284,7 +285,7 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	
 	hasCurrent: function(project, type, fy) {
 		var relBud = this.getRelatedBudget(project, type, fy);
-		if (relBud == null || relBud.current != 1)
+		if (relBud == null || !relBud.current)
 			return false;
 		else
 			return true;
@@ -303,18 +304,15 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 			exBud = this.getRelatedBudget(bud.project_ref, "Execution", bud.fy);
 			executionKey = exBud.sys_id;
 		}
-		gs.addInfoMessage("ex:   " + executionKey + "  act:   " + actualKey);
 		var qry = "budget_ref=" + executionKey;
         var exItem = new GlideRecord(this.bitemTable);
         exItem.addEncodedQuery(qry);
 		exItem.query();
-		gs.addInfoMessage(' row count: ' + exItem.getRowCount());
 		while (exItem.next()) {
-//			gs.addInfoMessage('item: ' + exItem.expense_item_ref);
 			var expTotal = this.getExpenseTotal(bud.project_ref, bud.fy, exItem.expense_item_ref);
-			this.updateBudgetItem(actualKey, exItem.expense_item_ref, parseFloat(expTotal), parseFloat(exItem.budget_amt) - parseFloat(expTotal));
+			if (!this.updateBudgetItem(actualKey, exItem.expense_item_ref, parseFloat(expTotal).toFixed(2), (parseFloat(exItem.budget_amt) - parseFloat(expTotal)).toFixed(2))) return false;
 		}		
-		this.removeUnreferenced(actualKey, executionKey);
+		if (!this.removeUnreferenced(actualKey, executionKey)) return false;
 		return true;
 	},
     
@@ -325,10 +323,8 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		itm.addQuery('expense_item_ref', expense);
 		itm.setLimit(1);
 		itm.query();
-		gs.addInfoMessage('item: ' + expense);
 		if (!itm.hasNext()) {    // item does not exist  
 			if (!itm.canCreate()) { gs.addInfoMessage('No authority to create budget items.'); return false; }
-			gs.addInfoMessage('..........inserting: ' + expense + '  budget_amt ' + budamt + '   projamt: ' + projamt);
 			itm.budget_ref = budget;
 			itm.expense_item_ref = expense;
 			itm.budget_amt = budamt;
@@ -339,7 +335,6 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 			itm.next();
 			if (parseFloat(itm.budget_amt) == budamt && parseFloat(itm.projected_amt) == projamt) return true;
 			if (!itm.canWrite()) { gs.addInfoMessage('No authority to update budget items.'); return false; }
-			gs.addInfoMessage('..........updating: ' + expense + '  budget_amt ' + budamt + '   projamt: ' + projamt);
 			itm.budget_amt = budamt;
 			itm.projected_amt = projamt;
 			itm.update();
@@ -358,7 +353,6 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		while (nondup.next()) {
 			if (nondup.getAggregate('COUNT', 'expense_item_ref') > 1) continue;
 			if (!itm.canDelete()) { gs.addInfoMessage('No authority to delete budget items.'); return false; }
-			gs.addInfoMessage(' deleting: ' + nondup.expense_item_ref);
 			var itm = new GlideRecord(this.bitemTable);
 			itm.addQuery('budget_ref', target);
 			itm.addQuery('expense_item_ref', nondup.expense_item_ref);
@@ -383,7 +377,6 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 			agg.next();
 			expTotal = agg.getAggregate('SUM', 'item_total');
 		}	
-//		gs.addInfoMessage('ref: ' + expense + " total: " + expTotal);
 		return expTotal;
 	},
 	
@@ -393,13 +386,13 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-06-15 15:53:58</sys_created_on>
         <sys_id>07a331ef1b5d90101f7e113d9c4bcb40</sys_id>
-        <sys_mod_count>182</sys_mod_count>
+        <sys_mod_count>194</sys_mod_count>
         <sys_name>FMSBudgetUtils</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_07a331ef1b5d90101f7e113d9c4bcb40</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-02 15:12:09</sys_updated_on>
+        <sys_updated_on>2020-07-07 16:27:53</sys_updated_on>
     </sys_script_include>
 </record_update>

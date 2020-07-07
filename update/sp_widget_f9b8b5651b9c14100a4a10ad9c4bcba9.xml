@@ -43,6 +43,7 @@
 			sortable: false,
 			cellRenderer: 'editCell',
 			cellRendererParams: function(params) { 
+				//alert(params.data);
 				return { "show": c.canEdit(c.userAuth, params.data) }; 
 			}
         },
@@ -103,7 +104,7 @@
         detailsPage: 'organization_detail',
         usePaging: false
     }
-
+	//
     orgManager.setPageProperties(pageProps);
     orgManager.setRenderers(); //build renderers 
     orgManager.renderGrid('orgGrid'); //render grid objects
@@ -119,7 +120,7 @@
         <description/>
         <docs/>
         <field_list/>
-        <has_preview>false</has_preview>
+        <has_preview>true</has_preview>
         <id>organization_grid</id>
         <internal>false</internal>
         <link><![CDATA[function link(scope, element, attrs, controller) {
@@ -157,14 +158,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-20 18:03:37</sys_created_on>
         <sys_id>f9b8b5651b9c14100a4a10ad9c4bcba9</sys_id>
-        <sys_mod_count>214</sys_mod_count>
+        <sys_mod_count>220</sys_mod_count>
         <sys_name>Organization Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_f9b8b5651b9c14100a4a10ad9c4bcba9</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-25 15:22:43</sys_updated_on>
+        <sys_updated_on>2020-07-06 17:52:52</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

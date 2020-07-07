@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function ($scope,AGGridFactory) {
+    /* widget controller */
+    var c = this;
+	c.userAuth = c.data.userAuth;
+
+    var allotManager = new AGGridFactory();
+	
+	c.addNew = function() {
+        allotManager.editRow("-1", "", c.data.tableName);
+    }
+	alert((c.data.tab.toString()));
+
+	c.canAdd = function() { 
+		if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin) 
+			return true;
+		else
+			return false;
+	}
+
+	c.canEdit = function(auth, data) {
+		if (c.userAuth.roles.isSysAdmin || auth.orgs.indexOf(data.sys_id) >= 0) 
+			return true;
+		else
+			return false;
+	}
+
+	c.canDelete = function(auth, data) { return c.canEdit(auth, data); }
+    
+    c.exportExcel = function() {
+       allotManager.exportExcel();
+	}
+
+    allotManager.setColumns ([{
+            field: 'edit',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            }, 
+			suppressMenu: true,
+			sortable: false,
+			cellRenderer: 'editCell',
+			cellRendererParams: function(params) {
+				//alert(params.data);
+				return { "show": c.canEdit(c.userAuth, params.data) }; 
+			}
+        },
+        {
+            field: 'allotment',
+            headerName: 'Allotment',
+					 filter: 'agNumberColumnFilter',
+			resizable: true,
+            cellStyle: {
+                color: 'blue',
+                'text-decoration': 'underline',
+                'cursor': 'pointer'
+            }
+        },
+        {
+            field: 'allotment_desc',
+            headerName: 'Description',
+            filter: 'agTextColumnFilter'
+        },
+        {
+            field: 'delete',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+			suppressMenu: true,
+			sortable: false,
+            cellRenderer: 'deleteCell',
+			cellRendererParams: function(params) { 
+				return { "show": c.canDelete(c.userAuth, params.data), "banner": "Organization - " + params.data.organization_display }; 
+			}
+        }
+    ]);
+//alert(c.data.tableName);
+    var pageProps = {
+        pageController: c, 
+        tableName: c.data.tableName, 
+        dataArray: null, 
+        pageType: 'Organization', 
+        linkedField: 'org_code', 
+        detailsPage: 'lookup_table',
+        usePaging: false
+    }
+	//	alert(tableName);
+
+    allotManager.setPageProperties(pageProps);
+    allotManager.setRenderers(); //build renderers 
+    allotManager.renderGrid('allotLookup'); //render grid objects
+    allotManager.setGridData(c.data.tableData); //set grid data
+    allotManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin));
+    allotManager.fitColumns();
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id>allotment_lookup_table</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Allotment Lookup Table</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+
+    var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+	var FMSPermissions = new x_g_irm_fms.FMSPermissions();
+//	var FMSConstants = new x_g_irm_fms.FMSConstants();
+    
+    if (input) { //input holds the data coming back to the server
+
+		if (input.mode == "deleteRow"){
+			if (FMSPermissions.canDeleteOrg(input.rowID)) {
+				FMSUtility.deleteRecord(FMSConstants.TABLE_ALLOTMENT, input.rowID);
+			} else {
+				data.isError = true;
+				data.errorMsg = "This Org cannot be deleted as it is linked to existing allocations, budgets, contracts or transactions";
+			}
+		}
+
+	}
+	var tab, tablname;
+	
+	var gr = new GlideRecord('sys_db_object');
+	gr.addQuery('sys_id',$sp.getParameter("sys_id"));
+	gr.query();
+	if(gr.next())
+		{
+				tab= gr.name;
+		//	gs.addInfoMessage(data.tablelabel);
+			if(gr.name == 'x_g_irm_fms_allotment')
+				{
+					data.tableName =FMSConstants.TABLE_ALLOTMENT;
+					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_ALLOTMENT, "", true); 
+				}
+			else if(gr.name == 'x_g_irm_fms_appropriation')
+				{
+					data.tableName = FMSConstants.TABLE_APPROPRIATION;
+				data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_APPROPRIATION, "", true); 
+				}
+				else if(gr.name == 'x_g_irm_fms_appropriation_type')
+				{
+					data.tableName =FMSConstants.TABLE_APPROPRIATION_TYPE;
+					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_APPROPRIATION_TYPE, "", true); 
+				}	
+				else if(gr.name == 'x_g_irm_fms_budget_code')
+				{
+					data.tableName =FMSConstants.TABLE_BUDGET_CODE;
+					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_BUDGET_CODE, "", true); 
+				}	
+				else if(gr.name == 'x_g_irm_fms_function_code')
+				{
+					data.tableName =FMSConstants.TABLE_FUNCTION_CODE;
+					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_FUNCTION_CODE, "", true); 
+				}
+				else if(gr.name == 'x_g_irm_fms_investment')
+				{
+					data.tableName =FMSConstants.TABLE_INVESTMENT;
+					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_INVESTMENT, "", true); 
+				}
+				else if(gr.name == 'x_g_irm_fms_notification')
+				{
+					data.tableName =FMSConstants.TABLE_NOTIFICATION;
+					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_NOTIFICATION, "", true); 
+				}
+				else if(gr.name == 'x_g_irm_fms_region')
+				{
+					data.tableName =FMSConstants.TABLE_REGION;
+					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_REGION, "", true); 
+				}
+				else if(gr.name == 'x_g_irm_fms_transfer_type')
+				{
+					data.tableName =FMSConstants.TABLE_TRANSFER_TYPE;
+					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_TRANSFER_TYPE, "", true); 
+				}
+
+			
+			
+		}
+	data.userAuth = FMSUtility.getUserAuth();
+//	data.tableName = FMSConstants.TABLE_ALLOTMENT;
+		//data.tableName = tab;
+	data.tab = tab;
+	//   data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_ALLOTMENT, "", true); //get all org info
+//data.tableData = FMSUtility.getTableData(tab, "", true); //get all org info
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2020-07-06 14:18:09</sys_created_on>
+        <sys_id>9557e5561bf590100a4a10ad9c4bcb82</sys_id>
+        <sys_mod_count>43</sys_mod_count>
+        <sys_name>Allotment Lookup Table</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_widget_9557e5561bf590100a4a10ad9c4bcb82</sys_update_name>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-07 18:35:37</sys_updated_on>
+        <template><![CDATA[<div style="width: 100%; height: 100%">
+
+  <div class="container">
+    <div class="row">
+      <div class="form-group col-sm-12 fms-list-header">
+        <div class="fms-header-buttons">
+      
+        <a href="javascript:void(0)" ng-click="c.exportExcel();" class="btn btn-primary excel-button">Export to Excel</a>
+          <a href="javascript:void(0)" ng-click="c.addNew();" ng-show="c.canAdd()" class="btn btn-info new-button">Add Allotment Codes</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+
+        <div id="allotLookup" class="ag-theme-balham full-grid"></div>
+
+      </div>
+    </div>
+  </div>
+
+</div>]]></template>
+    </sp_widget>
+</record_update>

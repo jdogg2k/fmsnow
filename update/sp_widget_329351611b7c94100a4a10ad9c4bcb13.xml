@@ -9,19 +9,9 @@
     c.gridStates = {
         items: true,
         phasing: false,
-        allocations: false,
-        transactions: false
+        allocations: "hide",
+        transactions: "hide"
     }
-//    c.actionStates = {
-//        notes: true,
-//        adjust: false,
-//        submit: false,
-//        approve: false,
-//        copy: false,
-//        current: false,
-//        changes: false
-//    }
-
 
     c.secureBudget = function() {
 		c.actionStates = {
@@ -72,6 +62,14 @@
                 c.actionStates.changes = "hide";
             }
         }
+		if (c.data.selBudget.budget_type == "Actual") {
+			c.gridStates.phasing = "hide";
+			c.gridStates.allocations = false;
+			c.actionStates.transactions = false;
+		}
+		if (c.data.selBudget.budget_type == "Exeuction") {
+			c.gridStates.allocations = false;
+		}
         // =========== end secure budget ================
     }
 
@@ -133,12 +131,9 @@
         c.server.get({
             mode: "adjustBudget",
             budget_id: c.data.selBudget.sys_id,
-            adjust_pct: c.data.adjustPct * (c.data.adjustDir == "-" ? -1 : 1)
+            adjust_pct: (parseFloat(c.data.adjustPct) / 100) * (c.data.adjustDir == "-" ? -1 : 1)
         }).then(function(resp) {
-            c.data.selBudget = resp.data.selBudget;
-            $rootScope.$broadcast('BudgetChanged', {
-                budget_id: c.data.selBudget.sys_id
-            });
+            c.budgetChanged(resp.data.selBudget);
         });
     };
 
@@ -147,10 +142,7 @@
             mode: "submitBudget",
             budget_id: c.data.selBudget.sys_id
         }).then(function(resp) {
-            c.data.selBudget = resp.data.selBudget;
-            $rootScope.$broadcast('BudgetChanged', {
-                budget_id: c.data.selBudget.sys_id
-            });
+            c.budgetChanged(resp.data.selBudget);
         });
     };
     c.approveBudget = function() {
@@ -158,10 +150,7 @@
             mode: "approveBudget",
             budget_id: c.data.selBudget.sys_id
         }).then(function(resp) {
-            c.data.selBudget = resp.data.selBudget;
-            $rootScope.$broadcast('BudgetChanged', {
-                budget_id: c.data.selBudget.sys_id
-            });
+            c.budgetChanged(resp.data.selBudget);
         });
     };
     c.rejectBudget = function() {
@@ -169,10 +158,7 @@
             mode: "rejectBudget",
             budget_id: c.data.selBudget.sys_id
         }).then(function(resp) {
-            c.data.selBudget = resp.data.selBudget;
-            $rootScope.$broadcast('BudgetChanged', {
-                budget_id: c.data.selBudget.sys_id
-            });
+            c.budgetChanged(resp.data.selBudget);
         });
     };
     c.newRevision = function() {
@@ -180,10 +166,7 @@
             mode: "newRevision",
             budget_id: c.data.selBudget.sys_id
         }).then(function(resp) {
-            c.data.selBudget = resp.data.selBudget;
-            $rootScope.$broadcast('BudgetChanged', {
-                budget_id: c.data.selBudget.sys_id
-            });
+            c.budgetChanged(resp.data.selBudget);
         });
     };
     c.newVersion = function() {
@@ -191,10 +174,7 @@
             mode: "newVersion",
             budget_id: c.data.selBudget.sys_id
         }).then(function(resp) {
-            c.data.selBudget = resp.data.selBudget;
-            $rootScope.$broadcast('BudgetChanged', {
-                budget_id: c.data.selBudget.sys_id
-            });
+            c.budgetChanged(resp.data.selBudget);
         });
     };
     c.newCopy = function(type, fy) {
@@ -204,10 +184,7 @@
             budget_fy: fy,
             budget_type: type
         }).then(function(resp) {
-            c.data.selBudget = resp.data.selBudget;
-            $rootScope.$broadcast('BudgetChanged', {
-                budget_id: c.data.selBudget.sys_id
-            });
+            c.budgetChanged(resp.data.selBudget);
         });
     };
     c.lockBudget = function() {
@@ -215,10 +192,7 @@
             mode: "lockBudget",
             budget_id: c.data.selBudget.sys_id
         }).then(function(resp) {
-            c.data.selBudget = resp.data.selBudget;
-            $rootScope.$broadcast('BudgetChanged', {
-                budget_id: c.data.selBudget.sys_id
-            });
+            c.budgetChanged(resp.data.selBudget);
         });
     };
     c.unlockBudget = function() {
@@ -226,10 +200,7 @@
             mode: "unlockBudget",
             budget_id: c.data.selBudget.sys_id
         }).then(function(resp) {
-            c.data.selBudget = resp.data.selBudget;
-            $rootScope.$broadcast('BudgetChanged', {
-                budget_id: c.data.selBudget.sys_id
-            });
+            c.budgetChanged(resp.data.selBudget);
         });
     };
     c.makeCurrent = function() {
@@ -237,12 +208,18 @@
             mode: "makeCurrent",
             budget_id: c.data.selBudget.sys_id
         }).then(function(resp) {
-            c.data.selBudget = resp.data.selBudget;
-            $rootScope.$broadcast('BudgetChanged', {
-                budget_id: c.data.selBudget.sys_id
-            });
+            c.budgetChanged(resp.data.selBudget);
         });
     };
+	
+	c.budgetChanged = function(bud) {
+		c.data.selBudget = bud;
+		$rootScope.$broadcast('BudgetChanged', {
+			budget_id: bud.sys_id,
+			proj_id: bud.project_ref,
+			fy: bud.fy
+		});
+	};
 
 	$rootScope.$on('BudgetChanged', function(event, args) {
         c.secureBudget();
@@ -258,7 +235,9 @@
         });
     });
 
+	if (!c.data.selBudget)  $location.url("/sp?id=404");
 	c.secureBudget();
+
 }]]></client_script>
         <controller_as>c</controller_as>
         <css/>
@@ -298,7 +277,7 @@
 			data.selectedBudgetID = null;
 			data.selBudget = budgetUtil.getRelatedBudget(input.project_id, input.budget_type, input.fy);
 			if (data.selBudget == null) {
-				data.selectedBudgetID = budgetUtil.createBudget(data.selectedBudgetID, input.project_id, input.budget_type, input.fy);
+				data.selectedBudgetID = budgetUtil.createBudget(input.budget_id, input.project_id, input.budget_type, input.fy);
 				if (data.selectedBudgetID) {
 					gs.addInfoMessage("Budget successfully created and displayed.");
 				}
@@ -397,22 +376,25 @@
     }
 
     data.selBudget = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET, filter, true)[0]; //get all budget info
-    data.hasApproved = budgetUtil.getRelatedBudget(data.selBudget.project_ref_rawval, data.selBudget.budget_type, data.selBudget.fy, true);
-
+	if (data.selBudget) 
+		data.hasApproved = budgetUtil.getRelatedBudget(data.selBudget.project_ref_rawval, data.selBudget.budget_type, data.selBudget.fy, true);
+	else
+		gs.addErrorMessage("Budget does not exist.");
+	
 })($sp);]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-15 11:52:52</sys_created_on>
         <sys_id>329351611b7c94100a4a10ad9c4bcb13</sys_id>
-        <sys_mod_count>258</sys_mod_count>
+        <sys_mod_count>276</sys_mod_count>
         <sys_name>Budget Detail</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_329351611b7c94100a4a10ad9c4bcb13</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-02 16:26:13</sys_updated_on>
+        <sys_updated_on>2020-07-07 18:37:41</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
   <widget id="organization_selection" options='{"hide_widget": true, "hide_project": true}'></widget>
   <div class="container">
@@ -472,7 +454,7 @@
             Budget Status: 
           </div>
           <div class="col-sm-4">
-            {{c.data.selBudget.budget_status}}
+            {{c.data.selBudget.budget_status}} {{c.data.selBudget.approved_date}}
           </div>
         </div>
         <div class="row">
@@ -513,7 +495,7 @@
                   <label for="adjustPct">Adjust %:</label>
                 </div>
                 <div class="col-sm-2 text-right" style="padding: 0px;">
-                  <input type="text" class="form-control" id="adjustPct" style="width: 100px;" ng-model="c.data.adjustPct">
+                  <input type="number" class="form-control" id="adjustPct" style="width: 100px;" ng-model="c.data.adjustPct">
                 </div>
               </div>
               <div class="row" style="text-align: center; padding-top: 10px;">
@@ -594,9 +576,9 @@
       <div class="col-sm-12">        
         <ul class="nav nav-tabs fms-tabs">
           <li class="active"><a data-toggle="tab" href="#items" ng-click="c.setActiveGrid('items');">Budget Items</a>
-          <li><a data-toggle="tab" href="#phasing" ng-click="c.setActiveGrid('phasing');">Phasing</a></li>
-          <li><a data-toggle="tab" href="#allocations" ng-click="c.setActiveGrid('allocations');">Allocations</a></li>
-          <li><a data-toggle="tab" href="#transactions" ng-click="c.setActiveGrid('transactions');">Transactions</a></li>
+          <li><a data-toggle="tab" href="#phasing" ng-click="c.setActiveGrid('phasing');" ng-if="c.gridStates.phasing!='hide'">Phasing</a></li>
+          <li><a data-toggle="tab" href="#allocations" ng-click="c.setActiveGrid('allocations');" ng-if="c.gridStates.allocations!='hide'">Allocations</a></li>
+          <li><a data-toggle="tab" href="#transactions" ng-click="c.setActiveGrid('transactions');" ng-if="c.gridStates.transactions!='hide'">Transactions</a></li>
         </ul>
         <!--<a href="javascript:void(0)" class="btn btn-success excel-button">Export to Excel</a>
         <a href="javascript:void(0)" ng-click="c.addNew();" class="btn btn-info newItem">Add {{c.newButtonLabel}}</a>-->

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance_table">
+    <sp_instance_table action="DELETE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <display_field/>
+        <field_list/>
+        <filter/>
+        <glyph/>
+        <id/>
+        <maximum_entries>5</maximum_entries>
+        <order>1</order>
+        <order_by/>
+        <order_direction>asc</order_direction>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="1">d0932a121bf990100a4a10ad9c4bcbed</sp_column>
+        <sp_page/>
+        <sp_widget display_value="table_list">b054e2921bf990100a4a10ad9c4bcb4d</sp_widget>
+        <sys_class_name>sp_instance_table</sys_class_name>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2020-07-06 19:02:10</sys_created_on>
+        <sys_id>1a882a561bf990100a4a10ad9c4bcb16</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_instance_table_1a882a561bf990100a4a10ad9c4bcb16</sys_update_name>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-06 19:02:10</sys_updated_on>
+        <table/>
+        <title/>
+        <url/>
+        <widget_parameters/>
+    </sp_instance_table>
+    <sys_translated_text action="DELETE" query="documentkey=1a882a561bf990100a4a10ad9c4bcb16"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sp_instance_table_1a882a561bf990100a4a10ad9c4bcb16</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance_table"><sp_instance_table action="INSERT_OR_UPDATE"><active>true</active><class_name/><color>default</color><css/><display_field/><field_list/><filter/><glyph/><id/><maximum_entries>5</maximum_entries><order>1</order><order_by/><order_direction>asc</order_direction><roles/><short_description/><size>md</size><sp_column display_value="1">d0932a121bf990100a4a10ad9c4bcbed</sp_column><sp_page/><sp_widget display_value="table_list">b054e2921bf990100a4a10ad9c4bcb4d</sp_widget><sys_class_name>sp_instance_table</sys_class_name><sys_created_by>PuriA@state.gov</sys_created_by><sys_created_on>2020-07-06 19:02:10</sys_created_on><sys_id>1a882a561bf990100a4a10ad9c4bcb16</sys_id><sys_mod_count>0</sys_mod_count><sys_name/><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sp_instance_table_1a882a561bf990100a4a10ad9c4bcb16</sys_update_name><sys_updated_by>PuriA@state.gov</sys_updated_by><sys_updated_on>2020-07-06 19:02:10</sys_updated_on><table/><title/><url/><widget_parameters/></sp_instance_table><sys_translated_text action="delete_multiple" query="documentkey=1a882a561bf990100a4a10ad9c4bcb16"/></record_update>]]></payload>
+        <payload_hash>802026548</payload_hash>
+        <record_name/>
+        <reverted_from/>
+        <source>ff83930a1b2994100a4a10ad9c4bcb62</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2020-07-06 19:02:10</sys_created_on>
+        <sys_id>128866961bf990100a4a10ad9c4bcba7</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1732581cce60000001</sys_recorded_at>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-06 19:02:10</sys_updated_on>
+        <type>Instance with Table</type>
+        <update_guid>1a882a560ef99010827c54642141f118</update_guid>
+        <update_guid_history>1a882a560ef99010827c54642141f118:802026548</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">68b866961bf990100a4a10ad9c4bcbaf</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2020-07-06 19:02:52</sys_created_on>
+        <sys_db_object display_value="" name="sp_instance_table">sp_instance_table</sys_db_object>
+        <sys_id>13f20cfcfdb14df597f4daae1b678a81</sys_id>
+        <sys_metadata>1a882a561bf990100a4a10ad9c4bcb16</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sp_instance_table_1a882a561bf990100a4a10ad9c4bcb16</sys_update_name>
+        <sys_update_version display_value="sp_instance_table_1a882a561bf990100a4a10ad9c4bcb16">128866961bf990100a4a10ad9c4bcba7</sys_update_version>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-06 19:02:52</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_ui_policy">
     <sys_ui_policy action="INSERT_OR_UPDATE">
         <active>true</active>
-        <conditions table="x_g_irm_fms_budget">numberISNOTEMPTY^EQ<item endquery="false" field="number" goto="false" newquery="false" operator="ISNOTEMPTY" or="false" value=""/>
-            <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
-        </conditions>
+        <conditions/>
         <description/>
         <global>true</global>
         <inherit>false</inherit>
@@ -18,8 +16,9 @@
 
 }]]></script_false>
         <script_true><![CDATA[function onCondition() {
-	g_form.removeOption('budget_type', 'Actual');
-	g_form.removeOption('budget_type', 'Execution');
+	var budgetType = g_form.getValue('budget_type');
+	if (budgetType != 'Actual') g_form.removeOption('budget_type', 'Actual');
+	if (budgetType != 'Execution') g_form.removeOption('budget_type', 'Execution');
 }]]></script_true>
         <set_values/>
         <short_description>Budget Disable Types</short_description>
@@ -29,7 +28,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>884fb9831be9dc101f7e113d9c4bcbc6</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>7</sys_mod_count>
         <sys_name>Budget Disable Types</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
@@ -37,7 +36,7 @@
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_ui_policy_884fb9831be9dc101f7e113d9c4bcbc6</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-26 14:21:53</sys_updated_on>
+        <sys_updated_on>2020-07-06 13:11:23</sys_updated_on>
         <table>x_g_irm_fms_budget</table>
         <ui_type>10</ui_type>
         <view/>

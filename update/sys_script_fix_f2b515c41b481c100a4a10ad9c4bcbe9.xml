@@ -7,7 +7,54 @@
         <name>FMS Development Script</name>
         <record_for_rollback>false</record_for_rollback>
         <run_once>true</run_once>
-        <script><![CDATA[/*var gr = new GlideRecord("x_g_irm_fms_budget_item");
+        <script><![CDATA[
+var gr = new GlideRecord("x_g_irm_fms_budget");
+gr.addEncodedQuery("number=BGT0000640");
+gr.query();
+if (gr.next()) {
+	gs.info("JLR - " + gr.locked.toString());
+}
+
+/*var gr = new GlideRecord("x_g_irm_fms_fin_tran_item");
+gr.addEncodedQuery("sys_id=01bd3db31b30dc100a4a10ad9c4bcb9f");
+gr.query();
+if (gr.next()) {
+	gr.has_actual_cost = false;
+	gr.update();
+}
+
+var gr = new GlideRecord("x_g_irm_fms_fin_tran_item");
+gr.addEncodedQuery("fin_tran_ref.fy=2019^fin_tran_ref.project_ref.organization_ref=294b043d1bc090500a4a10ad9c4bcb00");
+gr.query();
+while (gr.next()) {
+	var quantity = 0;
+	if (!gr.received_qty.nil()) {
+		quantity = parseInt(gr.received_qty);
+	} else {
+		quantity = parseInt(gr.item_qty);
+	}
+	
+	var cost = 0;
+	if (!gr.actual_cost.nil()) {
+		if (parseFloat(gr.actual_cost) != 0) {
+			cost = parseFloat(gr.actual_cost);
+		} else {
+			cost = parseFloat(gr.item_cost);
+		}	
+	} else if (!gr.item_cost.nil()) {
+		cost = parseFloat(gr.item_cost);
+	} else {
+		//do nothing
+	}
+	
+    var total = quantity * cost;
+	
+	gr.item_total = total;
+	gr.autoSysFields(false);
+    gr.setWorkflow(false);
+	gr.update();
+}
+
 gr.addEncodedQuery("sys_created_by!=MarkelJR@state.gov^ORsys_created_by=NULL");
 gr.deleteMultiple();
 
@@ -66,14 +113,14 @@ while (gr.next()) {
         <sys_created_by>rosejl@state.gov</sys_created_by>
         <sys_created_on>2020-04-03 13:24:32</sys_created_on>
         <sys_id>f2b515c41b481c100a4a10ad9c4bcbe9</sys_id>
-        <sys_mod_count>42</sys_mod_count>
+        <sys_mod_count>49</sys_mod_count>
         <sys_name>FMS Development Script</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_fix_f2b515c41b481c100a4a10ad9c4bcbe9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-02 18:14:05</sys_updated_on>
+        <sys_updated_on>2020-07-07 14:38:20</sys_updated_on>
         <unloadable>false</unloadable>
     </sys_script_fix>
 </record_update>

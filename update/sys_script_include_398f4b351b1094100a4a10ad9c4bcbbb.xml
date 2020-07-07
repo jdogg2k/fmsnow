@@ -24,7 +24,17 @@ FMSConstants.TABLE_CONTRACT_CONTRACT = 'x_g_irm_fms_contract_contract';
 FMSConstants.TABLE_PROJECT_APPROPRIATION = 'x_g_irm_fms_project_appropriation';
 FMSConstants.TABLE_ALLOCATION_GROUP = 'x_g_irm_fms_allocation_group';
 FMSConstants.TABLE_ALLOCATION_POOL = 'x_g_irm_fms_allocation_pool';
+
 FMSConstants.TABLE_APPROPRIATION = 'x_g_irm_fms_appropriation';
+FMSConstants.TABLE_APPROPRIATION_TYPE = 'x_g_irm_fms_appropriation_type';
+FMSConstants.TABLE_ALLOTMENT = 'x_g_irm_fms_allotment';
+FMSConstants.TABLE_BUDGET_CODE = 'x_g_irm_fms_budget_code';
+FMSConstants.TABLE_FUNCTION_CODE = 'x_g_irm_fms_function_code';
+FMSConstants.TABLE_INVESTMENT = 'x_g_irm_fms_investment';
+FMSConstants.TABLE_NOTIFICATION = 'x_g_irm_fms_notification';
+FMSConstants.TABLE_REGION = 'x_g_irm_fms_region';
+FMSConstants.TABLE_TRANSFER_TYPE = 'x_g_irm_fms_transfer_type';
+
 FMSConstants.TABLE_BUDGET = 'x_g_irm_fms_budget';
 FMSConstants.TABLE_BUDGET_ITEM = 'x_g_irm_fms_budget_item';
 FMSConstants.TABLE_BUDGET_ITEM_PHASE = 'x_g_irm_fms_budget_item_phase';
@@ -40,13 +50,13 @@ FMSConstants.ROLE_READONLY = 'x_g_irm_fms.readonly';]]></script>
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 19:01:23</sys_created_on>
         <sys_id>398f4b351b1094100a4a10ad9c4bcbbb</sys_id>
-        <sys_mod_count>26</sys_mod_count>
+        <sys_mod_count>29</sys_mod_count>
         <sys_name>FMSConstants</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_398f4b351b1094100a4a10ad9c4bcbbb</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-01 12:44:30</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-07 18:14:24</sys_updated_on>
     </sys_script_include>
 </record_update>
