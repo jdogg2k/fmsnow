@@ -5,7 +5,7 @@
         <api_name>x_g_irm_fms.FMSBudgetUtils</api_name>
         <caller_access/>
         <client_callable>true</client_callable>
-        <description/>
+        <description>Budget-related functions</description>
         <name>FMSBudgetUtils</name>
         <script><![CDATA[var FMSBudgetUtils = Class.create();
 FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
@@ -254,8 +254,9 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	
 	copyItems: function(from, to) {
         var source = new GlideRecord(this.bitemTable);
-        source.addQuery('budget_ref.sys_id', from);
+        source.addQuery('budget_ref', from);
 		source.query();
+		if (!source.canCreate()) { gs.addInfoMessage('No authority to create budget items.'); return false; }
 		while (source.next()) {
 			var target = new GlideRecord(this.bitemTable);
 			target.initialize();
@@ -302,6 +303,7 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		bud.next();
 		if (executionKey == undefined) {
 			exBud = this.getRelatedBudget(bud.project_ref, "Execution", bud.fy);
+			if (!exBud) return false;
 			executionKey = exBud.sys_id;
 		}
 		var qry = "budget_ref=" + executionKey;
@@ -325,6 +327,7 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		itm.query();
 		if (!itm.hasNext()) {    // item does not exist  
 			if (!itm.canCreate()) { gs.addInfoMessage('No authority to create budget items.'); return false; }
+			itm.initialize();
 			itm.budget_ref = budget;
 			itm.expense_item_ref = expense;
 			itm.budget_amt = budamt;
@@ -386,13 +389,13 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-06-15 15:53:58</sys_created_on>
         <sys_id>07a331ef1b5d90101f7e113d9c4bcb40</sys_id>
-        <sys_mod_count>194</sys_mod_count>
+        <sys_mod_count>201</sys_mod_count>
         <sys_name>FMSBudgetUtils</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_07a331ef1b5d90101f7e113d9c4bcb40</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-07 16:27:53</sys_updated_on>
+        <sys_updated_on>2020-07-08 17:42:17</sys_updated_on>
     </sys_script_include>
 </record_update>

@@ -11,7 +11,7 @@
 	c.addNew = function() {
         allotManager.editRow("-1", "", c.data.tableName);
     }
-	alert((c.data.tab.toString()));
+	//alert(c.data.tableName);
 
 	c.canAdd = function() { 
 		if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin) 
@@ -32,7 +32,11 @@
     c.exportExcel = function() {
        allotManager.exportExcel();
 	}
-
+	
+	
+	// Allotment Table Columns
+		if(c.data.tableName == 'x_g_irm_fms_allotment')
+			{
     allotManager.setColumns ([{
             field: 'edit',
             headerName: 'Edit',
@@ -48,7 +52,7 @@
 				return { "show": c.canEdit(c.userAuth, params.data) }; 
 			}
         },
-        {
+						 {
             field: 'allotment',
             headerName: 'Allotment',
 					 filter: 'agNumberColumnFilter',
@@ -75,16 +79,529 @@
 			sortable: false,
             cellRenderer: 'deleteCell',
 			cellRendererParams: function(params) { 
-				return { "show": c.canDelete(c.userAuth, params.data), "banner": "Organization - " + params.data.organization_display }; 
+				return {
+                    "show": c.canDelete(c.userAuth, params.data)
+                }; 
 			}
         }
     ]);
+			}
+	
+	      //Appropriation Table Columns
+		if(c.data.tableName == 'x_g_irm_fms_appropriation')
+			{
+    allotManager.setColumns ([{
+            field: 'edit',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            }, 
+			suppressMenu: true,
+			sortable: false,
+			cellRenderer: 'editCell',
+			cellRendererParams: function(params) {
+				//alert(params.data);
+				return { "show": c.canEdit(c.userAuth, params.data) }; 
+			}
+        },
+						 {
+            field: 'appropriation',
+            headerName: 'Appropriation',
+					 filter: 'agTextColumnFilter',
+			resizable: true,
+            cellStyle: {
+                color: 'blue',
+                'text-decoration': 'underline',
+                'cursor': 'pointer'
+            }
+        },
+        {
+            field: 'appropriation_type',
+            headerName: 'Appropriation Type',
+            filter: 'agTextColumnFilter'
+        },
+        {
+            field: 'delete',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+			suppressMenu: true,
+			sortable: false,
+            cellRenderer: 'deleteCell',
+			cellRendererParams: function(params) { 
+				return {
+                    "show": c.canDelete(c.userAuth, params.data)
+                };
+			}
+        }
+    ]);
+			}
+	
+	     //Appropriation Type Table Columns
+		if(c.data.tableName == 'x_g_irm_fms_appropriation_type')
+			{
+    allotManager.setColumns ([{
+            field: 'edit',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            }, 
+			suppressMenu: true,
+			sortable: false,
+			cellRenderer: 'editCell',
+			cellRendererParams: function(params) {
+				//alert(params.data);
+				return { "show": c.canEdit(c.userAuth, params.data) }; 
+			}
+        },
+						 {
+            field: 'appropriation_type',
+            headerName: 'Appropriation Type',
+					 filter: 'agTextColumnFilter',
+			     resizable: true,
+            cellStyle: {
+                color: 'blue',
+                'text-decoration': 'underline',
+                'cursor': 'pointer'
+            }
+        },
+        {
+            field: 'appropriation_type_desc',
+            headerName: 'Description',
+            filter: 'agTextColumnFilter'
+        },
+        {
+            field: 'delete',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+			suppressMenu: true,
+			sortable: false,
+            cellRenderer: 'deleteCell',
+			cellRendererParams: function(params) { 
+				return {
+                    "show": c.canDelete(c.userAuth, params.data)
+                }; 
+			}
+        }
+    ]);
+			}
+	
+	     //Budget Codes Table Columns
+		if(c.data.tableName == 'x_g_irm_fms_budget_code')
+			{
+    allotManager.setColumns ([{
+            field: 'edit',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            }, 
+			suppressMenu: true,
+			sortable: false,
+			cellRenderer: 'editCell',
+			cellRendererParams: function(params) {
+				//alert(params.data);
+				return { "show": c.canEdit(c.userAuth, params.data) }; 
+			}
+        },
+						 {
+            field: 'budget_code',
+            headerName: 'Budget Code',
+					 filter: 'agTextColumnFilter',
+			resizable: true,
+            cellStyle: {
+                color: 'blue',
+                'text-decoration': 'underline',
+                'cursor': 'pointer'
+            }
+        },
+        {
+            field: 'budget_code_class',
+            headerName: 'Classification',
+            filter: 'agTextColumnFilter'
+        },
+        {
+            field: 'delete',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+			suppressMenu: true,
+			sortable: false,
+            cellRenderer: 'deleteCell',
+			cellRendererParams: function(params) { 
+				return {
+                    "show": c.canDelete(c.userAuth, params.data)
+                };
+			}
+        }
+    ]);
+			}
+	
+	     //Function Code Table Columns
+		if(c.data.tableName == 'x_g_irm_fms_function_code')
+			{
+    allotManager.setColumns ([{
+            field: 'edit',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            }, 
+			suppressMenu: true,
+			sortable: false,
+			cellRenderer: 'editCell',
+			cellRendererParams: function(params) {
+				//alert(params.data);
+				return { "show": c.canEdit(c.userAuth, params.data) }; 
+			}
+        },
+						 {
+            field: 'function_code',
+            headerName: 'Function Code',
+					 filter: 'agNumberColumnFilter',
+			resizable: true,
+            cellStyle: {
+                color: 'blue',
+                'text-decoration': 'underline',
+                'cursor': 'pointer'
+            }
+        },
+        {
+            field: 'function_desc',
+            headerName: 'Description',
+            filter: 'agTextColumnFilter'
+        },
+        {
+            field: 'delete',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+			suppressMenu: true,
+			sortable: false,
+            cellRenderer: 'deleteCell',
+			cellRendererParams: function(params) { 
+				return {
+                    "show": c.canDelete(c.userAuth, params.data)
+                };
+			}
+        }
+    ]);
+			}
+	
+	     //Investment Table Columns
+		if(c.data.tableName == 'x_g_irm_fms_investment')
+			{
+    allotManager.setColumns ([{
+            field: 'edit',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            }, 
+			suppressMenu: true,
+			sortable: false,
+			cellRenderer: 'editCell',
+			cellRendererParams: function(params) {
+				//alert(params.data);
+				return { "show": c.canEdit(c.userAuth, params.data) }; 
+			}
+        },
+						 {
+            field: 'investment',
+            headerName: 'Investment',
+					 filter: 'agTextColumnFilter',
+			resizable: true,
+            cellStyle: {
+                color: 'blue',
+                'text-decoration': 'underline',
+                'cursor': 'pointer'
+            }
+        },
+        {
+            field: 'investment_desc',
+            headerName: 'Description',
+            filter: 'agTextColumnFilter'
+        },
+        {
+            field: 'delete',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+			suppressMenu: true,
+			sortable: false,
+            cellRenderer: 'deleteCell',
+			cellRendererParams: function(params) { 
+				return {
+                    "show": c.canDelete(c.userAuth, params.data)
+                };
+			}
+        }
+    ]);
+			}
+	     //Notification Table Columns
+		if(c.data.tableName == 'x_g_irm_fms_notification')
+			{
+    allotManager.setColumns ([{
+            field: 'edit',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            }, 
+			suppressMenu: true,
+			sortable: false,
+			cellRenderer: 'editCell',
+			cellRendererParams: function(params) {
+				//alert(params.data);
+				return { "show": c.canEdit(c.userAuth, params.data) }; 
+			}
+        },
+						 {
+            field: 'basis_table',
+            headerName: 'Basis Table',
+					 filter: 'agTextColumnFilter',
+			resizable: true,
+            cellStyle: {
+                color: 'blue',
+                'text-decoration': 'underline',
+                'cursor': 'pointer'
+            }
+        },
+        {
+            field: 'basis_column',
+            headerName: 'Basis Column',
+            filter: 'agTextColumnFilter'
+        },
+				 {
+            field: 'basis_relative_days',
+            headerName: 'Relative Days',
+            filter: 'agTextColumnFilter'
+        },
+				 {
+            field: 'interim_days',
+            headerName: 'Interim Days',
+            filter: 'agTextColumnFilter'
+        },
+				 {
+            field: 'last_run_date',
+            headerName: 'Last Run',
+            filter: 'agTextColumnFilter'
+        },		
+				{
+            field: 'message_subject',
+            headerName: 'Subject',
+            filter: 'agTextColumnFilter'
+        },											
+        {
+            field: 'delete',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+			suppressMenu: true,
+			sortable: false,
+            cellRenderer: 'deleteCell',
+			cellRendererParams: function(params) { 
+				return {
+                    "show": c.canDelete(c.userAuth, params.data)
+                };
+			}
+        }
+    ]);
+			}
+	     //Region Table Columns
+		if(c.data.tableName == 'x_g_irm_fms_region')
+			{
+    allotManager.setColumns ([{
+            field: 'edit',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            }, 
+			suppressMenu: true,
+			sortable: false,
+			cellRenderer: 'editCell',
+			cellRendererParams: function(params) {
+				//alert(params.data);
+				return { "show": c.canEdit(c.userAuth, params.data) }; 
+			}
+        },
+						 {
+            field: 'region_code',
+            headerName: 'Region Code',
+					 filter: 'agTextColumnFilter',
+			resizable: true,
+            cellStyle: {
+                color: 'blue',
+                'text-decoration': 'underline',
+                'cursor': 'pointer'
+            }
+        },
+        {
+            field: 'region_name',
+            headerName: 'Region Name',
+            filter: 'agTextColumnFilter'
+        },
+        {
+            field: 'delete',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+			suppressMenu: true,
+			sortable: false,
+            cellRenderer: 'deleteCell',
+			cellRendererParams: function(params) { 
+				return {
+                    "show": c.canDelete(c.userAuth, params.data)
+                };
+			}
+        }
+    ]);
+			}
+	     //Transfer Type Table Columns
+		if(c.data.tableName == 'x_g_irm_fms_transfer_type')
+			{
+    allotManager.setColumns ([{
+            field: 'edit',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            }, 
+			suppressMenu: true,
+			sortable: false,
+			cellRenderer: 'editCell',
+			cellRendererParams: function(params) {
+				//alert(params.data);
+				return { "show": c.canEdit(c.userAuth, params.data) }; 
+			}
+        },
+						 {
+            field: 'transfer_type',
+            headerName: 'Transfer Type',
+					 filter: 'agTextColumnFilter',
+			resizable: true,
+            cellStyle: {
+                color: 'blue',
+                'text-decoration': 'underline',
+                'cursor': 'pointer'
+            }
+        },
+        {
+            field: 'transfer_type_code',
+            headerName: 'Transfer Type Code',
+            filter: 'agTextColumnFilter'
+        },
+        {
+            field: 'delete',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+			suppressMenu: true,
+			sortable: false,
+            cellRenderer: 'deleteCell',
+			cellRendererParams: function(params) { 
+				return {
+                    "show": c.canDelete(c.userAuth, params.data)
+                }; 
+			}
+        }
+    ]);
+			}
+	
+	
+			if(c.data.tableName == 'x_g_irm_fms_post')
+			{
+    allotManager.setColumns ([{
+            field: 'edit',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            }, 
+			suppressMenu: true,
+			sortable: false,
+			cellRenderer: 'editCell',
+			cellRendererParams: function(params) {
+				//alert(params.data);
+				return { "show": c.canEdit(c.userAuth, params.data) }; 
+			}
+        },
+						 {
+            field: 'post_name',
+            headerName: 'Post Name',
+					 filter: 'agTextColumnFilter',
+			resizable: true,
+            cellStyle: {
+                color: 'blue',
+                'text-decoration': 'underline',
+                'cursor': 'pointer'
+            }
+        },
+        {
+            field: 'post_type',
+            headerName: 'Post Type',
+            filter: 'agTextColumnFilter'
+        },
+				 {
+            field: 'post_city',
+            headerName: 'Post City',
+            filter: 'agTextColumnFilter'
+        },
+				 {
+            field: 'post_country',
+            headerName: 'Post Country',
+            filter: 'agTextColumnFilter'
+        },
+				 {
+            field: 'region_ref',
+            headerName: 'Region Name',
+            filter: 'agTextColumnFilter'
+        },												
+        
+        {
+            field: 'delete',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+			suppressMenu: true,
+			sortable: false,
+            cellRenderer: 'deleteCell',
+			cellRendererParams: function(params) { 
+				return {
+                    "show": c.canDelete(c.userAuth, params.data)
+                };
+			}
+        }
+    ]);
+			}
 //alert(c.data.tableName);
     var pageProps = {
         pageController: c, 
         tableName: c.data.tableName, 
         dataArray: null, 
-        pageType: 'Organization', 
+        pageType: c.data.tableLabel, 
         linkedField: 'org_code', 
         detailsPage: 'lookup_table',
         usePaging: false
@@ -96,7 +613,7 @@
     allotManager.renderGrid('allotLookup'); //render grid objects
     allotManager.setGridData(c.data.tableData); //set grid data
     allotManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin));
-    allotManager.fitColumns();
+   allotManager.fitColumns();
 
 }]]></client_script>
         <controller_as>c</controller_as>
@@ -123,18 +640,25 @@
 //	var FMSConstants = new x_g_irm_fms.FMSConstants();
     
     if (input) { //input holds the data coming back to the server
-
+     
 		if (input.mode == "deleteRow"){
 			if (FMSPermissions.canDeleteOrg(input.rowID)) {
 				FMSUtility.deleteRecord(FMSConstants.TABLE_ALLOTMENT, input.rowID);
 			} else {
 				data.isError = true;
-				data.errorMsg = "This Org cannot be deleted as it is linked to existing allocations, budgets, contracts or transactions";
+				data.errorMsg = "This record cannot be deleted";
 			}
 		}
 
 	}
 	var tab, tablname;
+	//gs.addInfoMessage("test"+$sp.getParameter("sys_id")+"test");
+	if($sp.getParameter("sys_id")==null)
+		{
+			data.tableName =FMSConstants.TABLE_ALLOTMENT;
+					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_ALLOTMENT, "", true); 
+			    data.tableLabel ='Allotment Codes';
+		}
 	
 	var gr = new GlideRecord('sys_db_object');
 	gr.addQuery('sys_id',$sp.getParameter("sys_id"));
@@ -146,47 +670,62 @@
 			if(gr.name == 'x_g_irm_fms_allotment')
 				{
 					data.tableName =FMSConstants.TABLE_ALLOTMENT;
-					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_ALLOTMENT, "", true); 
+					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_ALLOTMENT, "", true);
+					data.tableLabel ='Allotment Codes';
 				}
 			else if(gr.name == 'x_g_irm_fms_appropriation')
 				{
 					data.tableName = FMSConstants.TABLE_APPROPRIATION;
-				data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_APPROPRIATION, "", true); 
+				  data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_APPROPRIATION, "", true); 
+					 data.tableLabel ='Appropriation';
 				}
 				else if(gr.name == 'x_g_irm_fms_appropriation_type')
 				{
 					data.tableName =FMSConstants.TABLE_APPROPRIATION_TYPE;
 					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_APPROPRIATION_TYPE, "", true); 
+					 data.tableLabel ='Appropriation Type';
 				}	
 				else if(gr.name == 'x_g_irm_fms_budget_code')
 				{
 					data.tableName =FMSConstants.TABLE_BUDGET_CODE;
 					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_BUDGET_CODE, "", true); 
+					 data.tableLabel ='Budget Code';
 				}	
 				else if(gr.name == 'x_g_irm_fms_function_code')
 				{
 					data.tableName =FMSConstants.TABLE_FUNCTION_CODE;
 					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_FUNCTION_CODE, "", true); 
+					 data.tableLabel ='Function Code';
 				}
 				else if(gr.name == 'x_g_irm_fms_investment')
 				{
 					data.tableName =FMSConstants.TABLE_INVESTMENT;
 					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_INVESTMENT, "", true); 
+					 data.tableLabel ='Investment';
 				}
 				else if(gr.name == 'x_g_irm_fms_notification')
 				{
 					data.tableName =FMSConstants.TABLE_NOTIFICATION;
 					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_NOTIFICATION, "", true); 
+					 data.tableLabel ='Notification';
+				}
+			 else if(gr.name == 'x_g_irm_fms_post')
+				{
+					data.tableName =FMSConstants.TABLE_POST;
+					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_POST, "", true); 
+					 data.tableLabel ='Post';
 				}
 				else if(gr.name == 'x_g_irm_fms_region')
 				{
 					data.tableName =FMSConstants.TABLE_REGION;
 					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_REGION, "", true); 
+					 data.tableLabel ='Region';
 				}
 				else if(gr.name == 'x_g_irm_fms_transfer_type')
 				{
 					data.tableName =FMSConstants.TABLE_TRANSFER_TYPE;
-					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_TRANSFER_TYPE, "", true); 
+					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_TRANSFER_TYPE, "", true);
+					 data.tableLabel ='Transfer Type';
 				}
 
 			
@@ -205,23 +744,27 @@
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-07-06 14:18:09</sys_created_on>
         <sys_id>9557e5561bf590100a4a10ad9c4bcb82</sys_id>
-        <sys_mod_count>43</sys_mod_count>
+        <sys_mod_count>94</sys_mod_count>
         <sys_name>Allotment Lookup Table</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_9557e5561bf590100a4a10ad9c4bcb82</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-07 18:35:37</sys_updated_on>
+        <sys_updated_on>2020-07-08 20:25:53</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
     <div class="row">
       <div class="form-group col-sm-12 fms-list-header">
+               
+<div>
+                  <h4 style="text-align:center;">{{data.tableLabel}}</h4>
+</div>
         <div class="fms-header-buttons">
-      
+
         <a href="javascript:void(0)" ng-click="c.exportExcel();" class="btn btn-primary excel-button">Export to Excel</a>
-          <a href="javascript:void(0)" ng-click="c.addNew();" ng-show="c.canAdd()" class="btn btn-info new-button">Add Allotment Codes</a>
+          <a href="javascript:void(0)" ng-click="c.addNew();" ng-show="c.canAdd()" class="btn btn-info new-button">Add {{data.tableLabel}}</a>
         </div>
       </div>
     </div>
@@ -229,7 +772,7 @@
     <div class="row">
       <div class="col-sm-12">
 
-        <div id="allotLookup" class="ag-theme-balham full-grid"></div>
+        <div id="allotLookup" class="ag-theme-balham full-grid "style="width: 100%; height: 500px;"></div>
 
       </div>
     </div>

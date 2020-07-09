@@ -6,7 +6,7 @@
         <css/>
         <display_field/>
         <field_list>label</field_list>
-        <filter table="sys_db_object">nameINx_g_irm_fms_appropriation,x_g_irm_fms_appropriation_type,x_g_irm_fms_allotment,x_g_irm_fms_budget_code,x_g_irm_fms_function_code,x_g_irm_fms_investment,x_g_irm_fms_notification,x_g_irm_fms_region,x_g_irm_fms_transfer_type<item endquery="false" field="name" goto="false" newquery="false" operator="IN" or="false" value="x_g_irm_fms_appropriation,x_g_irm_fms_appropriation_type,x_g_irm_fms_allotment,x_g_irm_fms_budget_code,x_g_irm_fms_function_code,x_g_irm_fms_investment,x_g_irm_fms_notification,x_g_irm_fms_region,x_g_irm_fms_transfer_type"/>
+        <filter table="sys_db_object">nameINx_g_irm_fms_appropriation,x_g_irm_fms_appropriation_type,x_g_irm_fms_allotment,x_g_irm_fms_budget_code,x_g_irm_fms_function_code,x_g_irm_fms_investment,x_g_irm_fms_notification,x_g_irm_fms_post,x_g_irm_fms_region,x_g_irm_fms_transfer_type<item endquery="false" field="name" goto="false" newquery="false" operator="IN" or="false" value="x_g_irm_fms_appropriation,x_g_irm_fms_appropriation_type,x_g_irm_fms_allotment,x_g_irm_fms_budget_code,x_g_irm_fms_function_code,x_g_irm_fms_investment,x_g_irm_fms_notification,x_g_irm_fms_post,x_g_irm_fms_region,x_g_irm_fms_transfer_type"/>
         </filter>
         <glyph/>
         <id/>
@@ -17,21 +17,21 @@
         <roles/>
         <short_description/>
         <size>md</size>
-        <sp_column display_value="1">d0932a121bf990100a4a10ad9c4bcbed</sp_column>
+        <sp_column display_value="1">9563372e1bfdd0100a4a10ad9c4bcba3</sp_column>
         <sp_page display_value="lookup_table">19aa92961bb990100a4a10ad9c4bcbfe</sp_page>
         <sp_widget display_value="table_list">b054e2921bf990100a4a10ad9c4bcb4d</sp_widget>
         <sys_class_name>sp_instance_table</sys_class_name>
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-07-06 19:12:34</sys_created_on>
         <sys_id>32eaaa1a1bf990100a4a10ad9c4bcb25</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>6</sys_mod_count>
         <sys_name/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_instance_table_32eaaa1a1bf990100a4a10ad9c4bcb25</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-06 19:32:16</sys_updated_on>
+        <sys_updated_on>2020-07-08 16:13:43</sys_updated_on>
         <table>sys_db_object</table>
         <title/>
         <url/>

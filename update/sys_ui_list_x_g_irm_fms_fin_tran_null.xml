@@ -217,13 +217,13 @@
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>14</position>
-            <sum>false</sum>
+            <sum>true</sum>
             <sys_created_by>MarkelJR@state.gov</sys_created_by>
             <sys_created_on>2020-06-29 12:43:19</sys_created_on>
             <sys_id>24be85c01b31d0501f7e113d9c4bcb0e</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-            <sys_updated_on>2020-06-29 12:43:19</sys_updated_on>
+            <sys_mod_count>1</sys_mod_count>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-07-09 13:29:25</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_dependency_css_include">
+    <m2m_sp_dependency_css_include action="DELETE">
+        <order>100</order>
+        <sp_css_include display_value="ag-grid">709291d01b9810100a4a10ad9c4bcb65</sp_css_include>
+        <sp_dependency display_value="ag-grid">b352dd901b9810100a4a10ad9c4bcb1b</sp_dependency>
+        <sys_class_name>m2m_sp_dependency_css_include</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-07-09 14:26:08</sys_created_on>
+        <sys_id>102601931b3594100a4a10ad9c4bcbe2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ag-grid.ag-grid</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>m2m_sp_dependency_css_include_102601931b3594100a4a10ad9c4bcbe2</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-09 14:26:08</sys_updated_on>
+    </m2m_sp_dependency_css_include>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>m2m_sp_dependency_css_include_102601931b3594100a4a10ad9c4bcbe2</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_dependency_css_include"><m2m_sp_dependency_css_include action="INSERT_OR_UPDATE"><order>100</order><sp_css_include display_value="ag-grid">709291d01b9810100a4a10ad9c4bcb65</sp_css_include><sp_dependency display_value="ag-grid">b352dd901b9810100a4a10ad9c4bcb1b</sp_dependency><sys_class_name>m2m_sp_dependency_css_include</sys_class_name><sys_created_by>RoseJL@state.gov</sys_created_by><sys_created_on>2020-07-09 14:26:08</sys_created_on><sys_id>102601931b3594100a4a10ad9c4bcbe2</sys_id><sys_mod_count>0</sys_mod_count><sys_name>ag-grid.ag-grid</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>m2m_sp_dependency_css_include_102601931b3594100a4a10ad9c4bcbe2</sys_update_name><sys_updated_by>RoseJL@state.gov</sys_updated_by><sys_updated_on>2020-07-09 14:26:08</sys_updated_on></m2m_sp_dependency_css_include></record_update>]]></payload>
+        <payload_hash>-1797476347</payload_hash>
+        <record_name>ag-grid.ag-grid</record_name>
+        <reverted_from/>
+        <source>ff83930a1b2994100a4a10ad9c4bcb62</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-07-09 14:26:09</sys_created_on>
+        <sys_id>502601931b3594100a4a10ad9c4bcbe6</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17333f82be60000001</sys_recorded_at>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-09 14:26:09</sys_updated_on>
+        <type>Dependency CSS Includes</type>
+        <update_guid>18260193ad3594100cce3ecc067bc9e5</update_guid>
+        <update_guid_history>18260193ad3594100cce3ecc067bc9e5:-1797476347</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="ag-grid.ag-grid">660741571b3594100a4a10ad9c4bcbba</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-07-09 14:30:08</sys_created_on>
+        <sys_db_object display_value="" name="m2m_sp_dependency_css_include">m2m_sp_dependency_css_include</sys_db_object>
+        <sys_id>12d17f800d2442e1965a7334a87cd021</sys_id>
+        <sys_metadata>102601931b3594100a4a10ad9c4bcbe2</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ag-grid.ag-grid</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>m2m_sp_dependency_css_include_102601931b3594100a4a10ad9c4bcbe2</sys_update_name>
+        <sys_update_version display_value="m2m_sp_dependency_css_include_102601931b3594100a4a10ad9c4bcbe2">502601931b3594100a4a10ad9c4bcbe6</sys_update_version>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-09 14:30:08</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>
