@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
-    <sys_documentation element="award_date" label="Award Date" language="en" table="x_g_irm_fms_fin_tran_po">
+    <sys_documentation element="po_award_date" label="Award Date" language="en" table="x_g_irm_fms_fin_tran">
         <sys_documentation action="INSERT_OR_UPDATE">
-            <element>award_date</element>
+            <element>po_award_date</element>
             <help/>
             <hint/>
             <label>Award Date</label>
             <language>en</language>
-            <name>x_g_irm_fms_fin_tran_po</name>
+            <name>x_g_irm_fms_fin_tran</name>
             <plural>Award Dates</plural>
             <sys_class_name>sys_documentation</sys_class_name>
-            <sys_created_by>markeljr@state.gov</sys_created_by>
-            <sys_created_on>2020-04-10 12:28:52</sys_created_on>
-            <sys_id>c53c055e1b8014500a4a10ad9c4bcb8b</sys_id>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-07-10 15:38:18</sys_created_on>
+            <sys_id>c730eee31b39d4100a4a10ad9c4bcb6a</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_name>Award Date</sys_name>
             <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
             <sys_policy/>
             <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
             <sys_update_name>sys_documentation_x_g_irm_fms_fin_tran_po_award_date_en</sys_update_name>
-            <sys_updated_by>markeljr@state.gov</sys_updated_by>
-            <sys_updated_on>2020-04-10 12:28:52</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-07-10 15:38:18</sys_updated_on>
             <url/>
             <url_target/>
         </sys_documentation>

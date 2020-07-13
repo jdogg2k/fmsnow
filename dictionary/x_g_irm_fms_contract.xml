@@ -90,6 +90,7 @@
         </element>
         <element label="Organization" mandatory="true" max_length="32" name="organization_ref" reference="x_g_irm_fms_organization" type="reference"/>
         <element label="Promote Date" max_length="40" name="org_promote_date" type="glide_date_time"/>
+        <element attributes="encode_utf8=false" label="Parent PIID" max_length="32" name="parent_piid" reference="x_g_irm_fms_contract" type="reference"/>
         <element label="Performance End Date" max_length="40" name="perform_end_date" type="glide_date"/>
         <element label="Performance Start Date" max_length="40" name="perform_start_date" type="glide_date"/>
         <element choice="1" label="Pricing Model" max_length="12" name="pricing_model" type="string">
@@ -140,6 +141,9 @@
         </index>
         <index name="index3">
             <element name="organization_ref"/>
+        </index>
+        <index name="index4">
+            <element name="parent_piid"/>
         </index>
     </element>
 </database>

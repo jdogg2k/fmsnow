@@ -45,8 +45,22 @@
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element label="Obligation" max_length="15" name="obligation" type="string"/>
         <element label="Obligation Date" max_length="40" name="obligation_date" type="glide_date"/>
+        <element label="Approved" max_length="40" name="po_approved" type="boolean"/>
+        <element label="AQM Approval Date" max_length="40" name="po_aqm_approval_date" type="glide_date"/>
+        <element label="AQM Received Date" max_length="40" name="po_aqm_received_date" type="glide_date"/>
+        <element label="Award Date" max_length="40" name="po_award_date" type="glide_date"/>
+        <element label="Award Number" max_length="20" name="po_award_number" type="string"/>
+        <element label="Award Vendor Name" max_length="50" name="po_award_vendor_name" type="string"/>
+        <element label="Contract Number" max_length="20" name="po_contract_number" type="string"/>
+        <element label="Purchase Order Notes" max_length="500" name="po_notes" type="string"/>
+        <element label="Purchase Request Number" max_length="30" name="po_pr_number" type="string"/>
+        <element label="Quote Vendor Name" max_length="50" name="po_quote_vendor_name" type="string"/>
+        <element label="Received Date" max_length="40" name="po_receive_date" type="glide_date"/>
+        <element label="Requestor" max_length="50" name="po_requestor" type="string"/>
+        <element label="Tracking Number" max_length="15" name="po_tracking_number" type="string"/>
         <element label="Appropriation" mandatory="true" max_length="32" name="project_appropriation_ref" reference="x_g_irm_fms_project_appropriation" type="reference"/>
         <element label="Project" mandatory="true" max_length="32" name="project_ref" reference="x_g_irm_fms_project" reference_qual="javascript: &quot;organization_refIN&quot; + new OrgHierarchy().GetUserOrgs();" type="reference" use_reference_qualifier="advanced"/>
+        <element label="Purchase Order" max_length="32" name="purchase_order" reference="x_g_irm_fms_fin_tran_po" type="reference"/>
         <element label="Received By" max_length="50" name="received_by" type="string"/>
         <element label="Reconciliation Date" max_length="40" name="reconcile_date" type="glide_date"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;    var items = new GlideRecord('x_g_irm_fms_fin_tran_item');&#13;&#10;    items.addQuery('fin_tran_ref', current.sys_id);&#13;&#10;    items.query();&#13;&#10;    var total = 0;&#13;&#10;    while (items.next()) {&#13;&#10;        //total += (parseInt(items.received_qty || items.item_qty)) * (parseFloat(items.actual_cost || items.item_cost));&#13;&#10;&#9;&#9;total += parseFloat(items.item_total);&#13;&#10;    }&#13;&#10;    return total; &#13;&#10;})(current);" label="Transaction Total" max_length="20" name="transaction_total_amt" read_only="true" type="currency" virtual="true"/>
@@ -85,18 +99,21 @@
             <element name="project_ref"/>
         </index>
         <index name="index3">
-            <element name="allocation_group_ref"/>
+            <element name="purchase_order"/>
         </index>
         <index name="index4">
-            <element name="contract_ref"/>
+            <element name="allocation_group_ref"/>
         </index>
         <index name="index5">
-            <element name="cost_pool_ref"/>
+            <element name="contract_ref"/>
         </index>
         <index name="index6">
-            <element name="project_appropriation_ref"/>
+            <element name="cost_pool_ref"/>
         </index>
         <index name="index7">
+            <element name="project_appropriation_ref"/>
+        </index>
+        <index name="index8">
             <element name="allotment_ref"/>
         </index>
     </element>
