@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sysauto_script">
     <sysauto_script action="INSERT_OR_UPDATE">
         <active>true</active>
-        <condition/>
+        <condition><![CDATA[var today = new GlideDateTime();
+var gr1 = new GlideRecord("x_g_irm_fms_notification");
+gr1.query();
+while(g1.next())
+	{
+		
+	}]]></condition>
         <conditional>false</conditional>
         <name>Contract Daily Notifications</name>
         <run_as display_value="Ajay Puri">1e2322591bd55c100a4a10ad9c4bcbc2</run_as>
@@ -47,13 +53,25 @@ while (gr.next()) {
     if (gr_flag.next()) {
         if ((diffrence_oy_55 <= days_55)&&(days_55==false)) {
             user_55.push(gr.party_email + "");
+			
+			var gr_55 = new GlideRecord('x_g_irm_fms_notification');
+            gr_55.get('sys_id', '56d2cc351bc090500a4a10ad9c4bcbf9');
+            var daystoadd_55 = parseInt(gr_55.interim_days);
+            var last_run_55 = new GlideDateTime(gr_55.last_run_date);
+            last_run_55.addDaysUTC(daystoadd_55);
+
+            if (today >= last_run_55) {
             gs.eventQueue('x_g_irm_fms.55days', gr_flag, user_55.toString());
 			
             gr_flag.days_55 = true;
             gr_flag.update();
+			gr_55.last_run_date = today;
+            gr_55.update();
             gs.info('schedule job 55 ' + gr.contract_ref.getDisplayValue() + " " + user_55.toString());
 			//gr1.last_run_date = today;
-			//gr1.update();
+			
+			
+			}//gr1.update();
 
         }
     }
@@ -64,14 +82,14 @@ while (gr.next()) {
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-07-01 16:32:34</sys_created_on>
         <sys_id>ff531c301b35dc100a4a10ad9c4bcb51</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>Contract Daily Notifications</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sysauto_script_ff531c301b35dc100a4a10ad9c4bcb51</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-10 19:02:53</sys_updated_on>
+        <sys_updated_on>2020-07-13 20:00:43</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>
