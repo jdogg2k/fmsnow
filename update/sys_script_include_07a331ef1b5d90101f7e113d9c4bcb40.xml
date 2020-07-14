@@ -13,6 +13,7 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	budgetTable: FMSConstants.TABLE_BUDGET,
 	bitemTable: FMSConstants.TABLE_BUDGET_ITEM,
 	phaseTable: FMSConstants.TABLE_BUDGET_ITEM_PHASE,
+	phaseView: FMSConstants.VIEW_BUDGET_PHASING,
 	tranItemTable: FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM,
 	FMSUtility: new x_g_irm_fms.FMSUtilities(),              //helper utility for FMS queries
 	
@@ -382,20 +383,107 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		}	
 		return expTotal;
 	},
-	
+
+	getBudgetPhasing: function(budgetID) {
+		var phasingData = [];
+		var phase = new GlideRecord(this.phaseView);
+		phase.addQuery('bud_sys_id', budgetID);
+		phase.orderBy('phz_budget_item_ref');
+		phase.orderBy('phz_fiscal_month');
+		phase.query();
+		while (phase.next()) {
+			var phaseRow = {};
+			phaseRow.sys_id = phase.phz_sys_id.toString();
+			phaseRow.budget_amt = parseFloat(phase.itm_budget_amt);
+			phaseRow.budget_item_ref = phase.phz_budget_item_ref.getDisplayValue();
+			phaseRow.budget_item_ref_rawval = phase.phz_budget_item_ref.toString();
+			phaseRow.budget_code = phase.exp_budget_code_ref.getDisplayValue();
+			phaseRow.expense_item_ref = phase.itm_expense_item_ref.getDisplayValue();
+			phaseRow.expense_item_ref_rawval = phase.itm_expense_item_ref.toString();
+			phaseRow.activity_code = phase.exp_activity_code.toString();
+			phaseRow.fiscal_month = phase.phz_fiscal_month.getDisplayValue();
+			phaseRow.fiscal_month_rawval = parseInt(phase.phz_fiscal_month.toString());
+			phaseRow.phase_amt = parseFloat(phase.phz_phase_amt);
+			if (phase.phz_sys_id.nil()) {
+				for (i = 1; i <= 12; i++) {
+					var emptyRow = {};
+					emptyRow.sys_id = phase.itm_sys_id.toString();
+					emptyRow.budget_amt = parseFloat(phase.itm_budget_amt);
+					emptyRow.budget_item_ref = phase.itm_sys_id.getDisplayValue();
+					emptyRow.budget_item_ref_rawval = phase.itm_sys_id.toString();
+					emptyRow.budget_code = phase.exp_budget_code_ref.getDisplayValue();
+					emptyRow.expense_item_ref = phase.itm_expense_item_ref.getDisplayValue();
+					emptyRow.expense_item_ref_rawval = phase.itm_expense_item_ref.toString();
+					emptyRow.activity_code = phase.exp_activity_code.toString();
+					emptyRow.fiscal_month = ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'][i - 1];
+					emptyRow.fiscal_month_rawval = i;
+					emptyRow.phase_amt = 0;
+					phasingData.push(emptyRow);
+				}
+			}
+			else
+				phasingData.push(phaseRow);
+		}
+		return phasingData;
+	},
+
+	getItemPhasing: function(itemKey) {
+		var phaseInclude = [ 'budget_item_ref.expense_item_ref.activity_code' ];
+		var itemPhasing = this.FMSUtility.getTableData(this.phaseTable, "budget_item_ref.sys_id=" + itemKey, true, phaseInclude); 
+		if (itemPhasing.length == 0) {
+			for (i = 1; i <= 12; i++) {
+				var emptyRow = {};
+				emptyRow.sys_id = "";
+				emptyRow.budget_item_ref = itemKey;
+				emptyRow.budget_item_ref_rawval = itemKey;
+				emptyRow.fiscal_month = ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'][i - 1];
+				emptyRow.fiscal_month_rawval = i;
+				emptyRow.phase_amt = null;
+				itemPhasing.push(emptyRow);
+			}
+		}
+		return itemPhasing;
+	},
+
+	updateItemPhasing: function(phasingData) {
+		for (i = 0 ; i < phasingData.length; i++) {
+			var phase = new GlideRecord(this.phaseTable);
+			if (phasingData[i].sys_id.length == 0) {  // add
+				if (!phase.canCreate()) { gs.addInfoMessage('No authority to create phasing data.'); return false; }
+				phase.initialize();
+				phase.budget_item_ref = phasingData[i].budget_item_ref_rawval;
+				phase.fiscal_month = phasingData[i].fiscal_month_rawval;
+				phase.phase_amt = phasingData[i].phase_amt;
+				phase.insert();
+			}
+			else {
+				phase.addQuery('sys_id', phasingData[i].sys_id);
+				phase.setLimit(1);
+				phase.query();
+				if (!phase.hasNext()) return false;
+				phase.next();
+				if (parseFloat(phase.phase_amt) == phasingData[i].phase_amt) continue;
+				if (!phase.canWrite()) { gs.addInfoMessage('No authority to update phaseing data.'); return false; }
+				phase.phase_amt = phasingData[i].phase_amt;
+				phase.update();
+			}
+		}
+		return true;
+	},
+
 	type: 'FMSBudgetUtils'
 });]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-06-15 15:53:58</sys_created_on>
         <sys_id>07a331ef1b5d90101f7e113d9c4bcb40</sys_id>
-        <sys_mod_count>201</sys_mod_count>
+        <sys_mod_count>213</sys_mod_count>
         <sys_name>FMSBudgetUtils</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_07a331ef1b5d90101f7e113d9c4bcb40</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-08 17:42:17</sys_updated_on>
+        <sys_updated_on>2020-07-14 14:52:22</sys_updated_on>
     </sys_script_include>
 </record_update>

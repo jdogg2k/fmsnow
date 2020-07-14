@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Financial Transaction" max_length="40" name="x_g_irm_fms_fin_tran" sizeclass="9797" type="collection">
         <element label="Account Number" max_length="4" name="account_nmbr" type="string"/>
-        <element label="Allocation Group" max_length="32" name="allocation_group_ref" reference="x_g_irm_fms_allocation_group" type="reference"/>
+        <element dependent="project_ref" dependent_on_field="project_ref" label="Allocation Group" max_length="32" name="allocation_group_ref" reference="x_g_irm_fms_allocation_group" type="reference" use_dependent_field="true"/>
         <element label="Allotment" mandatory="true" max_length="32" name="allotment_ref" reference="x_g_irm_fms_allotment" type="reference"/>
         <element label="Contract" max_length="32" name="contract_ref" reference="x_g_irm_fms_contract" reference_qual="javascript: &quot;organization_refIN&quot; + new OrgHierarchy().GetParentOrgs(current.project_ref.organization_ref);" type="reference" use_reference_qualifier="advanced"/>
         <element label="Cost Pool" max_length="32" name="cost_pool_ref" reference="x_g_irm_fms_cost_pool" type="reference"/>
@@ -58,7 +58,7 @@
         <element label="Received Date" max_length="40" name="po_receive_date" type="glide_date"/>
         <element label="Requestor" max_length="50" name="po_requestor" type="string"/>
         <element label="Tracking Number" max_length="15" name="po_tracking_number" type="string"/>
-        <element label="Appropriation" mandatory="true" max_length="32" name="project_appropriation_ref" reference="x_g_irm_fms_project_appropriation" type="reference"/>
+        <element attributes="ref_auto_completer=AJAXTableCompleter,ref_ac_columns=appropriation;appropriation_ref.appropriation_type" label="Appropriation" mandatory="true" max_length="32" name="project_appropriation_ref" reference="x_g_irm_fms_project_appropriation" type="reference"/>
         <element label="Project" mandatory="true" max_length="32" name="project_ref" reference="x_g_irm_fms_project" reference_qual="javascript: &quot;organization_refIN&quot; + new OrgHierarchy().GetUserOrgs();" type="reference" use_reference_qualifier="advanced"/>
         <element label="Purchase Order" max_length="32" name="purchase_order" reference="x_g_irm_fms_fin_tran_po" type="reference"/>
         <element label="Received By" max_length="50" name="received_by" type="string"/>
