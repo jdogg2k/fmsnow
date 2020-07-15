@@ -130,8 +130,10 @@
             rowGroup: true,
             enableRowGroup: true,
             cellRenderer: function(params) {
-				var exp = params.node.childrenAfterGroup[0].data.expense_item_ref;
-				var amt = params.node.childrenAfterGroup[0].data.budget_amt;
+				var root = params.node.childrenAfterGroup[0].data;
+				if (!root) root = params.node.childrenAfterGroup[0].childrenAfterGroup[0].data;
+				var exp = root.expense_item_ref;
+				var amt = root.budget_amt;
 				var eDiv = document.createElement('div');
 				eDiv.innerHTML = '';
 				if (c.canAdd())
@@ -146,8 +148,18 @@
 			}
 		},
         {
+            headerName: 'Quarter',
+            filter: 'agTextColumnFilter',
+            rowGroup: true,
+            hide: true,
+			valueGetter: function(params) {
+				return 'Q' + Math.ceil(params.data.fiscal_month_rawval / 3);
+            }
+        },
+        {
             field: 'fiscal_month',
             headerName: 'Phase Month',
+			className: 'text-right',
             cellStyle: {
                 textAlign: 'right'
             },
@@ -201,16 +213,24 @@
     }
 
     c.colSecondary = function(colDef) {
-		if (colDef.pivotKeys.length == 0) colDef.headerName = "Expense Total"
-        colDef.headerName = colDef.headerName.toUpperCase();
+		if (colDef.pivotKeys.length == 0) {
+			colDef.headerName = "Phased Total";
+			colDef.cellRenderer = function(params) {
+				return '<span title="Budgeted: ' +  params.formatValue(params.node.allLeafChildren[0].data.budget_amt) + '">' + params.valueFormatted + '</span>'; 
+			}
+		}
+		else
+			colDef.headerName = colDef.pivotKeys[0] + " Phased";
     }
 
 	phaseManager.setColumns(phaseColumnDefs);
     phaseManager.setGridOption('pivotRowTotals', 'before');
     phaseManager.setGridOption('processSecondaryColDef', c.colSecondary);
+	phaseManager.setGridOption('groupHeaderHeight', 0);
+	phaseManager.setGridOption('groupIncludeTotalFooter', true);
     phaseManager.setPageProperties(phaseProps);
     phaseManager.setRenderers('expense_item_ref'); //build renderers and set display field to show on delete attempt
-	phaseManager.setGridOption('groupDefaultExpanded', -1);
+	phaseManager.setGridOption('groupDefaultExpanded', 1);
     phaseManager.renderGrid('phaseGrid'); //render grid objects
     phaseManager.setColumnOption('setPivotMode', true);
     phaseManager.setGridData(c.data.tableData); //set grid data
@@ -227,6 +247,19 @@
         }).then(function(resp) {
             phaseManager.setGridData(resp.data.tableData); //set grid data
         });
+    });
+
+	$rootScope.$on('fmsgrid.subRecordInserted', function(event, args) {
+		if (args.table == FMSConstants.TABLE_BUDGET_ITEM) return; 
+            $rootScope.$broadcast('BudgetChanged', { budget_id: c.targetBudget });
+    });
+	$rootScope.$on('fmsgrid.subRecordUpdated', function(event, args) {
+		if (args.table == FMSConstants.TABLE_BUDGET_ITEM) return; 
+            $rootScope.$broadcast('BudgetChanged', { budget_id: c.targetBudget });
+    });
+	$rootScope.$on('fmsgrid.subRecordDeleted', function(event, args) {
+		if (args.table == FMSConstants.TABLE_BUDGET_ITEM) return; 
+            $rootScope.$broadcast('BudgetChanged', { budget_id: c.targetBudget });
     });
 
 	$rootScope.$on('BudgetChanged', function(event, args) {
@@ -297,14 +330,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-19 12:52:41</sys_created_on>
         <sys_id>8aa78eba1b34d8100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>261</sys_mod_count>
+        <sys_mod_count>291</sys_mod_count>
         <sys_name>Budget Item Phase Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_8aa78eba1b34d8100a4a10ad9c4bcb0b</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-14 19:16:29</sys_updated_on>
+        <sys_updated_on>2020-07-15 18:51:13</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

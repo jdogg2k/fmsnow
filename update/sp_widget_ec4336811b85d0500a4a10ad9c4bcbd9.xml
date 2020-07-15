@@ -144,6 +144,8 @@
 			  break;
 			case "obligation":
 			  title = "Obligation Reconciliation";
+			  c.usePivot = false;
+			  c.hideValues = true;
 
 
 		}
@@ -323,16 +325,18 @@
 				field: 'obligation',
 				enableRowGroup: true,
 				rowGroup: true,
-                enableValue: true
+				hide: c.hideValues
 			});
 			colArray.push({
                 headerName: 'Source',
-                field: 'source',
+				field: 'source',
+				filter: true,
                 enableValue: true
 			});
 			colArray.push({
                 headerName: 'Status',
-                field: 'status',
+				field: 'status',
+				filter: true,
                 enableValue: true
 			});
 			colArray.push({
@@ -385,10 +389,10 @@
 			});
 			colArray.push({
                 headerName: 'Remaining',
-				field: 'remaining',
 				aggFunc: 'sum',
                 type: 'currency',
-                enableValue: true
+                enableValue: true,
+				valueGetter: 'data.trans_amount - data.paid_amount'
 			});
 			colArray.push({
                 headerName: 'Notes',
@@ -1151,6 +1155,25 @@
 		return dueInBaseObj;
 	}
 
+	var buildObligation = function(obQ, sourceType) {
+		var obligObj = {};
+		obligObj.sys_id = obligQ.sys_id.toString();
+		obligObj.obligation = obligQ.obligation.toString();
+		obligObj.source = sourceType;
+		obligObj.status = obligQ.tran_status.toString();
+		obligObj.trans_amount = parseFloat(obligQ.transaction_total_amt.toString());
+		obligObj.invoice_amount = 0;
+		obligObj.paid_amount = 0;
+		obligObj.paid_date = "";
+		obligObj.estimated_cost = 0;
+		obligObj.invoice_number = "";
+		obligObj.contract_piid = obligQ.contract_ref.contract_piid.toString();
+		obligObj.reference_number = "";
+		obligObj.remaining = 0;
+		obligObj.notes = obligQ.description.toString();
+		return obligObj;
+	}
+
 	if ($sp.getParameter("org_id") && $sp.getParameter("org_id").length > 0)
 		data.selectedOrgID = $sp.getParameter("org_id");
 	else
@@ -1616,30 +1639,53 @@
 			}
 
 			if (data.reportType == "obligation") {
+				var allObligations = [];
+
 				var obligQ = new GlideRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION);
-				obligQ.addEncodedQuery("project_ref.organization_refIN" + allOrgs.join(",") + "^fy=" + input.fy + "^tran_statusINCommitted,Obligated");
+				obligQ.addEncodedQuery("project_ref.organization_refIN" + allOrgs.join(",") + "^fy=" + input.fy + "^tran_status=Obligated");
 				obligQ.query();
 				while (obligQ.next()) {
 
-					var obligObj = {};
+					var obligObj = buildObligation(obligQ, "FinTran");			
 
-					obligObj.obligation = obligQ.obligation.toString();
-					obligObj.source = "FinTran";
-					obligObj.status = obligQ.tran_status.toString();
-					obligObj.trans_amount = parseFloat(obligQ.transaction_total_amt.toString());
-					obligObj.invoice_amount = 0;
-					obligObj.paid_amount = 0;
-					obligObj.paid_date = "";
-					obligObj.estimated_cost = 0;
-					obligObj.invoice_number = "";
-					obligObj.contract_piid = obligQ.contract_ref.contract_piid.toString();
-					obligObj.reference_number = "";
-					obligObj.remaining = 0;
-					obligObj.notes = obligQ.notes.toString();
+					var foundObligation = data.reportData.filter(function (el) {
+						return el.obligation == obligObj.obligation;
+					});
+
+					if (foundObligation.length == 0)
+						allObligations.push(obligObj.obligation);
 
 					data.reportData.push(obligObj);
-
 				}
+
+				allObligations.forEach(function (item) {
+					var obligDetails = new GlideRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION);
+					obligDetails.addEncodedQuery("obligation=" + item);
+					obligDetails.query();
+					while (obligDetails.next()) {
+						var existObligation = data.reportData.filter(function (el) {
+							return el.sys_id == obligDetails.sys_id.toString();
+						});
+
+						if (existObligation.length == 0) {
+							var supportOblig = {};
+							supportOblig.sys_id = obligDetails.sys_id.toString();
+							supportOblig.obligation = obligDetails.obligation.toString();
+							supportOblig.source = "FinTran";
+							supportOblig.status = obligDetails.tran_status.toString();
+							supportOblig.trans_amount = parseFloat(obligDetails.transaction_total_amt.toString());
+							supportOblig.invoice_amount = 0;
+							supportOblig.paid_amount = 0;
+							supportOblig.paid_date = "";
+							supportOblig.estimated_cost = 0;
+							supportOblig.invoice_number = "";
+							supportOblig.contract_piid = obligDetails.contract_ref.contract_piid.toString();
+							supportOblig.reference_number = "";
+							supportOblig.notes = obligDetails.description.toString();
+							data.reportData.push(supportOblig);
+						}
+					}
+				});
 
 			}
 			
@@ -1793,14 +1839,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>514</sys_mod_count>
+        <sys_mod_count>539</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-14 19:47:14</sys_updated_on>
+        <sys_updated_on>2020-07-15 20:28:17</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
