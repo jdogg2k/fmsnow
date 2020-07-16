@@ -216,7 +216,14 @@
 		if (colDef.pivotKeys.length == 0) {
 			colDef.headerName = "Phased Total";
 			colDef.cellRenderer = function(params) {
-				return '<span title="Budgeted: ' +  params.formatValue(params.node.allLeafChildren[0].data.budget_amt) + '">' + params.valueFormatted + '</span>'; 
+				var budAmt = 0;
+				var color = "transparent";
+				if(!params.node.childrenAfterGroup) return params.valueFormatted;
+				params.node.childrenAfterGroup.forEach(function(grp) { budAmt += grp.allLeafChildren[0].data.budget_amt; });
+				var diffAmt = budAmt - params.value;	
+				if (diffAmt == 0 ) color = "palegreen"; else if (diffAmt > 0) color = "powderblue"; else if (diffAmt < 0) color = "tomato"; 
+				params.colDef.cellStyle.backgroundColor = color; 
+				return '<span title="Budgeted: ' +  params.formatValue(budAmt) + ' Variance: ' + params.formatValue(diffAmt) + '">' + params.valueFormatted + '</span>'; 
 			}
 		}
 		else
@@ -330,14 +337,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-19 12:52:41</sys_created_on>
         <sys_id>8aa78eba1b34d8100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>291</sys_mod_count>
+        <sys_mod_count>315</sys_mod_count>
         <sys_name>Budget Item Phase Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_8aa78eba1b34d8100a4a10ad9c4bcb0b</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-15 18:51:13</sys_updated_on>
+        <sys_updated_on>2020-07-16 15:32:56</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
