@@ -61,7 +61,6 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
                 /* JLR - This function will return all non-sys values of any table in FMS - may want to modify so it can accept an optional encoded query
                 setting returnSysID to true will force the function to return the sys_id along with all of the table fields*/
-
                 var newArray = [];
 
                 //build field arrays
@@ -72,7 +71,6 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
                 dictionaryQ.addEncodedQuery("internal_type!=reference^elementNOT LIKEsys_^internal_type!=collection^choiceISEMPTY^name=" + table);
                 dictionaryQ.query();
                 while (dictionaryQ.next()) {
-
                     if (dictionaryQ.getValue("internal_type") == "boolean") {
 						booleanFields.push(dictionaryQ.getValue("element"));
                     } else if (dictionaryQ.getValue("internal_type") == "currency") {
@@ -99,8 +97,10 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
                         displayFields.push(dispField);
                     }
 
+                    
+
                     if (dotInclude !== undefined && dotInclude != false)
-                        dotWalkFields = dotInclude
+                        dotWalkFields = dotInclude;
 
                     var tableQuery = new GlideRecord(table);
                     if (encQry !== undefined && encQry != '')
@@ -336,13 +336,13 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 18:30:12</sys_created_on>
         <sys_id>c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>157</sys_mod_count>
+        <sys_mod_count>173</sys_mod_count>
         <sys_name>FMSUtilities</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-02 16:04:19</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-16 17:31:27</sys_updated_on>
     </sys_script_include>
 </record_update>

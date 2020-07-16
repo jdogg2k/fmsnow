@@ -153,7 +153,7 @@
             hide: true
         },
 													{
-            field: 'appropriation_type',
+            field: 'project_appropriation_ref.appropriation_ref.appropriation_type.appropriation_type_display',
             headerName: 'Appropriation Type',
             filter: 'agTextColumnFilter'
          
@@ -396,7 +396,7 @@
 
     if (input) { //input holds the data coming back to the server
         if (input.mode == "getDetailData") {
-            data[input.detailTable] = FMSUtility.getTableData(input.detailTable, input.parentRef + '=' + input.parentID, true, "project_appropriation_ref.appropriation_ref.appropriation_type"); 
+            data[input.detailTable] = FMSUtility.getTableData(input.detailTable, input.parentRef + '=' + input.parentID, true); 
         }
         if (input.mode == "deleteRow") {
             FMSUtility.deleteRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION, input.rowID);
@@ -419,8 +419,10 @@
 
 	var filter = "";
 	if (data.selectedProj.length > 0) filter = "project_ref=" + data.selectedProj;
-	else if (data.selectedOrg.length > 0) filter = "project_ref.organization_ref=" + data.selectedOrg;
-    data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, filter, true); 
+    else if (data.selectedOrg.length > 0) filter = "project_ref.organization_ref=" + data.selectedOrg;
+
+    var appropriationTypeInclude = [ 'project_appropriation_ref.appropriation_ref.appropriation_type.appropriation_type_display' ];
+    data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, filter, true, appropriationTypeInclude); 
 
     data.tableName = FMSConstants.TABLE_FINANCIAL_TRANSACTION;
     data.itemTableName = FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM;
@@ -435,14 +437,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-21 14:05:50</sys_created_on>
         <sys_id>fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_id>
-        <sys_mod_count>187</sys_mod_count>
+        <sys_mod_count>200</sys_mod_count>
         <sys_name>Financial Transaction Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-16 15:42:12</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-16 17:31:34</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

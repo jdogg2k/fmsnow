@@ -89,7 +89,7 @@
             </choice>
         </element>
         <element label="Organization" mandatory="true" max_length="32" name="organization_ref" reference="x_g_irm_fms_organization" type="reference"/>
-        <element label="Promote Date" max_length="40" name="org_promote_date" type="glide_date_time"/>
+        <element label="Promote Date" max_length="40" name="org_promote_date" read_only="true" type="glide_date_time"/>
         <element attributes="encode_utf8=false" label="Parent PIID" max_length="32" name="parent_piid" reference="x_g_irm_fms_contract" type="reference"/>
         <element label="Performance End Date" max_length="40" name="perform_end_date" type="glide_date"/>
         <element label="Performance Start Date" max_length="40" name="perform_start_date" type="glide_date"/>
