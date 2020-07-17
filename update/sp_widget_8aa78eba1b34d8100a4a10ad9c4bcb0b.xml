@@ -52,7 +52,8 @@
 			c.data.itemAmt = itemAmt;
 			c.modalInstance = $uibModal.open({
 				templateUrl: 'modalTemplate',
-				scope: $scope
+				scope: $scope,
+				size: 'lg'
 			});
 		});
     }
@@ -218,13 +219,22 @@
 			colDef.cellRenderer = function(params) {
 				var budAmt = 0;
 				var color = "transparent";
-	//			if(params.node && params.node.group && params.node.childrenAfterGroup)
-		//			params.node.childrenAfterGroup.forEach(function(grp) { budAmt += grp.allLeafChildren[0].data.budget_amt; });
+				if (params.node.group == true && params.node.field == "budget_code")
+					params.node.childrenAfterGroup.forEach(function(grp) { budAmt += grp.allLeafChildren[0].data.budget_amt; });
+				if (params.node.group == true && params.node.field == "budget_item_ref_rawval")
+					budAmt = params.node.childrenAfterGroup[0].childrenAfterGroup[0].data.budget_amt;
+				if (params.node.footer == true)
+					params.node.childrenAfterGroup.forEach(function(grp1) { grp1.childrenAfterGroup.forEach(function(grp2) {budAmt += grp2.allLeafChildren[0].data.budget_amt; }) });
 				var diffAmt = budAmt - params.value;	
 				if (diffAmt == 0 ) color = "palegreen"; else if (diffAmt > 0) color = "powderblue"; else if (diffAmt < 0) color = "tomato"; 
-				params.colDef.cellStyle.backgroundColor = color; 
-				var eDiv = document.createElement('div');
-				return '<span title="Budgeted: ' +  params.formatValue(budAmt) + ' Variance: ' + params.formatValue(diffAmt) + '">' + params.valueFormatted + '</span>'; 
+				var cell = document.createElement('span');
+				cell.style.display = 'block';
+				if (!params.node.leafGroup) {
+					cell.style.backgroundColor = color;
+					cell.title = "Budgeted: " +  params.formatValue(budAmt) + " Variance: " + params.formatValue(diffAmt)
+				}
+				cell.innerText = params.valueFormatted; 
+				return cell;
 			}
 		}
 		else
@@ -338,14 +348,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-19 12:52:41</sys_created_on>
         <sys_id>8aa78eba1b34d8100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>320</sys_mod_count>
+        <sys_mod_count>339</sys_mod_count>
         <sys_name>Budget Item Phase Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_8aa78eba1b34d8100a4a10ad9c4bcb0b</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-16 18:27:39</sys_updated_on>
+        <sys_updated_on>2020-07-17 15:06:47</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
@@ -370,8 +380,12 @@
 
 <script type="text/ng-template" id="modalTemplate">
   <div class="panel panel-default" style="width: 1100px; background: #fff; color: #00A0D0; font-weight: bold;">
-    <div class="panel-heading">
-      <h4 class="panel-title">Add / Update Budget Item Phasing</h4>
+    <div class="modal-header">
+		<button type="button" class="close" data-dismiss="dialog" ng-click="$dismiss()">
+			<span aria-hidden="true">&times;</span>
+			<span class="sr-only">Close</span>
+		</button>
+    	<h4 class="panel-title">Add / Update Budget Item Phasing</h4>
     </div>
     <div class="panel-body wrapper-xl">
       	<h3>Phasing for: {{c.data.itemDisplay}}</h3>

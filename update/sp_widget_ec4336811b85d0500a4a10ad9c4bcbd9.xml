@@ -1659,6 +1659,7 @@
 				}
 
 				allObligations.forEach(function (item) {
+					
 					var obligDetails = new GlideRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION);
 					obligDetails.addEncodedQuery("obligation=" + item);
 					obligDetails.query();
@@ -1684,6 +1685,29 @@
 							supportOblig.notes = obligDetails.description.toString();
 							data.reportData.push(supportOblig);
 						}
+					}
+
+					//check invoices
+					var invoiceQ = new GlideRecord(FMSConstants.TABLE_INVOICE);
+					invoiceQ.addEncodedQuery("obligation=" + item);
+					invoiceQ.query();
+					while (invoiceQ.next()) {
+						var invoiceObj = {};
+						invoiceObj.sys_id = invoiceQ.sys_id.toString();
+						invoiceObj.obligation = item;
+						invoiceObj.source = "Invoice";
+						invoiceObj.status = "Billed";
+						invoiceObj.trans_amount = 0;
+						invoiceObj.invoice_amount = parseFloat(invoiceQ.invoice_amount.toString());
+						invoiceObj.paid_amount = parseFloat(invoiceQ.paid_amount.toString());
+						invoiceObj.paid_date = invoiceQ.paid_date.toString();
+						invoiceObj.estimated_cost = parseFloat(invoiceQ.estimated_cost.toString());
+						invoiceObj.invoice_number = invoiceQ.invoice_nmbr.toString();
+						invoiceObj.contract_piid = invoiceQ.contract_number.toString();
+						invoiceObj.reference_number = "";
+						invoiceObj.notes = invoiceQ.notes.toString();
+						data.reportData.push(invoiceObj);
+
 					}
 				});
 
@@ -1839,14 +1863,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>540</sys_mod_count>
+        <sys_mod_count>541</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-15 20:55:17</sys_updated_on>
+        <sys_updated_on>2020-07-17 13:38:27</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">

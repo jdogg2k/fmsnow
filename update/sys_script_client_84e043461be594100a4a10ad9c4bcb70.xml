@@ -16,10 +16,10 @@
         g_form.showErrorBox('item_qty', "Item Quantity must be greater than zero.");
         return false;
     }
-    if (g_form.getValue('received_qty') <= 0) {
-        g_form.showErrorBox('received_qty', "Received Quantity must be greater than or equal to zero.");
-        return false;
-    }
+  //  if (g_form.getValue('received_qty') <= 0) {
+  //    g_form.showErrorBox('received_qty', "Received Quantity must be greater than or equal to zero.");
+  //      return false;
+   // }
 	
 	var a = g_form.getValue('item_cost');
 var b = a.split(';');
@@ -40,7 +40,7 @@ var c1 = b1[1].split('.');
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>84e043461be594100a4a10ad9c4bcb70</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>Field Validations</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
@@ -48,7 +48,7 @@ var c1 = b1[1].split('.');
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_client_84e043461be594100a4a10ad9c4bcb70</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-23 18:08:07</sys_updated_on>
+        <sys_updated_on>2020-07-17 20:03:07</sys_updated_on>
         <table>x_g_irm_fms_fin_tran_item</table>
         <type>onSubmit</type>
         <ui_type>10</ui_type>

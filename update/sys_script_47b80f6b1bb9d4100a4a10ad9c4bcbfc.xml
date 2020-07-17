@@ -5,7 +5,7 @@
         <action_delete>false</action_delete>
         <action_insert>true</action_insert>
         <action_query>false</action_query>
-        <action_update>false</action_update>
+        <action_update>true</action_update>
         <active>true</active>
         <add_message>false</add_message>
         <advanced>true</advanced>
@@ -29,29 +29,49 @@
         <rest_service_text/>
         <rest_variables/>
         <role_conditions/>
-        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
-	
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/ ) {
+    
 	var gr = new GlideRecord("x_g_irm_fms_fin_tran_po");
-gr.initialize();
-	gr.fin_tran_ref = current.sys_id;
-	gr.po_nmbr = current.po_pr_number;
-	gr.award_nmbr = current.po_award_number;
-	gr.notes = current.po_notes;
-	gr.aqm_approval_date = current.po_aqm_approval_date;
-	gr.aqm_received_date = current.po_aqm_received_date;
-	gr.award_date        = current.po_award_date;
-	gr.award_vendor_name = current.po_award_vendor_name;
-	gr.contract_nmbr = current.po_contract_number;
-	gr.receive_date = current.po_receive_date;
-	gr.tracking_nmbr = current.po_tracking_number;
-	gr.quote_vendor_name = current.po_quote_vendor_name;
-	gr.requestor = current.po_requestor;
-	gr.approved = current.po_approved;
-	gr.insert();
-	current.purchase_order = gr.sys_id;
+    gr.addQuery('fin_tran_ref', current.sys_id);
+    gr.query();
+    if (gr.next()) {
+		gs.info("already found");
+        gr.po_nmbr = current.po_pr_number;
+        gr.award_nmbr = current.po_award_number;
+        gr.notes = current.po_notes;
+        gr.aqm_approval_date = current.po_aqm_approval_date;
+        gr.aqm_received_date = current.po_aqm_received_date;
+        gr.award_date = current.po_award_date;
+        gr.award_vendor_name = current.po_award_vendor_name;
+        gr.contract_nmbr = current.po_contract_number;
+        gr.receive_date = current.po_receive_date;
+        gr.tracking_nmbr = current.po_tracking_number;
+        gr.quote_vendor_name = current.po_quote_vendor_name;
+        gr.requestor = current.po_requestor;
+        gr.approved = current.po_approved;
+		gr.update();
 
-	
-	// Add your code here
+    } else {
+        gr.initialize();
+        gr.fin_tran_ref = current.sys_id;
+        gr.po_nmbr = current.po_pr_number;
+        gr.award_nmbr = current.po_award_number;
+        gr.notes = current.po_notes;
+        gr.aqm_approval_date = current.po_aqm_approval_date;
+        gr.aqm_received_date = current.po_aqm_received_date;
+        gr.award_date = current.po_award_date;
+        gr.award_vendor_name = current.contract_ref.vendor_names;
+        gr.contract_nmbr = current.contract_ref.contract_piid;
+        gr.receive_date = current.po_receive_date;
+        gr.tracking_nmbr = current.po_tracking_number;
+        gr.quote_vendor_name = current.po_quote_vendor_name;
+        gr.requestor = current.po_requestor;
+        gr.approved = current.po_approved;
+        gr.insert();
+        current.purchase_order = gr.sys_id;
+    }
+
+    // Add your code here
 
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
@@ -60,7 +80,7 @@ gr.initialize();
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>47b80f6b1bb9d4100a4a10ad9c4bcbfc</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>6</sys_mod_count>
         <sys_name>Insert record in fin trans purchase orde</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
@@ -68,7 +88,7 @@ gr.initialize();
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_47b80f6b1bb9d4100a4a10ad9c4bcbfc</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-13 20:24:31</sys_updated_on>
+        <sys_updated_on>2020-07-16 19:15:10</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>

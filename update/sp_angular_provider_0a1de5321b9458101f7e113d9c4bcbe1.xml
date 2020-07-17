@@ -535,8 +535,8 @@
 			updatedID = id;
 		};
 
-		this.exportExcel = function () {
-			var params = { columnGroups: false, skipGroups: true };
+		this.exportExcel = function (grps) {
+			var params = { columnGroups: grps || false, skipGroups: true };
 			var exportColumns = [];
 			var allCols = gridOptions.columnApi.getAllColumns();
 			allCols.forEach(function (col) {
@@ -949,14 +949,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>569</sys_mod_count>
+        <sys_mod_count>570</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-15 19:42:46</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-17 14:04:29</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

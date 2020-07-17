@@ -35,6 +35,7 @@ FMSConstants.TABLE_NOTIFICATION = 'x_g_irm_fms_notification';
 FMSConstants.TABLE_POST = 'x_g_irm_fms_post';
 FMSConstants.TABLE_REGION = 'x_g_irm_fms_region';
 FMSConstants.TABLE_TRANSFER_TYPE = 'x_g_irm_fms_transfer_type';
+FMSConstants.TABLE_INVOICE = 'x_g_irm_fms_invoice';
 
 FMSConstants.TABLE_BUDGET = 'x_g_irm_fms_budget';
 FMSConstants.TABLE_BUDGET_ITEM = 'x_g_irm_fms_budget_item';
@@ -52,13 +53,13 @@ FMSConstants.ROLE_READONLY = 'x_g_irm_fms.readonly';]]></script>
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 19:01:23</sys_created_on>
         <sys_id>398f4b351b1094100a4a10ad9c4bcbbb</sys_id>
-        <sys_mod_count>31</sys_mod_count>
+        <sys_mod_count>32</sys_mod_count>
         <sys_name>FMSConstants</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_398f4b351b1094100a4a10ad9c4bcbbb</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-08 17:43:26</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-17 13:26:17</sys_updated_on>
     </sys_script_include>
 </record_update>

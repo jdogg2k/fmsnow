@@ -50,7 +50,7 @@
         <element label="IBIS Document" max_length="20" name="ibis_document" type="string"/>
         <element label="Investment" mandatory="true" max_length="32" name="investment_ref" reference="x_g_irm_fms_investment" type="reference"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
-        <element label="Organization" mandatory="true" max_length="32" name="organization_ref" reference="x_g_irm_fms_organization" type="reference"/>
+        <element label="Organization" mandatory="true" max_length="32" name="organization_ref" reference="x_g_irm_fms_organization" reference_qual="javascript:current.pool_parent_ref.toString() != '' ? 'sys_idIN'+new x_g_irm_fms.organizationsUtils().getChildOrganizations(current.pool_parent_ref.toString()) : ''" type="reference" use_reference_qualifier="advanced"/>
         <element label="Source Organization" max_length="32" name="organization_source_ref" reference="x_g_irm_fms_organization" type="reference"/>
         <element label="Pool Notes" max_length="500" name="pool_notes" type="string"/>
         <element label="Parent Pool" max_length="32" name="pool_parent_ref" reference="x_g_irm_fms_allocation_pool" reference_qual="javascript:&quot;organization_ref=&quot; + current.organization_ref.organization_parent_ref + &quot;^fy=&quot; + current.fy + &quot;^pool_status=Received^unassigned_amt&gt;=&quot; + current.receive_amt" type="reference" use_reference_qualifier="advanced"/>
