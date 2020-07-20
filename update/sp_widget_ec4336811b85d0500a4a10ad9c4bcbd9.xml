@@ -95,13 +95,16 @@
 		if (c.data.reportType == "budget_plans")
 			reportObj.budget_type = c.selectedBudgetType;
 
+		if (c.data.reportType == "obligation")
+			reportObj.obStatus = c.selectedObligationType;
+
 		if (c.data.reportType == "financial_transaction") {
 			reportObj.start_date = parseDate(c.startdt.value);
 			reportObj.end_date = parseDate(c.enddt.value);
 		} else {
 			reportObj.fy = c.selectedFY;
 		}
-			
+
 
 		c.server.get(reportObj).then(function (reportResults) {
 			c.reportData = reportResults.data.reportData;
@@ -110,11 +113,21 @@
 			gridOptions.api.sizeColumnsToFit();
 			if (c.data.reportType == "financial_transaction"){
 				c.toggleExpand(true);
-
 			}
 				
 		});
 	}
+
+	/*c.filterStuff = function() {
+		var remainingFilter = gridOptions.api.getFilterInstance('trans_amount');
+				remainingFilter.setModel({
+					type: 'greaterThan',
+					filter: 100000,
+					filterTo: null,
+				});
+				
+				gridOptions.api.onFilterChanged();
+	}*/
 	
 	c.getReportTitle = function() {
 		var title = "";
@@ -342,7 +355,8 @@
 			colArray.push({
                 headerName: 'Trans. Amount',
                 field: 'trans_amount',
-                aggFunc: 'sum',
+				aggFunc: 'sum',
+				filter: 'agNumberColumnFilter',
                 type: 'currency',
                 enableValue: true
 			});
@@ -350,7 +364,8 @@
                 headerName: 'Invoice Amount',
 				field: 'invoice_amount',
 				aggFunc: 'sum',
-                type: 'currency',
+				type: 'currency',
+				filter: 'agNumberColumnFilter',
                 enableValue: true
 			});
 			colArray.push({
@@ -388,12 +403,12 @@
                 enableValue: true
 			});
 			colArray.push({
-                headerName: 'Remaining',
+				headerName: 'Remaining',
+				field: 'remaining',
 				aggFunc: 'sum',
                 type: 'currency',
                 enableValue: true,
-				valueGetter: 'data.trans_amount - data.paid_amount',
-				filter: true
+				filter: 'agNumberColumnFilter'
 			});
 			colArray.push({
                 headerName: 'Notes',
@@ -847,7 +862,6 @@
 			}
 		};
 
-
 		c.fiscalYears = [];
 
 		for (var i = 2026; i >= 2000; i--) {
@@ -1110,6 +1124,21 @@
 		var month = parseInt(tDate.split('-')[1]);
 		return month;
 	}
+
+	function round2Fixed(value) {
+		value = +value;
+	  
+		if (isNaN(value))
+		  return NaN;
+	  
+		// Shift
+		value = value.toString().split('e');
+		value = Math.round(+(value[0] + 'e' + (value[1] ? (+value[1] + 2) : 2)));
+	  
+		// Shift back
+		value = value.toString().split('e');
+		return (+(value[0] + 'e' + (value[1] ? (+value[1] - 2) : -2))).toFixed(2);
+	  }
 
 	var setBaselineDefaults = function (calcQ, multiOrgs) {
 		var baseSupObj = {};
@@ -1640,6 +1669,8 @@
 			}
 
 			if (data.reportType == "obligation") {
+
+				var obligationStatus = input.obStatus;
 				var allObligations = [];
 
 				var obligQ = new GlideRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION);
@@ -1711,6 +1742,45 @@
 
 					}
 				});
+
+				var filteredObligations = [];
+				
+				allObligations.forEach(function (thisOb) {
+
+					var allObs = data.reportData.filter(function (el) {
+						return el.obligation == thisOb;
+					});
+
+					var remainCount = 0;
+
+					allObs.forEach(function (obRec) {
+						obRec.remaining = (obRec.trans_amount - obRec.paid_amount);
+						remainCount += obRec.remaining;
+					});
+
+					var remainFinal = round2Fixed(remainCount);
+
+					if (obligationStatus == "both" || (obligationStatus == "liquidated" && remainFinal == "0.00") || (obligationStatus == "unliquidated" && remainFinal != "0.00"))
+						filteredObligations.push(thisOb)
+
+				});
+
+				var newObData = [];
+					
+				filteredObligations.forEach(function (thisOb) {
+
+					var allObs = data.reportData.filter(function (el) {
+						return el.obligation == thisOb;
+					});
+
+					allObs.forEach(function (obRec) {
+						newObData.push(obRec);
+					});
+
+				});
+
+				data.reportData = newObData;				
+
 
 			}
 			
@@ -1864,14 +1934,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>542</sys_mod_count>
+        <sys_mod_count>577</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-20 18:29:20</sys_updated_on>
+        <sys_updated_on>2020-07-20 21:58:26</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
