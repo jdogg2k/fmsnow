@@ -7,10 +7,8 @@
     c.targetOrg = c.data.selectedOrg;
     c.userAuth = $rootScope.userAuth;
     c.tierMode = "Hide"; //default to this property to show row colors
-
-   var contractManager = new AGGridFactory();
+	var contractManager = new AGGridFactory();
 	
-
     c.addNew = function() {
 
         var query = "organization_ref=" + c.targetOrg;
@@ -205,6 +203,7 @@
             cellRenderer: 'deleteCell',
             cellRendererParams: function(params) {
                 return {
+										"Data" : params.data,
                     "show": c.canDelete(c.userAuth, params.data),
                     "banner": !params.node.group ? ("Contract - " + params.data.contract_display) : null
                 };
@@ -212,7 +211,10 @@
         }
     ];
 
-    var contractRelationshipDefs = [{
+	
+	
+	  var contractRelationshipDefs = [{
+			
             field: 'edit_item',
             headerName: 'Edit',
             maxWidth: 50,
@@ -223,15 +225,20 @@
             sortable: false,
             cellRenderer: 'editCell',
             cellRendererParams: function(params) {
-                return {
-                    "show": c.canEdit(c.userAuth, params.data),
-                    "table": c.data.relationshipTableName,
-                    "parent": params.data.contract_ref_rawval,
-                    "banner": "Contract Relationship"
-                };
+                if (params.data) {
+                    return {
+
+                        "show": c.canEdit(c.userAuth, params.data),
+                        "table": c.data.relationshipTableName,
+                        "parent": params.data.contract_ref_rawval,
+                        "banner": "Contract Relationship"
+                    };
+                }
             }
         },
+																
         {
+					
             field: 'relationship_type',
             headerName: 'Relationship Type'
         },
@@ -248,7 +255,7 @@
             headerName: 'Operational Status'
         },
         {
-            field: 'contract_rel_ref.contract_class',
+            field: 'contract_rel_ref.contract_class', 
             headerName: 'Classification'
         },
         {
@@ -262,6 +269,7 @@
             sortable: false,
             cellRenderer: 'deleteCell',
             cellRendererParams: function (params) {
+                if (params.data) {
                 return {
                     "show": c.canEdit(c.userAuth, params.data),
                     "table": c.data.relationshipTableName,
@@ -269,9 +277,10 @@
                     "banner": "Contract Relationship - " + params.data.contract_contract_display
                 };
             }
+            }
         }
     ];
-
+  
     var contractPartyDefs = [{
             field: 'edit_item',
             headerName: 'Edit',
@@ -283,12 +292,14 @@
             sortable: false,
             cellRenderer: 'editCell',
             cellRendererParams: function(params) {
+                if (params.data) {
                 return {
                     "show": c.canEdit(c.userAuth, params.data),
                     "table": c.data.partyTableName,
                     "parent": params.data.contract_ref_rawval,
                     "banner": "Contract Party"
                 };
+            }
             }
         },
         {
@@ -321,12 +332,14 @@
             },
             cellRenderer: 'deleteCell',
             cellRendererParams: function (params) {
+                if (params.data) {
                 return {
                     "show": c.canEdit(c.userAuth, params.data),
                     "table": c.data.partyTableName,
                     "parent": params.data.contract_ref_rawval,
                     "banner": "Contract Party - " + params.data.contract_party_display
                 };
+            }
             }
         }
     ];
@@ -347,7 +360,7 @@
             banner: 'Contract Party',
             name: c.data.partyTableName,
             columnDefs: contractPartyDefs,
-            parentRef: 'contract_ref',
+            parentRef: 'contract_ref'
         },
         {
             banner: 'Contract Relationship',
@@ -394,6 +407,7 @@
     contractManager.setRenderers('contract_display'); //build renderers and set display field to show on delete attempt and set details columns
     contractManager.renderGrid('contractGrid'); //render grid objects
     contractManager.setGridData(c.data.tableData); //set grid data
+	
     contractManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst));
 	$timeout(function () { contractManager.fitColumns(); }, 250);
 
@@ -416,6 +430,10 @@
             contractManager.setGridData(resp.data.tableData); //set grid data
         });
     });
+	
+	
+	
+
 }]]></client_script>
         <controller_as>c</controller_as>
         <css/>
@@ -446,9 +464,19 @@
 		data.selectedOrg = session.getClientData('org_id');
 	if (session.getClientData('proj_id') && session.getClientData('proj_id').length > 0)
 		data.selectedProj = session.getClientData('proj_id');
-
+   var contractWalkFields = [ 'contract_rel_ref.operational_status', 'contract_rel_ref.contract_class' ];
+	//var contractWalkFields = ['contract_rel_ref.operational_status'];
+	
     if (input) { //input holds the data coming back to the server
-        if (input.mode == "getDetailData") {
+		    if (input.mode == "getDetailData") {
+					if(input.detailTable=='x_g_irm_fms_contract_contract')
+						{
+					  data[input.detailTable] = FMSUtility.getTableData(input.detailTable, input.parentRef + '=' + input.parentID, true, contractWalkFields);
+						//	var a = JSON.stringify(data[input.detailTable]);
+								//gs.addInfoMessage(a);
+						}
+					
+					else
             data[input.detailTable] = FMSUtility.getTableData(input.detailTable, input.parentRef + '=' + input.parentID, true);
         }
         if (input.mode == "getNewRec") {
@@ -486,14 +514,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-05 17:24:17</sys_created_on>
         <sys_id>338fbad21be054500a4a10ad9c4bcb43</sys_id>
-        <sys_mod_count>172</sys_mod_count>
+        <sys_mod_count>203</sys_mod_count>
         <sys_name>Contract Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_338fbad21be054500a4a10ad9c4bcb43</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-17 15:16:54</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-20 18:05:46</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

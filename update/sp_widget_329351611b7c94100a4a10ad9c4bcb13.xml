@@ -65,7 +65,7 @@
 		if (c.data.selBudget.budget_type == "Actual") {
 			c.gridStates.phasing = "hide";
 			c.gridStates.allocations = false;
-			c.actionStates.transactions = false;
+			c.gridStates.transactions = false;
 		}
 		if (c.data.selBudget.budget_type == "Exeuction") {
 			c.gridStates.allocations = false;
@@ -241,7 +241,11 @@
 
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css/>
+        <css>.full-grid {&#13;
+    width: calc(100vw);&#13;
+    height: calc(100vh - 220px);&#13;
+    clear: both;&#13;
+}</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -388,17 +392,17 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-15 11:52:52</sys_created_on>
         <sys_id>329351611b7c94100a4a10ad9c4bcb13</sys_id>
-        <sys_mod_count>282</sys_mod_count>
+        <sys_mod_count>288</sys_mod_count>
         <sys_name>Budget Detail</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_329351611b7c94100a4a10ad9c4bcb13</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-17 17:03:49</sys_updated_on>
+        <sys_updated_on>2020-07-20 14:43:48</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
   <widget id="organization_selection" options='{"hide_widget": true, "hide_project": true}'></widget>
-  <div class="container">
+  <div class="container" style="padding: 0px;">
     <div class="row">
       <div class="form-group col-md-6">
         <div class="row">
@@ -462,7 +466,7 @@
           <div class="col-sm-2 text-right">
             Description: 
           </div>
-          <div class="col-sm-4">
+          <div class="col-sm-8">
             {{c.data.selBudget.budget_desc}}
           </div>
         </div>
@@ -584,7 +588,7 @@
         <!--<a href="javascript:void(0)" class="btn btn-success excel-button">Export to Excel</a>
         <a href="javascript:void(0)" ng-click="c.addNew();" class="btn btn-info newItem">Add {{c.newButtonLabel}}</a>-->
       
-        <div class="tab-content">
+        <div class="tab-content" style="padding: 0px;">
           <div id="items" class="tab-pane fade in active" ng-if="!!c.gridStates.items">
             <widget id="budget_item_grid"></widget>
           </div>
