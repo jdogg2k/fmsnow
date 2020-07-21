@@ -388,6 +388,7 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		var phasingData = [];
 		var phase = new GlideRecord(this.phaseView);
 		phase.addQuery('bud_sys_id', budgetID);
+		phase.orderBy('exp_budget_code_ref');
 		phase.orderBy('phz_budget_item_ref');
 		phase.orderBy('phz_fiscal_month');
 		phase.query();
@@ -477,13 +478,13 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-06-15 15:53:58</sys_created_on>
         <sys_id>07a331ef1b5d90101f7e113d9c4bcb40</sys_id>
-        <sys_mod_count>214</sys_mod_count>
+        <sys_mod_count>215</sys_mod_count>
         <sys_name>FMSBudgetUtils</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_07a331ef1b5d90101f7e113d9c4bcb40</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-20 12:29:17</sys_updated_on>
+        <sys_updated_on>2020-07-21 16:23:35</sys_updated_on>
     </sys_script_include>
 </record_update>

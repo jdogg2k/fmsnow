@@ -76,16 +76,17 @@
 		}
 		return parseFloat(tot.toFixed(2));
 	}
+    c.fmtCurrency = function(val) {
+		return phaseManager.fmtCurrency(val);
+	}
 
     var phaseColumnDefs = [{
             headerName: 'Budget Code',
             field: 'sys_id',
-            minWidth: 175,
+            minWidth: 250,
             filter: 'agTextColumnFilter',
             cellRenderer: 'agGroupCellRenderer',
             showRowGroup: true,
-            sort: 'asc',
-            sortingOrder: 1,
             cellRendererParams: {
                 suppressCount: true,
                 checkbox: false,
@@ -122,6 +123,8 @@
             headerName: 'Budget Code',
             filter: 'agTextColumnFilter',
             rowGroup: true,
+			sort: 'asc',
+			sortingOrder: 1,
             hide: true
         },
         {
@@ -130,6 +133,8 @@
             filter: 'agTextColumnFilter',
             rowGroup: true,
             enableRowGroup: true,
+			sort: 'asc',
+			sortingOrder: 2,
             cellRenderer: function(params) {
 				var root = params.node.childrenAfterGroup[0].data;
 				if (!root) root = params.node.childrenAfterGroup[0].childrenAfterGroup[0].data;
@@ -266,13 +271,13 @@
         });
     });
 
-	$rootScope.$on('fmsgrid.subRecordInserted', function(event, args) {
+	$rootScope.$on('fmsgrid.RecordInserted', function(event, args) {
 		if (args.table == 'x_g_irm_fms_budget_item') RefreshGrid(args.sys_id); 
     });
-	$rootScope.$on('fmsgrid.subRecordUpdated', function(event, args) {
+	$rootScope.$on('fmsgrid.RecordUpdated', function(event, args) {
 		if (args.table == 'x_g_irm_fms_budget_item') RefreshGrid(args.sys_id);  
     });
-	$rootScope.$on('fmsgrid.subRecordDeleted', function(event, args) {
+	$rootScope.$on('fmsgrid.RecordDeleted', function(event, args) {
 		if (args.table == 'x_g_irm_fms_budget_item') RefreshGrid(args.sys_id);  
     });
 
@@ -293,7 +298,11 @@
 	}
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css/>
+        <css>.fullest-grid {&#13;
+    width: calc(100vw - 20px);&#13;
+    height: calc(100vh - 325px);&#13;
+    clear: both;&#13;
+}</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -348,17 +357,15 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-19 12:52:41</sys_created_on>
         <sys_id>8aa78eba1b34d8100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>344</sys_mod_count>
+        <sys_mod_count>384</sys_mod_count>
         <sys_name>Budget Item Phase Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_8aa78eba1b34d8100a4a10ad9c4bcb0b</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-20 20:06:47</sys_updated_on>
-        <template><![CDATA[<div style="width: 100%; height: 100%">
-
-  <div class="container">
+        <sys_updated_on>2020-07-21 19:04:26</sys_updated_on>
+        <template><![CDATA[  <div class="container">
     <div class="row">
       <div class="form-group col-sm-12 fms-list-header">
         <div class="fms-header-buttons">
@@ -366,60 +373,58 @@
         </div>
       </div>
     </div>
-
-    <div class="row">
-      <div class="col-sm-12">
-
-        <div id="phaseGrid" class="ag-theme-balham full-grid"></div>
-
-      </div>
-    </div>
   </div>
-
-</div>
+  <div id="phaseGrid" class="ag-theme-balham fullest-grid"></div>
 
 <script type="text/ng-template" id="modalTemplate">
-  <div class="panel panel-default" style="width: 1100px; background: #fff; color: #00A0D0; font-weight: bold;">
+  <div class="modal-content modal-lg" style="width: 1100px; background: #fff;">
     <div class="modal-header">
 		<button type="button" class="close" data-dismiss="dialog" ng-click="$dismiss()">
 			<span aria-hidden="true">&times;</span>
 			<span class="sr-only">Close</span>
 		</button>
-    	<h4 class="panel-title">Add / Update Budget Item Phasing</h4>
+    	<h4 class="modal-title">Add / Update Budget Item Phasing</h4>
     </div>
-    <div class="panel-body wrapper-xl">
-      	<h3>Phasing for: {{c.data.itemDisplay}}</h3>
+    <div class="modal-body">
+    	<div class="panel-heading">
+	      	<h3>Phasing for: {{c.data.itemDisplay}}</h3>
+        </div>
         <div ng-repeat="qtr in [1, 2, 3, 4]">
           <div class="row">
         	<div ng-repeat="month in c.data.itemPhasing | orderBy: 'fiscal_month_rawval'" ng-if="Math.ceil(month.fiscal_month_rawval / 3) == qtr">
             	<div class="d-inline col-sm-1 text-right">{{month.fiscal_month}}</div>
                 <div class="d-inline col-sm-2 text-right">
-                	<input type="number" step=".01" placeholder="0.00" class="form-control text-right" id="phaseAmt" style="width: 150px;" ng-model="month.phase_amt">
-                </div>
+ 					<div class="input-group"> 
+						<span class="input-group-addon">$</span>
+                 		<input type="number" step=".01" placeholder="0.00" class="form-control text-right" id="phaseAmt" style="width: 150px;" ng-model="month.phase_amt">
+                	</div>
+  				</div>
             </div>
             <div>
             	<div class="d-inline col-sm-1 text-right">Q{{qtr}} Total</div>
                 <div class="d-inline col-sm-2 text-right">
-                	{{c.calcQtrTotal(qtr)}}
+                	{{c.fmtCurrency(c.calcQtrTotal(qtr))}}
   				</div>
             </div>
           </div>
         </div>
         <div class="row" style="padding-top: 20px;">
-            <div>
+            <div class="field-label">
             	<div class="d-inline col-sm-1 text-right">Budget Amount</div>
                 <div class="d-inline col-sm-2 text-right" style="font-size: 16pt;">
-                	{{c.data.itemAmt}}
+                	{{c.fmtCurrency(c.data.itemAmt)}}
   				</div>
 	           	<div class="d-inline col-sm-1 text-right"> > > ></div>
-	           	<div class="d-inline col-sm-1 text-right">Remaining</div>
-                <div class="d-inline col-sm-2 text-right" style="font-size: 16pt;">
-                	{{c.data.itemAmt - c.calcQtrTotal(0)}}
-  				</div>
+                <div class="col-sm-3" style="border-color: red; border-width: 1px; border-style: dotted;">
+		           	<div class="d-inline col-sm-1 text-right">Remaining</div>
+        	        <div class="d-inline text-right" style="font-size: 16pt;">
+            	    	{{c.fmtCurrency((c.data.itemAmt - c.calcQtrTotal(0)))}}
+  					</div>
+                </div>
 	           	<div class="d-inline col-sm-2 text-right">< < < < < < <</div>
-            	<div class="d-inline col-sm-1 text-right">Year Total</div>
+            	<div class="d-inline col-sm-1 text-right">FY Total</div>
                 <div class="d-inline col-sm-2 text-right" style="font-size: 16pt;">
-                	{{c.calcQtrTotal(0)}}
+                	{{c.fmtCurrency(c.calcQtrTotal(0))}}
   				</div>
             </div>
         </div>

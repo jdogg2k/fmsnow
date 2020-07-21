@@ -49,8 +49,8 @@
         <element label="AQM Approval Date" max_length="40" name="po_aqm_approval_date" type="glide_date"/>
         <element label="AQM Received Date" max_length="40" name="po_aqm_received_date" type="glide_date"/>
         <element label="Award Date" max_length="40" name="po_award_date" type="glide_date"/>
-        <element label="Award Number" max_length="20" name="po_award_number" type="string"/>
-        <element label="Award Vendor Name" max_length="50" name="po_award_vendor_name" type="string"/>
+        <element label="Task Order Number" max_length="20" name="po_award_number" type="string"/>
+        <element label="Vendor Name" max_length="50" name="po_award_vendor_name" type="string"/>
         <element label="Contract Number" max_length="20" name="po_contract_number" type="string"/>
         <element label="Purchase Order Notes" max_length="500" name="po_notes" type="string"/>
         <element label="Purchase Request Number" max_length="30" name="po_pr_number" type="string"/>
