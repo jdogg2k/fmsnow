@@ -12,7 +12,7 @@
 
     c.addNew = function () {
         fintranManager.editRow("-1", "project_ref=" + c.targetProj, c.data.tableName);
-			 //fintranManager.editRow("-1", "project_ref=" + c.targetProj, 'x_g_irm_fms_fin_tran_po');
+			 //fintranManager.editRow("-1", "project_ref=" + c.targetProj, 'x_g_irm_fms_contract');
 			
     }
 
@@ -440,14 +440,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-21 14:05:50</sys_created_on>
         <sys_id>fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_id>
-        <sys_mod_count>205</sys_mod_count>
+        <sys_mod_count>210</sys_mod_count>
         <sys_name>Financial Transaction Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-21 16:36:05</sys_updated_on>
+        <sys_updated_on>2020-07-23 17:27:22</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

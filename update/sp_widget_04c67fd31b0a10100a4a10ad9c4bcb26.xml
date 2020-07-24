@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function ($scope, AGGridFactory, $timeout) {
+    /* widget controller */
+    var c = this;
+    c.targetOrg = c.data.selectedOrg;
+    c.targetProj = c.data.selectedProj;
+    c.userAuth = $rootScope.userAuth;
+    c.selectedObligation = "Enter Obligation";
+    c.tabledata = [];
+    c.data.totals_display = {
+        trans: "",
+        estimated: "",
+        invoice: "",
+        paid: "",
+        remaining: ""
+    }
+
+
+    var fintranManager = new AGGridFactory();
+    var invoiceManager = new AGGridFactory();
+
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
+
+    c.formatTotals = function() {
+        for (var property in c.data.totals) {
+            c.data.totals_display[property] = formatter.format(c.data.totals[property]);
+        }
+    }
+
+    c.calculateTotals = function(type) {
+        //reset totals
+        c.data.totals.estimated = 0;
+        c.data.totals.invoice = 0;
+        c.data.totals.paid = 0;
+        c.data.totals.remaining = 0;
+
+        if (type == "trans") {
+            c.data.totals.trans = 0;
+            fintranManager.gridOpts.api.forEachNodeAfterFilter(function (rowNode, index) {
+                if (rowNode.data) {
+                    c.data.totals.trans += rowNode.data.transaction_total_amt;
+                }
+            });
+        }
+        
+        invoiceManager.gridOpts.api.forEachNodeAfterFilter(function (rowNode, index) {
+            if (rowNode.data) {
+                c.data.totals.estimated += rowNode.data.estimated_cost;
+                c.data.totals.invoice += rowNode.data.invoice_amount;
+                c.data.totals.paid += rowNode.data.paid_amount;
+            }
+        });
+
+        c.data.totals.remaining = c.data.totals.trans - c.data.totals.paid;
+        c.formatTotals();
+    }
+
+    c.getData = function() {
+        var obPayload = {};
+        obPayload.mode = "getData";
+        obPayload.tObligation = c.selectedObligation;
+        c.server.get(obPayload).then(function (queryResult) {
+            c.data.totals = queryResult.data.totals;
+            c.tabledata = queryResult.data.tableData;
+            c.invoicedata = queryResult.data.invoiceData;
+            c.formatTotals();
+            fintranManager.setGridData(c.tabledata); //set grid data
+            fintranManager.fitColumns();
+            invoiceManager.setGridData(c.invoicedata); //set grid data
+            invoiceManager.fitColumns();
+		});
+    }
+
+    c.getData();
+
+    c.addNew = function () {
+        invoiceManager.editRow("-1", "obligation=" + c.selectedObligation, c.data.invoiceTableName);
+    }
+
+    c.canAdd = function () {
+        if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) {
+            if (c.userAuth.orgs.indexOf(c.targetOrg) >= 0)
+                return true;
+            else
+                return false;
+        } else
+            return false;
+    }
+
+    c.canEdit = function (auth, data) {
+        /*if (!data) return false;
+        if (auth.orgs.indexOf(c.targetOrg) >= 0 && (auth.roles.isOrgAdmin || auth.roles.isAnalyst))
+            return true;
+        else
+            return false;*/
+            return true;
+    }
+
+    c.canDelete = function (auth, data) {
+        //return c.canEdit(auth, data);
+        return true;
+    }
+
+    c.exportExcel = function () {
+        fintranManager.exportExcel();
+        invoiceManager.exportExcel();
+    }
+
+    var fintranColumnDefs = [
+        {
+            field: 'project_ref',
+            headerName: 'Project Name',
+            filter: 'agTextColumnFilter',
+            sort: 'asc'
+        },
+        {
+            field: 'obligation',
+            headerName: 'Obligation',
+            filter: 'agTextColumnFilter'
+        },
+        {
+            field: 'obligation_date',
+            headerName: 'Obligation Date',
+            type: 'date'
+        },
+        {
+            field: 'contract_ref.contract_piid',
+            headerName: 'Contract PIID',
+            filter: 'agTextColumnFilter'
+        },
+        {
+            field: 'tran_type',
+            headerName: 'Tran Type',
+            filter: 'agTextColumnFilter',
+            sort: 'asc'
+        },
+        {
+            field: 'tran_status',
+            headerName: 'Status',
+            filter: 'agTextColumnFilter',
+            sort: 'asc'
+        },
+        {
+            field: 'fy',
+            headerName: 'FY',
+            filter: 'agSetColumnFilter',
+            filterParams: {
+                values: c.data.fiscalYears
+            },
+            sort: 'desc'
+        },
+        {
+            field: 'transaction_total_amt',
+            headerName: 'Amount',
+            cellStyle: {
+                textAlign: 'right'
+            },
+            type: 'currency',
+            filter: 'agNumberColumnFilter',
+            aggFunc: 'sum',
+            sortable: true
+        },
+        {
+            field: 'tran_date',
+            headerName: 'Transaction Date',
+					  type:'date',
+            sort: 'desc'
+        },
+        {
+            field: 'project_appropriation_ref',
+            headerName: 'Appropriation',
+            filter: 'agTextColumnFilter'
+           
+        },
+        {
+            field: 'description',
+            headerName: 'Description',
+            filter: 'agTextColumnFilter'
+        }
+    ];
+
+    var invoiceColumnDefs = [
+        {
+            field: 'edit',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+            suppressMenu: true,
+            sortable: false,
+            cellRenderer: 'editCell',
+            cellRendererParams: function (params) {
+                return {
+                    "show": c.canEdit(c.userAuth, params)
+                };
+            }
+        },
+        {
+            field: 'obligation',
+            headerName: 'Obligation',
+            filter: 'agTextColumnFilter'
+        },
+        {
+            field: 'invoice_nmbr',
+            headerName: 'Invoice Number',
+            filter: 'agTextColumnFilter'
+        },
+        {
+            field: 'contract_number',
+            headerName: 'Reference Number',
+            filter: 'agTextColumnFilter'
+        },
+        {
+            field: 'estimated_cost',
+            headerName: 'Estimated Cost',
+            cellStyle: {
+                textAlign: 'right'
+            },
+            type: 'currency',
+            filter: 'agNumberColumnFilter',
+            sortable: true
+        },
+        {
+            field: 'invoice_amount',
+            headerName: 'Invoice Amount',
+            cellStyle: {
+                textAlign: 'right'
+            },
+            type: 'currency',
+            filter: 'agNumberColumnFilter',
+            sortable: true
+        },
+        {
+            field: 'paid_amount',
+            headerName: 'Paid Amount',
+            cellStyle: {
+                textAlign: 'right'
+            },
+            type: 'currency',
+            filter: 'agNumberColumnFilter',
+            sortable: true
+        },
+        {
+            field: 'paid_date',
+            headerName: 'Paid Date',
+			type:'date'
+        },			
+        {
+            field: 'post_ref',
+            headerName: 'Post',
+            filter: 'agTextColumnFilter'
+        },
+        {
+            field: 'delete',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+            suppressMenu: true,
+            sortable: false,
+            cellRenderer: 'deleteCell',
+            cellRendererParams: function (params) {
+                return {
+                    "show": c.canDelete(c.userAuth, params.data),
+                    "banner": "Invoice - " + params.data.invoice_nmbr,
+                    "table": c.data.invoiceTableName
+                };
+            }
+        }
+    ];
+
+
+    var fintranProps = {
+        pageController: c,
+        tableName: c.data.tableName,
+        dataArray: null,
+        pageType: 'Financial Transaction',
+        linkedField: '',
+        detailsPage: '',
+        enablePaging: false,
+        filterFunc: function() {
+            c.calculateTotals("trans");
+        }
+    }
+
+    var invoiceProps = {
+        pageController: c,
+        tableName: c.data.invoiceTableName,
+        dataArray: "invoiceData",
+        pageType: 'Invoice',
+        linkedField: '',
+        detailsPage: '',
+        enablePaging: false,
+        filterFunc: function() {
+            c.calculateTotals("invoice");
+        },
+        rowDataUpdatedFunc: function() {
+            c.calculateTotals("invoice");
+        }
+    }
+
+    fintranManager.setColumns(fintranColumnDefs);
+    fintranManager.setPageProperties(fintranProps);
+    fintranManager.setRenderers(); //build renderers 
+    fintranManager.renderGrid('fintranGrid'); //render grid objects
+
+    invoiceManager.setColumns(invoiceColumnDefs);
+    invoiceManager.setPageProperties(invoiceProps);
+    invoiceManager.setRenderers(); //build renderers 
+    invoiceManager.renderGrid('invoiceGrid'); //render grid objects
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.reportSelect {
+    padding: 6px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.half-grid {
+    width: 94vw;
+    height: calc(56vh - 210px);
+    clear: both;
+}
+
+.obligation-input {
+    margin-right: 6px;
+    margin-top: 4px;
+}
+
+.search-button {
+    float: right;
+    margin-right: 12px;
+}
+
+.totalBar {
+    padding: 6px;
+    width: 94vw;
+    margin-left: 15px;
+    background-color: #9cb6bb;
+}
+
+.totalText {
+    float: right;
+    margin-right: 15px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.totalElement {
+    margin-left: 10px;
+}
+
+.totalRemaining {
+    font-size: 15px;
+}
+
+.search-button {
+    float: right;
+    margin-right: 12px;
+}
+
+.gridTitle {
+    font-size: 16px;
+    font-weight: bold;
+    color: #1f8476;
+}
+
+.gridTitleText {
+    margin-top: 20px;
+    float: left;
+}
+
+.newButton {
+    float: right;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>obligation_grid</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Obligation Grid</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+
+	data.selectedOrg = "";
+	data.selectedProj = "";
+    var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+
+    var filter = "obligation=NOTHING";
+    var contractIncludes = [ 'contract_ref.contract_piid' ];
+    var session = gs.getSession();
+
+    if (input) { //input holds the data coming back to the server
+        if (input.mode == "getDetailData") {
+            data[input.detailTable] = FMSUtility.getTableData(input.detailTable, input.parentRef + '=' + input.parentID, true); 
+        }
+			 if (input.mode == "getNewRec") {
+           data.newRec = FMSUtility.getTableData(input.targetTable, "sys_id=" + input.newSysID, true)[0];
+        }
+        if (input.mode == "deleteRow") {
+            FMSUtility.deleteRecord(FMSConstants.TABLE_INVOICE, input.rowID);
+        }
+        if (input.mode == "setOrg") {
+            data.selectedOrg = input.org_id.toString();
+		}
+        if (input.mode == "setProj") {
+            data.selectedProj = input.proj_id.toString();
+        }
+        if (input.mode == "getData" || input.mode == "deleteRow") {
+            var queryObVal = "";
+            if (session.getClientData('obligation_id') && session.getClientData('obligation_id').length > 0 && !(input.tObligation && input.tObligation.length > 0)) {
+                queryObVal = session.getClientData('obligation_id');
+            } else {
+                queryObVal = input.tObligation;
+                session.putClientData('obligation_id', input.tObligation.toString());
+            }
+            filter = "obligation=" + queryObVal;
+        }
+
+	} else if ($sp.getParameter("budget_id") && $sp.getParameter("budget_id").length > 0) {
+		data.selectedBudgetID = $sp.getParameter("budget_id");
+		var bud = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET, "sys_id=" + data.selectedBudgetID, true)[0];
+		if (bud) { data.selectedProj = bud.project_ref_rawval; data.selectedFY = bud.fy; }
+    } else {
+        data.fiscalYears = FMSUtility.getFiscalYears();
+        data.selectedFY = FMSUtility.getCurrentFY();
+    }
+
+    if (filter == "obligation=NOTHING")
+        session.putClientData('obligation_id', "");
+
+	
+	/*if (data.selectedProj.length > 0) filter = "project_ref=" + data.selectedProj;
+    else if (data.selectedOrg.length > 0) filter = "project_ref.organization_ref=" + data.selectedOrg;*/
+
+    //var appropriationTypeInclude = [ 'project_appropriation_ref.appropriation_ref.appropriation_type.appropriation_type_display' ];
+                
+    data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, filter, true, contractIncludes);
+    data.invoiceData = FMSUtility.getTableData(FMSConstants.TABLE_INVOICE, filter, true);
+
+    //get top total
+    data.totals = {};
+    data.totals.trans = 0;
+    data.totals.estimated = 0;
+    data.totals.invoice = 0;
+    data.totals.paid = 0;
+    data.totals.remaining = 0;
+
+    data.tableData.forEach(function (row) {
+        data.totals.trans += row.transaction_total_amt;
+    });
+
+    data.invoiceData.forEach(function (row) {
+        data.totals.estimated += row.estimated_cost;
+        data.totals.invoice += row.invoice_amount;
+        data.totals.paid += row.paid_amount;
+    });
+
+    data.totals.remaining = data.totals.trans - data.totals.paid;
+
+    data.tableName = FMSConstants.TABLE_FINANCIAL_TRANSACTION;
+    data.invoiceTableName = FMSConstants.TABLE_INVOICE;
+
+})();
+
+
+
+]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-07-22 13:33:31</sys_created_on>
+        <sys_id>04c67fd31b0a10100a4a10ad9c4bcb26</sys_id>
+        <sys_mod_count>113</sys_mod_count>
+        <sys_name>Obligation Grid</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_widget_04c67fd31b0a10100a4a10ad9c4bcb26</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-24 13:12:11</sys_updated_on>
+        <template><![CDATA[<div style="width: 100%; height: 100%">
+
+  <div class="container">
+    <div class="row">
+      <div class="form-group col-sm-12 fms-list-header">
+        <div class="fms-header-buttons">
+          <a href="javascript:void(0)" ng-click="c.exportExcel();" class="btn btn-primary excel-button">Export to Excel</a>
+         Obligation: <input type="text" ng-model="c.selectedObligation" class="obligation-input" onfocus="this.value=''" />
+        <a href="javascript:void(0)" ng-click="c.getData();" class="btn btn-info search-button">Search</a>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12 gridTitle">Financial Transactions</div>
+      <div class="col-sm-12">
+
+        <div id="fintranGrid" class="ag-theme-balham half-grid"></div>
+
+      </div>
+      <div class="col-sm-12 totalBar" ng-if="c.tabledata.length > 0">
+
+        <span class="totalText">Total Transaction Amount: {{c.data.totals_display.trans}}</span>
+
+      </div>
+      <div class="col-sm-12 gridTitle"><span class="gridTitleText">Invoices</span>
+        <a href="javascript:void(0)" ng-click="c.addNew();" class="btn btn-primary newButton" ng-if="c.tabledata.length > 0">Add New Invoice</a>  
+      </div>
+      <div class="col-sm-12">
+
+        <div id="invoiceGrid" class="ag-theme-balham half-grid"></div>
+
+      </div>
+      <div class="col-sm-12 totalBar" ng-if="c.tabledata.length > 0">
+
+        <span class="totalText">
+          <span class="totalElement">Total Estimated Cost: {{c.data.totals_display.estimated}}</span>
+          <span class="totalElement">Total Invoice Amount: {{c.data.totals_display.invoice}}</span>
+          <span class="totalElement">Total Paid Amount: {{c.data.totals_display.paid}}</span>
+          <span class="totalElement totalRemaining">Total Remaining: {{c.data.totals_display.remaining}}</span>
+        </span>
+
+      </div>
+    </div>
+  </div>
+
+</div>]]></template>
+    </sp_widget>
+</record_update>

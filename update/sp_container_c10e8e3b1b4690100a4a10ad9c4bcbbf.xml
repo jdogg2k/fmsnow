@@ -6,23 +6,23 @@
         <bootstrap_alt>false</bootstrap_alt>
         <class_name/>
         <container_class_name/>
-        <name>Budget Detail - Container 2</name>
-        <order>2</order>
-        <sp_page display_value="budget_detail">62c511e11b7c94100a4a10ad9c4bcb75</sp_page>
+        <name>Users List - Container 1</name>
+        <order>1</order>
+        <sp_page display_value="users_list">94bd8a3b1b4690100a4a10ad9c4bcba4</sp_page>
         <subheader>false</subheader>
         <sys_class_name>sp_container</sys_class_name>
-        <sys_created_by>MarkelJR@state.gov</sys_created_by>
-        <sys_created_on>2020-05-15 12:02:25</sys_created_on>
-        <sys_id>aac511e11b7c94100a4a10ad9c4bcb7f</sys_id>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2020-07-23 19:12:53</sys_created_on>
+        <sys_id>c10e8e3b1b4690100a4a10ad9c4bcbbf</sys_id>
         <sys_mod_count>2</sys_mod_count>
-        <sys_name>Budget Detail - Container 2</sys_name>
+        <sys_name>Users List - Container 1</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
-        <sys_update_name>sp_container_aac511e11b7c94100a4a10ad9c4bcb7f</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-22 15:47:42</sys_updated_on>
+        <sys_update_name>sp_container_c10e8e3b1b4690100a4a10ad9c4bcbbf</sys_update_name>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-23 19:14:23</sys_updated_on>
         <title/>
-        <width>container-fluid</width>
+        <width>container</width>
     </sp_container>
 </record_update>

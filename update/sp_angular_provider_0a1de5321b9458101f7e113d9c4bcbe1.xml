@@ -522,6 +522,7 @@
 		this.setGridData = function (rowData) {
 			gridOptions.api.setRowData(rowData);
 		};
+		this.gridOpts = gridOptions;
 		this.refreshGrid = function () {
 			gridOptions.api.redrawRows();
 		};
@@ -540,28 +541,40 @@
 				gridOptions.detailRowHeight = pageProps.detailsHeight; //height of detailGrid
 			if (pageProps.groupDefaultExpanded != null)
 				gridOptions.groupDefaultExpanded = pageProps.groupDefaultExpanded; //expand default
+			if (pageProps.enablePaging != null)
+				gridOptions.pagination = pageProps.enablePaging; //set row class definitions
 			if (pageProps.rowClassFunc != null)
 				gridOptions.getRowClass = pageProps.rowClassFunc; //set row class definitions
+			if (pageProps.groupWithTotal != null) {
+				gridOptions.groupIncludeFooter = true;
+				gridOptions.groupHideOpenParents = true;
+			}
 			if (pageProps.showTotals != null) {
 				if (pageProps.showTotals) {
 					gridOptions.groupIncludeFooter = true;
 					gridOptions.groupIncludeTotalFooter = true;
 				}
 			}
+			if (pageProps.filterFunc != null)
+				gridOptions.onFilterChanged = pageProps.filterFunc;
+			if (pageProps.rowDataUpdatedFunc != null)
+				gridOptions.onRowDataChanged = pageProps.rowDataUpdatedFunc;
 		};
 		this.setUpdatedID = function (id) {
 			updatedID = id;
 		};
 
-		this.exportExcel = function (grps) {
-			var params = { columnGroups: grps || false, skipGroups: true };
+		this.exportExcel = function (cols, grps, pivot, cellCB) {
+			var params = { columnGroups: (cols != null && cols === true) ? true : false, skipGroups: (grps != null && grps === false) ? false : true };
+			if (cellCB) params.processCellCallback = pageController[cellCB];
 			var exportColumns = [];
 			var allCols = gridOptions.columnApi.getAllColumns();
 			allCols.forEach(function (col) {
 				if (col.colId != "edit" && col.colId != "delete")
 					exportColumns.push(col.colId);
 			});
-			params.columnKeys = exportColumns;
+			if (!pivot) params.columnKeys = exportColumns;
+			params.fileName = dataTable + "_" + ((new Date()).toJSON()).slice(0,19)  + ".csv";
 			gridOptions.api.exportDataAsCsv(params);
 		};
 
@@ -982,14 +995,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>596</sys_mod_count>
+        <sys_mod_count>622</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-21 16:36:05</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-23 20:43:48</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

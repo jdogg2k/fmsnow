@@ -96,6 +96,7 @@
                 textAlign: 'right'
             },
 			type: 'currency',
+			aggFunc: 'sum',
 			editable: true,
 			cellEditor: 'numericCellEditor',
 			headerComponentParams : {
@@ -113,6 +114,7 @@
                 textAlign: 'right'
             },
 			type: 'currency',
+			aggFunc: 'sum',
 			editable: true,
 			hide: (c.data.budgetData.budget_type != "Actual"),
 			cellEditor: 'numericCellEditor',
@@ -146,6 +148,7 @@
         pageType: 'Budget Item',
         linkedField: '',
         detailsPage: '',
+		showTotals: true
     }
 
     bitemManager.setColumns(bitemColumnDefs);
@@ -225,35 +228,30 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-19 17:42:10</sys_created_on>
         <sys_id>dae98bfe1bb8d8100a4a10ad9c4bcb9f</sys_id>
-        <sys_mod_count>58</sys_mod_count>
+        <sys_mod_count>67</sys_mod_count>
         <sys_name>Budget Item Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_dae98bfe1bb8d8100a4a10ad9c4bcb9f</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-20 15:17:27</sys_updated_on>
+        <sys_updated_on>2020-07-22 18:17:23</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
-
   <div class="container">
     <div class="row">
       <div class="form-group col-sm-12 fms-list-header">
         <div class="fms-header-buttons">
-          <a href="javascript:void(0)" ng-click="c.addNew();" ng-show="c.canAdd()" class="btn btn-info new-button">Add Budget Item</a>
+          <a href="javascript:void(0)" ng-click="c.addNew();" ng-show="c.canAdd()" class="btn btn-info new-button" style="float: left;">Add Budget Item</a>
           <a href="javascript:void(0)" ng-click="c.exportExcel();" class="btn btn-primary excel-button">Export to Excel</a>
         </div>
       </div>
     </div>
-
-    <div class="row">
-      <div class="col-sm-12">
-
-        <div id="bitemGrid" class="ag-theme-balham full-grid"></div>
-
+    <div class="rowFullWidth">
+      <div class="col-md-12">
+		  <div id="bitemGrid" class="ag-theme-balham full-grid"></div>
       </div>
     </div>
   </div>
-
 </div>]]></template>
     </sp_widget>
 </record_update>

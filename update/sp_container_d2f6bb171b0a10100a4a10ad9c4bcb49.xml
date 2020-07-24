@@ -6,23 +6,23 @@
         <bootstrap_alt>false</bootstrap_alt>
         <class_name/>
         <container_class_name/>
-        <name>Budget Detail - Container 2</name>
+        <name>Obligation Reconciliation - Container 2</name>
         <order>2</order>
-        <sp_page display_value="budget_detail">62c511e11b7c94100a4a10ad9c4bcb75</sp_page>
+        <sp_page display_value="obligation_reconciliation">d2f6bb171b0a10100a4a10ad9c4bcb33</sp_page>
         <subheader>false</subheader>
         <sys_class_name>sp_container</sys_class_name>
-        <sys_created_by>MarkelJR@state.gov</sys_created_by>
-        <sys_created_on>2020-05-15 12:02:25</sys_created_on>
-        <sys_id>aac511e11b7c94100a4a10ad9c4bcb7f</sys_id>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-07-22 13:34:29</sys_created_on>
+        <sys_id>d2f6bb171b0a10100a4a10ad9c4bcb49</sys_id>
         <sys_mod_count>2</sys_mod_count>
-        <sys_name>Budget Detail - Container 2</sys_name>
+        <sys_name>Obligation Reconciliation - Container 2</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
-        <sys_update_name>sp_container_aac511e11b7c94100a4a10ad9c4bcb7f</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-22 15:47:42</sys_updated_on>
+        <sys_update_name>sp_container_d2f6bb171b0a10100a4a10ad9c4bcb49</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-22 13:36:10</sys_updated_on>
         <title/>
-        <width>container-fluid</width>
+        <width>container</width>
     </sp_container>
 </record_update>

@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, spModal, $timeout, AGGridFactory) {
+    /* widget controller */
+    var c = this;
+    c.targetOrg = c.data.selectedOrg;
+    c.userAuth = $rootScope.userAuth;
+    c.tierMode = "Hide"; //default to this property to show row colors
+	var contractManager = new AGGridFactory();
+	
+    c.addNew = function() {
+
+        var query = "organization_ref=" + c.targetOrg;
+        var page_id = $scope.page.sys_id;
+        if (page_id == "b36ecf2e1b6094500a4a10ad9c4bcba5") //Project Details page
+            query += "^contract_class=Task Order^project_ref=" + c.data.selectedProj;
+        contractManager.editRow("-1", query, c.data.tableName);
+			    
+    }
+
+    c.canAdd = function () {
+        if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) {
+            if (c.userAuth.orgs.indexOf(c.targetOrg) >= 0)
+                return true;
+            else
+                return false;
+        } else
+            return false;
+    }
+
+   c.canEdit = function (auth, data) {
+        if (!data) return false;
+        if (auth.orgs.indexOf(c.targetOrg) >= 0 && (auth.roles.isOrgAdmin || auth.roles.isAnalyst))
+            return true;
+        else
+            return false;
+    }
+
+    c.canDelete = function(auth, data) {
+        return c.canEdit(auth, data);
+    }
+
+    c.exportExcel = function() {
+        contractManager.exportExcel();
+    }
+
+    c.toggleTiers = function() {
+        if (c.tierMode == "Hide") {
+            c.tierMode = "Show";
+        } else {
+            c.tierMode = "Hide";
+        }
+        contractManager.refreshGrid();
+    }
+
+    $rootScope.$on('OrgDetailsGridChanged', function(event, args) {
+        if (args.grid_type == "contract") {
+            contractManager.fitColumns();
+        }
+    });
+
+    var contractColumnDefs = [{
+            field: 'contract_piid',
+            headerName: 'Contract PIID',
+			      filter: 'agTextColumnFilter',
+            sort: 'asc',
+            minWidth: 175,
+            cellRenderer: 'agGroupCellRenderer'
+        },
+        {
+            field: 'edit',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+            suppressMenu: true,
+            sortable: false,
+            cellRenderer: 'editCell',
+            cellRendererParams: function(params) {
+                return {
+                    "show": c.canEdit(c.userAuth, params)
+                };
+            }
+        },
+        {
+            field: 'contract_class',
+            headerName: 'Classification',
+            filter: 'agTextColumnFilter',
+            suppressMenu: true,
+            sort: 'asc'
+        },
+        {
+            field: 'operational_status',
+            headerName: 'Status',
+             filter: 'agSetColumnFilter',
+            filterParams: {
+                values: [ 'Active', 'Expired', 'Pending' ]
+            },
+            suppressMenu: true
+        },
+        {
+            field: 'award_level',
+            headerName: 'Award Level',
+					   filter: 'agSetColumnFilter',
+            filterParams: {
+                values: [ 'Single', 'Multiple' ]
+            }
+        },
+        {
+            field: 'vendor_names',
+            headerName: 'Vendor Name(s)',
+            filter: 'agTextColumnFilter',
+            suppressMenu: true
+        },
+        {
+            field: 'contract_category',
+            headerName: 'Category',
+					   filter: 'agSetColumnFilter',
+            filterParams: {
+                values: [ 'Indefinite Delivery Vehicle', 'Standalone Contract' ]
+            }
+        },
+        {
+            field: 'contract_type',
+            headerName: 'Contract Type',
+					filter: 'agTextColumnFilter'
+        },
+        {
+            field: 'product_service',
+            headerName: 'Product / Service',
+					  filter: 'agTextColumnFilter'
+        },
+        {
+            field: 'aqm_delay_days',
+            headerName: 'AQM Delay',
+					 filter: 'agNumberColumnFilter'
+        },
+        {
+            field: 'pricing_model',
+            headerName: 'Pricing Model',
+					  filter: 'agNumberColumnFilter'
+        },
+        {
+            field: 'contract_period',
+            headerName: 'Period',
+					   filter: 'agSetColumnFilter',
+            filterParams: {
+                values: [ 'Annual', 'Base + OY', 'Semi-Annual' ]
+						}
+        },
+        {
+            field: 'option_years',
+            headerName: 'OY',
+					  filter: 'agNumberColumnFilter'
+        },
+        {
+            field: 'has_risk',
+            headerName: 'Risk?',
+					  filter: 'agSetColumnFilter',
+            filterParams: {
+                values: [ true, false ]
+            },
+            cellStyle: {textTransform: 'capitalize'}
+        },
+        {
+            field: 'priority_tier',
+            headerName: 'Tier',
+            hide: true
+        },
+        {
+            field: 'perform_start_date',
+            headerName: 'Start Date',
+					  type:'date'
+        },
+        {
+            field: 'perform_end_date',
+            headerName: 'End Date',
+					 type:'date'
+        },
+        {
+            field: 'base_value',
+            headerName: 'Base Value',
+					  filter: 'agNumberColumnFilter',
+            type: 'currency'
+        },
+        {
+            field: 'total_value',
+            headerName: 'Total Value',
+					  filter: 'agNumberColumnFilter',
+            type: 'currency'
+        },
+        {
+            field: 'delete',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+            suppressMenu: true,
+            sortable: false,
+            cellRenderer: 'deleteCell',
+            cellRendererParams: function(params) {
+                return {
+										"Data" : params.data,
+                    "show": c.canDelete(c.userAuth, params.data),
+                    "banner": !params.node.group ? ("Contract - " + params.data.contract_display) : null
+                };
+            }
+        }
+    ];
+
+	
+	
+	  var contractRelationshipDefs = [{
+			
+            field: 'edit_item',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+            suppressMenu: true,
+            sortable: false,
+            cellRenderer: 'editCell',
+            cellRendererParams: function(params) {
+                if (params.data) {
+                    return {
+
+                        "show": c.canEdit(c.userAuth, params.data),
+                        "table": c.data.relationshipTableName,
+                        "parent": params.data.contract_ref_rawval,
+                        "banner": "Contract Relationship"
+                    };
+                }
+            }
+        },
+																
+        {
+					
+            field: 'relationship_type',
+            headerName: 'Relationship Type'
+        },
+        {
+            field: 'contract_rel_ref',
+            headerName: 'Related Contract PIID'
+        },
+        {
+            field: 'relationship_date',
+            headerName: 'Relationship Date'
+        },
+        {
+            field: 'contract_rel_ref.operational_status',
+            headerName: 'Operational Status'
+        },
+        {
+            field: 'contract_rel_ref.contract_class', 
+            headerName: 'Classification'
+        },
+        {
+            field: 'delete_item',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+            suppressMenu: true,
+            sortable: false,
+            cellRenderer: 'deleteCell',
+            cellRendererParams: function (params) {
+                if (params.data) {
+                return {
+                    "show": c.canEdit(c.userAuth, params.data),
+                    "table": c.data.relationshipTableName,
+                    "parent": params.data.contract_ref_rawval,
+                    "banner": "Contract Relationship - " + params.data.contract_contract_display
+                };
+            }
+            }
+        }
+    ];
+  
+    var contractPartyDefs = [{
+            field: 'edit_item',
+            headerName: 'Edit',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+            suppressMenu: true,
+            sortable: false,
+            cellRenderer: 'editCell',
+            cellRendererParams: function(params) {
+                if (params.data) {
+                return {
+                    "show": c.canEdit(c.userAuth, params.data),
+                    "table": c.data.partyTableName,
+                    "parent": params.data.contract_ref_rawval,
+                    "banner": "Contract Party"
+                };
+            }
+            }
+        },
+        {
+            field: 'party_type',
+            headerName: 'Party Type'
+        },
+        {
+            field: 'party_name',
+            headerName: 'Party / Agent / Group Name'
+        },
+        {
+            field: 'party_email',
+            headerName: 'Email Address'
+        },
+        {
+            field: 'party_notify',
+            headerName: 'Notify',
+            maxWidth: 80,
+            cellStyle: {
+                textAlign: 'center'
+            },
+            cellRenderer: 'checkbox'
+        },
+        {
+            field: 'delete_item',
+            headerName: 'Del.',
+            maxWidth: 50,
+            cellStyle: {
+                textAlign: 'center'
+            },
+            cellRenderer: 'deleteCell',
+            cellRendererParams: function (params) {
+                if (params.data) {
+                return {
+                    "show": c.canEdit(c.userAuth, params.data),
+                    "table": c.data.partyTableName,
+                    "parent": params.data.contract_ref_rawval,
+                    "banner": "Contract Party - " + params.data.contract_party_display
+                };
+            }
+            }
+        }
+    ];
+
+    var contractProps = {
+        pageController: c,
+        tableName: c.data.tableName,
+        dataArray: null,
+        pageType: 'Contract',
+        linkedField: '',
+        detailsPage: '',
+        detailsHeight: 375,
+        detailsHTML: '<div class="full-width-details">' +
+        '    <div class="full-width-detail"><b>Purpose: </b>[purpose]</div>' +
+        '    <div class="full-width-detail"><b>Status: </b>[status_detail]</div>' +
+        '  </div>',
+        childTables: [{
+            banner: 'Contract Party',
+            name: c.data.partyTableName,
+            columnDefs: contractPartyDefs,
+            parentRef: 'contract_ref'
+        },
+        {
+            banner: 'Contract Relationship',
+            name: c.data.relationshipTableName,
+            columnDefs: contractRelationshipDefs,
+            parentRef: 'contract_ref'
+        }],
+        rowClassFunc: function(params) {
+            if (params.data) {
+                if (params.data.sys_id) {
+                    if (params.data.sys_id == contractManager.updatedID)
+                        return 'updated-row';
+                }
+                if (params.data && c.tierMode == "Hide") {
+                    if (params.data.operational_status) {
+                        if (params.data.operational_status == "Expired")
+                            return 'expired-row';
+                    }
+                }
+                if (params.data && c.tierMode == "Hide") {
+                    if (params.data.priority_tier) {
+                        if (params.data.priority_tier == "4")
+                            return 'tier-3-row';
+                    }
+                }
+                if (params.data && c.tierMode == "Hide") {
+                    if (params.data.priority_tier) {
+                        if (params.data.priority_tier == "3")
+                            return 'tier-2-row';
+                    }
+                }
+                if (params.data && c.tierMode == "Hide") {
+                    if (params.data.priority_tier) {
+                        if (params.data.priority_tier == "2")
+                            return 'tier-1-row';
+                    }
+                }
+            }
+        }
+    }
+
+    contractManager.setColumns(contractColumnDefs);
+    contractManager.setPageProperties(contractProps);
+    contractManager.setRenderers('contract_display'); //build renderers and set display field to show on delete attempt and set details columns
+    contractManager.renderGrid('userGrid'); //render grid objects
+    contractManager.setGridData(c.data.tableData); //set grid data
+	
+    contractManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst));
+	$timeout(function () { contractManager.fitColumns(); }, 250);
+
+    $rootScope.$on('OrgChanged', function(event, args) {
+        c.targetOrg = args.org_id;
+        c.server.get({
+            mode: "setOrg",
+            org_id: args.org_id
+        }).then(function(resp) {
+            contractManager.setGridData(resp.data.tableData); //set grid data
+        });
+    });
+
+	$rootScope.$on('ProjChanged', function(event, args) {
+        c.targetProj = args.proj_id;
+        c.server.get({
+           mode: "setProj",
+           proj_id: args.proj_id
+        }).then(function(resp) {
+            contractManager.setGridData(resp.data.tableData); //set grid data
+        });
+    });
+	
+	
+	
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id>users_grid</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Users Grid</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+
+	data.selectedOrg = "";
+	data.selectedProj = "";
+    var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+	var FMSPermissions = new x_g_irm_fms.FMSPermissions();
+
+    var session = gs.getSession();
+	if (session.getClientData('org_id') && session.getClientData('org_id').length > 0)
+		data.selectedOrg = session.getClientData('org_id');
+	if (session.getClientData('proj_id') && session.getClientData('proj_id').length > 0)
+		data.selectedProj = session.getClientData('proj_id');
+   var contractWalkFields = [ 'contract_rel_ref.operational_status', 'contract_rel_ref.contract_class' ];
+	//var contractWalkFields = ['contract_rel_ref.operational_status'];
+	
+    if (input) { //input holds the data coming back to the server
+		    if (input.mode == "getDetailData") {
+					if(input.detailTable=='x_g_irm_fms_contract_contract')
+						{
+					  data[input.detailTable] = FMSUtility.getTableData(input.detailTable, input.parentRef + '=' + input.parentID, true, contractWalkFields);
+						//	var a = JSON.stringify(data[input.detailTable]);
+								//gs.addInfoMessage(a);
+						}
+					
+					else
+            data[input.detailTable] = FMSUtility.getTableData(input.detailTable, input.parentRef + '=' + input.parentID, true);
+        }
+        if (input.mode == "getNewRec") {
+           data.newRec = FMSUtility.getTableData(input.targetTable, "sys_id=" + input.newSysID, true)[0];
+        }
+        if (input.mode == "deleteRow"){
+			if (FMSPermissions.canDeleteContract(input.rowID)) {
+				FMSUtility.deleteRecord(input.delTable, input.rowID);
+			} else {
+				data.isError = true;
+				data.errorMsg = "This Contract cannot be deleted as it is linked to existing transactions";
+			}
+		}
+        if (input.mode == "setOrg") {
+            data.selectedOrg = input.org_id.toString();
+        }
+        if (input.mode == "setProj") {
+            data.selectedProj = input.proj_id.toString();
+        }
+    }
+
+	var filter = "";
+	if (data.selectedOrg.length > 0) filter = "organization_ref=" + data.selectedOrg;
+	if (data.selectedProj.length > 0) filter += "^project_ref=" + data.selectedProj;
+	  
+    data.tableData = FMSUtility.getAllContractData(FMSConstants.TABLE_CONTRACT, filter, true);//get all contract item info
+	  //data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_CONTRACT_CONTRACT, filter, true, ContractOperational)
+    data.tableName = FMSConstants.TABLE_CONTRACT;
+    data.partyTableName = FMSConstants.TABLE_CONTRACT_PARTY;
+    data.relationshipTableName = FMSConstants.TABLE_CONTRACT_CONTRACT;
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2020-07-23 18:35:09</sys_created_on>
+        <sys_id>4b150e7f1b0690100a4a10ad9c4bcbce</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>Users Grid</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_widget_4b150e7f1b0690100a4a10ad9c4bcbce</sys_update_name>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-23 19:40:00</sys_updated_on>
+        <template><![CDATA[<div style="width: 100%; height: 100%">
+
+  <div class="container">
+    <div class="row">
+      <div class="form-group col-sm-12 fms-list-header">
+        <div class="fms-header-buttons">
+          <a href="javascript:void(0)" ng-click="c.exportExcel();" class="btn btn-primary excel-button new-button">Export to Excel</a>
+          <a href="javascript:void(0)" ng-click="c.addNew();" ng-show="c.canAdd()" class="btn btn-info new-button">Add User</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+
+        <div id="userGrid" class="ag-theme-balham full-grid"></div>
+
+      </div>
+    </div>
+  </div>
+
+</div>]]></template>
+    </sp_widget>
+</record_update>

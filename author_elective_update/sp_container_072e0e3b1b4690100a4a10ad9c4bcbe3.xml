@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container">
+    <sp_container action="DELETE">
+        <background_color/>
+        <background_image/>
+        <background_style>default</background_style>
+        <bootstrap_alt>false</bootstrap_alt>
+        <class_name/>
+        <container_class_name/>
+        <name>Users List - Container 1</name>
+        <order>1</order>
+        <sp_page display_value="users_list">94bd8a3b1b4690100a4a10ad9c4bcba4</sp_page>
+        <subheader>false</subheader>
+        <sys_class_name>sp_container</sys_class_name>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2020-07-23 19:13:34</sys_created_on>
+        <sys_id>072e0e3b1b4690100a4a10ad9c4bcbe3</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Users List - Container 1</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_container_072e0e3b1b4690100a4a10ad9c4bcbe3</sys_update_name>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-23 19:13:34</sys_updated_on>
+        <title/>
+        <width>container</width>
+    </sp_container>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sp_container_072e0e3b1b4690100a4a10ad9c4bcbe3</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container"><sp_container action="INSERT_OR_UPDATE"><background_color/><background_image/><background_style>default</background_style><bootstrap_alt>false</bootstrap_alt><class_name/><container_class_name/><name>Users List - Container 1</name><order>1</order><sp_page display_value="users_list">94bd8a3b1b4690100a4a10ad9c4bcba4</sp_page><subheader>false</subheader><sys_class_name>sp_container</sys_class_name><sys_created_by>PuriA@state.gov</sys_created_by><sys_created_on>2020-07-23 19:13:34</sys_created_on><sys_id>072e0e3b1b4690100a4a10ad9c4bcbe3</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Users List - Container 1</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sp_container_072e0e3b1b4690100a4a10ad9c4bcbe3</sys_update_name><sys_updated_by>PuriA@state.gov</sys_updated_by><sys_updated_on>2020-07-23 19:13:34</sys_updated_on><title/><width>container</width></sp_container></record_update>]]></payload>
+        <payload_hash>-1918952739</payload_hash>
+        <record_name>Users List - Container 1</record_name>
+        <reverted_from/>
+        <source>756450ef1b8a10100a4a10ad9c4bcba8</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2020-07-23 19:13:34</sys_created_on>
+        <sys_id>8f2e0e3b1b4690100a4a10ad9c4bcbe4</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1737d18598d0000001</sys_recorded_at>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-23 19:13:34</sys_updated_on>
+        <type>Container</type>
+        <update_guid>872e0e3bb2469010025ad2e0bbfde2e4</update_guid>
+        <update_guid_history>872e0e3bb2469010025ad2e0bbfde2e4:-1918952739</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="Users List - Container 1">f65e0a3b1b4690100a4a10ad9c4bcb6e</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2020-07-23 19:14:22</sys_created_on>
+        <sys_db_object display_value="" name="sp_container">sp_container</sys_db_object>
+        <sys_id>4d93149af50a4b70adb542c0332b0790</sys_id>
+        <sys_metadata>072e0e3b1b4690100a4a10ad9c4bcbe3</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Users List - Container 1</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sp_container_072e0e3b1b4690100a4a10ad9c4bcbe3</sys_update_name>
+        <sys_update_version display_value="sp_container_072e0e3b1b4690100a4a10ad9c4bcbe3">8f2e0e3b1b4690100a4a10ad9c4bcbe4</sys_update_version>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-23 19:14:22</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

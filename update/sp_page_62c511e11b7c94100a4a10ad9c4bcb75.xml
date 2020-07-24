@@ -2,15 +2,8 @@
     <sp_page action="INSERT_OR_UPDATE">
         <category>custom</category>
         <css>.container{&#13;
- 	margin: auto;&#13;
+ 	margin: 5px !important;&#13;
   	width: 98%;&#13;
-}&#13;
-.full-grid {&#13;
-    width: 92vw !important;&#13;
-    height: calc(100vh - 302px) !important;&#13;
-    clear: both !important;&#13;
-    margin-left: -33px;&#13;
-    margin-top: -2px;&#13;
 }&#13;
 &#13;
 .container-fluid {&#13;
@@ -23,6 +16,10 @@
 .col-md-12 {&#13;
   width: 100%;&#13;
   padding-left: 0px;&#13;
+}&#13;
+&#13;
+section.page {&#13;
+	overflow-x: hidden !important;&#13;
 }</css>
         <draft>false</draft>
         <dynamic_title_structure/>
@@ -35,14 +32,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-15 12:02:24</sys_created_on>
         <sys_id>62c511e11b7c94100a4a10ad9c4bcb75</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>budget_detail</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_page_62c511e11b7c94100a4a10ad9c4bcb75</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-20 14:06:55</sys_updated_on>
+        <sys_updated_on>2020-07-22 15:43:34</sys_updated_on>
         <title>Budget Detail</title>
     </sp_page>
     <sys_translated_text action="delete_multiple" query="documentkey=62c511e11b7c94100a4a10ad9c4bcb75"/>
