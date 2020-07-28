@@ -75,7 +75,7 @@ c.onPageSizeChanged = function(value) {
         {
             field: 'budget_code_ref',
             headerName: 'Budget Code',
-            filter: 'agTextColumnFilter',
+            filter: 'agSetColumnFilter',
             sort: 'asc',
             suppressMenu: true
         },
@@ -90,7 +90,9 @@ c.onPageSizeChanged = function(value) {
         {
             field: 'parent_expense_item_ref',
             headerName: 'Parent Item',
-					  filter: 'agTextColumnFilter'
+					  filter: 'agSetColumnFilter',
+            sort: 'asc',
+            suppressMenu: true
         },
         {
             field: 'disabled',
@@ -207,14 +209,14 @@ c.onPageSizeChanged = function(value) {
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-23 14:50:54</sys_created_on>
         <sys_id>4c69ac6a1b1018100a4a10ad9c4bcbca</sys_id>
-        <sys_mod_count>331</sys_mod_count>
+        <sys_mod_count>337</sys_mod_count>
         <sys_name>Expense Item Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_4c69ac6a1b1018100a4a10ad9c4bcbca</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-15 19:43:12</sys_updated_on>
+        <sys_updated_on>2020-07-28 18:09:10</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
@@ -233,7 +235,6 @@ c.onPageSizeChanged = function(value) {
       <option value="50" >50 rows per page</option>
     </select>
   </div>
-  <div id="myGrid" class="ag-theme-balham"></div>
 </div>            
             </div>
         </div>

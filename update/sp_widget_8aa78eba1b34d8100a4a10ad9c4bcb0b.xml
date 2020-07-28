@@ -245,7 +245,7 @@
 		}
 		else {
 			colDef.maxWidth = 120;
-			colDef.headerName = colDef.pivotKeys[0] + " Phased";
+			colDef.headerName = colDef.pivotKeys[0];
 		}
     }
 	
@@ -377,14 +377,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-19 12:52:41</sys_created_on>
         <sys_id>8aa78eba1b34d8100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>423</sys_mod_count>
+        <sys_mod_count>456</sys_mod_count>
         <sys_name>Budget Item Phase Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_8aa78eba1b34d8100a4a10ad9c4bcb0b</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-24 13:09:06</sys_updated_on>
+        <sys_updated_on>2020-07-28 14:43:12</sys_updated_on>
         <template><![CDATA[  <div class="container">
     <div class="row">
       <div class="form-group col-sm-12 fms-list-header">
@@ -411,7 +411,7 @@
     </div>
     <div class="modal-body">
     	<div class="panel-heading">
-	      	<h3>Phasing for: {{c.data.itemDisplay}}</h3>
+	      	<h3>{{c.data.itemDisplay}}</h3>
         </div>
         <div ng-repeat="qtr in [1, 2, 3, 4]">
           <div class="row">
@@ -426,7 +426,7 @@
             </div>
             <div>
             	<div class="d-inline col-sm-1 text-right">Q{{qtr}} Total</div>
-                <div class="d-inline col-sm-2 text-right">
+                <div class="d-inline col-sm-2 text-right" style="font-size: 14pt;">
                 	{{c.fmtCurrency(c.calcQtrTotal(qtr))}}
   				</div>
             </div>
@@ -434,18 +434,18 @@
         </div>
         <div class="row" style="padding-top: 20px;">
             <div class="field-label">
-            	<div class="d-inline col-sm-1 text-right">Budget Amount</div>
+            	<div class="d-inline col-sm-1 text-right">Budgeted</div>
                 <div class="d-inline col-sm-2 text-right" style="font-size: 16pt;">
                 	{{c.fmtCurrency(c.data.itemAmt)}}
   				</div>
 	           	<div class="d-inline col-sm-1 text-right"> > > ></div>
-                <div class="col-sm-3" style="border-color: red; border-width: 1px; border-style: dotted;">
+                <div class="col-sm-4" style="border-color: red; border-width: 1px; border-style: dotted;">
 		           	<div class="d-inline col-sm-1 text-right">Remaining</div>
-        	        <div class="d-inline text-right" style="font-size: 16pt;" [style.background-color]="{palegreen: c.data.itemAmt - c.calcQtrTotal(0) == 0}">
+        	        <div class="d-inline text-right" style="font-size: 16pt;" ng-style="{'background-color': c.data.itemAmt - c.calcQtrTotal(0) == 0 ? 'palegreen' : 'transparent'}">
             	    	{{c.fmtCurrency((c.data.itemAmt - c.calcQtrTotal(0)))}}
   					</div>
                 </div>
-	           	<div class="d-inline col-sm-2 text-right">< < < < < < <</div>
+	           	<div class="d-inline col-sm-1 text-right">< < < <</div>
             	<div class="d-inline col-sm-1 text-right">FY Total</div>
                 <div class="d-inline col-sm-2 text-right" style="font-size: 16pt;">
                 	{{c.fmtCurrency(c.calcQtrTotal(0))}}

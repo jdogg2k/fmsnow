@@ -87,26 +87,24 @@
         {
             field: 'contract_class',
             headerName: 'Classification',
-            filter: 'agTextColumnFilter',
-            suppressMenu: true,
-            sort: 'asc'
+            filter: 'agSetColumnFilter',
+            sort: 'asc',
+            suppressMenu: true
         },
         {
             field: 'operational_status',
             headerName: 'Status',
              filter: 'agSetColumnFilter',
-            filterParams: {
-                values: [ 'Active', 'Expired', 'Pending' ]
-            },
+            sort: 'asc',
             suppressMenu: true
+            
         },
         {
             field: 'award_level',
             headerName: 'Award Level',
-					   filter: 'agSetColumnFilter',
-            filterParams: {
-                values: [ 'Single', 'Multiple' ]
-            }
+					  filter: 'agSetColumnFilter',
+            sort: 'asc',
+            suppressMenu: true
         },
         {
             field: 'vendor_names',
@@ -117,20 +115,20 @@
         {
             field: 'contract_category',
             headerName: 'Category',
-					   filter: 'agSetColumnFilter',
-            filterParams: {
-                values: [ 'Indefinite Delivery Vehicle', 'Standalone Contract' ]
-            }
+					  filter: 'agSetColumnFilter',
+            suppressMenu: true
         },
         {
             field: 'contract_type',
             headerName: 'Contract Type',
-					filter: 'agTextColumnFilter'
+					  filter: 'agSetColumnFilter',
+            suppressMenu: true
         },
         {
             field: 'product_service',
             headerName: 'Product / Service',
-					  filter: 'agTextColumnFilter'
+					  filter: 'agSetColumnFilter',
+            suppressMenu: true
         },
         {
             field: 'aqm_delay_days',
@@ -146,9 +144,7 @@
             field: 'contract_period',
             headerName: 'Period',
 					   filter: 'agSetColumnFilter',
-            filterParams: {
-                values: [ 'Annual', 'Base + OY', 'Semi-Annual' ]
-						}
+            suppressMenu: true
         },
         {
             field: 'option_years',
@@ -514,14 +510,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-05 17:24:17</sys_created_on>
         <sys_id>338fbad21be054500a4a10ad9c4bcb43</sys_id>
-        <sys_mod_count>203</sys_mod_count>
+        <sys_mod_count>211</sys_mod_count>
         <sys_name>Contract Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_338fbad21be054500a4a10ad9c4bcb43</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-20 18:05:46</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-28 18:17:44</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

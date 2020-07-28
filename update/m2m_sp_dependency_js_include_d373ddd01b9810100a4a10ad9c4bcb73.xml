@@ -2,7 +2,7 @@
     <m2m_sp_dependency_js_include action="INSERT_OR_UPDATE">
         <order>100</order>
         <sp_dependency display_value="ag-grid">b352dd901b9810100a4a10ad9c4bcb1b</sp_dependency>
-        <sp_js_include display_value="https://unpkg.com/@ag-grid-enterprise/all-modules@22.0.0/dist/ag-grid-enterprise.min.js">0c1359d01b9810100a4a10ad9c4bcb93</sp_js_include>
+        <sp_js_include display_value="https://unpkg.com/@ag-grid-enterprise/all-modules@23.2.0/dist/ag-grid-enterprise.min.js">0c1359d01b9810100a4a10ad9c4bcb93</sp_js_include>
         <sys_class_name>m2m_sp_dependency_js_include</sys_class_name>
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-16 18:08:34</sys_created_on>

@@ -247,6 +247,7 @@
 				sortable: true,
 				resizable: true,
 				filter: false,
+				floatingFilter: true,
 				flex: 1,
 				minWidth: 100,
 				filterParams: {
@@ -258,7 +259,7 @@
 			groupSuppressAutoColumn: true,
 			groupDefaultExpanded: 0,
 			rowSelection: 'single',
-			floatingFilter: true,
+			//floatingFilter: true,
 			pagination: true,
 			paginateChildRows: true,
 			//paginationPageSize:num,
@@ -574,8 +575,8 @@
 					exportColumns.push(col.colId);
 			});
 			if (!pivot) params.columnKeys = exportColumns;
-			params.fileName = dataTable + "_" + ((new Date()).toJSON()).slice(0,19)  + ".csv";
-			gridOptions.api.exportDataAsCsv(params);
+			params.fileName = dataTable + "_" + ((new Date()).toJSON()).slice(0,19)  + ".xlsx";
+			gridOptions.api.exportDataAsExcel(params);
 		};
 
 		function replaceVariables(data, html) {
@@ -995,14 +996,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>622</sys_mod_count>
+        <sys_mod_count>626</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-23 20:43:48</sys_updated_on>
+        <sys_updated_on>2020-07-24 16:18:34</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>
