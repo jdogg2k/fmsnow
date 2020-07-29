@@ -212,6 +212,22 @@
 		}
 	}
 
+	function phasingCurrencyFormatter(params) {
+		if (params.value != 0 && (params.value === null || params.value === undefined || params.value == "")) {
+			return null;
+		} else if (isNaN(params.value)) {
+			return '$' + parseFloat(0).toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+		} else {
+			if (parseFloat(params.value) > 0) {
+				return '$' + parseFloat(params.value).toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+			} else if (parseFloat(params.value) == 0) {
+				return '-';
+			} else {
+				return currencyNegative(params.value);
+			}
+		}
+	}
+
 	function currencyNegative(tVal) {
 		return '$(' + parseFloat(tVal).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,").replace("-", "") + ")";
 	}
@@ -428,68 +444,75 @@
 
 		if (c.data.reportType == "phasing") {
 			colArray.push({
+                headerName: 'Budget',
+                field: 'budget',
+				filter: true,
+				hide: true,
+				enableRowGroup: true
+			});
+			colArray.push({
                 headerName: '',
 				field: 'm1',
 				width: 50,
-                enableValue: true
+				lockVisible: true
 			});
 			colArray.push({
                 headerName: 'Q1',
                 field: 'q1',
 				filter: 'agNumberColumnFilter',
-				type: 'currency',
+				type: 'phasingCurrency',
 				width: 130,
-                enableValue: true
+                lockVisible: true
 			});
 			colArray.push({
                 headerName: '',
 				field: 'm2',
 				width: 50,
-                enableValue: true
+				lockVisible: true
 			});
 			colArray.push({
                 headerName: 'Q2',
                 field: 'q2',
 				filter: 'agNumberColumnFilter',
-                type: 'currency',
+                type: 'phasingCurrency',
 				width: 130,
-                enableValue: true
+                lockVisible: true
 			});
 			colArray.push({
                 headerName: '',
 				field: 'm3',
 				width: 50,
-                enableValue: true
+				lockVisible: true
 			});
 			colArray.push({
                 headerName: 'Q3',
                 field: 'q3',
 				filter: 'agNumberColumnFilter',
-                type: 'currency',
+                type: 'phasingCurrency',
 				width: 130,
-                enableValue: true
+                lockVisible: true
 			});
 			colArray.push({
                 headerName: '',
 				field: 'm4',
 				width: 55,
-                enableValue: true
+				lockVisible: true
 			});
 			colArray.push({
                 headerName: 'Q4',
                 field: 'q4',
 				filter: 'agNumberColumnFilter',
-                type: 'currency',
+                type: 'phasingCurrency',
 				width: 130,
-                enableValue: true
+                lockVisible: true
 			});
 			colArray.push({
 				headerName: 'Total',
 				field: 'total',
 				filter: 'agNumberColumnFilter',
-                type: 'currency',
+                type: 'phasingCurrency',
 				width: 130,
-				enableValue: true,
+				lockVisible: true,
 				valueGetter: function(params) {
 					if (params.data) {
 						if (params.data.m1 == "Q1:")
@@ -939,6 +962,30 @@
 					valueFormatter: currencyFormatter,
 					cellStyle: currencyCssFunc,
 					cellRenderer: 'agAnimateShowChangeCellRenderer'
+				},
+				'phasingCurrency': {
+					valueFormatter: phasingCurrencyFormatter,
+					cellStyle: currencyCssFunc,
+					cellRenderer: 'agAnimateShowChangeCellRenderer'
+				}
+			},
+			rowClassRules: {
+				// apply green to 2008
+				'phaseTotals': function(params) { 
+					var isTotal = false;
+					if (c.data.reportType == "phasing" && params.data)
+						if ((params.data.activity_code.indexOf("Total") > -1 || params.data.budget_code.indexOf("Total") > -1) && params.data.m1 == "Q1:")
+							isTotal = true;
+
+					return isTotal;
+				},
+				'phaseTotalRow': function(params) { 
+					var isTotalRow = false;
+					if (c.data.reportType == "phasing" && params.data)
+						if (params.data.activity_code.indexOf("Total") > -1 || params.data.budget_code.indexOf("Total") > -1)
+							isTotalRow = true;
+
+					return isTotalRow;
 				}
 			}
 		};
@@ -955,7 +1002,7 @@
 		c.selectedFY = getCurrentFinancialYear("year");
 
 		c.exportToCsv = function () {
-			gridOptions.api.exportDataAsCsv({
+			gridOptions.api.exportDataAsExcel({
 				columnGroups: true,
 				//customFooter: getGridTotals() NOTE WILL WORK WITH NEW AG GRID LICENSE
 			});
@@ -1078,6 +1125,10 @@
     background-color: #FFFFCC;
 }
 
+.phaseTotalRow {
+    background-color: #eaf3d2;
+}
+
 .ag-header-cell-label .ag-header-icon.ag-sort-order {
     display: none
 }
@@ -1178,6 +1229,10 @@
     width: 140px !important;
     margin-left: 5px;
   }
+
+  .phaseTotals {
+      font-weight: bold;
+  }
 </css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -1229,6 +1284,7 @@
 
 	function getPhasingValues(tItem) {
 		var newObj = {};
+		newObj.budget = tItem.budget;
 		newObj.org_ref = tItem.org_ref;
 		newObj.org_name = tItem.org_name;
 		newObj.project = tItem.project;
@@ -1851,8 +1907,8 @@
 						invoiceObj.paid_date = invoiceQ.paid_date.toString();
 						invoiceObj.estimated_cost = parseFloat(invoiceQ.estimated_cost.toString());
 						invoiceObj.invoice_number = invoiceQ.invoice_nmbr.toString();
-						invoiceObj.contract_piid = invoiceQ.contract_number.toString();
-						invoiceObj.reference_number = "";
+						invoiceObj.contract_piid = "";
+						invoiceObj.reference_number = invoiceQ.contract_number.toString();
 						invoiceObj.notes = invoiceQ.notes.toString();
 						data.reportData.push(invoiceObj);
 
@@ -2033,6 +2089,7 @@
 					if (existingPhasing.length > 0) {
 						phasingItem = existingPhasing[0];
 					} else {
+						phasingItem.budget = phasingQuery.budget_item_ref.budget_ref.getDisplayValue();
 						phasingItem.org_ref = phasingQuery.budget_item_ref.budget_ref.project_ref.organization_ref.toString();
 						phasingItem.org_name = phasingQuery.budget_item_ref.budget_ref.project_ref.organization_ref.getDisplayValue();
 						phasingItem.project = phasingQuery.budget_item_ref.budget_ref.project_ref.getDisplayValue();
@@ -2087,6 +2144,141 @@
 				phaseBudgetTotals.m11 = 0;
 				phaseBudgetTotals.m12 = 0;
 
+				var phaseBudgetGrandTotals = {};
+				phaseBudgetGrandTotals.q1 = 0;
+				phaseBudgetGrandTotals.q2 = 0;
+				phaseBudgetGrandTotals.q3 = 0;
+				phaseBudgetGrandTotals.q4 = 0;
+				phaseBudgetGrandTotals.m1 = 0;
+				phaseBudgetGrandTotals.m2 = 0;
+				phaseBudgetGrandTotals.m3 = 0;
+				phaseBudgetGrandTotals.m4 = 0;
+				phaseBudgetGrandTotals.m5 = 0;
+				phaseBudgetGrandTotals.m6 = 0;
+				phaseBudgetGrandTotals.m7 = 0;
+				phaseBudgetGrandTotals.m8 = 0;
+				phaseBudgetGrandTotals.m9 = 0;
+				phaseBudgetGrandTotals.m10 = 0;
+				phaseBudgetGrandTotals.m11 = 0;
+				phaseBudgetGrandTotals.m12 = 0;
+
+				function totalPhasing(totals, mode) {
+					var phasingRowTotal1 = {};
+					phasingRowTotal1 = getPhasingValues(oldBudgetItem);
+					phasingRowTotal1.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
+					if (mode == "grand"){
+						phasingRowTotal1.budget_code = oldBudgetItem.org_name + " Totals:";
+						phasingRowTotal1.activity_code = "";
+					}
+					phasingRowTotal1.m1 = "Oct:";
+					phasingRowTotal1.q1 = totals.m1;
+					phasingRowTotal1.m2 = "Jan:";
+					phasingRowTotal1.q2 = totals.m4;
+					phasingRowTotal1.m3 = "Apr:";
+					phasingRowTotal1.q3 = totals.m7;
+					phasingRowTotal1.m4 = "Jul:";
+					phasingRowTotal1.q4 = totals.m10;
+					phasingRowTotal1.total = 0;
+					data.reportData.push(phasingRowTotal1);
+
+					var phasingRowTotal2 = {};
+					phasingRowTotal2 = getPhasingValues(oldBudgetItem);
+					phasingRowTotal2.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
+					if (mode == "grand"){
+						phasingRowTotal2.budget_code = oldBudgetItem.org_name + " Totals:";
+						phasingRowTotal2.activity_code = "";
+					}
+					phasingRowTotal2.m1 = "Nov:";
+					phasingRowTotal2.q1 = totals.m2;
+					phasingRowTotal2.m2 = "Feb:";
+					phasingRowTotal2.q2 = totals.m5;
+					phasingRowTotal2.m3 = "May:";
+					phasingRowTotal2.q3 = totals.m8;
+					phasingRowTotal2.m4 = "Aug:";
+					phasingRowTotal2.q4 = totals.m11;
+					phasingRowTotal2.total = 0;
+					data.reportData.push(phasingRowTotal2);
+
+					var phasingRowTotal3 = {};
+					phasingRowTotal3 = getPhasingValues(oldBudgetItem);
+					phasingRowTotal3.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
+					if (mode == "grand"){
+						phasingRowTotal3.budget_code = oldBudgetItem.org_name + " Totals:";
+						phasingRowTotal3.activity_code = "";
+					}
+					phasingRowTotal3.m1 = "Dec:";
+					phasingRowTotal3.q1 = totals.m3;
+					phasingRowTotal3.m2 = "Mar:";
+					phasingRowTotal3.q2 = totals.m6;
+					phasingRowTotal3.m3 = "Jun:";
+					phasingRowTotal3.q3 = totals.m9;
+					phasingRowTotal3.m4 = "Sept:";
+					phasingRowTotal3.q4 = totals.m12;
+					phasingRowTotal3.total = 0;
+					data.reportData.push(phasingRowTotal3);
+
+					var phasingRowCodeTotal = {};
+					phasingRowCodeTotal = getPhasingValues(oldBudgetItem);
+					phasingRowCodeTotal.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
+					if (mode == "grand"){
+						phasingRowCodeTotal.budget_code = oldBudgetItem.org_name + " Totals:";
+						phasingRowCodeTotal.activity_code = "";
+					}
+					phasingRowCodeTotal.m1 = "Q1:";
+					phasingRowCodeTotal.q1 = totals.q1;
+					phasingRowCodeTotal.m2 = "Q2:";
+					phasingRowCodeTotal.q2 = totals.q2;
+					phasingRowCodeTotal.m3 = "Q3:";
+					phasingRowCodeTotal.q3 = totals.q3;
+					phasingRowCodeTotal.m4 = "Q4:";
+					phasingRowCodeTotal.q4 = totals.q4;
+					phasingRowCodeTotal.total = totals.q1 + totals.q2 + totals.q3 + totals.q4;
+					data.reportData.push(phasingRowCodeTotal);
+
+					if (mode != "grand"){
+
+						phaseBudgetGrandTotals.q1 += totals.q1;
+						phaseBudgetGrandTotals.q2 += totals.q2;
+						phaseBudgetGrandTotals.q3 += totals.q3;
+						phaseBudgetGrandTotals.q4 += totals.q4;
+						phaseBudgetGrandTotals.m1 += totals.m1;
+						phaseBudgetGrandTotals.m2 += totals.m2;
+						phaseBudgetGrandTotals.m3 += totals.m3;
+						phaseBudgetGrandTotals.m4 += totals.m4;
+						phaseBudgetGrandTotals.m5 += totals.m5;
+						phaseBudgetGrandTotals.m6 += totals.m6;
+						phaseBudgetGrandTotals.m7 += totals.m7;
+						phaseBudgetGrandTotals.m8 += totals.m8;
+						phaseBudgetGrandTotals.m9 += totals.m9;
+						phaseBudgetGrandTotals.m10 += totals.m10;
+						phaseBudgetGrandTotals.m11 += totals.m11;
+						phaseBudgetGrandTotals.m12 += totals.m12;
+
+						totals.q1 = 0;
+						totals.q2 = 0;
+						totals.q3 = 0;
+						totals.q4 = 0;
+						totals.m1 = 0;
+						totals.m2 = 0;
+						totals.m3 = 0;
+						totals.m4 = 0;
+						totals.m5 = 0;
+						totals.m6 = 0;
+						totals.m7 = 0;
+						totals.m8 = 0;
+						totals.m9 = 0;
+						totals.m10 = 0;
+						totals.m11 = 0;
+						totals.m12 = 0;
+					}
+
+					
+				}
+
+
+
+
+
 				data.phasingData.sort(function(a, b) {
 					if (a.budget_code < b.budget_code) {
 						return -1;
@@ -2110,80 +2302,7 @@
 
 					if (oldBudgetItem != "") {
 						if (item.budget_code != oldBudgetItem.budget_code) {
-
-							var phasingRowTotal1 = {};
-							phasingRowTotal1 = getPhasingValues(oldBudgetItem);
-							phasingRowTotal1.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
-							phasingRowTotal1.m1 = "Oct:";
-							phasingRowTotal1.q1 = phaseBudgetTotals.m1;
-							phasingRowTotal1.m2 = "Jan:";
-							phasingRowTotal1.q2 = phaseBudgetTotals.m4;
-							phasingRowTotal1.m3 = "Apr:";
-							phasingRowTotal1.q3 = phaseBudgetTotals.m7;
-							phasingRowTotal1.m4 = "Jul:";
-							phasingRowTotal1.q4 = phaseBudgetTotals.m10;
-							phasingRowTotal1.total = 0;
-							data.reportData.push(phasingRowTotal1);
-
-							var phasingRowTotal2 = {};
-							phasingRowTotal2 = getPhasingValues(oldBudgetItem);
-							phasingRowTotal2.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
-							phasingRowTotal2.m1 = "Nov:";
-							phasingRowTotal2.q1 = phaseBudgetTotals.m2;
-							phasingRowTotal2.m2 = "Feb:";
-							phasingRowTotal2.q2 = phaseBudgetTotals.m5;
-							phasingRowTotal2.m3 = "May:";
-							phasingRowTotal2.q3 = phaseBudgetTotals.m8;
-							phasingRowTotal2.m4 = "Aug:";
-							phasingRowTotal2.q4 = phaseBudgetTotals.m11;
-							phasingRowTotal2.total = 0;
-							data.reportData.push(phasingRowTotal2);
-
-							var phasingRowTotal3 = {};
-							phasingRowTotal3 = getPhasingValues(oldBudgetItem);
-							phasingRowTotal3.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
-							phasingRowTotal3.m1 = "Dec:";
-							phasingRowTotal3.q1 = phaseBudgetTotals.m3;
-							phasingRowTotal3.m2 = "Mar:";
-							phasingRowTotal3.q2 = phaseBudgetTotals.m6;
-							phasingRowTotal3.m3 = "Jun:";
-							phasingRowTotal3.q3 = phaseBudgetTotals.m9;
-							phasingRowTotal3.m4 = "Sept:";
-							phasingRowTotal3.q4 = phaseBudgetTotals.m12;
-							phasingRowTotal3.total = 0;
-							data.reportData.push(phasingRowTotal3);
-
-							var phasingRowCodeTotal = {};
-							phasingRowCodeTotal = getPhasingValues(oldBudgetItem);
-							phasingRowCodeTotal.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
-							phasingRowCodeTotal.m1 = "Q1:";
-							phasingRowCodeTotal.q1 = phaseBudgetTotals.q1;
-							phasingRowCodeTotal.m2 = "Q2:";
-							phasingRowCodeTotal.q2 = phaseBudgetTotals.q2;
-							phasingRowCodeTotal.m3 = "Q3:";
-							phasingRowCodeTotal.q3 = phaseBudgetTotals.q3;
-							phasingRowCodeTotal.m4 = "Q4:";
-							phasingRowCodeTotal.q4 = phaseBudgetTotals.q4;
-							phasingRowCodeTotal.total = phaseBudgetTotals.q1 + phaseBudgetTotals.q2 + phaseBudgetTotals.q3 + phaseBudgetTotals.q4;
-							data.reportData.push(phasingRowCodeTotal);
-
-							phaseBudgetTotals.q1 = 0;
-							phaseBudgetTotals.q2 = 0;
-							phaseBudgetTotals.q3 = 0;
-							phaseBudgetTotals.q4 = 0;
-							phaseBudgetTotals.m1 = 0;
-							phaseBudgetTotals.m2 = 0;
-							phaseBudgetTotals.m3 = 0;
-							phaseBudgetTotals.m4 = 0;
-							phaseBudgetTotals.m5 = 0;
-							phaseBudgetTotals.m6 = 0;
-							phaseBudgetTotals.m7 = 0;
-							phaseBudgetTotals.m8 = 0;
-							phaseBudgetTotals.m9 = 0;
-							phaseBudgetTotals.m10 = 0;
-							phaseBudgetTotals.m11 = 0;
-							phaseBudgetTotals.m12 = 0;
-
+							totalPhasing(phaseBudgetTotals, "regular");
 						}
 					}
 
@@ -2261,6 +2380,12 @@
 
 					oldBudgetItem = item;
 				});
+
+				if (data.reportData.length > 0) {
+					totalPhasing(phaseBudgetTotals, "regular");
+					totalPhasing(phaseBudgetGrandTotals, "grand");
+				}
+					
 			}
 
 		}
@@ -2300,14 +2425,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>637</sys_mod_count>
+        <sys_mod_count>665</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-27 20:52:04</sys_updated_on>
+        <sys_updated_on>2020-07-29 17:58:31</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">

@@ -11,21 +11,122 @@
 FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
 	allocGrpTable: FMSConstants.TABLE_ALLOCATION_GROUP,
-	finTranView: FMSConstants.VIEW_FINANCIAL_TRANSACTION_JOIN,
+	projAllocTable: FMSConstants.TABLE_PROJECT_ALLOCATION,
+	finTranView: FMSConstants.VIEW_FIN_TRAN_JOIN,
 	finTranTable: FMSConstants.TABLE_FINANCIAL_TRANSACTION,
 	tranItemTable: FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM,
 	FMSUtility: new x_g_irm_fms.FMSUtilities(),              //helper utility for FMS queries
 	
-    getObligatedTotal: function(grpKey, fy, tranKey) {
-        var txn = new GlideRecord(this.finTranView);
+    validateTranGroup: function(current, previous) {
+		var isValid = true;
+		var grp = this.getAllocationGroup(current.allocation_group_ref.sys_id);
+		if (grp == null) return false;
+		if (grp.getValue('val_tran_fy') == true) 
+			isValid = isValid && this.validateTranFY(current.project_ref.sys_id, current.allocation_group_ref.sys_id, current.fy);
+		if (grp.getValue('val_tran_allotment') == true) 
+			isValid = isValid && this.validateTranAllotment(current.project_ref.sys_id, current.allocation_group_ref.sys_id, current.fy, current.allotment_ref.sys_id);
+		gs.addInfoMessage(' validating appropriation.....................')
+		gs.addInfoMessage(' ...........................' + current.project_appropriation_ref.sys_id)
+		if (grp.getValue('val_tran_appropriation') == true) 
+			isValid = isValid && this.validateTranAppropriation(current.project_ref.sys_id, current.allocation_group_ref.sys_id, current.fy, current.project_appropriation_ref.sys_id);
+		gs.addInfoMessage(' validating deficiency.....................')
+		if (grp.getValue('val_tran_not_deficient') == true && current.tran_status == 'Obligated') 
+			isValid = isValid && this.validateTranDeficient(current.sys_id, current.allocation_group_ref.sys_id, current.fy);
+		return isValid;
+	},
+	
+    validateTranFY: function(proj, grp, fy) {
+		var isValid = true;
+		var fyCount = this.getAllocationCount(proj, grp, fy, null);
+		gs.addInfoMessage('fy count: ' + fyCount)
+		if (fyCount == 0) {
+			isValid = false;
+			gs.addErrorMessage("No project allocations found for fiscal year: " + fy + " Update Failed.");
+		}
+		return isValid;
+	},
+
+	validateTranAllotment: function(proj, grp, fy, allot) {
+		var isValid = true;
+		var allotCount = this.getAllocationCount(proj, grp, fy, allot, null);
+		gs.addInfoMessage('Allotment count: ' + allotCount)
+		if (allotCount == 0) {
+			isValid = false;
+			gs.addErrorMessage("No project allocations found for fiscal year: " + fy + " and alloment: " + allot.getDisplayValue() + " Update Failed.");
+		}
+		return isValid;
+	},
+
+	validateTranAppropriation: function(proj, grp, fy, appro) {
+		var isValid = true;
+		var approCount = this.getAllocationCount(proj, grp, fy, null, appro);
+		gs.addInfoMessage('Appropriation count: ' + approCount)
+		if (allotCount != 0) {
+			isValid = false;
+			gs.addErrorMessage("No project allocations found for fiscal year: " + fy + " and appropriation: " + appro.getDisplayValue() + " Update Failed.");
+		}
+		return isValid;
+	},
+
+	validateTranDeficient: function(tranKey, grpKey, fy) {
+		var isValid = true;
+		gs.addInfoMessage('validating deficiency')
+		var tranAmt = this.getObligatedTotal(trnKey, grpKey, fy);
+		gs.addInfoMessage('Total is: ' + tranAmt);
+		return isValid;
+	},
+	
+	getAllocationGroup: function(grpKey) {
+        var grp = new GlideRecord(this.allocGrpTable);
+        grp.addQuery('sys_id', grpKey);
+		grp.setLimit(1);
+        grp.query();
+        if (!grp.hasNext()) return null;
+		grp.next();
+		return grp;
+	},
+
+	getAllocationCount: function(projKey, grpKey, fy, allotKey, approKey) {
+        var alloc = new GlideAggregate(this.projAllocTable);
+		if (allotKey && allotKey != null) { alloc.addQuery('allotment', allotKey); }
+		if (approKey && approKey != null) { alloc.addQuery('appropriation_ref', approKey); }
+		alloc.addQuery('project_ref', projKey); 
+        alloc.addQuery('fy', fy);
+        alloc.addQuery('allocation_group_ref', grpKey);
+		alloc.addAggregate('COUNT');
+		alloc.groupBy('project_ref');
+        alloc.query();
+		var cnt = 0;
+        while (alloc.next()) {
+			cnt += alloc.getAggregate('COUNT');
+		}
+		return cnt;
+	},
+
+	getAllocationTotal: function(projKey, grpKey, fy) {
+        var alloc = new GlideAggregate(this.projAllocTable);
+		alloc.addQuery('project_ref', projKey); 
+        alloc.addQuery('fy', fy);
+        alloc.addQuery('allocation_group_ref', grpKey);
+		alloc.addAggregate('COUNT');
+		alloc.groupBy('project_ref');
+        alloc.query();
+		var cnt = 0;
+        while (alloc.next()) {
+			cnt += alloc.getAggregate('COUNT');
+		}
+		return cnt;
+	},
+
+	getObligatedTotal: function(tranKey, grpKey, fy) {
+        var txn = new GlideAggregate(this.finTranView);
 		if (tranKey && tranKey != null) { txn.addQuery('ft_sys_id', tranKey); }
 		txn.addAggregate('SUM', 'itm_item_total');
-        txn.addQuery('ft_void', 0);
+        txn.addQuery('ft_void', false);
         txn.addQuery('ft_fy', fy);
         txn.addQuery('ft_allocation_group_ref', grpKey);
 		txn.addQuery('ft_tran_status', 'Obligated');
-		txn.orderBy('ft_allocation_group_ref');
-		gs.addInfoMessage('quering....')
+		txn.groupBy('ft_allocation_group_ref');
         txn.query();
 		var totAmt = 0;
         while (txn.next()) {
@@ -40,13 +141,13 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-07-28 16:48:32</sys_created_on>
         <sys_id>1238d3d91b5ed0101f7e113d9c4bcbd6</sys_id>
-        <sys_mod_count>9</sys_mod_count>
+        <sys_mod_count>54</sys_mod_count>
         <sys_name>FMSFinTran</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_1238d3d91b5ed0101f7e113d9c4bcbd6</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-28 18:55:50</sys_updated_on>
+        <sys_updated_on>2020-07-29 19:15:18</sys_updated_on>
     </sys_script_include>
 </record_update>

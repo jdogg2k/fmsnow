@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $rootScope, $timeout) {
+    /* widget controller */
+
+    var c = this;
+    $scope.data.myOrg_id = c.data.selectedOrg;
+    $scope.data.myOrg_name = c.data.selectedOrg_name;
+    $scope.data.myRole_id = c.data.selectedRole;
+    $scope.data.myRole_name = c.data.selectedRole_name;
+
+    $rootScope.userAuth = $scope.data.userAuth;
+
+    $scope.selOrg = {
+        displayValue: $scope.data.myOrg_name,
+        value: $scope.data.myOrg_id,
+        name: 'selOrg'
+    };
+
+    $scope.selRole = {
+        displayValue: $scope.data.myRole_name,
+        value: $scope.data.myRole_id,
+        name: 'selRole'
+    };
+
+    $scope.$on("field.change", function(evt, parms) {
+        if (parms.field.name == 'selOrg') {
+            c.server.get({
+                org_id: parms.newValue,
+                role_id: '',
+                role_name: ''
+            }).then(function(resp) {
+                c.data.myOrg_id = resp.data.selectedOrg;
+                $rootScope.$broadcast('OrgChanged', {
+                    org_id: resp.data.selectedOrg
+                });
+
+            });
+            $scope.selRole.value = '';
+            $scope.selRole.displayValue = '';
+        }
+
+        if (parms.field.name == 'selRole') {
+            c.server.get({
+                org_id: $scope.selOrg.value,
+                role_id: parms.newValue,
+                role_name: parms.displayValue
+            }).then(function(resp) {
+                $rootScope.$broadcast('RoleChanged', {
+                    role_id: resp.data.selectedRole
+                });
+            });
+        }
+    });
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>users_selection</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+
+}]]></link>
+        <name>Users Selection</name>
+        <option_schema>[{"name":"hide_widget","section":"Behavior","default_value":"false","label":"Hide Widget","type":"boolean"},{"hint":"","name":"hide_project","section":"Behavior","default_value":"false","label":"Hide Project","type":"boolean"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function(options) {
+    data.selectedOrg = "";
+    data.selectedRole = "";
+    var session = gs.getSession();
+    var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries	
+    if ($sp.getParameter("org_id") && $sp.getParameter("org_id").length > 0) {
+		if (session.getClientData("org_id") != $sp.getParameter("org_id")) {
+			session.putClientData("org_id", $sp.getParameter("org_id"));
+			session.putClientData("role_id", "");
+		}
+	}
+	if (session.getClientData("org_id"))
+        data.selectedOrg = session.getClientData('org_id').toString();
+    if ($sp.getParameter("role_id") && $sp.getParameter("role_id").length > 0)
+        session.putClientData("role_id", $sp.getParameter("role_id"));
+    if (session.getClientData("role_id"))
+        data.selectedRole = session.getClientData('role_id').toString();
+				//gs.addInfoMessage("proj "+session.getClientData('proj_id').toString());
+    if (input) { //input holds the data coming back to the server
+        if (input.org_id) {
+            data.selectedOrg = input.org_id;
+            session.putClientData('org_id', input.org_id.toString());
+        } else {
+            data.selectedOrg = "";
+            session.putClientData("org_id", "");
+        }
+        if (input.role_id) {
+            data.selectedRole = input.role_id;
+            session.putClientData('role_id', input.role_id.toString());
+            session.putClientData('role_name', input.role_name.toString());
+        } else {
+            data.selectedRole = "";
+            session.putClientData("role_id", "");
+            session.putClientData("role_name", "");
+        }
+    }
+
+    data.userAuth = FMSUtility.getUserAuth();
+
+    data.userOrgs = [];
+    data.hide_widget = (options.hide_widget.toString() == 'true');
+    //data.hide_project = (options.hide_project.toString() == 'true');
+    data.orgTableName = FMSConstants.TABLE_ORGANIZATION;
+   data.roleTableName = FMSConstants.TABLE_GROUP;
+	//data.projTableName = FMSConstants.TABLE_PROJECT;
+
+
+    var gr = new GlideRecord(FMSConstants.TABLE_ORGANIZATION);
+    gr.addEncodedQuery('sys_idIN' + data.userAuth.orgs.join(","));
+    gr.orderBy('org_name');
+    gr.query();
+    while (gr.next()) {
+        if (data.userOrgs.length == 0 || data.selectedOrg == gr.getValue("sys_id")) {
+            data.selectedOrg_name = gr.getValue("organization_display");
+            if (data.selectedOrg.length == 0) {
+                data.selectedOrg = gr.getValue("sys_id").toString();
+                session.putClientData('org_id', gr.getValue("sys_id").toString());
+
+						}
+        }
+        data.userOrgs.push(gr.getValue("sys_id"));
+    }
+    if (gr.getRowCount() == 0) {
+        data.hide_widget = true;
+        gs.addErrorMessage("ERROR!!! CONTACT SYSTEM ADMINISTRATOR.  NO ORGANIZATIONS DEFINED.");
+    }
+    if (data.selectedRole.length > 0 && session.getClientData("role_name")) {
+		//	gs.addInfoMessage('clientdate '+session.getClientData("role_name"));
+        data.selectedRole_name = session.getClientData('role_name').toString();
+    }
+
+})(options);]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2020-07-29 16:41:54</sys_created_on>
+        <sys_id>0805e4b91b9658100a4a10ad9c4bcb36</sys_id>
+        <sys_mod_count>8</sys_mod_count>
+        <sys_name>Users Selection</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_widget_0805e4b91b9658100a4a10ad9c4bcb36</sys_update_name>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-29 18:07:05</sys_updated_on>
+        <template><![CDATA[<div style="display: inline-flex;" class="topFilters" ng-hide="c.data.hide_widget">
+  <!--div style="display: inline-flex; align-items: center; min-width: 400px;">
+    <label class="control-label">Organization:</label>
+    <sn-record-picker field="selOrg" table="data.orgTableName" default-query="'sys_idIN' + data.userOrgs + '^ORDERBYorg_name'" display-field="'organization_display'" value-field="'sys_id'" search-fields="'org_name,org_code'" page-size="100" ></sn-record-picker>
+  </div-->
+  &nbsp;&nbsp;
+  <div style="display: inline-flex; align-items: center; min-width: 400px;" >
+    <label class="control-label">User Role:</label>
+    <sn-record-picker field="selRole" table="data.roleTableName" default-query="'nameSTARTSWITHFMS'" display-field="'name'" value-field="'sys_id'" search-fields="'name'" page-size="100" ></sn-record-picker>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>
