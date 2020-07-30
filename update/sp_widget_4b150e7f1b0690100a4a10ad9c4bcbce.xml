@@ -11,7 +11,7 @@
 	
     c.addNew = function() {
 			 //alert('Data');
-        userManager.editRow("-1", "", c.data.tableName);
+        userManager.editRow("-1", "", c.data.organizationTableName);
 			    
     }
 
@@ -80,8 +80,8 @@
                 values: [ true, false ]
             },
             cellStyle: {textTransform: 'capitalize'}
-        },
-        {
+        }
+        /*{
             field: 'delete',
             headerName: 'Del.',
             maxWidth: 50,
@@ -98,7 +98,7 @@
                    // "banner": !params.node.group ? ("Contract - " + params.data.contract_display) : null
                 };
             }
-        }
+        }*/
     ];
 
 	
@@ -210,10 +210,10 @@
         linkedField: '',
         detailsPage: 'users_list',
         detailsHeight: 375,
-        detailsHTML: '<div class="full-width-details">' +
+        detailsHTML: '<div class="full-width-details">', /*+
         '    <div class="full-width-detail"><b>Purpose: </b>[purpose]</div>' +
         '    <div class="full-width-detail"><b>Status: </b>[status_detail]</div>' +
-        '  </div>',
+        '  </div>',*/
        childTables: [{
             banner: 'Organization',
             name: c.data.organizationTableName,
@@ -253,7 +253,9 @@
            mode: "setRole",
            role_id: args.role_id
         }).then(function(resp) {
+            var model = userManager.gridOpts.api.getFilterModel();
             userManager.setGridData(resp.data.tableData); //set grid data
+            userManager.gridOpts.api.setFilterModel(model);
         });
     });
 	
@@ -306,20 +308,7 @@
             FMSUtility.deleteRecord(input.delTable, input.rowID);
         }
 	
-    
-  /*  if (input) { //input holds the data coming back to the server
-     
-		if (input.mode == "deleteRow"){
-			if (FMSPermissions.canDeleteOrg(input.rowID)) {
-				FMSUtility.deleteRecord(FMSConstants.TABLE_ALLOTMENT, input.rowID);
-			} else {
-				data.isError = true;
-				data.errorMsg = "This record cannot be deleted";
-			}
-		}
-		}*/
-	
-	if (input.mode == "setOrg") {
+       	if (input.mode == "setOrg") {
             data.selectedOrg = input.org_id.toString();
         }
         if (input.mode == "setRole") {
@@ -333,12 +322,9 @@
 	gr1.query();
 	while(gr1.next())
 		{
-			//gs.addInfoMessage("inside while");
-			nameonload = nameonload +","+gr1.user.getDisplayValue();
 			
+			nameonload = nameonload +","+gr1.user.getDisplayValue();
 		}
-
-	
 	
 	var name='';
 	var gr = new GlideRecord('sys_user_grmember');	
@@ -346,22 +332,27 @@
 	gr.query();
 	while(gr.next())
 		{
-			//gs.addInfoMessage("inside while");
 			name = name +","+gr.user.getDisplayValue();
-			
 		}
 	//gs.addInfoMessage('usr '+name +"test "+data.selectedRole);
-	var filter = "";
-	//if (data.selectedOrg.length > 0) filter = "organization_ref=" + data.selectedOrg;
-	if (name!=''&& data.selectedRole!=undefined && data.selectedRole!='') filter = "nameIN"+name;
-	else if(name==''&& data.selectedRole!=undefined && data.selectedRole!='') filter = "nameIN"+name;
-	else filter = "nameIN"+nameonload;
 	
-	var tab, tablname;
-	        data.tableName =FMSConstants.TABLE_USER;
-					data.tableData =FMSUtility.getAllUserData(FMSConstants.TABLE_USER,filter, true);
-//	gs.addInfoMessage(JSON.stringify(data.tableData));
-					 data.tableLabel ='Users';
+	var filter = ""
+	if (name!=''&& data.selectedRole!=undefined && data.selectedRole!='') 
+	{
+		filter = "nameIN"+name;
+	}
+	else if (name==''&& data.selectedRole!=undefined && data.selectedRole!='') 
+	{
+		filter = "nameIN"+name;
+	}
+	else {
+		filter = "nameIN"+nameonload;
+ 	}
+	
+	
+	  data.tableName =FMSConstants.TABLE_USER;
+	  data.tableData =FMSUtility.getAllUserData(FMSConstants.TABLE_USER,filter, true);
+		data.tableLabel ='Users';
 	  data.userAuth = FMSUtility.getUserAuth();
 	  data.organizationTableName = FMSConstants.TABLE_USER_ORGANIZATION;
 	  data.rolesTableName = FMSConstants.TABLE_USER_GROUP;
@@ -376,14 +367,14 @@
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-07-23 18:35:09</sys_created_on>
         <sys_id>4b150e7f1b0690100a4a10ad9c4bcbce</sys_id>
-        <sys_mod_count>73</sys_mod_count>
+        <sys_mod_count>78</sys_mod_count>
         <sys_name>Users Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_4b150e7f1b0690100a4a10ad9c4bcbce</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-29 18:39:01</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-30 17:45:47</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

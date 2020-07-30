@@ -362,12 +362,12 @@
                 textAlign: 'right'
             },
             type: 'currency',
-            aggFunc: 'sum',
-            headerComponentParams: {
+            aggFunc: 'sum'
+            /*headerComponentParams: {
                 template: '<div class="ag-cell-label-container" role="presentation">' +
                     '<span ref="eText" class="ag-header-cell-text" role="columnheader"></span>' +
                     '</div>'
-            }
+            }*/
         },
         {
             field: 'carryforward',
@@ -462,7 +462,9 @@
         }).then(function (resp) {
             c.targetOrg = resp.data.selectedOrg;
             c.data.canDistribute = resp.data.canDistribute;
+            var model = poolManager.gridOpts.api.getFilterModel();
             poolManager.setGridData(resp.data.tableData); //set grid data
+            poolManager.gridOpts.api.setFilterModel(model);
         });
     });
 }]]></client_script>
@@ -556,14 +558,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-18 17:12:53</sys_created_on>
         <sys_id>eb99716a1b7498100a4a10ad9c4bcb7e</sys_id>
-        <sys_mod_count>126</sys_mod_count>
+        <sys_mod_count>128</sys_mod_count>
         <sys_name>Allocation Pool Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_eb99716a1b7498100a4a10ad9c4bcb7e</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-28 18:25:18</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-30 17:38:42</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">

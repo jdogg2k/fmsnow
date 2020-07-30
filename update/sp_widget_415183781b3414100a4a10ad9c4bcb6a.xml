@@ -139,12 +139,12 @@
             },
             type: 'currency',
             filter: 'agNumberColumnFilter',
-            aggFunc: 'sum',
-            headerComponentParams: {
+            aggFunc: 'sum'
+            /*headerComponentParams: {
                 template: '<div class="ag-cell-label-container" role="presentation">' +
                     '<span ref="eText" class="ag-header-cell-text" role="columnheader"></span>' +
                     '</div>'
-            }
+            }*/
         },
         {
             field: 'approved_date',
@@ -206,7 +206,9 @@
             mode: "setOrg",
             org_id: args.org_id
         }).then(function(resp) {
+            var model = budgetManager.gridOpts.api.getFilterModel();
             budgetManager.setGridData(resp.data.tableData); //set grid data
+            budgetManager.gridOpts.api.setFilterModel(model);
         });
     });
 
@@ -216,7 +218,9 @@
             mode: "setProj",
             proj_id: args.proj_id
         }).then(function(resp) {
+            var model = budgetManager.gridOpts.api.getFilterModel();
             budgetManager.setGridData(resp.data.tableData); //set grid data
+            budgetManager.gridOpts.api.setFilterModel(model);
         });
     });
 
@@ -282,14 +286,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-13 11:56:49</sys_created_on>
         <sys_id>415183781b3414100a4a10ad9c4bcb6a</sys_id>
-        <sys_mod_count>44</sys_mod_count>
+        <sys_mod_count>46</sys_mod_count>
         <sys_name>Budget Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_415183781b3414100a4a10ad9c4bcb6a</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-28 18:22:18</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-30 17:44:41</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
