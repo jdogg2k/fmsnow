@@ -20,8 +20,8 @@
         <default_value/>
         <defaultsort/>
         <delete_roles/>
-        <dependent/>
-        <dependent_on_field/>
+        <dependent>project_ref</dependent>
+        <dependent_on_field>project_ref</dependent_on_field>
         <display>false</display>
         <dynamic_creation>false</dynamic_creation>
         <dynamic_creation_script/>
@@ -44,8 +44,9 @@
         <reference_cascade_rule/>
         <reference_floats>false</reference_floats>
         <reference_key/>
-        <reference_qual>javascript: "project_ref=" + current.project_ref;</reference_qual>
-        <reference_qual_condition/>
+        <reference_qual>appropriation_ref.active=true</reference_qual>
+        <reference_qual_condition table="x_g_irm_fms_project_appropriation">appropriation_ref.active=true<item endquery="false" field="appropriation_ref.active" goto="false" newquery="false" operator="=" or="false" value="true"/>
+        </reference_qual_condition>
         <reference_type/>
         <sizeclass/>
         <spell_check>false</spell_check>
@@ -54,20 +55,20 @@
         <sys_created_by>markeljr@state.gov</sys_created_by>
         <sys_created_on>2020-04-09 17:59:38</sys_created_on>
         <sys_id>762e45421b44d0500a4a10ad9c4bcb0e</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>6</sys_mod_count>
         <sys_name>Appropriation</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_dictionary_x_g_irm_fms_project_allocation_appropriation_ref</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-20 20:34:44</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-07-30 19:44:50</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>
-        <use_dependent_field>false</use_dependent_field>
+        <use_dependent_field>true</use_dependent_field>
         <use_dynamic_default>false</use_dynamic_default>
-        <use_reference_qualifier>advanced</use_reference_qualifier>
+        <use_reference_qualifier>simple</use_reference_qualifier>
         <virtual>false</virtual>
         <widget/>
         <write_roles/>

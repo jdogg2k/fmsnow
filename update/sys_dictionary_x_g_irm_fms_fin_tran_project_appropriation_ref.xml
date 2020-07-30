@@ -44,9 +44,8 @@
         <reference_cascade_rule/>
         <reference_floats>false</reference_floats>
         <reference_key/>
-        <reference_qual>active=true^EQ</reference_qual>
-        <reference_qual_condition table="x_g_irm_fms_project_appropriation">active=true^EQ<item endquery="false" field="active" goto="false" newquery="false" operator="=" or="false" value="true"/>
-            <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
+        <reference_qual>appropriation_ref.active=true</reference_qual>
+        <reference_qual_condition table="x_g_irm_fms_project_appropriation">appropriation_ref.active=true<item endquery="false" field="appropriation_ref.active" goto="false" newquery="false" operator="=" or="false" value="true"/>
         </reference_qual_condition>
         <reference_type/>
         <sizeclass/>
@@ -56,14 +55,14 @@
         <sys_created_by>markeljr@state.gov</sys_created_by>
         <sys_created_on>2020-04-10 11:49:37</sys_created_on>
         <sys_id>c8138dd21b8014500a4a10ad9c4bcb4d</sys_id>
-        <sys_mod_count>7</sys_mod_count>
+        <sys_mod_count>8</sys_mod_count>
         <sys_name>Appropriation</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_dictionary_x_g_irm_fms_fin_tran_project_appropriation_ref</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-27 20:16:30</sys_updated_on>
+        <sys_updated_on>2020-07-30 19:06:28</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>
