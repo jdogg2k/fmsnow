@@ -149,14 +149,14 @@
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-07-29 16:41:54</sys_created_on>
         <sys_id>0805e4b91b9658100a4a10ad9c4bcb36</sys_id>
-        <sys_mod_count>9</sys_mod_count>
+        <sys_mod_count>13</sys_mod_count>
         <sys_name>Users Selection</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_0805e4b91b9658100a4a10ad9c4bcb36</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-29 19:29:16</sys_updated_on>
+        <sys_updated_on>2020-07-31 14:49:07</sys_updated_on>
         <template><![CDATA[<div style="display: inline-flex;" class="topFilters" ng-hide="c.data.hide_widget">
   <!--div style="display: inline-flex; align-items: center; min-width: 400px;">
     <label class="control-label">Organization:</label>
@@ -164,7 +164,7 @@
   </div-->
   &nbsp;&nbsp;
   <div style="display: inline-flex; align-items: center; min-width: 400px;" >
-    <label class="control-label">UserRole:</label>
+    <div>User Role:</div>
     <sn-record-picker field="selRole" table="data.roleTableName" default-query="'nameSTARTSWITHFMS'" display-field="'name'" value-field="'sys_id'" search-fields="'name'" page-size="100" ></sn-record-picker>
   </div>
 </div>]]></template>

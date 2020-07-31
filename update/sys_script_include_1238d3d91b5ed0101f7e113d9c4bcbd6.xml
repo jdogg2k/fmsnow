@@ -83,10 +83,11 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		if (this.debugMsg) gs.addInfoMessage('Allocated Amount is: ' + allocAmt);
 		var tranAmt = this.getObligatedTotal(current.project_ref.sys_id, current.sys_id, current.allocation_group_ref.sys_id, current.fy);
 		if (this.debugMsg) gs.addInfoMessage('Obligated Amount is: ' + tranAmt);
-		var remAmt = parseFloat(allocAmt) - (parseFloat(tranAmt) + (parseFloat(current.transaction_total_amt) - parseFloat(previous.transaction_total_amt)));
-		if (remAmt < 0) {
+		var remAmt = parseFloat(allocAmt) - parseFloat(tranAmt);
+		if (this.debugMsg) gs.addInfoMessage('Remaining Amount is: ' + remAmt);
+		if (parseFloat(current.transaction_total_amt) > parseFloat(remAmt) + parseFloat(previous.transaction_total_amt)) {
 			isValid = false;
-			gs.addErrorMessage("Unable to obligate...insufficient funds remain for the Allocation Group specified.  Funds needed: " + this.formatMoney(Math.abs(remAmt)) + " Update Failed.");
+			gs.addErrorMessage("Unable to obligate...insufficient funds remain for the Allocation Group specified.  Funds needed: " + this.formatMoney(Math.abs(parseFloat(current.transaction_total_amt - (parseFloat(remAmt) + parseFloat(previous.transaction_total_amt))))) + " Update Failed.");
 		}
 		return isValid;
 	},
@@ -97,11 +98,11 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		if (this.debugMsg) gs.addInfoMessage('Allocated Amount is: ' + allocAmt);
 		var tranAmt = this.getObligatedTotal(current.fin_tran_ref.project_ref.sys_id, current.fin_tran_ref.sys_id, current.fin_tran_ref.allocation_group_ref.sys_id, current.fin_tran_ref.fy);
 		if (this.debugMsg) gs.addInfoMessage('Obligated Amount is: ' + tranAmt);
-		var remAmt = parseFloat(allocAmt) - parseFloat(tranAmt);
+		var remAmt = parseFloat(allocAmt) - (parseFloat(tranAmt) + (parseFloat(current.item_total) - parseFloat(previous.item_total)));
 		if (this.debugMsg) gs.addInfoMessage('Remaining Amount is: ' + remAmt);
-		if (parseFloat(current.item_total) > parseFloat(remAmt) + parseFloat(previous.item_total)) {
+		if (remAmt < 0) {
 			isValid = false;
-			gs.addErrorMessage("Unable to obligate...insufficient funds remain for the Allocation Group specified.  Funds needed: " + this.formatMoney(Math.abs(parseFloat(current.item_total) - (parseFloat(remAmt) + parseFloat(previous.item_total)))) + " Update Failed.");
+			gs.addErrorMessage("Unable to obligate...insufficient funds remain for the Allocation Group specified.  Funds needed: " + this.formatMoney(Math.abs(remAmt)) + " Update Failed.");
 		}
 		return isValid;
 	},
@@ -185,13 +186,13 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-07-28 16:48:32</sys_created_on>
         <sys_id>1238d3d91b5ed0101f7e113d9c4bcbd6</sys_id>
-        <sys_mod_count>81</sys_mod_count>
+        <sys_mod_count>82</sys_mod_count>
         <sys_name>FMSFinTran</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_1238d3d91b5ed0101f7e113d9c4bcbd6</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-31 13:53:12</sys_updated_on>
+        <sys_updated_on>2020-07-31 15:04:41</sys_updated_on>
     </sys_script_include>
 </record_update>

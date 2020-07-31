@@ -4,7 +4,7 @@
         <script><![CDATA[function AGGridFactory($http, $rootScope, spUtil, spModal, $uibModalStack, $timeout) {
 
 	var AGGridFactory = function () {
-		
+
 		//add license here instead of in UI Script
 		agGrid.LicenseManager.setLicenseKey("CompanyName=US Department of State,LicensedApplication=IRM ServiceNow,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=0,AssetReference=AG-009086,ExpiryDate=23_July_2021_[v2]_MTYyNjk5NDgwMDAwMA==73e86f1a865690deb33863c69b3ae478");
 
@@ -33,7 +33,7 @@
 
 			} else { //date based compare
 				var cellDate = new Date(cellValue + " 00:00:00");
-				
+
 				var cdate = formatDate(cellDate);
 
 				if (cellDate < targetDay)
@@ -93,35 +93,35 @@
 		}
 
 		var allocationParentFields = [
-            "fy",
-            "fy_qtr",
-            "pool_type",
-            "pool_purpose",
-            "pool_status",
-            "receive_date",
-            "receive_amt",
-            "ibis_document",
-            "investment_ref",
-            "ams_ref_nmbr",
-            "appropriation_type_ref"
+			"fy",
+			"fy_qtr",
+			"pool_type",
+			"pool_purpose",
+			"pool_status",
+			"receive_date",
+			"receive_amt",
+			"ibis_document",
+			"investment_ref",
+			"ams_ref_nmbr",
+			"appropriation_type_ref"
 		];
-		
+
 		function constructAllocationPoolQuery(tID, parentData) {
-            var poolQuery = "pool_parent_ref=" + tID;
+			var poolQuery = "pool_parent_ref=" + tID;
 
-            allocationParentFields.forEach(function (field) {
-                var dataField = field;
-                if (field.endsWith("_ref"))
-                    dataField = field + "_rawval";
+			allocationParentFields.forEach(function (field) {
+				var dataField = field;
+				if (field.endsWith("_ref"))
+					dataField = field + "_rawval";
 
-                var dataVal = parentData[dataField];
-                if (dataField == "receive_amt")
-                    dataVal = parentData.unassigned_amt;
+				var dataVal = parentData[dataField];
+				if (dataField == "receive_amt")
+					dataVal = parentData.unassigned_amt;
 
-                poolQuery += "^" + field + "=" + dataVal;
-            });
-            return poolQuery;
-        }
+				poolQuery += "^" + field + "=" + dataVal;
+			});
+			return poolQuery;
+		}
 
 		function getGroupCellRenderer() {
 			function GroupCellRenderer() {}
@@ -228,8 +228,10 @@
 			return GroupCellRenderer;
 		}
 		//expense list pagination
-	
 
+
+		var modalOpen = false;
+		var excelExporting = false;
 		var oldEditVal = null;
 		var activeGrid = null;
 		var activeTable = "";
@@ -257,7 +259,7 @@
 					newRowsAction: 'keep'
 				}
 			},
-			
+
 			suppressAggFuncInHeader: true,
 			groupSuppressAutoColumn: true,
 			groupDefaultExpanded: 0,
@@ -371,8 +373,8 @@
 		this.editRow = function (tID, query, table) {
 			editGridRow(tID, query, table, null, null);
 		};
-		
-		this.PageSizeChanged = function (value){
+
+		this.PageSizeChanged = function (value) {
 			gridOptions.paginationAutoPageSize = false;
 			gridOptions.api.paginationSetPageSize(Number(value));
 		}
@@ -389,41 +391,46 @@
 		};
 
 		var editGridRow = function (targetID, query, table, title, aGrid) {
-			var titlePrefix = "New";
-			var modalName = pageName;
-			activeTable = dataTable;
-			activeGrid = null;
+			if (!modalOpen) {
+				var titlePrefix = "New";
+				var modalName = pageName;
+				activeTable = dataTable;
+				activeGrid = null;
 
-			if (aGrid != null)
-				activeGrid = aGrid;
+				if (aGrid != null)
+					activeGrid = aGrid;
 
-			if (table != null)
-				activeTable = table;
+				if (table != null)
+					activeTable = table;
 
-			if (title != null)
-				modalName = title;
+				if (title != null)
+					modalName = title;
 
-			var wInput = {
-				table: activeTable,
-				sys_id: targetID,
-				view: formView,
-				query: query
-			};
+				var wInput = {
+					table: activeTable,
+					sys_id: targetID,
+					view: formView,
+					query: query
+				};
 
-			if (targetID != "-1") {
-				titlePrefix = "Edit";
-				updatedID = targetID;
+				if (targetID != "-1") {
+					titlePrefix = "Edit";
+					updatedID = targetID;
+				}
+
+				modalOpen = true;
+
+				spModal.open({
+					title: titlePrefix + ' ' + modalName,
+					size: 'lg',
+					widget: 'fms-form-widget',
+					buttons: [],
+					backdrop: 'static',
+					keyboard: false,
+					widgetInput: wInput
+				});
+
 			}
-
-			spModal.open({
-				title: titlePrefix + ' ' + modalName,
-				size: 'lg',
-				widget: 'fms-form-widget',
-				buttons: [],
-				backdrop: 'static',
-				keyboard: false,
-				widgetInput: wInput
-			});
 		};
 
 		var deleteRow = function (delID, delTable, detGrid, rowIdx) {
@@ -479,7 +486,9 @@
 			new agGrid.Grid(gridDiv, gridOptions);
 		};
 		this.fmtCurrency = function (val) {
-			return currencyFormatter({ value: val });
+			return currencyFormatter({
+				value: val
+			});
 		};
 		this.setGridOption = function (opt, optval) {
 			gridOptions[opt] = optval;
@@ -571,17 +580,24 @@
 		};
 
 		this.exportExcel = function (cols, grps, pivot, cellCB) {
-			var params = { columnGroups: (cols != null && cols === true) ? true : false, skipGroups: (grps != null && grps === false) ? false : true };
-			if (cellCB) params.processCellCallback = pageController[cellCB];
-			var exportColumns = [];
-			var allCols = gridOptions.columnApi.getAllColumns();
-			allCols.forEach(function (col) {
-				if (col.colId != "edit" && col.colId != "delete")
-					exportColumns.push(col.colId);
-			});
-			if (!pivot) params.columnKeys = exportColumns;
-			params.fileName = dataTable + "_" + ((new Date()).toJSON()).slice(0,19)  + ".xlsx";
-			gridOptions.api.exportDataAsExcel(params);
+			if (!excelExporting) {
+				excelExporting = true;
+				var params = {
+					columnGroups: (cols != null && cols === true) ? true : false,
+					skipGroups: (grps != null && grps === false) ? false : true
+				};
+				if (cellCB) params.processCellCallback = pageController[cellCB];
+				var exportColumns = [];
+				var allCols = gridOptions.columnApi.getAllColumns();
+				allCols.forEach(function (col) {
+					if (col.colId != "edit" && col.colId != "delete")
+						exportColumns.push(col.colId);
+				});
+				if (!pivot) params.columnKeys = exportColumns;
+				params.fileName = dataTable + "_" + ((new Date()).toJSON()).slice(0, 19) + ".xlsx";
+				gridOptions.api.exportDataAsExcel(params);
+				excelExporting = false;
+			}
 		};
 
 		function replaceVariables(data, html) {
@@ -824,7 +840,7 @@
 
 							if (window.confirm("Are you sure you want to delete " + (params.banner || pageName) + "?")) { //delete this row
 								deleteRow(params.data.sys_id, delTable, detailGridID, deleteIndex);
-								
+
 							}
 						};
 						this.eButton.addEventListener('click', this.eventListener);
@@ -883,9 +899,13 @@
 			};
 		};
 
+		$rootScope.$on("fms.form.closed", function (evt, response) {
+			modalOpen = false;
+		});
 
 		$rootScope.$on("spModel.uiActionComplete", function (evt, response) {
 			$uibModalStack.dismissAll(); //close the modal
+			modalOpen = false;
 
 			var noError = true;
 			if (response.$$uiNotification.length > 0) {
@@ -894,10 +914,10 @@
 			}
 
 			if (noError) {
-				
+
 				var modEventType = "fmsgrid.recordUpdated";
 
-				if (response.isInsert){
+				if (response.isInsert) {
 					updatedID = response.sys_id;
 					modEventType = "fmsgrid.recordAdded";
 				}
@@ -905,7 +925,7 @@
 				var broadcastTable = activeTable;
 
 				if (activeGrid == null) {
-					
+
 					broadcastTable = dataTable;
 
 					//We need to call back to server side to get latest array of records w/ new value
@@ -955,7 +975,7 @@
 							};
 
 						detailGridInfo.api.updateRowData(dataToUpdate);
-						
+
 						detailGridInfo.api.hideOverlay();
 
 						if (childTables[0].banner == 'Project Allocation') { //special case for Allocation Pool details grid
@@ -981,7 +1001,7 @@
 							});
 
 						}
-						
+
 					});
 				}
 
@@ -1001,14 +1021,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>647</sys_mod_count>
+        <sys_mod_count>665</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-30 21:17:47</sys_updated_on>
+        <sys_updated_on>2020-07-31 17:22:16</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>
