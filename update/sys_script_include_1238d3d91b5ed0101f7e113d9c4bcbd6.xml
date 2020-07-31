@@ -10,6 +10,7 @@
         <script><![CDATA[var FMSFinTran = Class.create();
 FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
+	debugMsg: true,
 	allocGrpTable: FMSConstants.TABLE_ALLOCATION_GROUP,
 	projAllocTable: FMSConstants.TABLE_PROJECT_ALLOCATION,
 	finTranView: FMSConstants.VIEW_FIN_TRAN_JOIN,
@@ -46,7 +47,7 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	validateTranFY: function(proj, grp, fy) {
 		var isValid = true;
 		var fyCount = this.getAllocationCount(proj, grp, fy, null);
-		gs.addInfoMessage('FY count: ' + fyCount);
+		if (this.debugMsg) gs.addInfoMessage('FY count: ' + fyCount);
 		if (fyCount == 0) {
 			isValid = false;
 			gs.addErrorMessage("No project allocations found for fiscal year: " + fy + " Update Failed.");
@@ -57,7 +58,7 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	validateTranAllotment: function(proj, grp, fy, allot) {
 		var isValid = true;
 		var allotCount = this.getAllocationCount(proj, grp, fy, allot, null);
-		gs.addInfoMessage('Allotment count: ' + allotCount);
+		if (this.debugMsg) gs.addInfoMessage('Allotment count: ' + allotCount);
 		if (allotCount == 0) {
 			isValid = false;
 			gs.addErrorMessage("No project allocations found for fiscal year: " + fy + " and alloment: " + allot.getDisplayValue() + " Update Failed.");
@@ -68,7 +69,7 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	validateTranAppropriation: function(proj, grp, fy, appro) {
 		var isValid = true;
 		var approCount = this.getAllocationCount(proj, grp, fy, null, appro);
-		gs.addInfoMessage('Appropriation count: ' + approCount);
+		if (this.debugMsg) gs.addInfoMessage('Appropriation count: ' + approCount);
 		if (approCount == 0) {
 			isValid = false;
 			gs.addErrorMessage("No project allocations found for fiscal year: " + fy + " and appropriation: " + appro.getDisplayValue() + " Update Failed.");
@@ -79,9 +80,9 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	validateTranDeficient: function(current, previous) {
 		var isValid = true;
 		var allocAmt = this.getAllocationTotal(current.project_ref.sys_id, current.allocation_group_ref.sys_id, current.fy);
-		gs.addInfoMessage('Allocated Amount is: ' + allocAmt);
+		if (this.debugMsg) gs.addInfoMessage('Allocated Amount is: ' + allocAmt);
 		var tranAmt = this.getObligatedTotal(current.project_ref.sys_id, current.sys_id, current.allocation_group_ref.sys_id, current.fy);
-		gs.addInfoMessage('Obligated Amount is: ' + tranAmt);
+		if (this.debugMsg) gs.addInfoMessage('Obligated Amount is: ' + tranAmt);
 		var remAmt = parseFloat(allocAmt) - (parseFloat(tranAmt) + (parseFloat(current.transaction_total_amt) - parseFloat(previous.transaction_total_amt)));
 		if (remAmt < 0) {
 			isValid = false;
@@ -93,11 +94,11 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	validateTranItemDeficient: function(current, previous) {
 		var isValid = true;
 		var allocAmt = this.getAllocationTotal(current.fin_tran_ref.project_ref.sys_id, current.fin_tran_ref.allocation_group_ref.sys_id, current.fin_tran_ref.fy);
-		gs.addInfoMessage('Allocated Amount is: ' + allocAmt);
+		if (this.debugMsg) gs.addInfoMessage('Allocated Amount is: ' + allocAmt);
 		var tranAmt = this.getObligatedTotal(current.fin_tran_ref.project_ref.sys_id, current.fin_tran_ref.sys_id, current.fin_tran_ref.allocation_group_ref.sys_id, current.fin_tran_ref.fy);
-		gs.addInfoMessage('Obligated Amount is: ' + tranAmt);
+		if (this.debugMsg) gs.addInfoMessage('Obligated Amount is: ' + tranAmt);
 		var remAmt = parseFloat(allocAmt) - parseFloat(tranAmt);
-		gs.addInfoMessage('Remaining Amount is: ' + remAmt);
+		if (this.debugMsg) gs.addInfoMessage('Remaining Amount is: ' + remAmt);
 		if (parseFloat(current.item_total) > parseFloat(remAmt) + parseFloat(previous.item_total)) {
 			isValid = false;
 			gs.addErrorMessage("Unable to obligate...insufficient funds remain for the Allocation Group specified.  Funds needed: " + this.formatMoney(Math.abs(parseFloat(current.item_total) - (parseFloat(remAmt) + parseFloat(previous.item_total)))) + " Update Failed.");
@@ -184,13 +185,13 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-07-28 16:48:32</sys_created_on>
         <sys_id>1238d3d91b5ed0101f7e113d9c4bcbd6</sys_id>
-        <sys_mod_count>79</sys_mod_count>
+        <sys_mod_count>81</sys_mod_count>
         <sys_name>FMSFinTran</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_1238d3d91b5ed0101f7e113d9c4bcbd6</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-30 17:16:24</sys_updated_on>
+        <sys_updated_on>2020-07-31 13:53:12</sys_updated_on>
     </sys_script_include>
 </record_update>
