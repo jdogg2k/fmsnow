@@ -5,12 +5,12 @@
         <api_name>x_g_irm_fms.FMSFinTran</api_name>
         <caller_access/>
         <client_callable>false</client_callable>
-        <description/>
+        <description>FMS Financial Transaction related functions</description>
         <name>FMSFinTran</name>
         <script><![CDATA[var FMSFinTran = Class.create();
 FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
-	debugMsg: true,
+	debugMsg: false,
 	allocGrpTable: FMSConstants.TABLE_ALLOCATION_GROUP,
 	projAllocTable: FMSConstants.TABLE_PROJECT_ALLOCATION,
 	finTranView: FMSConstants.VIEW_FIN_TRAN_JOIN,
@@ -81,13 +81,16 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		var isValid = true;
 		var allocAmt = this.getAllocationTotal(current.project_ref.sys_id, current.allocation_group_ref.sys_id, current.fy);
 		if (this.debugMsg) gs.addInfoMessage('Allocated Amount is: ' + allocAmt);
-		var tranAmt = this.getObligatedTotal(current.project_ref.sys_id, current.sys_id, current.allocation_group_ref.sys_id, current.fy);
+		var tranAmt = this.getObligatedTotal(current.project_ref.sys_id, current.sys_id, null, current.allocation_group_ref.sys_id, current.fy);
 		if (this.debugMsg) gs.addInfoMessage('Obligated Amount is: ' + tranAmt);
 		var remAmt = parseFloat(allocAmt) - parseFloat(tranAmt);
 		if (this.debugMsg) gs.addInfoMessage('Remaining Amount is: ' + remAmt);
-		if (parseFloat(current.transaction_total_amt) > parseFloat(remAmt) + parseFloat(previous.transaction_total_amt)) {
+		var oldAmt = previous.transaction_total_amt;
+		if (previous.tran_status != 'Obligated' || previous.getValue('void') == true) 
+			oldAmt = 0;
+		if (parseFloat(current.transaction_total_amt) > parseFloat(remAmt) + oldAmt) {
 			isValid = false;
-			gs.addErrorMessage("Unable to obligate...insufficient funds remain for the Allocation Group specified.  Funds needed: " + this.formatMoney(Math.abs(parseFloat(current.transaction_total_amt - (parseFloat(remAmt) + parseFloat(previous.transaction_total_amt))))) + " Update Failed.");
+			gs.addErrorMessage("Unable to obligate...insufficient funds remain for the Allocation Group specified.  Funds needed: " + this.formatMoney(Math.abs(parseFloat(current.transaction_total_amt - (parseFloat(remAmt) + oldAmt)))) + " Update Failed.");
 		}
 		return isValid;
 	},
@@ -96,7 +99,7 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		var isValid = true;
 		var allocAmt = this.getAllocationTotal(current.fin_tran_ref.project_ref.sys_id, current.fin_tran_ref.allocation_group_ref.sys_id, current.fin_tran_ref.fy);
 		if (this.debugMsg) gs.addInfoMessage('Allocated Amount is: ' + allocAmt);
-		var tranAmt = this.getObligatedTotal(current.fin_tran_ref.project_ref.sys_id, current.fin_tran_ref.sys_id, current.fin_tran_ref.allocation_group_ref.sys_id, current.fin_tran_ref.fy);
+		var tranAmt = this.getObligatedTotal(current.fin_tran_ref.project_ref.sys_id, null, current.fti_sys_id, current.fin_tran_ref.allocation_group_ref.sys_id, current.fin_tran_ref.fy);
 		if (this.debugMsg) gs.addInfoMessage('Obligated Amount is: ' + tranAmt);
 		var remAmt = parseFloat(allocAmt) - (parseFloat(tranAmt) + (parseFloat(current.item_total) - parseFloat(previous.item_total)));
 		if (this.debugMsg) gs.addInfoMessage('Remaining Amount is: ' + remAmt);
@@ -149,9 +152,10 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		return allocAmt;
 	},
 
-	getObligatedTotal: function(projKey, tranKey, grpKey, fy) {
+	getObligatedTotal: function(projKey, tranKey, itemKey, grpKey, fy) {
         var txn = new GlideAggregate(this.finTranView);
-		txn.addQuery('ft_sys_id', '!=', tranKey); 
+		if (tranKey != null) txn.addQuery('ft_sys_id', '!=', tranKey); 
+		if (itemKey != null) txn.addQuery('fti_sys_id', '!=', itemKey); 
         txn.addQuery('ft_void', false);
         txn.addQuery('ft_fy', fy);
         txn.addQuery('ft_allocation_group_ref', grpKey);
@@ -186,13 +190,13 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-07-28 16:48:32</sys_created_on>
         <sys_id>1238d3d91b5ed0101f7e113d9c4bcbd6</sys_id>
-        <sys_mod_count>82</sys_mod_count>
+        <sys_mod_count>87</sys_mod_count>
         <sys_name>FMSFinTran</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_1238d3d91b5ed0101f7e113d9c4bcbd6</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-31 15:04:41</sys_updated_on>
+        <sys_updated_on>2020-08-03 18:33:33</sys_updated_on>
     </sys_script_include>
 </record_update>

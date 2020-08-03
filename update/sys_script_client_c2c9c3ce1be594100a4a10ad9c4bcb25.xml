@@ -18,21 +18,7 @@
             return false;
 
         }
-    }
-	if (g_form.getValue('tran_status').toUpperCase() == "OBLIGATED") {
-        if (g_form.getValue('obligation_date')=='') {
-            g_form.showErrorBox('obligation_date', "Obligation Date is required when status is 'Obligated'");
-            return false;
-
-        }
-    }
-	if (g_form.getValue('tran_status').toUpperCase() == "OBLIGATED") {
-        if (g_form.getValue('allocation_group_ref')=='') {
-            g_form.showErrorBox('allocation_group_ref', "Allocation Group is required when status is 'Obligated'");
-            return false;
-
-        }
-    }
+	}
 	
 }]]></script>
         <sys_class_name>sys_script_client</sys_class_name>
@@ -41,7 +27,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>c2c9c3ce1be594100a4a10ad9c4bcb25</sys_id>
-        <sys_mod_count>5</sys_mod_count>
+        <sys_mod_count>7</sys_mod_count>
         <sys_name>Financial Transaction Validation</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
@@ -49,7 +35,7 @@
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_client_c2c9c3ce1be594100a4a10ad9c4bcb25</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-23 17:34:28</sys_updated_on>
+        <sys_updated_on>2020-08-03 14:48:06</sys_updated_on>
         <table>x_g_irm_fms_fin_tran</table>
         <type>onSubmit</type>
         <ui_type>10</ui_type>

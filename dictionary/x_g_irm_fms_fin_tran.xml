@@ -43,7 +43,7 @@
         </element>
         <element label="Notes" max_length="500" name="notes" type="string"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
-        <element label="Obligation" max_length="15" name="obligation" type="string"/>
+        <element label="Obligation Number" max_length="15" name="obligation" type="string"/>
         <element label="Obligation Date" max_length="40" name="obligation_date" type="glide_date"/>
         <element label="Approved" max_length="40" name="po_approved" type="boolean"/>
         <element label="AQM Approval Date" max_length="40" name="po_aqm_approval_date" type="glide_date"/>
