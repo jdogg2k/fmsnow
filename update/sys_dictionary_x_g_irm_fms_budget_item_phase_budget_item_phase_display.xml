@@ -11,7 +11,7 @@
 		display = "[new item phasing]";
 	}
 	else {
-		display = current.fiscal_month.toString() + '\t\t\t\t[' + current.fiscal_month.toString() + ']'; 
+		display = current.fiscal_month.toString() + '[' + current.fiscal_month.toString() + ']'; 
 	}
 	return display;
 
@@ -59,14 +59,14 @@
         <sys_created_by>markeljr@state.gov</sys_created_by>
         <sys_created_on>2020-04-10 11:19:27</sys_created_on>
         <sys_id>c13cf41e1b4014500a4a10ad9c4bcbf6</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>Budget Item Phase display</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_dictionary_x_g_irm_fms_budget_item_phase_budget_item_phase_display</sys_update_name>
-        <sys_updated_by>markeljr@state.gov</sys_updated_by>
-        <sys_updated_on>2020-04-10 11:21:49</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-08-04 12:03:53</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>

@@ -6,7 +6,7 @@
         <element label="Contract" max_length="32" name="contract_ref" reference="x_g_irm_fms_contract" reference_qual="javascript: &quot;organization_refIN&quot; + new OrgHierarchy().GetParentOrgs(current.project_ref.organization_ref);" type="reference" use_reference_qualifier="advanced"/>
         <element label="Cost Pool" max_length="32" name="cost_pool_ref" reference="x_g_irm_fms_cost_pool" type="reference"/>
         <element label="Description" max_length="50" name="description" type="string"/>
-        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new financial transaction]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.description.toString() + '\t\t\t\t[' + current.tran_type.toString() + '-' + current.tran_status + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" display="true" label="Fin Tran display" max_length="256" name="fin_tran_display" read_only="true" type="string" virtual="true"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new financial transaction]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.description.toString() + '[' + current.tran_type.toString() + '-' + current.tran_status + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" display="true" label="Fin Tran display" max_length="256" name="fin_tran_display" read_only="true" type="string" virtual="true"/>
         <element choice="3" choice_field="fy" choice_table="x_g_irm_fms_project_allocation" default="javascript:new Date().getFullYear();" label="FY" mandatory="true" max_length="40" name="fy" type="integer">
             <choice>
                 <element inactive_on_update="false" label="2000" sequence="0" value="2000"/>
@@ -59,7 +59,7 @@
         <element label="Requestor" max_length="50" name="po_requestor" type="string"/>
         <element label="Tracking Number" max_length="15" name="po_tracking_number" type="string"/>
         <element attributes="ref_auto_completer=AJAXTableCompleter,ref_ac_columns=appropriation;appropriation_ref.appropriation_type" dependent="project_ref" dependent_on_field="project_ref" label="Appropriation" mandatory="true" max_length="32" name="project_appropriation_ref" reference="x_g_irm_fms_project_appropriation" reference_qual="appropriation_ref.active=true" reference_qual_condition="appropriation_ref.active=true" type="reference" use_dependent_field="true"/>
-        <element label="Project" mandatory="true" max_length="32" name="project_ref" reference="x_g_irm_fms_project" reference_qual="javascript: &quot;organization_refIN&quot; + new OrgHierarchy().GetUserOrgs();" type="reference" use_reference_qualifier="advanced"/>
+        <element label="Project" mandatory="true" max_length="32" name="project_ref" reference="x_g_irm_fms_project" reference_qual="javascript: &quot;organization_refIN&quot; + new FMSUtilities().getFilteredOrgs();" type="reference" use_reference_qualifier="advanced"/>
         <element label="Purchase Order" max_length="32" name="purchase_order" reference="x_g_irm_fms_fin_tran_po" type="reference"/>
         <element label="Received By" max_length="50" name="received_by" type="string"/>
         <element label="Reconciliation Date" max_length="40" name="reconcile_date" type="glide_date"/>

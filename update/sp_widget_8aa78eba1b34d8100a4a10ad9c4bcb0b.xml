@@ -69,6 +69,9 @@
             });
 		});
     }
+    c.clearPhasing = function() {
+		c.data.itemPhasing.forEach(function(itm) { itm.phase_amt = 0; });
+	}
     c.calcQtrTotal = function(qtr) {
 		var tot = 0.00;
 		for (i = 0; i <= 11; i++) {
@@ -286,13 +289,8 @@
     }, 250);
 
 	$rootScope.$on('BudgetDetailsGridChanged', function(event, args) {
-		if (!args.gridType == 'phasing') return;
-        c.server.get({
-            mode: "refresh",
-            budget_id: c.targetBudget
-        }).then(function(resp) {
-            phaseManager.setGridData(resp.data.tableData); //set grid data
-        });
+		if (!args.grid_type == 'phasing') return;
+        RefreshGrid(c.targetBudget);
     });
 
 	$rootScope.$on('fmsgrid.RecordInserted', function(event, args) {
@@ -318,6 +316,7 @@
 			c.targetOrg = resp.data.budgetData['project_ref.organization_ref'];
 			c.targetBudget = resp.data.selectedBudget;
             phaseManager.setGridData(resp.data.tableData); //set grid data
+			phaseManager.fitColumns();
         });
 	}
 }]]></client_script>
@@ -377,14 +376,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-19 12:52:41</sys_created_on>
         <sys_id>8aa78eba1b34d8100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>457</sys_mod_count>
+        <sys_mod_count>465</sys_mod_count>
         <sys_name>Budget Item Phase Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_8aa78eba1b34d8100a4a10ad9c4bcb0b</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-29 21:01:54</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-08-04 15:39:19</sys_updated_on>
         <template><![CDATA[  <div class="container">
     <div class="row">
       <div class="form-group col-sm-12 fms-list-header">
@@ -454,7 +453,8 @@
         </div>
     </div>
     <div class="panel-footer text-right">
-    	<button class="btn btn-warning" data-dismiss="dialog" ng-click="$dismiss()">${Cancel}</button>
+    	<button class="btn btn-secondary" data-dismiss="dialog" ng-click="$dismiss()">${Cancel}</button>
+    	<button class="btn btn-warning" ng-click="c.clearPhasing()">${Clear}</button>
     	<button class="btn btn-primary" ng-click="c.closeModal()">${Save}</button>
     </div>
   </div>
