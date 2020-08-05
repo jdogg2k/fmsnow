@@ -3,10 +3,7 @@
         <category>custom</category>
         <client_script><![CDATA[function ($timeout) {
 	/* widget controller */
-	
-	//set AG Grid License
-	agGrid.LicenseManager.setLicenseKey("CompanyName=US Department of State,LicensedApplication=IRM ServiceNow,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=0,AssetReference=AG-009086,ExpiryDate=23_July_2021_[v2]_MTYyNjk5NDgwMDAwMA==73e86f1a865690deb33863c69b3ae478");
-	
+
 	var c = this;
 	c.targetOrg = c.data.selectedOrg;
 	c.usePivot = true;
@@ -15,6 +12,10 @@
 	c.userAuth = $rootScope.userAuth;
 	c.selectedBudgetType = "Baseline";
 	c.datesSelected = false;
+	c.selectedProject = "";
+
+	if (c.data.projects)
+		c.selectedProject = c.data.projects[0].value;
 
 	c.reportData = [];
 
@@ -99,6 +100,9 @@
 
 		if (c.data.reportType == "budget_plans" || c.data.reportType == "phasing")
 			reportObj.budget_type = c.selectedBudgetType;
+
+		if (c.data.reportType == "phasing")
+			reportObj.project = c.selectedProject;
 
 		if (c.data.reportType == "obligation")
 			reportObj.obStatus = c.selectedObligationType;
@@ -331,16 +335,17 @@
 			filter: true,
 			hide: c.hideValues
 		});
-
-        colArray.push({
-            headerName: 'Project',
-            field: 'project',
-            pivot: false,
-            enablePivot: true,
-            enableRowGroup: true,
-			filter: true,
-			hide: c.hideValues
-        });
+		if (c.data.reportType != "phasing") {
+			colArray.push({
+				headerName: 'Project',
+				field: 'project',
+				pivot: false,
+				enablePivot: true,
+				enableRowGroup: true,
+				filter: true,
+				hide: c.hideValues
+			});
+		}
         colArray.push({
             headerName: 'OMB Project',
             field: 'omb_project',
@@ -1068,7 +1073,19 @@
 		c.generateReport();
 
 		$rootScope.$on('OrgChanged', function (event, args) {
-			c.generateReport();
+			if (c.data.reportType == "phasing") {
+				var projectObj = {
+					mode: 'refreshProjects'
+				};
+		
+				c.server.get(projectObj).then(function (projResults) {
+					c.data.projects = projResults.data.projects;
+					c.selectedProject = c.data.projects[0].value;
+					c.generateReport();
+				});
+			} else {
+				c.generateReport();
+			}
 		});
 	}
 ]]></client_script>
@@ -1256,6 +1273,7 @@
         <script><![CDATA[(function (options) {
 
 	data.reportType = options.report_type.toString();
+	data.projects = [];
 
 	var OrgHierarchy = new x_g_irm_fms.OrgHierarchy(); //org helper
 	var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
@@ -1299,6 +1317,19 @@
 		newObj.budget_code = tItem.budget_code;
 		newObj.budget_code_short = tItem.budget_code_short;
 		return newObj;
+	}
+
+	function getProjects() {
+		var projectQ = new GlideRecord(FMSConstants.TABLE_PROJECT);
+		projectQ.addEncodedQuery("organization_ref=" + data.selectedOrgID);
+		projectQ.orderBy("project_name");
+		projectQ.query();
+		while (projectQ.next()) {
+			var tProjObj = {};
+			tProjObj.name = projectQ.project_name.toString();
+			tProjObj.value = projectQ.sys_id.toString();
+			data.projects.push(tProjObj);
+		}
 	}
 
 	function round2Fixed(value) {
@@ -1385,7 +1416,13 @@
 	else
 		data.selectedOrgID = session.getClientData('org_id');
 
+	if ($sp.getParameter("id") == "phasing_plan_report")
+		getProjects();
+
 	if (input) {
+		if (input.mode == "refreshProjects") {
+			getProjects();
+		}
 		if (input.mode == "buildReport") {
 			data.reportData = [];
 
@@ -2079,7 +2116,7 @@
 				data.phasingData = [];
 
 				var phasingQuery = new GlideRecord(FMSConstants.TABLE_BUDGET_ITEM_PHASE);
-				phasingQuery.addEncodedQuery("budget_item_ref.budget_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^budget_item_ref.budget_ref.fy=" + input.fy + "^budget_item_ref.budget_ref.budget_type=" + input.budget_type);
+				phasingQuery.addEncodedQuery("budget_item_ref.budget_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^budget_item_ref.budget_ref.project_ref=" + input.project + "^budget_item_ref.budget_ref.fy=" + input.fy + "^budget_item_ref.budget_ref.budget_type=" + input.budget_type);
 				phasingQuery.query();
 				while (phasingQuery.next()) {
 					var phasingItem = {};
@@ -2096,7 +2133,6 @@
 						phasingItem.budget = phasingQuery.budget_item_ref.budget_ref.getDisplayValue();
 						phasingItem.org_ref = phasingQuery.budget_item_ref.budget_ref.project_ref.organization_ref.toString();
 						phasingItem.org_name = phasingQuery.budget_item_ref.budget_ref.project_ref.organization_ref.getDisplayValue();
-						phasingItem.project = phasingQuery.budget_item_ref.budget_ref.project_ref.getDisplayValue();
 						phasingItem.omb_project = phasingQuery.budget_item_ref.budget_ref.project_ref.omb_project_name.toString();
 						phasingItem.project_ref = phasingQuery.budget_item_ref.budget_ref.project_ref.toString();
 						phasingItem.investment = phasingQuery.budget_item_ref.budget_ref.project_ref.investment.investment.toString();
@@ -2429,14 +2465,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>666</sys_mod_count>
+        <sys_mod_count>681</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-31 13:57:09</sys_updated_on>
+        <sys_updated_on>2020-08-05 15:39:27</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
@@ -2470,6 +2506,13 @@
                         <label for="selBudgetType" class="selectLabel">Budget Type:</label>
                         <select class="reportSelect" id="selBudgetType" ng-model="c.selectedBudgetType" ng-change="c.generateReport();">
                             <option ng-repeat="type in c.data.budgetTypes" value="{{type.value}}">{{type.name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="yearSelect orgSpan" ng-if="c.data.reportType == 'phasing'">
+                        <label for="selProject" class="selectLabel">Project:</label>
+                        <select class="reportSelect" id="selProject" ng-model="c.selectedProject" ng-change="c.generateReport();">
+                            <option ng-repeat="project in c.data.projects" value="{{project.value}}">{{project.name}}
                             </option>
                         </select>
                     </div>
