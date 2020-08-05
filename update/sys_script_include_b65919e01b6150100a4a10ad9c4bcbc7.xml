@@ -99,19 +99,33 @@ canDeleteOMBCategory: function(catID) {
     return canDelete;
 },
 
+canDeleteAllocationGroup: function(allocateID) {
+
+    /* JLR - This function will check if any critical Financial Transactions or Project Allocations is associated with an Allocation Group before allowing it to be deleted
+    */
+    var canDelete = true;
+    var groupFinTran = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "allocation_group_ref=" + allocateID);
+    var groupProjAlloc = FMSUtility.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, "allocation_group_ref=" + allocateID);
+    
+    if (groupFinTran.length > 0 || groupProjAlloc.length > 0)
+        canDelete = false;
+
+    return canDelete;
+},
+
     type: 'FMSPermissions'
 });]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-06-18 16:32:15</sys_created_on>
         <sys_id>b65919e01b6150100a4a10ad9c4bcbc7</sys_id>
-        <sys_mod_count>5</sys_mod_count>
+        <sys_mod_count>7</sys_mod_count>
         <sys_name>FMSPermissions</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_b65919e01b6150100a4a10ad9c4bcbc7</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-19 14:15:57</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-08-05 17:15:29</sys_updated_on>
     </sys_script_include>
 </record_update>

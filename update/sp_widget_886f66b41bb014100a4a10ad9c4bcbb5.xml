@@ -139,7 +139,10 @@
 			sortable: false,
             cellRenderer: 'deleteCell',
 			cellRendererParams: function(params) { 
-				return { "show": c.canDelete(c.userAuth, params.data) }; 
+				return { 
+                    "show": c.canDelete(c.userAuth, params.data),
+                    "banner": "Allocation Group - " + params.data.group_name
+                }; 
 			}
         }
     ];
@@ -195,6 +198,7 @@
 	data.selectedOrg = "";
 	data.selectedProj = "";
     var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+    var FMSPermissions = new x_g_irm_fms.FMSPermissions(); //helper utility for FMS permissions
 
     var session = gs.getSession();
 	if (session.getClientData('org_id') && session.getClientData('org_id').length > 0)
@@ -204,15 +208,19 @@
 
     if (input) { //input holds the data coming back to the server
         if (input.mode == "deleteRow") {
-            //if (FMSPermissions.canDeleteAllocationGroup(input.rowID)) {
-				FMSUtility.deleteRecord(FMSConstants.TABLE_ALLOCATION_GROUP, input.rowID);
-            /*
-        TODO ADD IN LOGIC TO CHECK FOR EXISTING relationships here.
-        
-        } else {
+            if (FMSPermissions.canDeleteAllocationGroup(input.rowID)) {
+                FMSUtility.deleteRecord(FMSConstants.TABLE_ALLOCATION_GROUP, input.rowID);
+            } else {
+
+                //disable the group instead
+                var disableQuery = new GlideRecord(FMSConstants.TABLE_ALLOCATION_GROUP);
+                disableQuery.get(input.rowID);
+                disableQuery.disabled = true;
+                disableQuery.update();
+
 				data.isError = true;
-				data.errorMsg = "This Contract cannot be deleted as it is linked to existing transactions";
-			}*/
+				data.errorMsg = "This Allocation Group has been set to a disabled state.  It cannot be deleted from the system as it is currently linked to existing supporting records.";
+			}
         }
         if (input.mode == "setProj") {
             data.selectedProj = input.proj_id.toString();
@@ -232,14 +240,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-13 10:38:22</sys_created_on>
         <sys_id>886f66b41bb014100a4a10ad9c4bcbb5</sys_id>
-        <sys_mod_count>40</sys_mod_count>
+        <sys_mod_count>44</sys_mod_count>
         <sys_name>Allocation Group Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_886f66b41bb014100a4a10ad9c4bcbb5</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-04 21:38:21</sys_updated_on>
+        <sys_updated_on>2020-08-05 18:52:40</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
