@@ -25,7 +25,7 @@
                 <element inactive_on_update="false" label="Task Order" value="Task Order"/>
             </choice>
         </element>
-        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new contract]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.contract_piid.toString() + '\t\t\t\t[' + current.vendor_names.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;})(current);" display="true" label="Contract display" max_length="256" name="contract_display" type="string" virtual="true"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new contract]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.contract_piid.toString() + ' [' + current.vendor_names.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;})(current);" display="true" label="Contract display" max_length="256" name="contract_display" type="string" virtual="true"/>
         <element choice="1" label="IDV Type" max_length="20" name="contract_idv_type" type="string">
             <choice>
                 <element inactive_on_update="false" label="Basic Ordering Agreement" value="BOA"/>

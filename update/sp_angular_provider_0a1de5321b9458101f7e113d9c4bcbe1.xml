@@ -926,128 +926,139 @@
 			modalOpen = false;
 		});
 
+		if ($rootScope.page.id == "financial_transaction_list") {
+			$rootScope.addingNewContract = false;
+		}
+
 		$rootScope.$on("spModel.uiActionComplete", function (evt, response) {
-			$uibModalStack.dismissAll(); //close the modal
-			modalOpen = false;
 
-			var noError = true;
-			if (response.$$uiNotification.length > 0) {
-				if (response.$$uiNotification[0].type == "error")
-					noError = false;
-			}
+			if (!($rootScope.page.id == "financial_transaction_list" && $rootScope.addingNewContract == true)) {
 
-			if (noError) {
+				$uibModalStack.dismissAll(); //close the modal
+				modalOpen = false;
 
-				var modEventType = "fmsgrid.recordUpdated";
-
-				if (response.isInsert) {
-					updatedID = response.sys_id;
-					modEventType = "fmsgrid.recordAdded";
+				var noError = true;
+				if (response.$$uiNotification.length > 0) {
+					if (response.$$uiNotification[0].type == "error")
+						noError = false;
 				}
 
-				var broadcastTable = activeTable;
+				if (noError) {
 
-				if (activeGrid == null) {
+					var modEventType = "fmsgrid.recordUpdated";
 
-					broadcastTable = dataTable;
+					if (response.isInsert) {
+						updatedID = response.sys_id;
+						modEventType = "fmsgrid.recordAdded";
+					}
 
-					//We need to call back to server side to get latest array of records w/ new value
-					pageController.server.get({
-						mode: 'getData' //this mode doesn't really matter, just refresh the data
-					}).then(function (saveResp) {
+					var broadcastTable = activeTable;
 
-						var filter = gridOptions.api.getFilterModel();
-						gridOptions.api.setRowData(saveResp.data[dataArray]);
-						gridOptions.api.setFilterModel(filter);
-						gridOptions.api.sizeColumnsToFit();
+					if (activeGrid == null) {
 
-						//highlight the modded record
-						gridOptions.api.forEachNode(function (rowNode, index) {
-							if (rowNode.data.sys_id == updatedID) {
-								gridOptions.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
-							}
-						});
+						broadcastTable = dataTable;
 
-					});
+						//We need to call back to server side to get latest array of records w/ new value
+						pageController.server.get({
+							mode: 'getData' //this mode doesn't really matter, just refresh the data
+						}).then(function (saveResp) {
 
-				} else {
-
-					var detailGridInfo = gridOptions.api.getDetailGridInfo(activeGrid);
-					detailGridInfo.api.showLoadingOverlay();
-
-					if (!response.isInsert)
-						updatedID = activeRow;
-
-					//GET RECORD DATA
-					pageController.server.get({
-						mode: 'getNewRec',
-						newSysID: updatedID,
-						targetTable: activeTable
-					}).then(function (saveResp) {
-
-						var savedRec = saveResp.data.newRec;
-
-						var dataToUpdate = {
-							update: [savedRec]
-						};
-
-						if (response.isInsert)
-							dataToUpdate = {
-								add: [savedRec],
-								addIndex: 0
-							};
-
-						detailGridInfo.api.updateRowData(dataToUpdate);
-
-						detailGridInfo.api.hideOverlay();
-
-						if (childTables[0].banner == 'Project Allocation') { //special case for Allocation Pool details grid
-
-							var updatedParent = saveResp.data.parentRec;
-							gridOptions.api.forEachNode(function (rowNode, index) {
-								if (rowNode.data) {
-									if (rowNode.data.sys_id == updatedParent.sys_id) {
-										rowNode.setDataValue("allocated_amt", updatedParent.allocated_amt);
-										rowNode.setDataValue("distributed_amt", updatedParent.distributed_amt);
-										rowNode.setDataValue("unassigned_amt", updatedParent.unassigned_amt);
-									}
-								}
-							});
-
-						} 
-					 else	if (childTables[0].banner == 'Transaction Items') { //special case for Financial Transaction details grid
-
-							var updatedParent = saveResp.data.parentRec;
-							gridOptions.api.forEachNode(function (rowNode, index) {
-								if (rowNode.data) {
-									if (rowNode.data.sys_id == updatedParent.sys_id) {
-										rowNode.setDataValue("transaction_total_amt", updatedParent.transaction_total_amt);
-										
-									}
-								}
-							});
-
-						}
-						
-						else { //all other grids
+							var filter = gridOptions.api.getFilterModel();
+							gridOptions.api.setRowData(saveResp.data[dataArray]);
+							gridOptions.api.setFilterModel(filter);
+							gridOptions.api.sizeColumnsToFit();
 
 							//highlight the modded record
-							detailGridInfo.api.forEachNode(function (rowNode, index) {
-								if (rowNode.data.sys_id == updatedID) {
-									detailGridInfo.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
+							gridOptions.api.forEachNode(function (rowNode, index) {
+								if (rowNode.data) {
+									if (rowNode.data.sys_id == updatedID) {
+										gridOptions.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
+									}
 								}
 							});
 
-						}
+						});
 
+					} else {
+
+						var detailGridInfo = gridOptions.api.getDetailGridInfo(activeGrid);
+						detailGridInfo.api.showLoadingOverlay();
+
+						if (!response.isInsert)
+							updatedID = activeRow;
+
+						//GET RECORD DATA
+						pageController.server.get({
+							mode: 'getNewRec',
+							newSysID: updatedID,
+							targetTable: activeTable
+						}).then(function (saveResp) {
+
+							var savedRec = saveResp.data.newRec;
+
+							var dataToUpdate = {
+								update: [savedRec]
+							};
+
+							if (response.isInsert)
+								dataToUpdate = {
+									add: [savedRec],
+									addIndex: 0
+								};
+
+							detailGridInfo.api.updateRowData(dataToUpdate);
+
+							detailGridInfo.api.hideOverlay();
+
+							if (childTables[0].banner == 'Project Allocation') { //special case for Allocation Pool details grid
+
+								var updatedParent = saveResp.data.parentRec;
+								gridOptions.api.forEachNode(function (rowNode, index) {
+									if (rowNode.data) {
+										if (rowNode.data.sys_id == updatedParent.sys_id) {
+											rowNode.setDataValue("allocated_amt", updatedParent.allocated_amt);
+											rowNode.setDataValue("distributed_amt", updatedParent.distributed_amt);
+											rowNode.setDataValue("unassigned_amt", updatedParent.unassigned_amt);
+										}
+									}
+								});
+
+							} 
+						else	if (childTables[0].banner == 'Transaction Items') { //special case for Financial Transaction details grid
+
+								var updatedParent = saveResp.data.parentRec;
+								gridOptions.api.forEachNode(function (rowNode, index) {
+									if (rowNode.data) {
+										if (rowNode.data.sys_id == updatedParent.sys_id) {
+											rowNode.setDataValue("transaction_total_amt", updatedParent.transaction_total_amt);
+											
+										}
+									}
+								});
+
+							}
+							
+							else { //all other grids
+
+								//highlight the modded record
+								detailGridInfo.api.forEachNode(function (rowNode, index) {
+									if (rowNode.data.sys_id == updatedID) {
+										detailGridInfo.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
+									}
+								});
+
+							}
+
+						});
+					}
+
+					//broadcast add or edit to rootscope
+					$rootScope.$broadcast(modEventType, {
+						table: broadcastTable,
+						sys_id: updatedID
 					});
 				}
 
-				//broadcast add or edit to rootscope
-				$rootScope.$broadcast(modEventType, {
-					table: broadcastTable,
-					sys_id: updatedID
-				});
 			}
 		});
 	};
@@ -1059,14 +1070,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>683</sys_mod_count>
+        <sys_mod_count>700</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-05 19:55:50</sys_updated_on>
+        <sys_updated_on>2020-08-06 20:51:01</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

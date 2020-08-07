@@ -56,9 +56,10 @@
 					 filter: 'agNumberColumnFilter',
 			resizable: true,
             cellStyle: {
-                color: 'blue',
+                /*color: 'blue',
                 'text-decoration': 'underline',
-                'cursor': 'pointer'
+                'cursor': 'pointer',
+						     'font-weight':'bold'*/
             }
         },
         {
@@ -107,12 +108,7 @@
             field: 'appropriation',
             headerName: 'Appropriation',
 					 filter: 'agTextColumnFilter',
-			resizable: true,
-            cellStyle: {
-                color: 'blue',
-                'text-decoration': 'underline',
-                'cursor': 'pointer'
-            }
+			resizable: true
         },
         {
             field: 'appropriation_type',
@@ -169,12 +165,7 @@
             field: 'appropriation_type',
             headerName: 'Appropriation Type',
 					 filter: 'agTextColumnFilter',
-			     resizable: true,
-            cellStyle: {
-                color: 'blue',
-                'text-decoration': 'underline',
-                'cursor': 'pointer'
-            }
+			     resizable: true
         },
         {
             field: 'appropriation_type_desc',
@@ -222,12 +213,7 @@
             field: 'budget_code',
             headerName: 'Budget Code',
 					 filter: 'agTextColumnFilter',
-			resizable: true,
-            cellStyle: {
-                color: 'blue',
-                'text-decoration': 'underline',
-                'cursor': 'pointer'
-            }
+			resizable: true
         },
         {
             field: 'budget_code_class',
@@ -275,12 +261,7 @@
             field: 'function_code',
             headerName: 'Function Code',
 					 filter: 'agNumberColumnFilter',
-			resizable: true,
-            cellStyle: {
-                color: 'blue',
-                'text-decoration': 'underline',
-                'cursor': 'pointer'
-            }
+			resizable: true
         },
         {
             field: 'function_desc',
@@ -328,12 +309,7 @@
             field: 'investment',
             headerName: 'Investment',
 					 filter: 'agTextColumnFilter',
-			resizable: true,
-            cellStyle: {
-                color: 'blue',
-                'text-decoration': 'underline',
-                'cursor': 'pointer'
-            }
+			resizable: true
         },
         {
             field: 'investment_desc',
@@ -380,12 +356,7 @@
             field: 'basis_table',
             headerName: 'Basis Table',
 					 filter: 'agTextColumnFilter',
-			resizable: true,
-            cellStyle: {
-                color: 'blue',
-                'text-decoration': 'underline',
-                'cursor': 'pointer'
-            }
+			resizable: true
         },
         {
             field: 'basis_column',
@@ -452,12 +423,7 @@
             field: 'region_code',
             headerName: 'Region Code',
 					 filter: 'agTextColumnFilter',
-			resizable: true,
-            cellStyle: {
-                color: 'blue',
-                'text-decoration': 'underline',
-                'cursor': 'pointer'
-            }
+			resizable: true
         },
         {
             field: 'region_name',
@@ -504,12 +470,7 @@
             field: 'transfer_type',
             headerName: 'Transfer Type',
 					 filter: 'agTextColumnFilter',
-			resizable: true,
-            cellStyle: {
-                color: 'blue',
-                'text-decoration': 'underline',
-                'cursor': 'pointer'
-            }
+			resizable: true
         },
         {
             field: 'transfer_type_code',
@@ -557,12 +518,8 @@
             field: 'post_name',
             headerName: 'Post Name',
 					 filter: 'agTextColumnFilter',
-			resizable: true,
-            cellStyle: {
-                color: 'blue',
-                'text-decoration': 'underline',
-                'cursor': 'pointer'
-            }
+			resizable: true
+          
         },
         {
             field: 'post_type',
@@ -610,8 +567,8 @@
         tableName: c.data.tableName, 
         dataArray: null, 
         pageType: c.data.tableLabel, 
-        linkedField: 'org_code', 
-        detailsPage: 'lookup_table',
+        linkedField: '', 
+        detailsPage: '',
         usePaging: false
     }
 	//	alert(tableName);
@@ -752,14 +709,14 @@
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-07-06 14:18:09</sys_created_on>
         <sys_id>9557e5561bf590100a4a10ad9c4bcb82</sys_id>
-        <sys_mod_count>101</sys_mod_count>
+        <sys_mod_count>108</sys_mod_count>
         <sys_name>Allotment Lookup Table</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_9557e5561bf590100a4a10ad9c4bcb82</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-28 19:10:31</sys_updated_on>
+        <sys_updated_on>2020-08-06 14:00:38</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

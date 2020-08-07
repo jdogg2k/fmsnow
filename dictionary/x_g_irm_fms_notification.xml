@@ -20,6 +20,6 @@
         <element label="Last Run Date" max_length="40" name="last_run_date" type="glide_date_time"/>
         <element label="Message Body" mandatory="true" max_length="2000" name="message_body" type="string"/>
         <element label="Message Subject" mandatory="true" max_length="128" name="message_subject" type="string"/>
-        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new notification]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.message_subject.toString() + '\t\t\t\t[' + current.basis_table + ' / ' + current.basis_column.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;})(current);" display="true" label="Notification display" max_length="256" name="notification_display" type="string" virtual="true"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new notification]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.message_subject.toString() + ' [' + current.basis_table + ' / ' + current.basis_column.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;})(current);" display="true" label="Notification display" max_length="256" name="notification_display" type="string" virtual="true"/>
     </element>
 </database>

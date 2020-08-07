@@ -11,7 +11,7 @@
 		display = "[new appropriation type]";
 	}
 	else {
-		display = current.appropriation_type_desc.toString() + '\t\t\t\t[' + current.appropriation_type.toString() + ']'; 
+		display = current.appropriation_type_desc.toString() + ' [' + current.appropriation_type.toString() + ']'; 
 	}
 	return display;
 })(current);]]></calculation>
@@ -58,14 +58,14 @@
         <sys_created_by>markeljr@state.gov</sys_created_by>
         <sys_created_on>2020-04-08 19:18:54</sys_created_on>
         <sys_id>00c6d0751b0c90501f7e113d9c4bcbd1</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>Appropriation type display</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_dictionary_x_g_irm_fms_appropriation_type_appropriation_type_display</sys_update_name>
-        <sys_updated_by>markeljr@state.gov</sys_updated_by>
-        <sys_updated_on>2020-04-13 14:12:10</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-08-06 11:20:49</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>
