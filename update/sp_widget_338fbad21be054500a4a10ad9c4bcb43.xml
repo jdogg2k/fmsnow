@@ -7,7 +7,30 @@
     c.targetOrg = c.data.selectedOrg;
     c.userAuth = $rootScope.userAuth;
     c.tierMode = "Hide"; //default to this property to show row colors
-	var contractManager = new AGGridFactory();
+    var contractManager = new AGGridFactory();
+    
+    c.tiers = [{
+        name: "All Tiers",
+        value: "all"
+    },
+    {
+        name: "Red",
+        value: "2"
+    },
+    {
+        name: "Yellow",
+        value: "3"
+    },
+    {
+        name: "Green",
+        value: "4"
+    },
+    {
+        name: "Gray",
+        value: "expired"
+    }];
+
+    c.selectedTier = "all";
 	
     c.addNew = function() {
 
@@ -54,6 +77,30 @@
         contractManager.refreshGrid();
     }
 
+    c.filterTiers = function() {
+
+        var priorityFilter = contractManager.gridOpts.api.getFilterInstance('priority_tier');
+        var opStatusFilter = contractManager.gridOpts.api.getFilterInstance('operational_status');
+        
+        priorityFilter.setModel(null);
+        opStatusFilter.setModel(null);
+
+        if (c.selectedTier != "all") {
+            if (c.selectedTier == "expired") {
+                var opFilter = opStatusFilter.getValues().filter(function(value) {
+                    return value == "Expired";
+                });
+                opStatusFilter.setModel({ values: opFilter });
+            } else {
+                var tierFilter = priorityFilter.getValues().filter(function(value) {
+                    return value == c.selectedTier;
+                });
+                priorityFilter.setModel({ values: tierFilter });
+            }
+        }
+        contractManager.gridOpts.api.onFilterChanged();
+    }
+
     $rootScope.$on('OrgDetailsGridChanged', function(event, args) {
         if (args.grid_type == "contract") {
             contractManager.fitColumns();
@@ -94,7 +141,7 @@
         {
             field: 'operational_status',
             headerName: 'Status',
-             filter: 'agSetColumnFilter',
+            filter: 'agSetColumnFilter',
             sort: 'asc',
             suppressMenu: true
             
@@ -163,6 +210,7 @@
         {
             field: 'priority_tier',
             headerName: 'Tier',
+            filter: true,
             hide: true
         },
         {
@@ -436,7 +484,13 @@
 
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css/>
+        <css>.tierSelect {&#13;
+    padding: 6px 12px;&#13;
+    font-size: 14px;&#13;
+    border: 1px solid #ccc;&#13;
+    border-radius: 4px;&#13;
+    margin-right: 5px;&#13;
+}</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -514,14 +568,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-05 17:24:17</sys_created_on>
         <sys_id>338fbad21be054500a4a10ad9c4bcb43</sys_id>
-        <sys_mod_count>220</sys_mod_count>
+        <sys_mod_count>229</sys_mod_count>
         <sys_name>Contract Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_338fbad21be054500a4a10ad9c4bcb43</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-03 16:54:56</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-08-07 20:52:19</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
@@ -531,6 +585,12 @@
           <a href="javascript:void(0)" ng-click="c.toggleTiers();" class="btn btn-danger excel-button">{{c.tierMode}} Tier Colors</a>
           <a href="javascript:void(0)" ng-click="c.exportExcel();" class="btn btn-primary excel-button new-button">Export to Excel</a>
           <a href="javascript:void(0)" ng-click="c.addNew();" ng-show="c.canAdd()" class="btn btn-info new-button">Add Contract</a>
+          
+          <label for="selTier" class="selectLabel">Filter By Contract Tier:</label>
+          <select class="tierSelect" id="selTier" ng-model="c.selectedTier" ng-change="c.filterTiers()">
+              <option ng-repeat="tier in c.tiers" value="{{tier.value}}">{{tier.name}}
+              </option>
+          </select>
         </div>
       </div>
     </div>
