@@ -12,7 +12,7 @@ organizationsUtils.prototype = {
     initialize: function() {},
 
     getChildOrganizations: function(parent) {
-		
+
         var childOrganization_id = '';
         if (parent) {
             var grAllocationPool = new GlideRecord('x_g_irm_fms_allocation_pool');
@@ -34,9 +34,28 @@ organizationsUtils.prototype = {
                     return '';
                 }
             }
-			return childOrganization_id;
+            return childOrganization_id;
         }
     },
+
+    getChildrenOrg: function(orgsys_id, orgobj) {
+        gs.info("include 0" +orgsys_id+"test");
+        var gr_exist = new GlideRecord("x_g_irm_fms_project");
+        gr_exist.addQuery("sys_id", orgobj);
+        gr_exist.query();
+        if (gr_exist.next()) {
+			var orID= gr_exist.organization_ref;
+            //gs.info("include 2 " + new OrgHierarchy().getOrgChildren(orgsys_id));
+            return new OrgHierarchy().getOrgChildren(orID);
+        } else {
+				if(orgsys_id=='')
+					return new OrgHierarchy().getUserOrgs();
+            gs.info("include 1 " + new OrgHierarchy().getUserOrgs());
+            return new OrgHierarchy().getUserOrgs();
+        }
+
+    },
+
 
     type: 'organizationsUtils'
 };]]></script>
@@ -44,13 +63,13 @@ organizationsUtils.prototype = {
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-07-17 18:18:46</sys_created_on>
         <sys_id>7926cb751bc6dc100a4a10ad9c4bcbcc</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>19</sys_mod_count>
         <sys_name>organizationsUtils</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_7926cb751bc6dc100a4a10ad9c4bcbcc</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-17 18:36:31</sys_updated_on>
+        <sys_updated_on>2020-08-10 19:57:26</sys_updated_on>
     </sys_script_include>
 </record_update>

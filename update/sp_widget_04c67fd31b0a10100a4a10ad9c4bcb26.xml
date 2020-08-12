@@ -7,7 +7,7 @@
     c.targetOrg = c.data.selectedOrg;
     c.targetProj = c.data.selectedProj;
     c.userAuth = $rootScope.userAuth;
-    c.selectedObligation = "Enter Obligation";
+    c.selectedObligation = c.data.selectedObligation;
     c.tabledata = [];
     c.data.totals_display = {
         trans: "",
@@ -403,9 +403,11 @@
 
 	data.selectedOrg = "";
 	data.selectedProj = "";
+	data.selectedObligation = "Enter Obligation";
     var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
 
     var filter = "obligation=NOTHING";
+	if ($sp.getParameter("obligation_id") && $sp.getParameter("obligation_id").length > 0) data.selectedObligation = $sp.getParameter("obligation_id");
     var contractIncludes = [ 'contract_ref.contract_piid' ];
     var session = gs.getSession();
 
@@ -413,7 +415,7 @@
         if (input.mode == "getDetailData") {
             data[input.detailTable] = FMSUtility.getTableData(input.detailTable, input.parentRef + '=' + input.parentID, true); 
         }
-			 if (input.mode == "getNewRec") {
+		if (input.mode == "getNewRec") {
            data.newRec = FMSUtility.getTableData(input.targetTable, "sys_id=" + input.newSysID, true)[0];
         }
         if (input.mode == "deleteRow") {
@@ -453,7 +455,7 @@
     else if (data.selectedOrg.length > 0) filter = "project_ref.organization_ref=" + data.selectedOrg;*/
 
     //var appropriationTypeInclude = [ 'project_appropriation_ref.appropriation_ref.appropriation_type.appropriation_type_display' ];
-                
+               
     data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, filter, true, contractIncludes);
     data.invoiceData = FMSUtility.getTableData(FMSConstants.TABLE_INVOICE, filter, true);
 
@@ -490,14 +492,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-07-22 13:33:31</sys_created_on>
         <sys_id>04c67fd31b0a10100a4a10ad9c4bcb26</sys_id>
-        <sys_mod_count>113</sys_mod_count>
+        <sys_mod_count>117</sys_mod_count>
         <sys_name>Obligation Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_04c67fd31b0a10100a4a10ad9c4bcb26</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-24 13:12:11</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-08-10 16:53:51</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
