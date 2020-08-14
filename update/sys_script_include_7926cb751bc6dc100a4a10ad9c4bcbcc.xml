@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
     <sys_script_include action="INSERT_OR_UPDATE">
-        <access>package_private</access>
+        <access>public</access>
         <active>true</active>
         <api_name>x_g_irm_fms.organizationsUtils</api_name>
         <caller_access/>
@@ -11,7 +11,7 @@
 organizationsUtils.prototype = {
     initialize: function() {},
 
-    getChildOrganizations: function(parent) {
+    getChildOrganizations: function(parent) { // Returning the Child Organizations for allocation pool distribution.
 
         var childOrganization_id = '';
         if (parent) {
@@ -38,24 +38,53 @@ organizationsUtils.prototype = {
         }
     },
 
-    getChildrenOrg: function(orgsys_id, orgobj) {
-        gs.info("include 0" +orgsys_id+"test");
-        var gr_exist = new GlideRecord("x_g_irm_fms_project");
+    getChildrenOrg: function(orgsys_id, orgobj) { // return the Sysid of the Child organization of organization already    selected in the Project Table
+		var gr_exist = new GlideRecord("x_g_irm_fms_project");
         gr_exist.addQuery("sys_id", orgobj);
         gr_exist.query();
         if (gr_exist.next()) {
-			var orID= gr_exist.organization_ref;
+            var orID = gr_exist.organization_ref;
             //gs.info("include 2 " + new OrgHierarchy().getOrgChildren(orgsys_id));
             return new OrgHierarchy().getOrgChildren(orID);
         } else {
-				if(orgsys_id=='')
-					return new OrgHierarchy().getUserOrgs();
-            gs.info("include 1 " + new OrgHierarchy().getUserOrgs());
+            if (orgsys_id == '')
+                return new OrgHierarchy().getUserOrgs();
+           // gs.info("include 1 " + new OrgHierarchy().getUserOrgs());
             return new OrgHierarchy().getUserOrgs();
         }
 
     },
 
+    checkcontractrole: function() {
+        var usr = gs.getUserID();
+		if(gs.hasRole('admin'))
+			{
+				//gs.info("role inclde first if");
+				return true;
+				
+			}
+		else
+			{
+        var gr_role = new GlideRecord("sys_user_has_role");
+        gr_role.addEncodedQuery('role.nameSTARTSWITHx_g_irm_fms');
+		gr_role.addQuery('user',usr);
+        gr_role.query();
+		gs.info("role include "+gr_role.getRowCount() +" "+usr);
+        if (gr_role.next()) {
+			
+            if (gr_role.role == '817855771b3fc8100a4a10ad9c4bcb26' && gr_role.getRowCount() == 1) {
+				//gs.info("role include if ");
+                return false;
+            } else
+				{
+				//gs.info("role include else");	
+                return true;
+        }
+		}
+			}
+
+
+    },
 
     type: 'organizationsUtils'
 };]]></script>
@@ -63,13 +92,13 @@ organizationsUtils.prototype = {
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-07-17 18:18:46</sys_created_on>
         <sys_id>7926cb751bc6dc100a4a10ad9c4bcbcc</sys_id>
-        <sys_mod_count>19</sys_mod_count>
+        <sys_mod_count>29</sys_mod_count>
         <sys_name>organizationsUtils</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_7926cb751bc6dc100a4a10ad9c4bcbcc</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-10 19:57:26</sys_updated_on>
+        <sys_updated_on>2020-08-13 17:07:06</sys_updated_on>
     </sys_script_include>
 </record_update>

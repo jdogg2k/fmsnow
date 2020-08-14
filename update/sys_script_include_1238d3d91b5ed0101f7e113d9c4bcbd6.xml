@@ -10,7 +10,7 @@
         <script><![CDATA[var FMSFinTran = Class.create();
 FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
-	debugMsg: false,
+	debugMsg: true,
 	allocGrpTable: FMSConstants.TABLE_ALLOCATION_GROUP,
 	projAllocTable: FMSConstants.TABLE_PROJECT_ALLOCATION,
 	finTranView: FMSConstants.VIEW_FIN_TRAN_JOIN,
@@ -43,7 +43,99 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 			isValid = isValid && this.validateTranItemDeficient(current, previous);
 		return isValid;
 	},
+	
+	validateProjAllocGroup: function(current, previous) {
+		var isValid = true;
+		var isDelete =  current.operation() == 'delete';
+		var grp = this.getAllocationGroup(previous.allocation_group_ref.sys_id);
+		if (grp == null) return true;
+		if (grp.getValue('val_tran_fy') == true && (current.fy != previous.fy || isDelete)) 
+			isValid = isValid && this.validateAllocFY(previous.project_ref.sys_id, previous.allocation_group_ref.sys_id, previous.fy);
+		if (grp.getValue('val_tran_allotment') == true  && (current.allotment != previous.allotment || isDelete)) 
+			isValid = isValid && this.validateAllocAllotment(previous.project_ref.sys_id, previous.allocation_group_ref.sys_id, previous.fy, previous.allotment);
+		if (grp.getValue('val_tran_appropriation') == true  && (current.project_appropriation_ref != previous.project_appropriation_ref || isDelete)) 
+			isValid = isValid && this.validateAllocAppropriation(previous.project_ref.sys_id, previous.allocation_group_ref.sys_id, previous.fy, previous.project_appropriation_ref);
+		if (grp.getValue('val_tran_not_deficient') == true || current.allocation_amt != previous.allocation_amt)
+			isValid = isValid && this.validateAllocDeficient(current, previous);
+		return isValid;
+	},
+	
+	validateAllocFY: function(proj, grp, fy) {
+		var isValid = true;
+		var fyCount = this.getAllocationCount(proj, grp, fy, null);
+		var tranCount = this.getTranCount(proj, grp, fy, null, null);
+        if (fyCount == 1 && tranCount > 0) {
+			isValid = false;
+            gs.addErrorMessage("Unable to change or delete the only allocation with FY referenced by existing transactions.");
+		}
+		return isValid;
+	},
 
+	validateAllocAllotment: function(proj, grp, fy, allot) {
+		var isValid = true;
+		var allotCount = this.getAllocationCount(proj, grp, fy, allot);
+		var tranCount = this.getTranCount(proj, grp, fy, allot, null);
+        if (allotCount == 1 && tranCount > 0) {
+			isValid = false;
+            gs.addErrorMessage("Unable to change or delete the only allocation with allotment referenced by existing transactions.");
+		}
+		return isValid;
+	},
+	
+	validateAllocAppropriation: function(proj, grp, fy, appro) {
+		var isValid = true;
+		var approCount = this.getAllocationCount(proj, grp, fy, appro);
+		var tranCount = this.getTranCount(proj, grp, fy, null, appro);
+        if (approCount == 1 && tranCount > 0) {
+			isValid = false;
+            gs.addErrorMessage("Unable to change or delete the only allocation with appropriation referenced by existing transactions.");
+		}
+		return isValid;
+	},
+	
+	validateAllocDeficient: function(current, previous) {
+		var remAmt;
+		var isValid = true;
+		var isDelete =  current.operation() == 'delete';
+		var allocAmt = this.getAllocationTotal(previous.project_ref.sys_id, previous.allocation_group_ref.sys_id, previous.fy);
+		var tranAmt = this.getObligatedTotal(previous.project_ref.sys_id, previous.sys_id, null, previous.allocation_group_ref.sys_id, previous.fy);
+		gs.addInfoMessage(previous.allocation_group_ref.getRefRecord().getValue('val_tran_not_deficient'))
+		gs.addInfoMessage(isDelete)
+		gs.addInfoMessage(current.fy != previous.fy)
+		gs.addInfoMessage(current.project_appropriation_ref != previous.project_appropriation_ref)
+		if (previous.allocation_group_ref.getRefRecord().getValue('val_tran_not_deficient') == true && (current.fy != previous.fy || current.project_appropriation_ref != previous.project_appropriation_ref || isDelete)) {
+			remAmt = parseFloat(allocAmt) - parseFloat(tranAmt);
+			if (this.debugMsg) gs.addInfoMessage('Remaining Amount is: ' + remAmt);
+            if ((remAmt >= 0 && current.allocation_amt > 0 && current.allocation_amt > remAmt) || (remAmt < 0 && current.allocation_amt <= 0 && current.allocation_amt < remAmt)) {
+				isValid = false;
+                gs.addErrorMessage("Unable to change or delete current allocation group or FY referenced by existing tranactions which results in deficiency of: " + Math.Abs(current.allocation_amnt - (remAmt + previous.allocation_amt)).toFixed(2));
+			}
+		}
+		else if (current.allocation_amt != previous.allocation_amt) {
+			remAmt = (parseFloat(allocAmt) - parseFloat(tranAmt)) - parseFloat(current.allocation_amt);
+			if (this.debugMsg) gs.addInfoMessage('Remaining Amount is: ' + remAmt);
+			if ((remAmt >= 0 && current.allocation_amt > 0 && current.allocation_amt > remAmt) || (remAmt < 0 && current.allocation_amt <= 0 && current.allocation_amt < remAmt)) {
+				isValid = false;
+				gs.addErrorMessage("Unable to change amount.  The current allocation group is referenced by existing tranactions which results in deficiency of: " + Math.Abs(alloc.AllocationAmount - remain).toFixed(2));
+			}
+		}
+		gs.addInfoMessage('validating new group....')
+		var newGrp = this.getAllocationGroup(current.allocation_group_ref.sys_id);
+		if (newGrp.getValue('val_tran_not_deficient') == true) {
+			allocAmt = this.getAllocationTotal(current.project_ref.sys_id, current.allocation_group_ref.sys_id, current.fy);
+			if (this.debugMsg) gs.addInfoMessage('Allocated: ' + allocAmt);
+			tranAmt = this.getObligatedTotal(current.project_ref.sys_id, current.sys_id, null, current.allocation_group_ref.sys_id, current.fy);
+			if (this.debugMsg) gs.addInfoMessage('Obligated: ' + tranAmt);
+			remAmt = parseFloat(allocAmt) - parseFloat(tranAmt);
+			if (this.debugMsg) gs.addInfoMessage('Remaining: ' + remAmt);
+            if ((remAmt >= 0 && current.allocation_amt > 0 && current.allocation_amt > remAmt + previous.allocation_Amt) || (remAmt <= 0 && current.allocation_amt < 0 && current.allocation_amt < remAmt + previous.allocation_amt)) {
+                isValid = false;
+				gs.addErrorMessage("Transfer/Adjustment (removal of funds, i.e., negative amount) from group results in deficiency for existing transactions of: " + Math.Abs(allocAmt - (remAmt + previous.allocation_amt)).toFixed(2));
+			}
+		}
+		return isValid;
+	},
+	
 	validateTranFY: function(proj, grp, fy) {
 		var isValid = true;
 		var fyCount = this.getAllocationCount(proj, grp, fy, null);
@@ -110,6 +202,57 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		return isValid;
 	},
 
+	validateGroupFY: function(proj, grp, fy) {
+		var isValid = true;
+		var fyCount = this.getAllocationCount(proj, grp, fy, null);
+		if (this.debugMsg) gs.addInfoMessage('FY count: ' + fyCount);
+		if (fyCount == 0) {
+			isValid = false;
+			gs.addErrorMessage("No project allocations found for fiscal year: " + fy + " Update Failed.");
+		}
+		return isValid;
+	},
+
+	validateGroupAllotment: function(proj, grp, fy, allot) {
+		var isValid = true;
+		var allotCount = this.getAllocationCount(proj, grp, fy, allot, null);
+		if (this.debugMsg) gs.addInfoMessage('Allotment count: ' + allotCount);
+		if (allotCount == 0) {
+			isValid = false;
+			gs.addErrorMessage("No project allocations found for fiscal year: " + fy + " and alloment: " + allot.getDisplayValue() + " Update Failed.");
+		}
+		return isValid;
+	},
+
+	validateGroupAppropriation: function(proj, grp, fy, appro) {
+		var isValid = true;
+		var approCount = this.getAllocationCount(proj, grp, fy, null, appro);
+		if (this.debugMsg) gs.addInfoMessage('Appropriation count: ' + approCount);
+		if (approCount == 0) {
+			isValid = false;
+			gs.addErrorMessage("No project allocations found for fiscal year: " + fy + " and appropriation: " + appro.getDisplayValue() + " Update Failed.");
+		}
+		return isValid;
+	},
+
+	validateGroupDeficient: function(current, previous) {
+		var isValid = true;
+		var allocAmt = this.getAllocationTotal(current.project_ref.sys_id, current.allocation_group_ref.sys_id, current.fy);
+		if (this.debugMsg) gs.addInfoMessage('Allocated Amount is: ' + allocAmt);
+		var tranAmt = this.getObligatedTotal(current.project_ref.sys_id, current.sys_id, null, current.allocation_group_ref.sys_id, current.fy);
+		if (this.debugMsg) gs.addInfoMessage('Obligated Amount is: ' + tranAmt);
+		var remAmt = parseFloat(allocAmt) - parseFloat(tranAmt);
+		if (this.debugMsg) gs.addInfoMessage('Remaining Amount is: ' + remAmt);
+		var oldAmt = previous.transaction_total_amt;
+		if (previous.tran_status != 'Obligated' || previous.getValue('void') == true) 
+			oldAmt = 0;
+		if (parseFloat(current.transaction_total_amt) > parseFloat(remAmt) + oldAmt) {
+			isValid = false;
+			gs.addErrorMessage("Unable to obligate...insufficient funds remain for the Allocation Group specified.  Funds needed: " + this.formatMoney(Math.abs(parseFloat(current.transaction_total_amt - (parseFloat(remAmt) + oldAmt)))) + " Update Failed.");
+		}
+		return isValid;
+	},
+	
 	getAllocationGroup: function(grpKey) {
         var grp = new GlideRecord(this.allocGrpTable);
         grp.addQuery('sys_id', grpKey);
@@ -122,6 +265,23 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
 	getAllocationCount: function(projKey, grpKey, fy, allotKey, approKey) {
         var alloc = new GlideAggregate(this.projAllocTable);
+		if (allotKey && allotKey != null) { alloc.addQuery('allotment', allotKey); }
+		if (approKey && approKey != null) { alloc.addQuery('appropriation_ref', approKey); }
+		alloc.addQuery('project_ref', projKey); 
+        alloc.addQuery('fy', fy);
+        alloc.addQuery('allocation_group_ref', grpKey);
+		alloc.addAggregate('COUNT');
+		alloc.groupBy('project_ref');
+        alloc.query();
+		var cnt = 0;
+        while (alloc.next()) {
+			cnt += alloc.getAggregate('COUNT');
+		}
+		return cnt;
+	},
+	
+	getTranCount: function(projKey, grpKey, fy, allotKey, approKey) {
+        var alloc = new GlideAggregate(this.finTranView);
 		if (allotKey && allotKey != null) { alloc.addQuery('allotment', allotKey); }
 		if (approKey && approKey != null) { alloc.addQuery('appropriation_ref', approKey); }
 		alloc.addQuery('project_ref', projKey); 
@@ -190,13 +350,13 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-07-28 16:48:32</sys_created_on>
         <sys_id>1238d3d91b5ed0101f7e113d9c4bcbd6</sys_id>
-        <sys_mod_count>88</sys_mod_count>
+        <sys_mod_count>127</sys_mod_count>
         <sys_name>FMSFinTran</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_1238d3d91b5ed0101f7e113d9c4bcbd6</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-04 17:28:37</sys_updated_on>
+        <sys_updated_on>2020-08-14 16:00:05</sys_updated_on>
     </sys_script_include>
 </record_update>
