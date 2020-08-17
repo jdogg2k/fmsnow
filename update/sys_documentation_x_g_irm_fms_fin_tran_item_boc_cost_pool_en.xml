@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="boc_cost_pool" label="BOC / Cost Pool" language="en" table="x_g_irm_fms_fin_tran_item">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>boc_cost_pool</element>
+            <help/>
+            <hint/>
+            <label>BOC / Cost Pool</label>
+            <language>en</language>
+            <name>x_g_irm_fms_fin_tran_item</name>
+            <plural>BOC / Cost Pools</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-08-17 17:45:45</sys_created_on>
+            <sys_id>2cd92aff1ba294100a4a10ad9c4bcb1a</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>BOC / Cost Pool</sys_name>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_documentation_x_g_irm_fms_fin_tran_item_boc_cost_pool_en</sys_update_name>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-08-17 17:45:45</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

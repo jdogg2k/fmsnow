@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_policy_action">
+    <sys_ui_policy_action action="INSERT_OR_UPDATE">
+        <cleared>false</cleared>
+        <disabled>ignore</disabled>
+        <field>sub_boc_cost_pool</field>
+        <mandatory>true</mandatory>
+        <sys_class_name>sys_ui_policy_action</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-08-17 20:23:59</sys_created_on>
+        <sys_id>affd43731b6694100a4a10ad9c4bcb3b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>sub_boc_cost_pool</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_ui_policy_action_affd43731b6694100a4a10ad9c4bcb3b</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-08-17 20:23:59</sys_updated_on>
+        <table>x_g_irm_fms_fin_tran_item</table>
+        <ui_policy display_value="Show Sub Cost Pool Options">299a83bf1b2694100a4a10ad9c4bcb81</ui_policy>
+        <visible>true</visible>
+    </sys_ui_policy_action>
+</record_update>

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Financial Transaction Item" max_length="40" name="x_g_irm_fms_fin_tran_item" sizeclass="10433" type="collection">
         <element label="Actual Cost" max_length="20" name="actual_cost" type="currency"/>
+        <element label="BOC / Cost Pool" mandatory="true" max_length="32" name="boc_cost_pool" reference="x_g_irmb_irm_finan_cost_pool" type="reference"/>
+        <element choice="3" default="no" label="Is this a Cloud-related Expenditure?" mandatory="true" max_length="40" name="cloud_related" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Yes - PaaS / IaaS" sequence="1" value="paas"/>
+                <element inactive_on_update="false" label="Yes - SaaS" sequence="2" value="saas"/>
+                <element inactive_on_update="false" label="No - Non-cloud" sequence="3" value="no"/>
+            </choice>
+        </element>
         <element label="Delivery Date" max_length="40" name="delivery_date" type="glide_date"/>
         <element label="Expense Item" mandatory="true" max_length="32" name="expense_item_ref" reference="x_g_irm_fms_expense_item" reference_qual="javascript:&quot;organization_ref=&quot; + current.fin_tran_ref.project_ref.organization_ref" type="reference" use_reference_qualifier="advanced"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new financial transaction item]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.expense_item_ref.activity_code.toString() + ' [item #' + current.tran_item.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" display="true" label="Fin Tran Item display" max_length="256" name="fin_tran_item_display" read_only="true" type="string" virtual="true"/>
@@ -12,6 +20,7 @@
         <element label="OMB Category" max_length="32" name="omb_category_ref" reference="x_g_irm_fms_omb_category" reference_qual="javascript:&quot;organization_refIN&quot; +current.fin_tran_ref.project_ref.organization_ref" type="reference" use_reference_qualifier="advanced"/>
         <element label="Post" max_length="32" name="post_ref" reference="x_g_irm_fms_post" type="reference"/>
         <element label="Received Quantity" max_length="40" name="received_qty" type="integer"/>
+        <element label="Sub-BOC / Cost Pool" max_length="32" name="sub_boc_cost_pool" reference="x_g_irmb_irm_finan_sub_cost_pool" reference_qual="javascript:&quot;cost_pool=&quot; + current.boc_cost_pool" type="reference" use_reference_qualifier="advanced"/>
         <element label="Transaction Item" max_length="40" name="tran_item" read_only="true" type="integer"/>
         <element attributes="omit_sys_original=true" calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;if(current.actual_cost&gt;0){&#13;&#10;    var val = current.item_cost-current.actual_cost;&#13;&#10;&#9;var obli = val*current.item_qty;&#13;&#10;&#9;// Add your code here&#13;&#10;&#9;return obli;  // return the calculated value&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;return 0;&#13;&#10;&#9;}&#13;&#10;&#13;&#10;})(current);" label="Unliquidated Obligation" max_length="20" name="unliquidated_obligation" read_only="true" type="currency" virtual="true"/>
         <index name="index">
@@ -21,10 +30,16 @@
             <element name="omb_category_ref"/>
         </index>
         <index name="index3">
-            <element name="expense_item_ref"/>
+            <element name="sub_boc_cost_pool"/>
         </index>
         <index name="index4">
+            <element name="expense_item_ref"/>
+        </index>
+        <index name="index5">
             <element name="fin_tran_ref"/>
+        </index>
+        <index name="index6">
+            <element name="boc_cost_pool"/>
         </index>
     </element>
 </database>
