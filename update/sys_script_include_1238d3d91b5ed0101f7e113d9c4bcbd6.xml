@@ -104,9 +104,13 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		if (previous.allocation_group_ref.getRefRecord().getValue('val_tran_not_deficient') == true && (current.fy != previous.fy || current.project_appropriation_ref != previous.project_appropriation_ref || isDelete)) {
 			remAmt = parseFloat(allocAmt) - parseFloat(tranAmt);
 			if (this.debugMsg) gs.addInfoMessage('Remaining Amount is: ' + remAmt);
-            if ((remAmt >= 0 && current.allocation_amt > 0 && current.allocation_amt > remAmt) || (remAmt < 0 && current.allocation_amt <= 0 && current.allocation_amt < remAmt)) {
+            if (isDelete && current.allocation_amt.getCurrencyValue() > remAmt) {
 				isValid = false;
-                gs.addErrorMessage("Unable to change or delete current allocation group or FY referenced by existing tranactions which results in deficiency of: " + Math.Abs(current.allocation_amnt - (remAmt + previous.allocation_amt)).toFixed(2));
+                gs.addErrorMessage("Unable to delete current allocation group or FY referenced by existing tranactions which results in deficiency of: " + Math.Abs(current.allocation_amnt - (remAmt + previous.allocation_amt)).toFixed(2));
+			}
+            if (!isDelete && (remAmt >= 0 && current.allocation_amt > 0 && current.allocation_amt > remAmt) || (remAmt < 0 && current.allocation_amt <= 0 && current.allocation_amt < remAmt)) {
+				isValid = false;
+                gs.addErrorMessage("Unable to change current allocation group or FY referenced by existing tranactions which results in deficiency of: " + Math.Abs(current.allocation_amnt - (remAmt + previous.allocation_amt)).toFixed(2));
 			}
 		}
 		else if (current.allocation_amt != previous.allocation_amt) {
@@ -283,13 +287,13 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	
 	getTranCount: function(projKey, grpKey, fy, allotKey, approKey) {
         var alloc = new GlideAggregate(this.finTranView);
-		if (allotKey && allotKey != null) { alloc.addQuery('allotment', allotKey); }
-		if (approKey && approKey != null) { alloc.addQuery('appropriation_ref', approKey); }
-		alloc.addQuery('project_ref', projKey); 
-        alloc.addQuery('fy', fy);
-        alloc.addQuery('allocation_group_ref', grpKey);
+		if (allotKey && allotKey != null) { alloc.addQuery('ft_allotment', allotKey); }
+		if (approKey && approKey != null) { alloc.addQuery('ft_appropriation_ref', approKey); }
+		alloc.addQuery('ft_project_ref', projKey); 
+        alloc.addQuery('ft_fy', fy);
+        alloc.addQuery('ft_allocation_group_ref', grpKey);
 		alloc.addAggregate('COUNT');
-		alloc.groupBy('project_ref');
+		alloc.groupBy('ft_project_ref');
         alloc.query();
 		var cnt = 0;
         while (alloc.next()) {
@@ -351,13 +355,13 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-07-28 16:48:32</sys_created_on>
         <sys_id>1238d3d91b5ed0101f7e113d9c4bcbd6</sys_id>
-        <sys_mod_count>136</sys_mod_count>
+        <sys_mod_count>144</sys_mod_count>
         <sys_name>FMSFinTran</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_1238d3d91b5ed0101f7e113d9c4bcbd6</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-17 12:12:42</sys_updated_on>
+        <sys_updated_on>2020-08-18 12:12:39</sys_updated_on>
     </sys_script_include>
 </record_update>
