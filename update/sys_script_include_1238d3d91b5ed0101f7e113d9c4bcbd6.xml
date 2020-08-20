@@ -10,7 +10,7 @@
         <script><![CDATA[var FMSFinTran = Class.create();
 FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
-	debugMsg: true,
+	debugMsg: false,
 	allocGrpTable: FMSConstants.TABLE_ALLOCATION_GROUP,
 	projAllocTable: FMSConstants.TABLE_PROJECT_ALLOCATION,
 	finTranView: FMSConstants.VIEW_FIN_TRAN_JOIN,
@@ -97,35 +97,37 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		var remAmt;
 		var isValid = true;
 		var isDelete =  current.operation() == 'delete';
+		var valPrevDeficient = previous.allocation_group_ref.getRefRecord().getValue('val_tran_not_deficient') == true;
 		var allocAmt = this.getAllocationTotal(previous.project_ref.sys_id, previous.allocation_group_ref.sys_id, previous.fy);
 		if (this.debugMsg) gs.addInfoMessage('Allocated: ' + allocAmt);
 		var tranAmt = this.getObligatedTotal(previous.project_ref.sys_id, null, null, previous.allocation_group_ref.sys_id, previous.fy);
 		if (this.debugMsg) gs.addInfoMessage('Obligated: ' + tranAmt);
-		if (previous.allocation_group_ref.getRefRecord().getValue('val_tran_not_deficient') == true && (current.fy != previous.fy || current.project_appropriation_ref != previous.project_appropriation_ref || isDelete)) {
+		if (this.debugMsg) gs.addInfoMessage('Validating old/previous allocation group....');
+		if (valPrevDeficient && (current.fy != previous.fy || current.allocation_group_ref != previous.allocation_group_ref || isDelete)) {
 			remAmt = parseFloat(allocAmt) - parseFloat(tranAmt);
 			if (this.debugMsg) gs.addInfoMessage('Remaining Amount is: ' + remAmt);
-            if (isDelete && current.allocation_amt.getCurrencyValue() > remAmt) {
+            if (isDelete && parseFloat(current.allocation_amt) > remAmt) {
 				isValid = false;
-                gs.addErrorMessage("Unable to delete current allocation group or FY referenced by existing tranactions which results in deficiency of: " + Math.Abs(current.allocation_amnt - (remAmt + previous.allocation_amt)).toFixed(2));
+                gs.addErrorMessage("Unable to delete current allocation group or FY referenced by existing tranactions which results in deficiency of: " + this.formatMoney(Math.abs(current.allocation_amt - remAmt)));
 			}
             if (!isDelete && (remAmt >= 0 && current.allocation_amt > 0 && current.allocation_amt > remAmt) || (remAmt < 0 && current.allocation_amt <= 0 && current.allocation_amt < remAmt)) {
 				isValid = false;
-                gs.addErrorMessage("Unable to change current allocation group or FY referenced by existing tranactions which results in deficiency of: " + Math.Abs(current.allocation_amnt - (remAmt + previous.allocation_amt)).toFixed(2));
+                gs.addErrorMessage("Unable to change current allocation group or FY referenced by existing tranactions which results in deficiency of: " + this.formatMoney(Math.abs(current.allocation_amt - (remAmt + previous.allocation_amt))));
 			}
 		}
-		else if (current.allocation_amt != previous.allocation_amt) {
-			if (this.debugMsg) gs.addInfoMessage('Allocated Amount changed...');
+		else if (valPrevDeficient && parseFloat(current.allocation_amt) < parseFloat(previous.allocation_amt)) {
+			if (this.debugMsg) gs.addInfoMessage('Allocated Amount reduced...');
 			allocAmt = (allocAmt - parseFloat(previous.allocation_amt)) + parseFloat(current.allocation_amt);
 			remAmt = parseFloat(allocAmt) - parseFloat(tranAmt);
 			if (this.debugMsg) gs.addInfoMessage('Remaining Amount is: ' + remAmt);
-			if ((remAmt >= 0 && current.allocation_amt > 0 && current.allocation_amt > remAmt) || (remAmt < 0 && current.allocation_amt <= 0 && current.allocation_amt < remAmt)) {
+			if (remAmt < 0) {
 				isValid = false;
-				gs.addErrorMessage("Unable to change amount.  The current allocation group is referenced by existing tranactions which results in deficiency of: " + Math.Abs(alloc.AllocationAmount - remAmt).toFixed(2));
+				gs.addErrorMessage("Unable to change amount.  The current allocation group is referenced by existing tranactions which results in deficiency of: " + this.formatMoney(Math.abs(remAmt)));
 			}
 		}
-		if (this.debugMsg) gs.addInfoMessage('Validating new allocation group....');
+		if (this.debugMsg) gs.addInfoMessage('Validating new/current allocation group....');
 		var newGrp = this.getAllocationGroup(current.allocation_group_ref.sys_id);
-		if (newGrp.getValue('val_tran_not_deficient') == true) {
+		if (newGrp.getValue('val_tran_not_deficient') == true && current.allocation_group_ref != previous.allocation_group_ref) {
 			allocAmt = this.getAllocationTotal(current.project_ref.sys_id, current.allocation_group_ref.sys_id, current.fy);
 			allocAmt = (allocAmt - parseFloat(previous.allocation_amt) + parseFloat(current.allocation_amt));
 			if (this.debugMsg) gs.addInfoMessage('Allocated: ' + allocAmt);
@@ -133,9 +135,9 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 			if (this.debugMsg) gs.addInfoMessage('Obligated: ' + tranAmt);
 			remAmt = parseFloat(allocAmt) - parseFloat(tranAmt);
 			if (this.debugMsg) gs.addInfoMessage('Remaining: ' + remAmt);
-            if ((remAmt >= 0 && current.allocation_amt.getCurrencyValue() > 0 && current.allocation_amt.getCurrencyValue() > remAmt + previous.allocation_amt.getCurrencyValue()) || (remAmt <= 0 && current.allocation_amt.getCurrencyValue() < 0 && current.allocation_amt.getCurrencyValue() < remAmt + previous.allocation_amt.getCurrencyValue())) {
+            if (remAmt <= 0 && parseFloat(current.allocation_amt) < parseFloat(previous.allocation_amt)) {
                 isValid = false;
-				gs.addErrorMessage("Transfer/Adjustment (removal of funds, i.e., negative amount) from group results in deficiency for existing transactions of: " + Math.Abs(allocAmt - (remAmt + previous.allocation_amt)).toFixed(2));
+				gs.addErrorMessage("Transfer/Adjustment (removal of funds, i.e., negative amount) from group results in deficiency for existing transactions of: " + this.formatMoney(Math.abs(remAmt)));
 			}
 		}
 		return isValid;
@@ -291,6 +293,7 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		if (approKey && approKey != null) { alloc.addQuery('ft_appropriation_ref', approKey); }
 		alloc.addQuery('ft_project_ref', projKey); 
         alloc.addQuery('ft_fy', fy);
+		alloc.addQuery('ft_void', false);
         alloc.addQuery('ft_allocation_group_ref', grpKey);
 		alloc.addAggregate('COUNT');
 		alloc.groupBy('ft_project_ref');
@@ -355,13 +358,13 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-07-28 16:48:32</sys_created_on>
         <sys_id>1238d3d91b5ed0101f7e113d9c4bcbd6</sys_id>
-        <sys_mod_count>144</sys_mod_count>
+        <sys_mod_count>166</sys_mod_count>
         <sys_name>FMSFinTran</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_1238d3d91b5ed0101f7e113d9c4bcbd6</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-18 12:12:39</sys_updated_on>
+        <sys_updated_on>2020-08-19 19:53:08</sys_updated_on>
     </sys_script_include>
 </record_update>

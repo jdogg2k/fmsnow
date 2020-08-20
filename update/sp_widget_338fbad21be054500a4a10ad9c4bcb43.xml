@@ -43,19 +43,39 @@
     }
 
     c.canAdd = function () {
-        if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) {
+         if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin ){
             if (c.userAuth.orgs.indexOf(c.targetOrg) >= 0)
                 return true;
             else
                 return false;
-        } else
+        } 
+			else if(c.userAuth.roles.isAnalyst || c.userAuth.roles.isContracts){
+				    if (c.userAuth.userorg.indexOf(c.targetOrg) >= 0)
+                return true;
+            else
+                return false;
+			}
+			
+			else
             return false;
     }
 
    c.canEdit = function (auth, data) {
-        if (!data) return false;
-        if (auth.orgs.indexOf(c.targetOrg) >= 0 && (auth.roles.isOrgAdmin || auth.roles.isAnalyst))
+		 //alert("first alert "+auth.roles.isContracts);
+		if (data.locked) return false;
+        if (auth.orgs.indexOf(c.targetOrg) >= 0 && (auth.roles.isOrgAdmin || auth.roles.canApprove))
             return true;
+			
+			  else if(auth.roles.isContracts|| auth.roles.isAnalyst){
+					//alert("in new "+auth.userorg);
+					 if (auth.userorg.indexOf(c.targetOrg) >= 0)
+						 {
+						//	 alert("in final");
+                return true;
+						 }
+					else
+						return false;
+				}
         else
             return false;
     }
@@ -106,7 +126,7 @@
             contractManager.fitColumns();
         }
     });
-
+//alert("auth "+JSON.stringify(c.userAuth));
     var contractColumnDefs = [{
             field: 'contract_piid',
             headerName: 'Contract PIID',
@@ -127,6 +147,7 @@
             cellRenderer: 'editCell',
             cellRendererParams: function(params) {
                 return {
+									
                     "show": c.canEdit(c.userAuth, params)
                 };
             }
@@ -452,7 +473,7 @@
     contractManager.renderGrid('contractGrid'); //render grid objects
     contractManager.setGridData(c.data.tableData); //set grid data
 	
-    contractManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst));
+    contractManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst|| c.userAuth.roles.isContracts));
 	$timeout(function () { contractManager.fitColumns(); }, 250);
 
     $rootScope.$on('OrgChanged', function(event, args) {
@@ -568,14 +589,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-05 17:24:17</sys_created_on>
         <sys_id>338fbad21be054500a4a10ad9c4bcb43</sys_id>
-        <sys_mod_count>229</sys_mod_count>
+        <sys_mod_count>240</sys_mod_count>
         <sys_name>Contract Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_338fbad21be054500a4a10ad9c4bcb43</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-07 20:52:19</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-08-19 18:07:25</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

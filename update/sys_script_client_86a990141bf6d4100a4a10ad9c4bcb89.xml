@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script_client">
+    <sys_script_client action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <applies_extended>false</applies_extended>
+        <condition/>
+        <description>Script to ensure dates fall within proper fiscal year</description>
+        <field>receive_date</field>
+        <global>true</global>
+        <isolate_script>true</isolate_script>
+        <messages/>
+        <name>Allocation Pool - Prevent Invalid Dates</name>
+        <order/>
+        <script><![CDATA[function onChange(control, oldValue, newValue, isLoading, isTemplate) {
+   if (isLoading || newValue === '') {
+      return;
+   }
+	
+	var thisFY = parseInt(g_form.getValue("fy"));
+	var thisDate = new Date(newValue);
+	var tFYStart = new Date((thisFY - 1).toString() + "-10-01");
+	var tFYEnd = new Date(thisFY.toString() + "-09-30");
+	
+	if (!(thisDate >= tFYStart && thisDate <= tFYEnd)) {
+		g_form.clearValue('receive_date');
+		g_form.showFieldMsg('receive_date', 'Received Date must be within the selected Fiscal Year for this record.', 'error');
+	} else {
+		g_form.hideFieldMsg('receive_date');
+	}
+   
+}]]></script>
+        <sys_class_name>sys_script_client</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-08-18 20:33:35</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>86a990141bf6d4100a4a10ad9c4bcb89</sys_id>
+        <sys_mod_count>8</sys_mod_count>
+        <sys_name>Allocation Pool - Prevent Invalid Dates</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_script_client_86a990141bf6d4100a4a10ad9c4bcb89</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-08-18 20:55:30</sys_updated_on>
+        <table>x_g_irm_fms_allocation_pool</table>
+        <type>onChange</type>
+        <ui_type>10</ui_type>
+        <view/>
+    </sys_script_client>
+</record_update>

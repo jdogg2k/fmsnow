@@ -36,7 +36,8 @@
     var session = gs.getSession();
     if (session.getClientData('org_id'))
         data.selOrg = session.getClientData('org_id');
-
+data.iscontractuser = new x_g_irm_fms.organizationsUtils().checkcontractrole();
+	
     /* show notifications */
     var notices = new GlideRecord("x_g_irm_fms_notification");
     notices.addEncodedQuery('basis_table=tblSysUser^last_run_date>=javascript:gs.beginningOfToday()');
@@ -52,23 +53,23 @@
         <sys_created_by>rosejl@state.gov</sys_created_by>
         <sys_created_on>2020-04-14 15:42:12</sys_created_on>
         <sys_id>49ced22f1b0cd0100a4a10ad9c4bcbb4</sys_id>
-        <sys_mod_count>81</sys_mod_count>
+        <sys_mod_count>84</sys_mod_count>
         <sys_name>FMS Home</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_49ced22f1b0cd0100a4a10ad9c4bcbb4</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-22 11:05:55</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-08-19 19:15:47</sys_updated_on>
         <template><![CDATA[<div class="fullWidget">
       <div class="form-row">
-      	<div class="form-group text-lg">
+      	<div class="form-group text-lg"> <!--ng-if=data.iscontractuser-->
           <a ng-href="fms?id=organization_detail&org_id={{c.data.selOrg}}">View My Organization</a>  
         </div>  
       </div>
       <div class="form-row">
       	<div class="form-group text-lg">
-          <a ng-href="fms?id=expense_item_list&org_id={{c.data.selOrg}}">View My Expense Items</a>  
+          <a ng-if=data.iscontractuser ng-href="fms?id=expense_item_list&org_id={{c.data.selOrg}}">View My Expense Items</a>  
         </div>  
       </div>
       <div class="form-row">
@@ -78,17 +79,17 @@
       </div>
       <div class="form-row">
       	<div class="form-group text-lg">
-          <a ng-href="fms?id=budget_list&org_id={{c.data.selOrg}}">View My Budgets</a>  
+          <a ng-if=data.iscontractuser ng-href="fms?id=budget_list&org_id={{c.data.selOrg}}">View My Budgets</a>  
         </div>  
       </div>
       <div class="form-row">
       	<div class="form-group text-lg">
-          <a ng-href="fms?id=project_allocation_list&org_id={{c.data.selOrg}}">View My Allocations</a>  
+          <a ng-if=data.iscontractuser ng-href="fms?id=project_allocation_list&org_id={{c.data.selOrg}}">View My Allocations</a>  
         </div>  
       </div>
       <div class="form-row">
       	<div class="form-group text-lg">
-          <a ng-href="fms?id=financial_transaction_list&org_id={{c.data.selOrg}}">View My Financial Transactions</a>  
+          <a ng-if=data.iscontractuser ng-href="fms?id=financial_transaction_list&org_id={{c.data.selOrg}}">View My Financial Transactions</a>  
         </div>  
       </div>
 </div>
