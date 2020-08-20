@@ -2,18 +2,93 @@
     <sys_ui_list parent="" relationship="" sys_domain="global" table="x_g_irm_fms_allocation_pool" version="2" view="sys_ref_list">
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
-            <element>allocation_pool_display</element>
-            <list_id display_value="x_g_irm_fms_allocation_pool" element="NULL" name="x_g_irm_fms_allocation_pool" parent="NULL" relationship="NULL" sys_domain="global" view="74d211621b1300101f7e113d9c4bcbbb">138240541b9410101f7e113d9c4bcb7c</list_id>
+            <element>receive_date</element>
+            <list_id display_value="x_g_irm_fms_allocation_pool" element="NULL" name="x_g_irm_fms_allocation_pool" parent="NULL" relationship="NULL" sys_domain="global" view="74d211621b1300101f7e113d9c4bcbbb">799cbdf81b7a58100a4a10ad9c4bcb34</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>0</position>
             <sum>false</sum>
-            <sys_created_by>MarkelJR@state.gov</sys_created_by>
-            <sys_created_on>2020-04-16 12:14:57</sys_created_on>
-            <sys_id>1b8240541b9410101f7e113d9c4bcb7c</sys_id>
+            <sys_created_by>PuriA@state.gov</sys_created_by>
+            <sys_created_on>2020-08-20 17:02:04</sys_created_on>
+            <sys_id>b19cbdf81b7a58100a4a10ad9c4bcb35</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-            <sys_updated_on>2020-04-16 12:14:57</sys_updated_on>
+            <sys_updated_by>PuriA@state.gov</sys_updated_by>
+            <sys_updated_on>2020-08-20 17:02:04</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>pool_type</element>
+            <list_id display_value="x_g_irm_fms_allocation_pool" element="NULL" name="x_g_irm_fms_allocation_pool" parent="NULL" relationship="NULL" sys_domain="global" view="74d211621b1300101f7e113d9c4bcbbb">799cbdf81b7a58100a4a10ad9c4bcb34</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>1</position>
+            <sum>false</sum>
+            <sys_created_by>PuriA@state.gov</sys_created_by>
+            <sys_created_on>2020-08-20 17:02:04</sys_created_on>
+            <sys_id>359cbdf81b7a58100a4a10ad9c4bcb35</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>PuriA@state.gov</sys_updated_by>
+            <sys_updated_on>2020-08-20 17:02:04</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>investment_ref</element>
+            <list_id display_value="x_g_irm_fms_allocation_pool" element="NULL" name="x_g_irm_fms_allocation_pool" parent="NULL" relationship="NULL" sys_domain="global" view="74d211621b1300101f7e113d9c4bcbbb">799cbdf81b7a58100a4a10ad9c4bcb34</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>2</position>
+            <sum>false</sum>
+            <sys_created_by>PuriA@state.gov</sys_created_by>
+            <sys_created_on>2020-08-20 17:02:04</sys_created_on>
+            <sys_id>b59cbdf81b7a58100a4a10ad9c4bcb35</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>PuriA@state.gov</sys_updated_by>
+            <sys_updated_on>2020-08-20 17:02:04</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>pool_purpose</element>
+            <list_id display_value="x_g_irm_fms_allocation_pool" element="NULL" name="x_g_irm_fms_allocation_pool" parent="NULL" relationship="NULL" sys_domain="global" view="74d211621b1300101f7e113d9c4bcbbb">799cbdf81b7a58100a4a10ad9c4bcb34</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>3</position>
+            <sum>false</sum>
+            <sys_created_by>PuriA@state.gov</sys_created_by>
+            <sys_created_on>2020-08-20 17:02:04</sys_created_on>
+            <sys_id>399cbdf81b7a58100a4a10ad9c4bcb35</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>PuriA@state.gov</sys_updated_by>
+            <sys_updated_on>2020-08-20 17:02:04</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>receive_amt</element>
+            <list_id display_value="x_g_irm_fms_allocation_pool" element="NULL" name="x_g_irm_fms_allocation_pool" parent="NULL" relationship="NULL" sys_domain="global" view="74d211621b1300101f7e113d9c4bcbbb">799cbdf81b7a58100a4a10ad9c4bcb34</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>4</position>
+            <sum>false</sum>
+            <sys_created_by>PuriA@state.gov</sys_created_by>
+            <sys_created_on>2020-08-20 17:02:04</sys_created_on>
+            <sys_id>b99cbdf81b7a58100a4a10ad9c4bcb35</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>PuriA@state.gov</sys_updated_by>
+            <sys_updated_on>2020-08-20 17:02:04</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>unassigned_amt</element>
+            <list_id display_value="x_g_irm_fms_allocation_pool" element="NULL" name="x_g_irm_fms_allocation_pool" parent="NULL" relationship="NULL" sys_domain="global" view="74d211621b1300101f7e113d9c4bcbbb">799cbdf81b7a58100a4a10ad9c4bcb34</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>5</position>
+            <sum>false</sum>
+            <sys_created_by>PuriA@state.gov</sys_created_by>
+            <sys_created_on>2020-08-20 17:02:04</sys_created_on>
+            <sys_id>3d9cbdf81b7a58100a4a10ad9c4bcb35</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>PuriA@state.gov</sys_updated_by>
+            <sys_updated_on>2020-08-20 17:02:04</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
@@ -26,19 +101,19 @@
             <relationship/>
             <sum>false</sum>
             <sys_class_name>sys_ui_list</sys_class_name>
-            <sys_created_by>MarkelJR@state.gov</sys_created_by>
-            <sys_created_on>2020-04-16 12:14:57</sys_created_on>
+            <sys_created_by>PuriA@state.gov</sys_created_by>
+            <sys_created_on>2020-08-20 17:02:04</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
-            <sys_id>138240541b9410101f7e113d9c4bcb7c</sys_id>
+            <sys_id>799cbdf81b7a58100a4a10ad9c4bcb34</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_name>x_g_irm_fms_allocation_pool</sys_name>
             <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
             <sys_policy/>
             <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
             <sys_update_name>sys_ui_list_x_g_irm_fms_allocation_pool_sys_ref_list</sys_update_name>
-            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-            <sys_updated_on>2020-04-16 12:14:57</sys_updated_on>
+            <sys_updated_by>PuriA@state.gov</sys_updated_by>
+            <sys_updated_on>2020-08-20 17:02:04</sys_updated_on>
             <sys_user/>
             <view display_value="Reference List" name="sys_ref_list">74d211621b1300101f7e113d9c4bcbbb</view>
             <view_name/>
