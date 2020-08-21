@@ -48,7 +48,8 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
     getFields: function(gr) {
         var elements = gr.getElements();
-        var flds = [];
+
+		var flds = [];
         for (var i = 0; i < elements.length; i++) {
             var element = elements[i];
             flds.push(element.getName());
@@ -164,7 +165,6 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
     },
 
     getUserTableData: function(table, encQry, returnSysID, dotInclude) {
-
         /* JLR - This function will return all non-sys values of any table in FMS - may want to modify so it can accept an optional encoded query
         setting returnSysID to true will force the function to return the sys_id along with all of the table fields*/
         var newArray = [];
@@ -299,13 +299,15 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
     },
 
     getAllUserData: function(table, encQry) {
-
+ gs.info("from include sec0 "+encQry);
         /* JLR - This function will return all values for the contracts table in FMS and all associated related data */
 
         var userData = this.getUserTableData(table, encQry, true);
         for (var i = 0; i < userData.length; i++) {
             var tObj = userData[i];
-            var cQuery = "user=" + tObj.sys_id;
+            var cQuery = "user=" + tObj.sys_id; 
+			gs.info("from include sec "+cQuery);
+ 
             var cQuery1 = "user_ref=" + tObj.sys_id;
             tObj.userRole = this.getUserTableData(FMSConstants.TABLE_USER_GROUP, cQuery, true);
             tObj.userOrganization = this.getUserTableData(FMSConstants.TABLE_USER_ORGANIZATION, cQuery1, true);
@@ -486,13 +488,13 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 18:30:12</sys_created_on>
         <sys_id>c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>191</sys_mod_count>
+        <sys_mod_count>194</sys_mod_count>
         <sys_name>FMSUtilities</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-18 17:57:24</sys_updated_on>
+        <sys_updated_on>2020-08-21 16:38:49</sys_updated_on>
     </sys_script_include>
 </record_update>
