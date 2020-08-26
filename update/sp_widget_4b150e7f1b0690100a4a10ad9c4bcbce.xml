@@ -12,6 +12,7 @@
     c.addNew = function() {
 			 //alert('Data');
         userManager.editRow("-1", "", c.data.organizationTableName);
+		
     }
 
     c.canAdd = function() { 
@@ -368,14 +369,14 @@
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-07-23 18:35:09</sys_created_on>
         <sys_id>4b150e7f1b0690100a4a10ad9c4bcbce</sys_id>
-        <sys_mod_count>104</sys_mod_count>
+        <sys_mod_count>106</sys_mod_count>
         <sys_name>Users Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_4b150e7f1b0690100a4a10ad9c4bcbce</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-21 19:24:48</sys_updated_on>
+        <sys_updated_on>2020-08-24 19:33:07</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

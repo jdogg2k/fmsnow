@@ -323,7 +323,7 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	getObligatedTotal: function(projKey, tranKey, itemKey, grpKey, fy) {
         var txn = new GlideAggregate(this.finTranView);
 		if (tranKey != null) txn.addQuery('ft_sys_id', '!=', tranKey); 
-		if (itemKey != null) txn.addQuery('fti_sys_id', '!=', itemKey); 
+		if (itemKey != null) txn.addQuery('itm_sys_id', '!=', itemKey); 
         txn.addQuery('ft_void', false);
         txn.addQuery('ft_fy', fy);
         txn.addQuery('ft_allocation_group_ref', grpKey);
@@ -358,13 +358,13 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-07-28 16:48:32</sys_created_on>
         <sys_id>1238d3d91b5ed0101f7e113d9c4bcbd6</sys_id>
-        <sys_mod_count>166</sys_mod_count>
+        <sys_mod_count>167</sys_mod_count>
         <sys_name>FMSFinTran</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_1238d3d91b5ed0101f7e113d9c4bcbd6</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-19 19:53:08</sys_updated_on>
+        <sys_updated_on>2020-08-24 10:57:25</sys_updated_on>
     </sys_script_include>
 </record_update>

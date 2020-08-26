@@ -315,6 +315,29 @@
 
 		}
 
+		if (c.data.reportType == "baseline" || c.data.reportType == "budget_plans" || c.data.reportType == "financial_transaction" || c.data.reportType == "monthly_expenditure") {
+			
+            colArray.push({
+                headerName: 'Top Budget Code',
+                field: 'budget_code_roll',
+                enableRowGroup: true,
+				rowGroup: false,
+				filter: true,
+				hide: true,
+				minWidth: 225
+			});
+			colArray.push({
+                headerName: 'Top Activity Code',
+                field: 'activity_code_roll',
+				enableRowGroup: true,
+				rowGroup: false,
+				filter: true,
+				hide: true,
+				minWidth: 175
+			});
+
+		}
+
 		if (c.data.reportType != "obligation") {
 
 			colArray.push({
@@ -1347,9 +1370,13 @@
 		return (+(value[0] + 'e' + (value[1] ? (+value[1] - 2) : -2))).toFixed(2);
 	  }
 
-	var setBaselineDefaults = function (calcQ, multiOrgs) {
+	var setBaselineDefaults = function (calcQ, rollUp, tOrg) {
+
+		var expItemRec = calcQ.fti_expense_item_ref;
+		var expRef = expItemRec.toString();
+
 		var baseSupObj = {};
-		baseSupObj.expense_item_ref = calcQ.fti_expense_item_ref.toString();
+		baseSupObj.expense_item_ref = expRef;
 		baseSupObj.budget_ref = "";
 		baseSupObj.budget_type = "";
 		baseSupObj.org_ref = calcQ.proj_organization_ref.toString();
@@ -1358,10 +1385,14 @@
 		baseSupObj.omb_project = calcQ.ft_project_ref.omb_project_name.toString();
 		baseSupObj.project_ref = calcQ.ft_project_ref.toString();
 		baseSupObj.investment = calcQ.proj_investment.investment.getDisplayValue();
-		baseSupObj.activity_code = calcQ.fti_expense_item_ref.activity_code.toString();
-		if (multiOrgs)
-			baseSupObj.activity_code = calcQ.fti_expense_item_ref.parent_expense_item_ref.activity_code.toString();
-		baseSupObj.budget_code = calcQ.fti_expense_item_ref.budget_code_ref.getDisplayValue();
+		baseSupObj.activity_code = expItemRec.activity_code.toString();
+		baseSupObj.budget_code = expItemRec.budget_code_ref.getDisplayValue();
+		if (doRollUp) {
+			var rollupRec = OrgHierarchy.getRollupExpense(expRef, tOrg);
+			baseSupObj.expense_item_ref_roll = rollupRec.toString();
+			baseSupObj.activity_code_roll = rollupRec.activity_code.toString();
+			baseSupObj.budget_code_roll  = rollupRec.budget_code_ref.getDisplayValue();
+		}
 		baseSupObj.baseline = 0;
 		baseSupObj.execution = 0;
 		baseSupObj.transfer = 0;
@@ -1437,6 +1468,10 @@
 			var allOrgs = OrgHierarchy.getOrgChildren(data.selectedOrgID);
 			allOrgs.push(data.selectedOrgID);
 			
+			var doRollUp = false;
+				if (allOrgs.length > 1)
+					doRollUp = true;
+			
 			if (data.reportType == "monthly_expenditure") {
 				var monthlyQ = new GlideRecord(FMSConstants.VIEW_FIN_TRAN_REPORT);
 				monthlyQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_void=false");
@@ -1462,6 +1497,12 @@
 					} else {
 						tMonthObj.budget_code = bCode;
 						tMonthObj.activity_code = aCode;
+						if (doRollUp) {
+							var monthlyRollup = OrgHierarchy.getRollupExpense(monthlyQ.fti_expense_item_ref, data.selectedOrgID);
+							tMonthObj.expense_item_ref_roll = monthlyRollup.toString();
+							tMonthObj.activity_code_roll = monthlyRollup.activity_code.toString();
+							tMonthObj.budget_code_roll  = monthlyRollup.budget_code_ref.getDisplayValue();
+						}
 						tMonthObj.org_name = oCode;
 						tMonthObj.project = pCode;
 						tMonthObj.investment = iCode;
@@ -1649,9 +1690,8 @@
 			if (data.reportType == "baseline" || data.reportType == "budget_plans") {
 
 				var baseProjects = "";
-				var baseEQ = "budget_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^budget_ref.fy=" + input.fy;
+				var baseEQ = "budget_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^budget_ref.fy=" + input.fy + "^budget_ref.current=true";
 				if (data.reportType == "budget_plans") {
-
 					if (input.budget_type == "Actual") {
 						baseEQ += "^budget_ref.budget_typeINActual,Execution";
 
@@ -1686,6 +1726,7 @@
 					var budgetRef = baseQ.budget_ref.toString();
 					var expRef = baseQ.expense_item_ref.toString();
 					var typeRef = baseQ.budget_ref.budget_type.toString();
+					var expItemRec = baseQ.expense_item_ref;
 
 					//check for existing object in the array
 					var existBaseline = data.reportData.filter(function (el) {
@@ -1708,10 +1749,14 @@
 						reportObj.omb_project = baseQ.budget_ref.project_ref.omb_project_name.toString();
 						reportObj.project_ref = baseQ.budget_ref.project_ref.toString();
 						reportObj.investment = baseQ.budget_ref.project_ref.investment.investment.toString();
-						reportObj.activity_code = baseQ.expense_item_ref.activity_code.toString();
-						if (allOrgs.length > 1)
-							reportObj.activity_code = baseQ.expense_item_ref.parent_expense_item_ref.activity_code.toString();
-						reportObj.budget_code = baseQ.expense_item_ref.budget_code_ref.getDisplayValue();
+						reportObj.activity_code = expItemRec.activity_code.toString();
+						reportObj.budget_code = expItemRec.budget_code_ref.getDisplayValue();
+						if (doRollUp) {
+							var rollupRec = OrgHierarchy.getRollupExpense(expRef, data.selectedOrgID);
+							reportObj.expense_item_ref_roll = rollupRec.toString();
+							reportObj.activity_code_roll = rollupRec.activity_code.toString();
+							reportObj.budget_code_roll  = rollupRec.budget_code_ref.getDisplayValue();
+						}
 						if (data.reportType == "baseline") {
 							reportObj.baseline = 0;
 							reportObj.execution = 0;
@@ -1762,7 +1807,7 @@
 				if (data.reportType == "baseline") {
 
 					var calcQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
-					calcQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_tran_type=TVGL^ORft_tran_type=TE^ORft_tran_type=TI^ORft_tran_type=TOA^ORft_tran_type=TVGT^ft_void=false");
+					calcQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_tran_type=TVGL^ORft_tran_type=TE^ORft_tran_type=TI^ORft_tran_type=TOA^ORft_tran_type=TVGT^ft_void=false^fti_expense_item_ref!=NULL"); //todo, remove empty clause
 					calcQ.groupBy("ft_project_ref");
 					calcQ.groupBy("fti_expense_item_ref");
 					calcQ.groupBy("proj_organization_ref");
@@ -1773,7 +1818,7 @@
 						//if (baseProjects.indexOf(calcQ.ft_project_ref.toString()) > -1) {
 
 						var baseSupObj = {};
-						baseSupObj = setBaselineDefaults(calcQ, (allOrgs.length > 1));
+						baseSupObj = setBaselineDefaults(calcQ, doRollUp, data.selectedOrgID);
 						baseSupObj.transfer = parseFloat(calcQ.getAggregate("SUM", "fti_item_total"));
 						data.reportData.push(baseSupObj);
 
@@ -1781,7 +1826,7 @@
 					}
 
 					var inProgQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
-					inProgQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_tran_type!=TVGL^ft_tran_type!=TE^ft_tran_type!=TI^ft_tran_type!=TOA^ft_tran_type!=TVGT^ft_void=false");
+					inProgQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_tran_type!=TVGL^ft_tran_type!=TE^ft_tran_type!=TI^ft_tran_type!=TOA^ft_tran_type!=TVGT^ft_void=false^fti_expense_item_ref!=NULL");
 					inProgQ.groupBy("ft_project_ref");
 					inProgQ.groupBy("fti_expense_item_ref");
 					inProgQ.groupBy("proj_organization_ref");
@@ -1791,7 +1836,7 @@
 					while (inProgQ.next()) {
 
 						var progressObj = {};
-						progressObj = setBaselineDefaults(inProgQ, (allOrgs.length > 1));
+						progressObj = setBaselineDefaults(inProgQ, doRollUp, data.selectedOrgID);
 
 						if (inProgQ.ft_tran_status == "In-Progress")
 							progressObj.in_progress = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
@@ -1850,6 +1895,12 @@
 					finTranObj.cost_pool_ref = finTranQ.fin_tran_ref.cost_pool_ref.toString();
 					finTranObj.activity_code = finTranQ.expense_item_ref.activity_code.toString();
 					finTranObj.budget_code = finTranQ.expense_item_ref.budget_code_ref.getDisplayValue();
+					if (doRollUp) {
+							var transRollup = OrgHierarchy.getRollupExpense(finTranQ.expense_item_ref, data.selectedOrgID);
+							finTranObj.expense_item_ref_roll = transRollup.toString();
+							finTranObj.activity_code_roll = transRollup.activity_code.toString();
+							finTranObj.budget_code_roll  = transRollup.budget_code_ref.getDisplayValue();
+						}
 					finTranObj.trans_status = finTranQ.fin_tran_ref.tran_status.toString();
 					finTranObj.trans_type = finTranQ.fin_tran_ref.tran_type.toString();
 					finTranObj.trans_date = finTranQ.fin_tran_ref.tran_date.toString();
@@ -2465,14 +2516,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>682</sys_mod_count>
+        <sys_mod_count>726</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-05 18:08:04</sys_updated_on>
+        <sys_updated_on>2020-08-26 19:54:26</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
