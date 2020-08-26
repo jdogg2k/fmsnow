@@ -500,7 +500,16 @@
         });
     });
 	
-
+$rootScope.$on('fms.contractPromoted', function(event, args) {
+	//refresh data on contract promotion
+        c.server.get({
+           mode: "getData"
+        }).then(function(resp) {
+            var model = contractManager.gridOpts.api.getFilterModel();
+            contractManager.setGridData(resp.data.tableData); //set grid data
+            contractManager.gridOpts.api.setFilterModel(model);
+        });
+    });
 	
 
 }]]></client_script>
@@ -589,14 +598,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-05 17:24:17</sys_created_on>
         <sys_id>338fbad21be054500a4a10ad9c4bcb43</sys_id>
-        <sys_mod_count>240</sys_mod_count>
+        <sys_mod_count>241</sys_mod_count>
         <sys_name>Contract Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_338fbad21be054500a4a10ad9c4bcb43</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-19 18:07:25</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-08-26 20:40:57</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
