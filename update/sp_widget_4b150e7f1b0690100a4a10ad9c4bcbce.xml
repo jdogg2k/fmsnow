@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function($scope,AGGridFactory) {
+        <client_script><![CDATA[function($scope,AGGridFactory, $timeout, spUtil) {
     /* widget controller */
     var c = this;
    // c.targetOrg = c.data.selectedOrg;
     c.userAuth = c.data.userAuth;
+    c.selectedGroup = "";
+    c.selectedUserID = "";
    // c.tierMode = "Hide"; //default to this property to show row colors
 	var userManager = new AGGridFactory();
 	
@@ -29,7 +31,35 @@
 			return false;
 	}
 
-	c.canDelete = function(auth, data) { return c.canEdit(auth, data); }
+    c.canDelete = function(auth, data) { return c.canEdit(auth, data); }
+    
+    c.detailAction = function(tID) {
+        c.selectedUserID = tID;
+        c.server.get({
+            mode: "getAvailableGroups",
+            user_id: tID
+         }).then(function(resp) {
+             c.data.availableGroups = resp.data.availableGroups;
+             c.data.selectedUser = resp.data.selectedUser;
+             $timeout(function () {
+                $('#modalLaunch').click();
+            })
+         });        
+    }
+
+    c.addGroup = function() {
+        c.server.get({
+            mode: "addGroup",
+            user_id: c.selectedUserID,
+            group_id: c.selectedGroup
+         }).then(function(resp) {
+            $('#closeWizard').click();
+            spUtil.addInfoMessage("Group added to User");
+            var model = userManager.gridOpts.api.getFilterModel();
+            userManager.setGridData(resp.data.tableData); //set grid data
+            userManager.gridOpts.api.setFilterModel(model);
+         });
+    }
     
     c.exportExcel = function() {
        userManager.exportExcel();
@@ -219,7 +249,8 @@
             banner: 'Group',
             name: c.data.rolesTableName,
             columnDefs: UserRolesDef,
-            parentRef: 'user'
+            parentRef: 'user',
+            altAction: true
         }]   
     }
 
@@ -250,7 +281,17 @@
 
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css/>
+        <css>.hiddenButton {&#13;
+    display: none;&#13;
+    visibility: hidden;&#13;
+  }&#13;
+&#13;
+  .reportSelect {&#13;
+    padding: 6px 12px;&#13;
+    font-size: 14px;&#13;
+    border: 1px solid #ccc;&#13;
+    border-radius: 4px;&#13;
+}</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -274,6 +315,22 @@
 	
 	data.selectedOrg = "";
 	data.selectedProj = "";
+	data.availableGroups = [];
+	data.membership = [];
+	data.fmsGroups = []; 
+	data.selectedUser = "";
+	data.selectedUserID = "";
+
+	var fmsGroupQuery = new GlideRecord("sys_user_group");
+	fmsGroupQuery.addEncodedQuery("nameSTARTSWITHfms");
+	fmsGroupQuery.query();
+	while (fmsGroupQuery.next()) {
+		var groupObj = {};
+		groupObj.name = fmsGroupQuery.getValue("name");
+		groupObj.value = fmsGroupQuery.getValue("sys_id");
+		data.fmsGroups.push(groupObj);
+	}
+
   
     var session = gs.getSession();
 	if (session.getClientData('org_id') && session.getClientData('org_id').length > 0)
@@ -298,7 +355,36 @@
            data.newRec = FMSUtility.getUserTableData(input.targetTable, "sys_id=" + input.newSysID, true)[0];
         }
         if (input.mode == "deleteRow") {
-            FMSUtility.deleteRecord(input.delTable, input.rowID);
+			if (input.delTable == "sys_user_grmember") {
+				//JLR - we must use a script action in global scope here to get this accomplished
+				var deleteMember = new GlideRecord("sys_user_grmember");
+				deleteMember.get(input.rowID);
+				gs.eventQueue("x_g_irm_fms.group_member_delete",deleteMember, '', '');
+				gs.addInfoMessage("Group Removed - please refresh the page momentarily to see the updated membership");
+			} else {
+				FMSUtility.deleteRecord(input.delTable, input.rowID);
+			}
+		}
+		if (input.mode == "addGroup") {
+			var newMember = new GlideRecord("sys_user_grmember");
+			newMember.initialize();
+			newMember.group = input.group_id;
+			newMember.user = input.user_id;
+			newMember.insert();
+		}
+		if (input.mode == "getAvailableGroups") {
+			var membershipQuery = new GlideRecord("sys_user_grmember");
+			membershipQuery.addEncodedQuery("user=" + input.user_id + "^group.nameSTARTSWITHfms");
+			membershipQuery.query();
+			while (membershipQuery.next()) {
+				data.selectedUser = membershipQuery.user.name.toString();
+				data.membership.push(membershipQuery.getValue("group"));
+			}
+			var membershipStr = data.membership.join(",");
+			data.fmsGroups.forEach(function (grpObj) {
+				if (membershipStr.indexOf(grpObj.value) == -1)
+					data.availableGroups.push(grpObj);
+			});
         }
 	
        	if (input.mode == "setOrg") {
@@ -369,14 +455,14 @@
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-07-23 18:35:09</sys_created_on>
         <sys_id>4b150e7f1b0690100a4a10ad9c4bcbce</sys_id>
-        <sys_mod_count>106</sys_mod_count>
+        <sys_mod_count>133</sys_mod_count>
         <sys_name>Users Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_4b150e7f1b0690100a4a10ad9c4bcbce</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-24 19:33:07</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-08-27 19:28:38</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
@@ -397,7 +483,32 @@
       </div>
     </div>
   </div>
+  <a id="modalLaunch" href="#myModal" class="btn btn-primary hiddenButton" role="button"
+  data-toggle="modal">launch</a>
+</div>
 
-</div>]]></template>
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <h3 id="myModalLabel">Add New FMS Group for {{c.data.selectedUser}}</h3>
+          </div>
+          <div class="modal-body">
+              <label for="selGroup">Group:</label>
+              <select class="reportSelect" id="selGroup" ng-model="c.selectedGroup">
+                <option value="">-- Select a Group --</option>
+                  <option ng-repeat="group in c.data.availableGroups" value="{{group.value}}">{{group.name}}
+                  </option>
+              </select>
+          </div>
+          <div class="modal-footer">
+              <button id="closeWizard" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+              <a class="btn btn-success" href="javascript:void(0)" ng-click="c.addGroup()">Add</a>
+          </div>
+      </div>
+  </div>
+</div>
+]]></template>
     </sp_widget>
 </record_update>

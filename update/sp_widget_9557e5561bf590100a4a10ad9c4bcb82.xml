@@ -607,15 +607,27 @@
 	var FMSPermissions = new x_g_irm_fms.FMSPermissions();
 //	var FMSConstants = new x_g_irm_fms.FMSConstants();
     
-    if (input) { //input holds the data coming back to the server
+  if (input) { //input holds the data coming back to the server
+		
 		if (input.mode == "deleteRow"){
+			
 			if(input.delTable == FMSConstants.TABLE_APPROPRIATION){
+				//if(FMSPermissions.canDeleteAllotment(input.rowID)){
 				FMSUtility.deleteRecord(FMSConstants.TABLE_APPROPRIATION, input.rowID);
+			//	}
 			
-				 } else if(input.delTable == FMSConstants.TABLE_ALLOTMENT){
+				 }
+			
+			else if(input.delTable == FMSConstants.TABLE_ALLOTMENT){
 				
-			
-				FMSUtility.deleteRecord(FMSConstants.TABLE_ALLOTMENT, input.rowID);
+				if(FMSPermissions.canDeleteAllotment(input.rowID)){
+				
+					FMSUtility.deleteRecord(FMSConstants.TABLE_ALLOTMENT, input.rowID);
+				}
+					 else {
+				data.isError = true;
+				data.errorMsg = "This Allotment cannot be deleted as it is linked to existing financial transactions";
+			}
 				 
 			}
 			
@@ -654,8 +666,16 @@
 			}
 			else if(input.delTable == FMSConstants.TABLE_POST){
 				
+				if(FMSPermissions.canDeletePost(input.rowID)){
+				
+						FMSUtility.deleteRecord(FMSConstants.TABLE_POST, input.rowID);
+				}
+					 else {
+				data.isError = true;
+				data.errorMsg = "This Post cannot be deleted as it is referenced to existing financial transactions item";
+			}
 			
-				FMSUtility.deleteRecord(FMSConstants.TABLE_POST, input.rowID);
+			
 				 
 			}
 				else if(input.delTable == FMSConstants.TABLE_REGION){
@@ -772,14 +792,14 @@
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-07-06 14:18:09</sys_created_on>
         <sys_id>9557e5561bf590100a4a10ad9c4bcb82</sys_id>
-        <sys_mod_count>119</sys_mod_count>
+        <sys_mod_count>122</sys_mod_count>
         <sys_name>Allotment Lookup Table</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_9557e5561bf590100a4a10ad9c4bcb82</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-17 19:39:02</sys_updated_on>
+        <sys_updated_on>2020-08-27 17:00:06</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
