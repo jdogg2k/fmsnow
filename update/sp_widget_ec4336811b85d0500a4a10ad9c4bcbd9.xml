@@ -710,12 +710,21 @@
 				lockVisible: true
 			});
 			colArray.push({
-                headerName: 'Cost Pool',
+                headerName: 'BOC / Cost Pool',
 				field: 'cost_pool',
 				enableRowGroup: true,
-				filter: true,
-				hide: true,
-				lockVisible: true
+				filter: true
+			});
+			colArray.push({
+                headerName: 'Sub Cost Pool',
+				field: 'sub_cost_pool',
+				enableRowGroup: true,
+				filter: true
+			});
+			colArray.push({
+                headerName: 'Cloud Related?',
+				field: 'cloud_related',
+				filter: true
 			});
 			colArray.push({
 				headerName: 'Post',
@@ -741,7 +750,8 @@
                 headerName: 'Obligation',
 				field: 'obligation',
 				enableRowGroup: true,
-                enableValue: true
+                enableValue: true,
+				filter: true
 			});
 			colArray.push({
 				headerName: 'PR Number',
@@ -1891,8 +1901,11 @@
 					finTranObj.allocation_group_ref = finTranQ.fin_tran_ref.allocation_group_ref.toString();
 					finTranObj.allotment = finTranQ.fin_tran_ref.allotment_ref.allotment.toString();
 					finTranObj.description = finTranQ.fin_tran_ref.description.toString();
-					finTranObj.cost_pool = finTranQ.fin_tran_ref.cost_pool_ref.getDisplayValue();
-					finTranObj.cost_pool_ref = finTranQ.fin_tran_ref.cost_pool_ref.toString();
+					finTranObj.cost_pool = finTranQ.boc_cost_pool.getDisplayValue();
+					finTranObj.cost_pool_ref = finTranQ.boc_cost_pool.toString();
+					finTranObj.sub_cost_pool = finTranQ.sub_boc_cost_pool.getDisplayValue();
+					finTranObj.sub_cost_pool_ref = finTranQ.sub_boc_cost_pool.toString();
+					finTranObj.cloud_related = finTranQ.cloud_related.getDisplayValue();
 					finTranObj.activity_code = finTranQ.expense_item_ref.activity_code.toString();
 					finTranObj.budget_code = finTranQ.expense_item_ref.budget_code_ref.getDisplayValue();
 					if (doRollUp) {
@@ -2516,14 +2529,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>726</sys_mod_count>
+        <sys_mod_count>729</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-26 19:54:26</sys_updated_on>
+        <sys_updated_on>2020-08-31 16:48:54</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">

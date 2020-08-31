@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_form_sections form_id="95cc12101b0f54500a4a10ad9c4bcb0b" sys_domain="global" table="x_g_irm_fms_project_allocation" version="3">
+        <sys_ui_form_section action="INSERT_OR_UPDATE">
+            <position>0</position>
+            <sys_created_by>PuriA@state.gov</sys_created_by>
+            <sys_created_on>2020-08-31 16:21:24</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>19cc12101b0f54500a4a10ad9c4bcb0d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_overrides/>
+            <sys_ui_form display_value="x_g_irm_fms_project_allocation" name="x_g_irm_fms_project_allocation" sys_domain="global" view="Default view">95cc12101b0f54500a4a10ad9c4bcb0b</sys_ui_form>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_project_allocation" sys_domain="global" view="Default view">df89ac9b1bc490101f7e113d9c4bcb38</sys_ui_section>
+            <sys_updated_by>PuriA@state.gov</sys_updated_by>
+            <sys_updated_on>2020-08-31 16:21:24</sys_updated_on>
+        </sys_ui_form_section>
+        <sys_ui_form_section action="INSERT_OR_UPDATE">
+            <position>1</position>
+            <sys_created_by>PuriA@state.gov</sys_created_by>
+            <sys_created_on>2020-08-31 16:21:24</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>d5cc1a101b0f54500a4a10ad9c4bcb9d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_overrides/>
+            <sys_ui_form display_value="x_g_irm_fms_project_allocation" name="x_g_irm_fms_project_allocation" sys_domain="global" view="Default view">95cc12101b0f54500a4a10ad9c4bcb0b</sys_ui_form>
+            <sys_ui_section caption="sys_popup" display_value="sys_popup" name="x_g_irm_fms_project_allocation" sys_domain="global" view="Default view">55cc12101b0f54500a4a10ad9c4bcb0e</sys_ui_section>
+            <sys_updated_by>PuriA@state.gov</sys_updated_by>
+            <sys_updated_on>2020-08-31 16:21:24</sys_updated_on>
+        </sys_ui_form_section>
+        <sys_ui_form action="INSERT_OR_UPDATE">
+            <name>x_g_irm_fms_project_allocation</name>
+            <roles/>
+            <sys_class_name>sys_ui_form</sys_class_name>
+            <sys_created_by>PuriA@state.gov</sys_created_by>
+            <sys_created_on>2020-08-31 16:21:24</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>95cc12101b0f54500a4a10ad9c4bcb0b</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>x_g_irm_fms_project_allocation</sys_name>
+            <sys_overrides/>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_ui_form_sections_95cc12101b0f54500a4a10ad9c4bcb0b</sys_update_name>
+            <sys_updated_by>PuriA@state.gov</sys_updated_by>
+            <sys_updated_on>2020-08-31 16:21:24</sys_updated_on>
+            <sys_user/>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_form>
+    </sys_ui_form_sections>
+</record_update>

@@ -11,149 +11,207 @@
 var FMSUtility = new x_g_irm_fms.FMSUtilities();
 
 FMSPermissions.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
-	canDeleteOrg: function(orgID) {
+    canDeleteOrg: function(orgID) {
 
-    /* JLR - This function will check if any critical financial data is associated with an organization before allowing it to be deleted
-    */
-    var canDelete = true;
+        /* JLR - This function will check if any critical financial data is associated with an organization before allowing it to be deleted
+         */
+        var canDelete = true;
 
-    var orgAlloc = FMSUtility.getTableData(FMSConstants.TABLE_ALLOCATION_POOL, "organization_ref=" + orgID);
-    var orgProjAlloc = FMSUtility.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, "project_ref.organization_ref=" + orgID);
-    var orgBudget = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET, "project_ref.organization_ref=" + orgID);
-    var orgContract = FMSUtility.getTableData(FMSConstants.TABLE_CONTRACT, "organization_ref=" + orgID);
-    var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "project_ref.organization_ref=" + orgID);
-    
-    if (orgAlloc.length > 0 || orgProjAlloc.length > 0 || orgBudget.length > 0 || orgContract.length > 0 || orgTrans.length > 0)
-        canDelete = false;
+        var orgAlloc = FMSUtility.getTableData(FMSConstants.TABLE_ALLOCATION_POOL, "organization_ref=" + orgID);
+        var orgProjAlloc = FMSUtility.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, "project_ref.organization_ref=" + orgID);
+        var orgBudget = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET, "project_ref.organization_ref=" + orgID);
+        var orgContract = FMSUtility.getTableData(FMSConstants.TABLE_CONTRACT, "organization_ref=" + orgID);
+        var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "project_ref.organization_ref=" + orgID);
 
-    return canDelete;
-},
+        if (orgAlloc.length > 0 || orgProjAlloc.length > 0 || orgBudget.length > 0 || orgContract.length > 0 || orgTrans.length > 0)
+            canDelete = false;
 
-canDeleteProj: function(projID) {
+        return canDelete;
+    },
 
-    /* JLR - This function will check if any critical financial data is associated with a project before allowing it to be deleted
-    */
-    var canDelete = true;
+    canDeleteProj: function(projID) {
 
-    var orgProjAlloc = FMSUtility.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, "project_ref=" + projID);
-    var orgBudget = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET, "project_ref=" + projID);
-    var orgContract = FMSUtility.getTableData(FMSConstants.TABLE_CONTRACT, "project_ref=" + projID);
-    var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "project_ref=" + projID);
-    
-    if (orgProjAlloc.length > 0 || orgBudget.length > 0 || orgContract.length > 0 || orgTrans.length > 0)
-        canDelete = false;
+        /* JLR - This function will check if any critical financial data is associated with a project before allowing it to be deleted
+         */
+        var canDelete = true;
 
-    return canDelete;
-},
+        var orgProjAlloc = FMSUtility.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, "project_ref=" + projID);
+        var xfrProjAlloc = FMSUtility.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, "xfer_project_ref=" + projID);
+        var orgBudget = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET, "project_ref=" + projID);
+        var orgContract = FMSUtility.getTableData(FMSConstants.TABLE_CONTRACT, "project_ref=" + projID);
+        var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "project_ref=" + projID);
 
-canDeleteContract: function(contractID) {
+        if (orgProjAlloc.length > 0 || xfrProjAlloc.length > 0 || orgBudget.length > 0 || orgContract.length > 0 || orgTrans.length > 0)
+            canDelete = false;
 
-    /* JLR - This function will check if any critical financial data is associated with a contract before allowing it to be deleted
-    */
-    var canDelete = true;
-    var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "contract_ref=" + contractID);
-    
-    if (orgTrans.length > 0)
-        canDelete = false;
+        return canDelete;
+    },
 
-    return canDelete;
-},
+    canDeleteContract: function(contractID) {
 
-canDeleteExpenseItem: function(expID) {
+        /* JLR - This function will check if any critical financial data is associated with a contract before allowing it to be deleted
+         */
+        var canDelete = true;
+        var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "contract_ref=" + contractID);
 
-    /* JLR - This function will check if any critical financial data is associated with an expense item before allowing it to be deleted
-    */
-    var canDelete = true;
-    var orgBudget = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET_ITEM, "expense_item_ref=" + expID);
-    var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM, "expense_item_ref=" + expID);
-    
-    if (orgBudget.length > 0 || orgTrans.length > 0)
-        canDelete = false;
+        if (orgTrans.length > 0)
+            canDelete = false;
 
-    return canDelete;
-},
+        return canDelete;
+    },
 
-canDeletecostPool: function(poolID) {
+    canDeleteExpenseItem: function(expID) {
 
-    /* JLR - This function will check if any critical financial data is associated with a category before allowing it to be deleted
-    */
-    var canDelete = true;
-    var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "cost_pool_ref=" + poolID);
-    
-    if (orgTrans.length > 0)
-        canDelete = false;
+        /* JLR - This function will check if any critical financial data is associated with an expense item before allowing it to be deleted
+         */
+        var canDelete = true;
+        var orgBudget = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET_ITEM, "expense_item_ref=" + expID);
+        var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM, "expense_item_ref=" + expID);
 
-    return canDelete;
-},
+        if (orgBudget.length > 0 || orgTrans.length > 0)
+            canDelete = false;
 
-canDeleteOMBCategory: function(catID) {
+        return canDelete;
+    },
 
-    /* JLR - This function will check if any critical financial data is associated with a category before allowing it to be deleted
-    */
-    var canDelete = true;
-    var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM, "omb_category_ref=" + catID);
-    
-    if (orgTrans.length > 0)
-        canDelete = false;
+    canDeletecostPool: function(poolID) {
 
-    return canDelete;
-},
+        /* JLR - This function will check if any critical financial data is associated with a category before allowing it to be deleted
+         */
+        var canDelete = true;
+        var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "cost_pool_ref=" + poolID);
 
-canDeleteAllocationGroup: function(allocateID) {
+        if (orgTrans.length > 0)
+            canDelete = false;
 
-    /* JLR - This function will check if any critical Financial Transactions or Project Allocations is associated with an Allocation Group before allowing it to be deleted
-    */
-    var canDelete = true;
-    var groupFinTran = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "allocation_group_ref=" + allocateID);
-    var groupProjAlloc = FMSUtility.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, "allocation_group_ref=" + allocateID);
-    
-    if (groupFinTran.length > 0 || groupProjAlloc.length > 0)
-        canDelete = false;
+        return canDelete;
+    },
 
-    return canDelete;
-},
+    canDeleteOMBCategory: function(catID) {
+
+        /* JLR - This function will check if any critical financial data is associated with a category before allowing it to be deleted
+         */
+        var canDelete = true;
+        var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM, "omb_category_ref=" + catID);
+
+        if (orgTrans.length > 0)
+            canDelete = false;
+
+        return canDelete;
+    },
+
+    canDeleteAllocationGroup: function(allocateID) {
+
+        /* JLR - This function will check if any critical Financial Transactions or Project Allocations is associated with an Allocation Group before allowing it to be deleted
+         */
+        var canDelete = true;
+        var groupFinTran = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "allocation_group_ref=" + allocateID);
+        var groupProjAlloc = FMSUtility.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, "allocation_group_ref=" + allocateID);
+
+        if (groupFinTran.length > 0 || groupProjAlloc.length > 0)
+            canDelete = false;
+
+        return canDelete;
+    },
+
+
+
+    canDeleteAllotment: function(allotmentID) {
+
+        /* JLR - This function will check if any critical financial data is associated with a allotment before allowing it to be deleted
+         */
+        var canDelete = true;
+        var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "allotment_ref=" + allotmentID);
+        var orgProjAlloc = FMSUtility.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, "allotment=" + allotmentID);
+
+        if (orgTrans.length > 0 || orgProjAlloc.length > 0)
+            canDelete = false;
+
+        return canDelete;
+    },
+
+    canDeleteAppropriation: function(appropriationID) {
+
+        /* JLR - This function will check if any critical financial data is associated with a allotment before allowing it to be deleted
+         */
+        var canDelete = true;
+        var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "project_appropriation_ref.appropriation_ref=" + appropriationID);
+        var orgProjAlloc = FMSUtility.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, "appropriation_ref=" + appropriationID);
+
+        if (orgTrans.length > 0 || orgProjAlloc.length > 0)
+            canDelete = false;
+
+        return canDelete;
+    },
+
+    canDeleteAppropriationType: function(appropriationTypeID) {
+
+        /* JLR - This function will check if any critical financial data is associated with a allotment before allowing it to be deleted
+         */
+        var canDelete = true;
+        var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "project_appropriation_ref.appropriation_ref.appropriation_type=" + appropriationTypeID);
+        var orgAlloc = FMSUtility.getTableData(FMSConstants.TABLE_ALLOCATION_POOL, "appropriation_type_ref=" + appropriationTypeID);
+        var Appro = FMSUtility.getTableData(FMSConstants.TABLE_APPROPRIATION, "appropriation_type=" + appropriationTypeID);
+
+        if (orgTrans.length > 0 || orgAlloc.length > 0 || Appro.length > 0)
+            canDelete = false;
+
+        return canDelete;
+    },
+
+    canDeleteBudgetCode: function(budgetCodeID) {
+
+        /* JLR - This function will check if any critical financial data is associated with a allotment before allowing it to be deleted
+         */
+        var canDelete = true;
+        var itemExpense = FMSUtility.getTableData(FMSConstants.TABLE_EXPENSE_ITEM, "budget_code_ref=" + budgetCodeID);
+
+        if (itemExpense.length > 0)
+            canDelete = false;
+
+        return canDelete;
+    },
 	
-	
+	 canDeleteInvestment: function(investmentID) {
 
- canDeleteAllotment: function(allotmentID) {
+        /* JLR - This function will check if any critical financial data is associated with a allotment before allowing it to be deleted
+         */
+        var canDelete = true;
+        var orgProj = FMSUtility.getTableData(FMSConstants.TABLE_PROJECT, "investment=" + investmentID);
+        var orgPoolAlloc = FMSUtility.getTableData(FMSConstants.TABLE_ALLOCATION_POOL, "investment_ref=" + investmentID);
 
-    /* JLR - This function will check if any critical financial data is associated with a allotment before allowing it to be deleted
-    */
-    var canDelete = true;
-    var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "allotment_ref=" + allotmentID);
-    
-    if (orgTrans.length > 0)
-        canDelete = false;
+        if (orgProj.length > 0 || orgPoolAlloc.length > 0)
+            canDelete = false;
 
-    return canDelete;
-}, 
+        return canDelete;
+    },
 
- canDeletePost: function(postID) {
+    canDeletePost: function(postID) {
 
-    /* JLR - This function will check if any critical financial data is associated with a Post before allowing it to be deleted
-    */
-    var canDelete = true;
-    var orgTransItem = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM, "post_ref=" + postID);
-    
-    if (orgTransItem.length > 0)
-        canDelete = false;
+        /* JLR - This function will check if any critical financial data is associated with a Post before allowing it to be deleted
+         */
+        var canDelete = true;
+        var orgTransItem = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM, "post_ref=" + postID);
 
-    return canDelete;
-},  	
-	
-	type: 'FMSPermissions'
+        if (orgTransItem.length > 0)
+            canDelete = false;
+
+        return canDelete;
+    },
+
+    type: 'FMSPermissions'
 });]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-06-18 16:32:15</sys_created_on>
         <sys_id>b65919e01b6150100a4a10ad9c4bcbc7</sys_id>
-        <sys_mod_count>9</sys_mod_count>
+        <sys_mod_count>16</sys_mod_count>
         <sys_name>FMSPermissions</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_b65919e01b6150100a4a10ad9c4bcbc7</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-27 16:52:01</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-08-31 15:55:25</sys_updated_on>
     </sys_script_include>
 </record_update>
