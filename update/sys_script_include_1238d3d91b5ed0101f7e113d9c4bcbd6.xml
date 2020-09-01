@@ -4,7 +4,7 @@
         <active>true</active>
         <api_name>x_g_irm_fms.FMSFinTran</api_name>
         <caller_access/>
-        <client_callable>false</client_callable>
+        <client_callable>true</client_callable>
         <description>FMS Financial Transaction related functions</description>
         <name>FMSFinTran</name>
         <script><![CDATA[var FMSFinTran = Class.create();
@@ -142,7 +142,7 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		}
 		return isValid;
 	},
-	
+
 	validateTranFY: function(proj, grp, fy) {
 		var isValid = true;
 		var fyCount = this.getAllocationCount(proj, grp, fy, null);
@@ -151,6 +151,16 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 			isValid = false;
 			gs.addErrorMessage("No project allocations found for fiscal year: " + fy + " Update Failed.");
 		}
+		return isValid;
+	},
+
+	getValidFT: function() {
+		var isValid = "";
+		var tProj = this.getParameter('sysparm_proj');
+		var tGroup = this.getParameter('sysparm_group');
+		var tFY = this.getParameter('sysparm_fy');
+		isValid = this.validateTranFY(tProj, tGroup, tFY);
+		//isValid = tProj;
 		return isValid;
 	},
 
@@ -358,13 +368,13 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-07-28 16:48:32</sys_created_on>
         <sys_id>1238d3d91b5ed0101f7e113d9c4bcbd6</sys_id>
-        <sys_mod_count>167</sys_mod_count>
+        <sys_mod_count>175</sys_mod_count>
         <sys_name>FMSFinTran</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_1238d3d91b5ed0101f7e113d9c4bcbd6</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-24 10:57:25</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-09-01 20:25:58</sys_updated_on>
     </sys_script_include>
 </record_update>

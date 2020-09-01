@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script_client">
+    <sys_script_client action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <applies_extended>false</applies_extended>
+        <condition/>
+        <description>Script to ensure allocation group is valid</description>
+        <field>allocation_group_ref</field>
+        <global>true</global>
+        <isolate_script>true</isolate_script>
+        <messages/>
+        <name>Financial Transaction - Alloc Grp Valid</name>
+        <order/>
+        <script><![CDATA[function onChange(control, oldValue, newValue, isLoading, isTemplate) {
+   if (isLoading || newValue === '') {
+      return;
+   }
+	
+	//check if valid allocation group
+	var mod = new GlideAjax('x_g_irm_fms.FMSFinTran');
+	mod.addParam('sysparm_name','getValidFT');
+	mod.addParam('sysparm_proj', g_form.getValue("project_ref"));
+	mod.addParam('sysparm_group', newValue);
+	mod.addParam('sysparm_fy', g_form.getValue("fy"));
+	mod.getXML(checkValidity);
+	
+	function checkValidity(response) {
+		var validResp = (response.responseXML.documentElement.getAttribute("answer").toString() == "true");
+		if (!validResp) {
+			g_form.clearValue('allocation_group_ref');
+			g_form.showFieldMsg('allocation_group_ref', 'Invalid Allocation Group. No project allocations found for fiscal year: ' + g_form.getValue("fy"), 'error');
+	   	} else {
+			g_form.hideFieldMsg('allocation_group_ref');
+		}
+	}
+   
+}]]></script>
+        <sys_class_name>sys_script_client</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-09-01 19:16:27</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>9f6ec0741b43d4500a4a10ad9c4bcb11</sys_id>
+        <sys_mod_count>13</sys_mod_count>
+        <sys_name>Financial Transaction - Alloc Grp Valid</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_script_client_9f6ec0741b43d4500a4a10ad9c4bcb11</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-09-01 20:30:42</sys_updated_on>
+        <table>x_g_irm_fms_fin_tran</table>
+        <type>onChange</type>
+        <ui_type>10</ui_type>
+        <view/>
+    </sys_script_client>
+</record_update>
