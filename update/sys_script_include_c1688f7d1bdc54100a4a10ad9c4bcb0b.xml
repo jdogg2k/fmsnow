@@ -408,11 +408,11 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
         /* JLR - This function will delete a record for the specified table based on the payload received.  Pass a table name and sys_id to delete the record */
 
-        var gridQ = "sys_id=" + deleteID;
         var deleteRec = new GlideRecordSecure(table);
-        deleteRec.addEncodedQuery(gridQ);
-        deleteRec.deleteMultiple();
+        deleteRec.get(deleteID);
+        var delSuccess = deleteRec.deleteRecord();
 
+        return delSuccess;
     },
 
     getFiscalYears: function() {
@@ -488,13 +488,13 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 18:30:12</sys_created_on>
         <sys_id>c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>194</sys_mod_count>
+        <sys_mod_count>196</sys_mod_count>
         <sys_name>FMSUtilities</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-21 16:38:49</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-09-03 20:12:12</sys_updated_on>
     </sys_script_include>
 </record_update>

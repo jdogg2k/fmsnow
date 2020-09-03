@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script_client">
+    <sys_script_client action="DELETE">
+        <active>false</active>
+        <applies_extended>false</applies_extended>
+        <condition/>
+        <description>Script to ensure allocation group is valid</description>
+        <field>allocation_group_ref</field>
+        <global>true</global>
+        <isolate_script>true</isolate_script>
+        <messages/>
+        <name>Financial Transaction - Alloc Grp Valid</name>
+        <order/>
+        <script><![CDATA[function onChange(control, oldValue, newValue, isLoading, isTemplate) {
+   if (isLoading || newValue === '') {
+      return;
+   }
+	
+	//check if valid allocation group
+	var mod = new GlideAjax('x_g_irm_fms.FMSFinTran');
+	mod.addParam('sysparm_name','getValidFT');
+	mod.addParam('sysparm_proj', g_form.getValue("project_ref"));
+	mod.addParam('sysparm_group', newValue);
+	mod.addParam('sysparm_fy', g_form.getValue("fy"));
+	mod.getXML(checkValidity);
+	
+	function checkValidity(response) {
+		var validResp = (response.responseXML.documentElement.getAttribute("answer").toString() == "true");
+		if (!validResp) {
+			g_form.clearValue('allocation_group_ref');
+			g_form.showFieldMsg('allocation_group_ref', 'Invalid Allocation Group. No project allocations found for fiscal year: ' + g_form.getValue("fy"), 'error');
+	   	} else {
+			g_form.hideFieldMsg('allocation_group_ref');
+		}
+	}
+   
+}]]></script>
+        <sys_class_name>sys_script_client</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-09-01 19:16:27</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>9f6ec0741b43d4500a4a10ad9c4bcb11</sys_id>
+        <sys_mod_count>14</sys_mod_count>
+        <sys_name>Financial Transaction - Alloc Grp Valid</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_script_client_9f6ec0741b43d4500a4a10ad9c4bcb11</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-09-03 18:58:44</sys_updated_on>
+        <table>x_g_irm_fms_fin_tran</table>
+        <type>onChange</type>
+        <ui_type>10</ui_type>
+        <view/>
+    </sys_script_client>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_script_client_9f6ec0741b43d4500a4a10ad9c4bcb11</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_script_client"&gt;&lt;sys_script_client action="INSERT_OR_UPDATE"&gt;&lt;active&gt;false&lt;/active&gt;&lt;applies_extended&gt;false&lt;/applies_extended&gt;&lt;condition/&gt;&lt;description&gt;Script to ensure allocation group is valid&lt;/description&gt;&lt;field&gt;allocation_group_ref&lt;/field&gt;&lt;global&gt;true&lt;/global&gt;&lt;isolate_script&gt;true&lt;/isolate_script&gt;&lt;messages/&gt;&lt;name&gt;Financial Transaction - Alloc Grp Valid&lt;/name&gt;&lt;order/&gt;&lt;script&gt;&lt;![CDATA[function onChange(control, oldValue, newValue, isLoading, isTemplate) {
+   if (isLoading || newValue === '') {
+      return;
+   }
+	
+	//check if valid allocation group
+	var mod = new GlideAjax('x_g_irm_fms.FMSFinTran');
+	mod.addParam('sysparm_name','getValidFT');
+	mod.addParam('sysparm_proj', g_form.getValue("project_ref"));
+	mod.addParam('sysparm_group', newValue);
+	mod.addParam('sysparm_fy', g_form.getValue("fy"));
+	mod.getXML(checkValidity);
+	
+	function checkValidity(response) {
+		var validResp = (response.responseXML.documentElement.getAttribute("answer").toString() == "true");
+		if (!validResp) {
+			g_form.clearValue('allocation_group_ref');
+			g_form.showFieldMsg('allocation_group_ref', 'Invalid Allocation Group. No project allocations found for fiscal year: ' + g_form.getValue("fy"), 'error');
+	   	} else {
+			g_form.hideFieldMsg('allocation_group_ref');
+		}
+	}
+   
+}]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_client&lt;/sys_class_name&gt;&lt;sys_created_by&gt;RoseJL@state.gov&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-09-01 19:16:27&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;9f6ec0741b43d4500a4a10ad9c4bcb11&lt;/sys_id&gt;&lt;sys_mod_count&gt;14&lt;/sys_mod_count&gt;&lt;sys_name&gt;Financial Transaction - Alloc Grp Valid&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="FMS" source="x_g_irm_fms"&gt;c728dd331b3fc8100a4a10ad9c4bcbb6&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="FMS"&gt;c728dd331b3fc8100a4a10ad9c4bcbb6&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_client_9f6ec0741b43d4500a4a10ad9c4bcb11&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;RoseJL@state.gov&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-09-03 18:58:44&lt;/sys_updated_on&gt;&lt;table&gt;x_g_irm_fms_fin_tran&lt;/table&gt;&lt;type&gt;onChange&lt;/type&gt;&lt;ui_type&gt;10&lt;/ui_type&gt;&lt;view/&gt;&lt;/sys_script_client&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>1473985762</payload_hash>
+        <record_name>Financial Transaction - Alloc Grp Valid</record_name>
+        <reverted_from/>
+        <source>271bad7e1b3a10501f7e113d9c4bcb3b</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-09-03 18:58:44</sys_created_on>
+        <sys_id>938dda591b0758500a4a10ad9c4bcb9b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1745555dae50000001</sys_recorded_at>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-09-03 18:58:44</sys_updated_on>
+        <type>Client Script</type>
+        <update_guid>9b8dda59490758503d37feba073d899a</update_guid>
+        <update_guid_history>9b8dda59490758503d37feba073d899a:1473985762,036fd4f49983d45015231d4ee6fdf2a6:857550229,e44f90f4a183d4507445ae4de67ec9ac:-1520265605,b71f90f4f583d450a14af0157842dca4:723177460,f4ad9c747383d450dddcbcb3d7f22ef9:-241776688,738c9434ee83d4507565e9af325a7499:1369130974,5c5cd4345d83d4504109565dcbe29b19:-241776688,dcab98f01c83d4507e8de9515dc54c87:1369130974,76fa90b08483d4505e73864d458a061d:-638978835,1eaa50b0b483d450d8fe4214f174e88f:1369130974,f1785830c183d450a464d7b525a179c8:989672404,6166d0bce743d45001c7b0f494c2ac00:1651237434,e065583cd143d450109e45d5edb0f6c9:305798412,580358f8c943d450007992ebded5c255:-1336683353,576ec0747a43d450db5774ab3eb9c914:1304593694</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-09-03 19:25:17</sys_created_on>
+        <sys_db_object display_value="" name="sys_script_client">sys_script_client</sys_db_object>
+        <sys_id>26b17eb4932c458a8e7e441913d62481</sys_id>
+        <sys_metadata>9f6ec0741b43d4500a4a10ad9c4bcb11</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Financial Transaction - Alloc Grp Valid</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent display_value="Financial Transaction">3b8e7cde1b4014500a4a10ad9c4bcbed</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_script_client_9f6ec0741b43d4500a4a10ad9c4bcb11</sys_update_name>
+        <sys_update_version display_value="sys_script_client_9f6ec0741b43d4500a4a10ad9c4bcb11">938dda591b0758500a4a10ad9c4bcb9b</sys_update_version>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-09-03 19:25:17</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

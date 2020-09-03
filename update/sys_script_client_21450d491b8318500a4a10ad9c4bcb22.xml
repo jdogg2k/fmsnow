@@ -10,40 +10,39 @@
         <messages/>
         <name>check performance end date</name>
         <order/>
-        <script><![CDATA[function onChange(control, oldValue, newValue, isLoading, isTemplate) {
-    if (isLoading || newValue === '') {
-        return;
+        <script><![CDATA[function onSubmit() {
+    //Type appropriate comment here, and begin script below
+    var today = new Date();
+    var startDate = new Date(g_form.getValue('perform_start_date'));
+    var endDate = new Date(g_form.getValue('perform_end_date'));
+
+    var inttoday = (today.getUTCFullYear() * 10000) + (today.getUTCMonth() * 100) + (today.getUTCDate());
+    var intstart = (startDate.getUTCFullYear() * 10000) + (startDate.getUTCMonth() * 100) + (startDate.getUTCDate());
+    var intend = (endDate.getUTCFullYear() * 10000) + (endDate.getUTCMonth() * 100) + (endDate.getUTCDate());
+
+
+
+    if (intend < intstart) {
+        g_form.clearValue('perform_end_date');
+        g_form.showFieldMsg('perform_end_date', 'Performance End Date cannot be Prior to Performance Start Date', 'error');
+		return false;
     }
-	if(g_form.getValue('operational_status')=='Active')
-	{
-
-    var currentDateObj = new Date();
-    var currentDateStr = formatDate(currentDateObj, g_user_date_format);
-    var currentDateNum = getDateFromFormat(currentDateStr, g_user_date_format);
-    var startDateNum = getDateFromFormat(newValue, g_user_date_format);
-    if (startDateNum <= currentDateNum) {
-
-		g_form.clearValue('perform_end_date');
-		g_form.showErrorBox( 'perform_end_date','Please ensure that the Expiry date is in the future!');
-		//g_form.show
-
-
-        return false;
-
-
+	else if (intend < inttoday) {
+        if (g_form.getValue('operational_status') == 'Active') {
+            g_form.clearValue('perform_end_date');
+            g_form.showFieldMsg('perform_end_date', 'Performance End Date of an Active Contract cannot be Prior to Current Date ', 'error');
+			return false;
+        }
     }
-	}
-
-
-}
-//Type appropriate comment here, and begin script below]]></script>
+	
+}]]></script>
         <sys_class_name>sys_script_client</sys_class_name>
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-09-02 18:01:44</sys_created_on>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>21450d491b8318500a4a10ad9c4bcb22</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>10</sys_mod_count>
         <sys_name>check performance end date</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
@@ -51,9 +50,9 @@
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_client_21450d491b8318500a4a10ad9c4bcb22</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-09-02 18:03:13</sys_updated_on>
+        <sys_updated_on>2020-09-03 19:57:24</sys_updated_on>
         <table>x_g_irm_fms_contract</table>
-        <type>onChange</type>
+        <type>onSubmit</type>
         <ui_type>10</ui_type>
         <view/>
     </sys_script_client>
