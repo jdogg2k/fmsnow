@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_policy_action">
+    <sys_ui_policy_action action="INSERT_OR_UPDATE">
+        <cleared>false</cleared>
+        <disabled>ignore</disabled>
+        <field>po_award_vendor_name</field>
+        <mandatory>true</mandatory>
+        <sys_class_name>sys_ui_policy_action</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-09-03 20:23:44</sys_created_on>
+        <sys_id>3ef0b69d1b4758500a4a10ad9c4bcb78</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>po_award_vendor_name</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_ui_policy_action_3ef0b69d1b4758500a4a10ad9c4bcb78</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-09-03 20:23:44</sys_updated_on>
+        <table>x_g_irm_fms_fin_tran</table>
+        <ui_policy display_value="Financial Tran - Force Vendor">d3c0f29d1b4758500a4a10ad9c4bcb8b</ui_policy>
+        <visible>ignore</visible>
+    </sys_ui_policy_action>
+</record_update>
