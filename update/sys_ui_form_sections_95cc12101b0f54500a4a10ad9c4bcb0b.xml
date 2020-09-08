@@ -14,20 +14,6 @@
             <sys_updated_by>PuriA@state.gov</sys_updated_by>
             <sys_updated_on>2020-08-31 16:21:24</sys_updated_on>
         </sys_ui_form_section>
-        <sys_ui_form_section action="INSERT_OR_UPDATE">
-            <position>1</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-31 16:21:24</sys_created_on>
-            <sys_domain>global</sys_domain>
-            <sys_domain_path>/</sys_domain_path>
-            <sys_id>d5cc1a101b0f54500a4a10ad9c4bcb9d</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_overrides/>
-            <sys_ui_form display_value="x_g_irm_fms_project_allocation" name="x_g_irm_fms_project_allocation" sys_domain="global" view="Default view">95cc12101b0f54500a4a10ad9c4bcb0b</sys_ui_form>
-            <sys_ui_section caption="sys_popup" display_value="sys_popup" name="x_g_irm_fms_project_allocation" sys_domain="global" view="Default view">55cc12101b0f54500a4a10ad9c4bcb0e</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-31 16:21:24</sys_updated_on>
-        </sys_ui_form_section>
         <sys_ui_form action="INSERT_OR_UPDATE">
             <name>x_g_irm_fms_project_allocation</name>
             <roles/>
