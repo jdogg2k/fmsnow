@@ -10,7 +10,7 @@
             </choice>
         </element>
         <element label="Delivery Date" max_length="40" name="delivery_date" type="glide_date"/>
-        <element label="Expense Item" mandatory="true" max_length="32" name="expense_item_ref" reference="x_g_irm_fms_expense_item" reference_qual="javascript:&quot;organization_ref=&quot; + current.fin_tran_ref.project_ref.organization_ref" type="reference" use_reference_qualifier="advanced"/>
+        <element label="Expense Item" mandatory="true" max_length="32" name="expense_item_ref" reference="x_g_irm_fms_expense_item" reference_qual="javascript:&quot;disabled=false^organization_ref=&quot; + current.fin_tran_ref.project_ref.organization_ref" type="reference" use_reference_qualifier="advanced"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new financial transaction item]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.expense_item_ref.activity_code.toString() + ' [item #' + current.tran_item.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" display="true" label="Fin Tran Item display" max_length="256" name="fin_tran_item_display" read_only="true" type="string" virtual="true"/>
         <element label="Financial Transaction" max_length="32" name="fin_tran_ref" reference="x_g_irm_fms_fin_tran" reference_cascade_rule="cascade" type="reference"/>
         <element label="Has Actual Cost" max_length="40" name="has_actual_cost" type="boolean"/>
