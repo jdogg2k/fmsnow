@@ -3,322 +3,364 @@
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>project_ref</element>
             <position>0</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>3616315b1b9e9c100a4a10ad9c4bcb8f</sys_id>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>e03f649f1bcb14100a4a10ad9c4bcb58</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>tran_status</element>
             <position>1</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>ba16315b1b9e9c100a4a10ad9c4bcb8f</sys_id>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>ac3f649f1bcb14100a4a10ad9c4bcb58</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>tran_type</element>
-            <position>2</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>3216315b1b9e9c100a4a10ad9c4bcb90</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>account_nmbr</element>
-            <position>3</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>b616315b1b9e9c100a4a10ad9c4bcb90</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>allocation_group_ref</element>
-            <position>4</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>3e16315b1b9e9c100a4a10ad9c4bcb90</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>allotment_ref</element>
-            <position>5</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>b216315b1b9e9c100a4a10ad9c4bcb91</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>project_appropriation_ref</element>
-            <position>6</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>3a16315b1b9e9c100a4a10ad9c4bcb91</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.split</element>
-            <position>7</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>be16315b1b9e9c100a4a10ad9c4bcb91</sys_id>
+            <position>2</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>243f649f1bcb14100a4a10ad9c4bcb59</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>fy</element>
-            <position>8</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>3616315b1b9e9c100a4a10ad9c4bcb92</sys_id>
+            <position>3</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>a83f649f1bcb14100a4a10ad9c4bcb59</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>contract_ref</element>
-            <position>9</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>ba16315b1b9e9c100a4a10ad9c4bcb92</sys_id>
+            <element>tran_type</element>
+            <position>4</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>203f649f1bcb14100a4a10ad9c4bcb5a</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>cost_pool_ref</element>
-            <position>10</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>3216315b1b9e9c100a4a10ad9c4bcb93</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>description</element>
-            <position>11</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>b616315b1b9e9c100a4a10ad9c4bcb93</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>void</element>
-            <position>12</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>3e16315b1b9e9c100a4a10ad9c4bcb93</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>purchase_order</element>
-            <position>13</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>b216315b1b9e9c100a4a10ad9c4bcb94</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>received_by</element>
-            <position>14</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>3a16315b1b9e9c100a4a10ad9c4bcb94</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.end_split</element>
-            <position>15</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>be16315b1b9e9c100a4a10ad9c4bcb94</sys_id>
+            <position>5</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>a43f649f1bcb14100a4a10ad9c4bcb5a</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
             <sys_user/>
             <type>.end_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>notes</element>
-            <position>16</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>3616315b1b9e9c100a4a10ad9c4bcb95</sys_id>
+            <element>contract_ref</element>
+            <position>6</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>2c3f649f1bcb14100a4a10ad9c4bcb5a</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.begin_split</element>
-            <position>17</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>ba16315b1b9e9c100a4a10ad9c4bcb95</sys_id>
+            <position>7</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>a03f649f1bcb14100a4a10ad9c4bcb5b</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
             <sys_user/>
             <type>.begin_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>obligation</element>
-            <position>18</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>3216315b1b9e9c100a4a10ad9c4bcb96</sys_id>
+            <element>account_nmbr</element>
+            <position>8</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>283f649f1bcb14100a4a10ad9c4bcb5b</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>obligation_date</element>
-            <position>19</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>b616315b1b9e9c100a4a10ad9c4bcb96</sys_id>
+            <element>allocation_group_ref</element>
+            <position>9</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>ac3f649f1bcb14100a4a10ad9c4bcb5b</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>allotment_ref</element>
+            <position>10</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>243f649f1bcb14100a4a10ad9c4bcb5c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>project_appropriation_ref</element>
+            <position>11</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>a83f649f1bcb14100a4a10ad9c4bcb5c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.split</element>
-            <position>20</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>3e16315b1b9e9c100a4a10ad9c4bcb96</sys_id>
+            <position>12</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>203f649f1bcb14100a4a10ad9c4bcb5d</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
+            <sys_user/>
+            <type>.split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>cost_pool_ref</element>
+            <position>13</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>a43f649f1bcb14100a4a10ad9c4bcb5d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>description</element>
+            <position>14</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>2c3f649f1bcb14100a4a10ad9c4bcb5d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>void</element>
+            <position>15</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>a03f649f1bcb14100a4a10ad9c4bcb5e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>purchase_order</element>
+            <position>16</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>283f649f1bcb14100a4a10ad9c4bcb5e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>received_by</element>
+            <position>17</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>ac3f649f1bcb14100a4a10ad9c4bcb5e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.end_split</element>
+            <position>18</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>243f649f1bcb14100a4a10ad9c4bcb5f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
+            <sys_user/>
+            <type>.end_split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>notes</element>
+            <position>19</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>a83f649f1bcb14100a4a10ad9c4bcb5f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.begin_split</element>
+            <position>20</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>203f649f1bcb14100a4a10ad9c4bcb60</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
+            <sys_user/>
+            <type>.begin_split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>obligation</element>
+            <position>21</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>a43f649f1bcb14100a4a10ad9c4bcb60</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>obligation_date</element>
+            <position>22</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>2c3f649f1bcb14100a4a10ad9c4bcb60</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.split</element>
+            <position>23</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>b03f649f1bcb14100a4a10ad9c4bcb61</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>reconcile_date</element>
-            <position>21</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>b216315b1b9e9c100a4a10ad9c4bcb97</sys_id>
+            <position>24</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>383f649f1bcb14100a4a10ad9c4bcb61</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>tran_date</element>
-            <position>22</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-08-03 14:27:09</sys_created_on>
-            <sys_id>3a16315b1b9e9c100a4a10ad9c4bcb97</sys_id>
+            <position>25</position>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-09 16:04:26</sys_created_on>
+            <sys_id>bc3f649f1bcb14100a4a10ad9c4bcb61</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_fin_tran" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">fbf4f3de1be5d4100a4a10ad9c4bcbbd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-08-03 14:27:09</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-09 16:04:26</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
