@@ -3,84 +3,84 @@
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>relationship_type</element>
             <position>0</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-09-08 18:42:13</sys_created_on>
-            <sys_id>46b9c8c31b8fd0101f7e113d9c4bcb4f</sys_id>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-10 19:25:59</sys_created_on>
+            <sys_id>bae6e2ef1bcf54100a4a10ad9c4bcb52</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_contract_contract" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">904aeed71b6858501f7e113d9c4bcbcd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-09-08 18:42:13</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-10 19:25:59</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.split</element>
             <position>1</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-09-08 18:42:13</sys_created_on>
-            <sys_id>02b9c8c31b8fd0101f7e113d9c4bcb50</sys_id>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-10 19:25:59</sys_created_on>
+            <sys_id>76e6e2ef1bcf54100a4a10ad9c4bcb53</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_contract_contract" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">904aeed71b6858501f7e113d9c4bcbcd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-09-08 18:42:13</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-10 19:25:59</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>contract_rel_ref</element>
+            <element>relationship_date</element>
             <position>2</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-09-08 18:42:13</sys_created_on>
-            <sys_id>86b9c8c31b8fd0101f7e113d9c4bcb50</sys_id>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-10 19:25:59</sys_created_on>
+            <sys_id>fae6e2ef1bcf54100a4a10ad9c4bcb53</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_contract_contract" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">904aeed71b6858501f7e113d9c4bcbcd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-09-08 18:42:13</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-10 19:25:59</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.end_split</element>
             <position>3</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-09-08 18:42:13</sys_created_on>
-            <sys_id>0eb9c8c31b8fd0101f7e113d9c4bcb50</sys_id>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-10 19:25:59</sys_created_on>
+            <sys_id>72e6e2ef1bcf54100a4a10ad9c4bcb54</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_contract_contract" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">904aeed71b6858501f7e113d9c4bcbcd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-09-08 18:42:13</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-10 19:25:59</sys_updated_on>
             <sys_user/>
             <type>.end_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>relationship_date</element>
+            <element>contract_rel_ref</element>
             <position>4</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-09-08 18:42:13</sys_created_on>
-            <sys_id>82b9c8c31b8fd0101f7e113d9c4bcb51</sys_id>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-10 19:25:59</sys_created_on>
+            <sys_id>f6e6e2ef1bcf54100a4a10ad9c4bcb54</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_contract_contract" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">904aeed71b6858501f7e113d9c4bcbcd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-09-08 18:42:13</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-10 19:25:59</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>contract_ref</element>
             <position>5</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-09-08 18:42:13</sys_created_on>
-            <sys_id>0ab9c8c31b8fd0101f7e113d9c4bcb51</sys_id>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-09-10 19:25:59</sys_created_on>
+            <sys_id>7ee6e2ef1bcf54100a4a10ad9c4bcb54</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_contract_contract" sys_domain="global" view="f4c351621b130010d8dc10ad9c4bcbdd">904aeed71b6858501f7e113d9c4bcbcd</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-09-08 18:42:13</sys_updated_on>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-09-10 19:25:59</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
