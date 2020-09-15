@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script_client">
     <sys_script_client action="INSERT_OR_UPDATE">
-        <active>false</active>
+        <active>true</active>
         <applies_extended>false</applies_extended>
         <condition/>
         <description/>
@@ -8,73 +8,49 @@
         <global>true</global>
         <isolate_script>true</isolate_script>
         <messages/>
-        <name>contract change</name>
+        <name>Financial Transaction Contract Change</name>
         <order/>
         <script><![CDATA[function onChange(control, oldValue, newValue, isLoading, isTemplate) {
-    if (isLoading) {
-
-        if (!g_form.isNewRecord()) {
-			if (g_form.getValue('contract_ref') != '') {
-            var a = g_form.getReference('contract_ref', boomerang);
-            var mod = new GlideAjax('x_g_irm_fms.FMSUtilities');
-            mod.addParam('sysparm_name', 'getContractData');
-            mod.addParam('sysparm_contract', g_form.getValue('contract_ref'));
-            mod.getXML(processYears);
-			}
-
-
-        }
-
-
-        return;
-    }
-
-    if (!g_form.isNewRecord()) {
-        var b = g_form.getReference('contract_ref', boomerang);
+	
+	if (isLoading || newValue === '') {
+      return;
+   }
+	
+    if (g_form.getValue("tran_type") == "PO") {
         var mod1 = new GlideAjax('x_g_irm_fms.FMSUtilities');
         mod1.addParam('sysparm_name', 'getContractData');
         mod1.addParam('sysparm_contract', g_form.getValue('contract_ref'));
-        mod1.getXML(processYears);
+        mod1.getXML(processContractInfo);
     }
 
-    function processYears(response) {
+    function processContractInfo(response) {
         try {
             var answer = response.responseXML.documentElement.getAttribute("answer");
 
             var resp = answer.split(',');
             g_form.setValue('po_contract_number', resp[0]);
             g_form.setValue('po_award_vendor_name', resp[1]);
+            g_form.setValue('po_award_number', resp[2]);
         } catch (e) {}
 
     }
 
-    function boomerang(a) {
-        var contract = g_form.setValue('po_award_number', a.contract_piid);
-        //  var award = g_form.setValue('po_award_vendor_name', a.vendor_names);
-        //alert("a "+contract +" "+award);
-
-    }
-
-
-    // alert("a "+contract +" "+a.parent_piid.getDisplayValue());
-
-}
-//Type appropriate comment here, and begin script below]]></script>
+}]]></script>
         <sys_class_name>sys_script_client</sys_class_name>
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-07-16 18:48:15</sys_created_on>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>99d2022d1b469c100a4a10ad9c4bcb78</sys_id>
-        <sys_mod_count>29</sys_mod_count>
-        <sys_name>contract change</sys_name>
+        <sys_mod_count>37</sys_mod_count>
+        <sys_name>Financial Transaction Contract Change</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_client_99d2022d1b469c100a4a10ad9c4bcb78</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-09-15 16:01:21</sys_updated_on>
+        <sys_updated_on>2020-09-15 19:01:32</sys_updated_on>
         <table>x_g_irm_fms_fin_tran</table>
         <type>onChange</type>
         <ui_type>10</ui_type>
