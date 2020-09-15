@@ -42,9 +42,36 @@ FMSHelper.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		var tGroup = this.getParameter('sysparm_group');
 		var tFY = this.getParameter('sysparm_fy');
         isValid = FMSFinTran.validateTranFY(tProj, tGroup, tFY);
-        //isValid = tFY;
 
         return isValid;
+    },
+
+    getPOFromFinTran: function() {
+        var tTran = this.getParameter('sysparm_fintran');
+        var obj = {};
+        var gr = new GlideRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM_PO);
+        gr.addQuery('fin_tran_ref', tTran);
+        gr.query();
+        if(gr.next()){
+           obj['po_nmbr'] = gr.po_nmbr.toString();
+           obj['award_nmbr'] = gr.award_nmbr.toString();
+           obj['notes'] = gr.notes.toString();
+           obj['aqm_approval_date'] = gr.aqm_approval_date.toString();
+           obj['aqm_received_date'] = gr.aqm_received_date.toString();
+           obj['award_date'] = gr.award_date.toString();
+           obj['award_vendor_name'] = gr.award_vendor_name.toString();
+           obj['contract_nmbr'] = gr.contract_nmbr.toString();
+           obj['receive_date'] = gr.receive_date.toString();
+           obj['tracking_nmbr'] = gr.tracking_nmbr.toString();
+           obj['quote_vendor_name'] = gr.quote_vendor_name.toString();
+           obj['requestor'] = gr.requestor.toString();
+           obj['approved'] = gr.approved.toString();
+        }		
+        
+        return JSON.stringify(obj);
+
+
+
     },
 
     //we can continue to add more functions here
@@ -55,13 +82,13 @@ FMSHelper.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>rosejl@state.gov</sys_created_by>
         <sys_created_on>2020-04-10 13:49:39</sys_created_on>
         <sys_id>821e1d9e1bc014500a4a10ad9c4bcbda</sys_id>
-        <sys_mod_count>16</sys_mod_count>
+        <sys_mod_count>24</sys_mod_count>
         <sys_name>FMSHelper</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_821e1d9e1bc014500a4a10ad9c4bcbda</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-09-01 20:19:57</sys_updated_on>
+        <sys_updated_on>2020-09-15 15:21:46</sys_updated_on>
     </sys_script_include>
 </record_update>

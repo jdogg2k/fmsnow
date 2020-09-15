@@ -4,39 +4,36 @@
         <applies_extended>false</applies_extended>
         <condition/>
         <description/>
-        <field>project_ref</field>
+        <field>org_type</field>
         <global>true</global>
         <isolate_script>true</isolate_script>
         <messages/>
-        <name>Project Change</name>
+        <name>Clear Org Parent on Type Change</name>
         <order/>
         <script><![CDATA[function onChange(control, oldValue, newValue, isLoading, isTemplate) {
    if (isLoading || newValue === '') {
       return;
    }
-    
-	g_form.clearValue('allocation_group_ref');
-	g_form.clearValue('project_appropriation_ref');
-	g_form.clearValue('contract_ref');
+   g_form.clearValue('organization_parent_ref');
    //Type appropriate comment here, and begin script below
    
 }]]></script>
         <sys_class_name>sys_script_client</sys_class_name>
         <sys_created_by>PuriA@state.gov</sys_created_by>
-        <sys_created_on>2020-09-04 14:58:38</sys_created_on>
+        <sys_created_on>2020-09-14 17:37:28</sys_created_on>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
-        <sys_id>d8feae691b0b98501f7e113d9c4bcbb7</sys_id>
-        <sys_mod_count>6</sys_mod_count>
-        <sys_name>Project Change</sys_name>
+        <sys_id>30b3f2741bdb98101f7e113d9c4bcb14</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Clear Org Parent on Type Change</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
-        <sys_update_name>sys_script_client_d8feae691b0b98501f7e113d9c4bcbb7</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-09-15 16:02:28</sys_updated_on>
-        <table>x_g_irm_fms_fin_tran</table>
+        <sys_update_name>sys_script_client_30b3f2741bdb98101f7e113d9c4bcb14</sys_update_name>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-09-14 17:37:28</sys_updated_on>
+        <table>x_g_irm_fms_organization</table>
         <type>onChange</type>
         <ui_type>10</ui_type>
         <view/>

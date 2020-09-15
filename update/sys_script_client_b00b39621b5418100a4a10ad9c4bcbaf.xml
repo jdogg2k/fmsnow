@@ -14,6 +14,34 @@
     var mod = new GlideAjax('x_g_irm_fms.FMSHelper');
 	mod.addParam('sysparm_name','getFiscalYears');
 	mod.getXML(processYears);
+
+	if (!g_form.isNewRecord() && g_form.getValue("tran_type") == "PO") {
+
+		var po = new GlideAjax('x_g_irm_fms.FMSHelper');
+		po.addParam('sysparm_name','getPOFromFinTran');
+		po.addParam('sysparm_fintran', g_form.getUniqueValue());
+		po.getXMLAnswer(function(answer){
+		if(answer != ''){
+			var answerObj = JSON.parse(answer);
+
+			console.log(answerObj);
+
+			g_form.setValue('po_pr_number', answerObj.po_nmbr);
+			g_form.setValue('po_award_number', answerObj.award_nmbr);
+			g_form.setValue('po_notes', answerObj.notes);
+			g_form.setValue('po_aqm_approval_date', answerObj.aqm_approval_date);
+			g_form.setValue('po_aqm_received_date', answerObj.aqm_received_date);
+			g_form.setValue('po_award_date', answerObj.award_date);
+			g_form.setValue('po_award_vendor_name', answerObj.award_vendor_name);
+			g_form.setValue('po_contract_number', answerObj.contract_nmbr);
+			g_form.setValue('po_receive_date', answerObj.receive_date);
+			g_form.setValue('po_tracking_number', answerObj.tracking_nmbr);
+			g_form.setValue('po_quote_vendor_name', answerObj.quote_vendor_name);
+			g_form.setValue('po_requestor', answerObj.requestor);
+			g_form.setValue('po_approved', answerObj.approved);
+		}
+		});
+	}
 }
 
 function processYears(response) {
@@ -32,17 +60,17 @@ function processYears(response) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>b00b39621b5418100a4a10ad9c4bcbaf</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>11</sys_mod_count>
         <sys_name>Financial Transaction Load</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_client_b00b39621b5418100a4a10ad9c4bcbaf</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-04-23 20:48:11</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-09-14 21:02:24</sys_updated_on>
         <table>x_g_irm_fms_fin_tran</table>
-        <type/>
+        <type>onLoad</type>
         <ui_type>10</ui_type>
         <view/>
     </sys_script_client>
