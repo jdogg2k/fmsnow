@@ -31,14 +31,15 @@
      var newID = current.cost_pool_name;
     var uniqueCheck = new GlideRecord(FMSConstants.TABLE_COST_POOL);
     uniqueCheck.addQuery("cost_pool_name", newID);
+	uniqueCheck.addQuery('sys_id', '!=', current.sys_id);
     uniqueCheck.query();
     if (uniqueCheck.next()) { //we have existing records with that ID, notify and cancel update
-		if(uniqueCheck.sys_id!=current.sys_id){
+		//if(uniqueCheck.sys_id!=current.sys_id){
       gs.addErrorMessage("Cost Pool Name "+" " + newID + " is not unique. That cost pool with the same name already exists in the Parent Organization.  Update Failed.");
 		//current.cost_pool_name.setError("Error");
         current.setAbortAction(true);
 		}
-    }
+    
 	// Add your code here
 
 })(current, previous);]]></script>
@@ -48,7 +49,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>edd50e601b2550100a4a10ad9c4bcbec</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>9</sys_mod_count>
         <sys_name>Cost Pool Unique Validation</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
@@ -56,7 +57,7 @@
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_edd50e601b2550100a4a10ad9c4bcbec</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-09-15 19:47:25</sys_updated_on>
+        <sys_updated_on>2020-09-16 14:27:29</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>
