@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_ui_policy">
     <sys_ui_policy action="INSERT_OR_UPDATE">
         <active>true</active>
-        <conditions/>
+        <conditions table="x_g_irm_fms_project_allocation">fund_source=Transfer In^EQ<item display_value="Transfer In" endquery="false" field="fund_source" goto="false" newquery="false" operator="=" or="false" value="Transfer In"/>
+            <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
+        </conditions>
         <description/>
         <global>true</global>
         <inherit>false</inherit>
@@ -19,23 +21,23 @@
 
 }]]></script_true>
         <set_values/>
-        <short_description>Hide Contract on Portal</short_description>
+        <short_description>Proj Alloc - Show Transfer Fields</short_description>
         <sys_class_name>sys_ui_policy</sys_class_name>
-        <sys_created_by>PuriA@state.gov</sys_created_by>
-        <sys_created_on>2020-09-08 18:42:57</sys_created_on>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-09-17 15:36:26</sys_created_on>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
-        <sys_id>d3c980071b8fd0101f7e113d9c4bcb0d</sys_id>
-        <sys_mod_count>2</sys_mod_count>
-        <sys_name>Hide Contract on Portal</sys_name>
+        <sys_id>148539711b9b50100a4a10ad9c4bcb35</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Proj Alloc - Show Transfer Fields</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
-        <sys_update_name>sys_ui_policy_d3c980071b8fd0101f7e113d9c4bcb0d</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-09-17 14:39:12</sys_updated_on>
-        <table>x_g_irm_fms_contract_contract</table>
+        <sys_update_name>sys_ui_policy_148539711b9b50100a4a10ad9c4bcb35</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-09-17 15:36:26</sys_updated_on>
+        <table>x_g_irm_fms_project_allocation</table>
         <ui_type>0</ui_type>
         <view/>
     </sys_ui_policy>
