@@ -47,7 +47,7 @@
 			     filter: 'agTextColumnFilter',
             cellRenderer: 'agGroupCellRenderer',
             showRowGroup: true,
-			rowGroup: true,
+			     rowGroup: true,
             cellRendererParams: {
                 suppressCount: true,
                 checkbox: false,
@@ -254,6 +254,7 @@
 
 	data.selectedOrg = "";
 	data.selectedProj = "";
+	//gs.addInfoMessage("load"+data.selectedProj+"test");
     var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
 
     var session = gs.getSession();
@@ -264,7 +265,10 @@
 
     if (input) { //input holds the data coming back to the server
         if (input.mode == "deleteRow") {
-            FMSUtility.deleteRecord(FMSConstants.TABLE_PROJECT_ALLOCATION, input.rowID);
+            var successDelete = FMSUtility.deleteRecord(FMSConstants.TABLE_PROJECT_ALLOCATION, input.rowID);
+            if (!successDelete) {
+                data.isError = true;
+            }
         }
         if (input.mode == "setOrg") {
             data.selectedOrg = input.org_id.toString();
@@ -298,14 +302,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-20 12:59:28</sys_created_on>
         <sys_id>1fc21bc31b305c101f7e113d9c4bcb0d</sys_id>
-        <sys_mod_count>53</sys_mod_count>
+        <sys_mod_count>61</sys_mod_count>
         <sys_name>Project Allocation Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_1fc21bc31b305c101f7e113d9c4bcb0d</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-30 17:40:24</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-09-23 11:26:05</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

@@ -21,15 +21,16 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
     validateTranGroup: function(current, previous) {
 		var isValid = true;
 		if (current.tran_status != 'Obligated' || current.getValue('void') == true) return isValid;
+		var grpChanged =  current.allocation_group_ref != previous.allocation_group_ref;
 		var grp = this.getAllocationGroup(current.allocation_group_ref.sys_id);
 		if (grp == null) return true;
-		if (grp.getValue('val_tran_fy') == true && (current.fy != previous.fy || previous.tran_status != 'Obligated' || current.getValue('void') != previous.getValue('void'))) 
+		if (grp.getValue('val_tran_fy') == true && (current.fy != previous.fy || previous.tran_status != 'Obligated' || current.getValue('void') != previous.getValue('void') || grpChanged)) 
 			isValid = isValid && this.validateTranFY(current.project_ref.sys_id, current.allocation_group_ref.sys_id, current.fy);
-		if (grp.getValue('val_tran_allotment') == true  && (current.allotment_ref != previous.allotment_ref || previous.tran_status != 'Obligated' || current.getValue('void') != previous.getValue('void'))) 
+		if (grp.getValue('val_tran_allotment') == true  && (current.allotment_ref != previous.allotment_ref || previous.tran_status != 'Obligated' || current.getValue('void') != previous.getValue('void') || grpChanged)) 
 			isValid = isValid && this.validateTranAllotment(current.project_ref.sys_id, current.allocation_group_ref.sys_id, current.fy, current.allotment_ref);
-		if (grp.getValue('val_tran_appropriation') == true  && (current.project_appropriation_ref != previous.project_appropriation_ref || previous.tran_status != 'Obligated' || current.getValue('void') != previous.getValue('void'))) 
+		if (grp.getValue('val_tran_appropriation') == true  && (current.project_appropriation_ref != previous.project_appropriation_ref || previous.tran_status != 'Obligated' || current.getValue('void') != previous.getValue('void') || grpChanged)) 
 			isValid = isValid && this.validateTranAppropriation(current.project_ref.sys_id, current.allocation_group_ref.sys_id, current.fy, current.project_appropriation_ref);
-		if (grp.getValue('val_tran_not_deficient') == true && (previous.transaction_total_amt != current.transaction_total_amt || previous.tran_status != 'Obligated' || current.getValue('void') != previous.getValue('void'))) 
+		if (grp.getValue('val_tran_not_deficient') == true && (previous.transaction_total_amt != current.transaction_total_amt || previous.tran_status != 'Obligated' || current.getValue('void') != previous.getValue('void') || grpChanged)) 
 			isValid = isValid && this.validateTranDeficient(current, previous);
 		return isValid;
 	},
@@ -54,7 +55,7 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		if (grp.getValue('val_tran_allotment') == true  && (current.allotment != previous.allotment || isDelete)) 
 			isValid = isValid && this.validateAllocAllotment(previous.project_ref.sys_id, previous.allocation_group_ref.sys_id, previous.fy, previous.allotment);
 		if (grp.getValue('val_tran_appropriation') == true  && (current.project_appropriation_ref != previous.project_appropriation_ref || isDelete)) 
-			isValid = isValid && this.validateAllocAppropriation(previous.project_ref.sys_id, previous.allocation_group_ref.sys_id, previous.fy, previous.project_appropriation_ref);
+			isValid = isValid && this.validateAllocAppropriation(previous.project_ref.sys_id, previous.allocation_group_ref.sys_id, previous.fy, previous.project_appropriation_ref.sys_id);
 		if (grp.getValue('val_tran_not_deficient') == true || current.allocation_amt != previous.allocation_amt)
 			isValid = isValid && this.validateAllocDeficient(current, previous);
 		return isValid;
@@ -358,13 +359,13 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-07-28 16:48:32</sys_created_on>
         <sys_id>1238d3d91b5ed0101f7e113d9c4bcbd6</sys_id>
-        <sys_mod_count>176</sys_mod_count>
+        <sys_mod_count>180</sys_mod_count>
         <sys_name>FMSFinTran</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_1238d3d91b5ed0101f7e113d9c4bcbd6</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-09-03 20:16:26</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-09-23 12:25:06</sys_updated_on>
     </sys_script_include>
 </record_update>
