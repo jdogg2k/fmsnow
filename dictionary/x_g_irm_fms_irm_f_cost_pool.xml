@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label=" IRM F Cost Pool" max_length="40" name="x_g_irm_fms_irm_f_cost_pool" type="collection">
-        <element attributes="edge_encryption_enabled=true,encode_utf8=false" label="BOC" max_length="32" name="boc" reference="x_g_irmb_ams_finan_boc" type="reference"/>
+        <element attributes="edge_encryption_enabled=true,encode_utf8=false" display="true" label="BOC" max_length="32" name="boc" reference="x_g_irm_fms_ams_bocs" type="reference"/>
         <element label="Name" max_length="100" name="name" type="string"/>
         <index name="index">
             <element name="boc"/>
