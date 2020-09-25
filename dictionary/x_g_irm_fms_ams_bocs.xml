@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="AMS BOCs" max_length="40" name="x_g_irm_fms_ams_bocs" type="collection">
+        <element label="Code" max_length="10" name="code" type="string"/>
+        <element label="Description" max_length="200" name="description" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Fund Review" max_length="40" name="fund_review" type="boolean"/>
+    </element>
+</database>
