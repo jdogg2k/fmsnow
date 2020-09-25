@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="IRM F Sub Cost Pool" max_length="40" name="x_g_irm_fms_irm_f_sub_cost_pool" type="collection">
+        <element attributes="edge_encryption_enabled=true,encode_utf8=false" label="BOC" max_length="32" name="boc" reference="x_g_irmb_ams_finan_boc" type="reference"/>
+        <element attributes="edge_encryption_enabled=true,encode_utf8=false" label="Cost Pool" max_length="32" name="cost_pool" reference="x_g_irm_fms_irm_f_cost_pool" type="reference"/>
+        <element label="Name" max_length="200" name="name" type="string"/>
+        <index name="index">
+            <element name="boc"/>
+        </index>
+        <index name="index2">
+            <element name="cost_pool"/>
+        </index>
+    </element>
+</database>

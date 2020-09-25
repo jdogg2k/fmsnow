@@ -13,5 +13,9 @@
         <element attributes="edge_encryption_enabled=true,import_attribute_name=ValTranAppropriation" label="ValTranAppropriation" max_length="40" name="u_valtranappropriation" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=ValTranFY" label="ValTranFY" max_length="40" name="u_valtranfy" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=ValTranNotDeficient" label="ValTranNotDeficient" max_length="40" name="u_valtrannotdeficient" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Val Tran Allotment" max_length="40" name="u_val_tran_allotment" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Val Tran Appropriation" max_length="40" name="u_val_tran_appropriation" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Val Tran FY" max_length="40" name="u_val_tran_fy" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Val Tran Not Deficient" max_length="40" name="u_val_tran_not_deficient" type="string"/>
     </element>
 </database>
