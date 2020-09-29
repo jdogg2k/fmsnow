@@ -20,7 +20,6 @@
 	var tFYStart = new Date((thisFY - 1).toString() + "-10-01");
 	var tFYEnd = new Date(thisFY.toString() + "-09-30");
 	if (!(thisDate >= tFYStart && thisDate <= tFYEnd)) {
-		g_form.clearValue('allocation_date');
 		g_form.showFieldMsg('allocation_date', 'Allocation Date must be within the selected Fiscal Year for this record.', 'error');
 	} else {
 		g_form.hideFieldMsg('fy');
@@ -34,7 +33,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>91c106811bf698101f7e113d9c4bcb78</sys_id>
-        <sys_mod_count>6</sys_mod_count>
+        <sys_mod_count>7</sys_mod_count>
         <sys_name>Project Allocation - Check Alloc Date</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
@@ -42,7 +41,7 @@
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_client_91c106811bf698101f7e113d9c4bcb78</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-21 17:41:10</sys_updated_on>
+        <sys_updated_on>2020-09-28 17:21:33</sys_updated_on>
         <table>x_g_irm_fms_project_allocation</table>
         <type>onChange</type>
         <ui_type>10</ui_type>

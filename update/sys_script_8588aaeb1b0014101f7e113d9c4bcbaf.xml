@@ -69,10 +69,32 @@
         gs.addErrorMessage("Child Pool cannot be set to the same organization as the parent.");
         current.setAbortAction(true);
     }
+	var grPool = current.pool_parent_ref.getRefRecord();
+	if (grPool.fy > 0 && grPool.fy != current.fy) { 
+		gs.addErrorMessage('Fiscal Year does not match parent pool - ' + grPool.fy);
+		current.setAbortAction(true);
+	}
+	var thisFY = parseInt(current.fy);
+	var thisDate = new GlideDateTime(current.receive_date.toString());
+	var FYStart = new GlideDateTime((thisFY - 1).toString() + "-10-01");
+	var FYEnd = new GlideDateTime(thisFY.toString() + "-9-30");
+	if (!(thisDate >= FYStart && thisDate <= FYEnd)) {
+		gs.addErrorMessage('Received Date must be within the selected Fiscal Year for this record.');
+		current.setAbortAction(true);
+	} 
     if (current.fy_qtr.nil() && !current.receive_date.nil()) {
         current.fy_qtr = (Math.floor((new GlideDate(current.receive_date).getMonth() - 1) / 3) + 1);
         current.setAbortAction(true);
     }
+	var newAmount = parseFloat(current.receive_amt);
+	var distAmount = parseFloat(current.distributed_amt);
+	var allocAmount = parseFloat(current.allocated_amt);
+	if (!current.isNewRecord()) {	
+		if (newAmount < distAmount || newAmount < allocAmount || newAmount < (allocAmount + distAmount)) {
+			gs.addErrorMessage('Received amount cannot be changed to a value that is less than the sum of all distributed or allocated amounts.');
+			current.setAbortAction(true);
+		}
+	}
 
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
@@ -81,7 +103,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>8588aaeb1b0014101f7e113d9c4bcbaf</sys_id>
-        <sys_mod_count>16</sys_mod_count>
+        <sys_mod_count>26</sys_mod_count>
         <sys_name>Allocation Pool Validation</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
@@ -89,7 +111,7 @@
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_8588aaeb1b0014101f7e113d9c4bcbaf</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-09-28 11:43:29</sys_updated_on>
+        <sys_updated_on>2020-09-29 17:37:54</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
-    <sys_dictionary action="INSERT_OR_UPDATE" element="it_tower" table="x_g_irm_fms_fin_tran_item">
+    <sys_dictionary action="INSERT_OR_UPDATE" element="it_tower" table="x_g_irm_fms_project">
         <active>true</active>
         <array>false</array>
         <array_denormalized>false</array_denormalized>
@@ -17,7 +17,7 @@
         <column_label>IT Tower</column_label>
         <comments/>
         <create_roles/>
-        <default_value>javascript: current.it_tower.setDisplayValue( current.fin_tran_ref.project_ref.it_tower);</default_value>
+        <default_value/>
         <defaultsort/>
         <delete_roles/>
         <dependent/>
@@ -35,7 +35,7 @@
         <internal_type display_value="Reference">reference</internal_type>
         <mandatory>false</mandatory>
         <max_length>32</max_length>
-        <name>x_g_irm_fms_fin_tran_item</name>
+        <name>x_g_irm_fms_project</name>
         <next_element/>
         <primary>false</primary>
         <read_only>false</read_only>
@@ -51,17 +51,17 @@
         <spell_check>false</spell_check>
         <staged>false</staged>
         <sys_class_name>sys_dictionary</sys_class_name>
-        <sys_created_by>RoseJL@state.gov</sys_created_by>
-        <sys_created_on>2020-09-15 20:10:34</sys_created_on>
-        <sys_id>bbf0e4d51b97d8100a4a10ad9c4bcbb5</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2020-09-29 15:45:16</sys_created_on>
+        <sys_id>067aa3611b2bdc101f7e113d9c4bcbb4</sys_id>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name>IT Tower</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
-        <sys_update_name>sys_dictionary_x_g_irm_fms_fin_tran_item_it_tower</sys_update_name>
+        <sys_update_name>sys_dictionary_x_g_irm_fms_project_it_tower</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-09-29 17:49:32</sys_updated_on>
+        <sys_updated_on>2020-09-29 15:45:16</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>
