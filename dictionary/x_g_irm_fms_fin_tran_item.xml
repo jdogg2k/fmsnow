@@ -17,7 +17,7 @@
         <element label="Item Cost" max_length="20" name="item_cost" type="currency"/>
         <element label="Ordered Quantity" mandatory="true" max_length="40" name="item_qty" type="integer"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;&#13;&#10;&#9;&#13;&#10;})(current);" label="Item Total" max_length="20" name="item_total" read_only="true" type="currency"/>
-        <element default="javascript: current.it_tower.setDisplayValue( current.fin_tran_ref.project_ref.it_tower);" label="IT Tower" max_length="32" name="it_tower" reference="x_g_irm_fms_irm_f_it_tower" type="reference"/>
+        <element label="IT Tower" max_length="32" name="it_tower" reference="x_g_irm_fms_irm_f_it_tower" type="reference"/>
         <element label="OMB Category" max_length="32" name="omb_category_ref" reference="x_g_irm_fms_omb_category" reference_qual="javascript:&quot;organization_refIN&quot; +current.fin_tran_ref.project_ref.organization_ref" type="reference" use_reference_qualifier="advanced"/>
         <element label="Post" max_length="32" name="post_ref" reference="x_g_irm_fms_post" type="reference"/>
         <element label="Received Quantity" max_length="40" name="received_qty" type="integer"/>
