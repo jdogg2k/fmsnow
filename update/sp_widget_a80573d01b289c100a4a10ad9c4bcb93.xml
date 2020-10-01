@@ -5,7 +5,7 @@
     /* widget controller */
     var c = this;
     c.targetOrg = c.data.selectedOrg;
-    c.userAuth = $rootScope.userAuth;
+    c.userAuth = c.data.userAuth;
 
     var projManager = new AGGridFactory();
 
@@ -113,9 +113,14 @@ c.canEdit = function(auth, data) {
             }
         }
     ]);
+	
 
+	
+	var projectProps ={}
 
-    var projectProps = {
+	 if(c.userAuth.roles.isAnalyst){
+		  if (c.userAuth.userorg.indexOf(c.targetOrg) >= 0){
+				  projectProps = {
         pageController: c,
         tableName: c.data.tableName,
         dataArray: null,
@@ -123,9 +128,38 @@ c.canEdit = function(auth, data) {
         linkedField: 'project_code',
         detailsPage: 'project_detail',
         usePaging: false
-    
+					}
 
 		}
+				
+		 
+		 else{
+			   projectProps = {
+        pageController: c,
+        tableName: c.data.tableName,
+        dataArray: null,
+        pageType: 'Project',
+       // linkedField: 'project_code',
+        detailsPage: 'project_detail',
+        usePaging: false
+		}
+     
+		 }
+	 }
+  
+	else{
+       projectProps = {
+        pageController: c,
+        tableName: c.data.tableName,
+        dataArray: null,
+        pageType: 'Project',
+        linkedField: 'project_code',
+        detailsPage: 'project_detail',
+        usePaging: false
+		}
+   
+		}
+	
 
     projManager.setPageProperties(projectProps);
     projManager.setRenderers('project_name'); //build renderers and set display field to show on delete attempt
@@ -140,6 +174,7 @@ c.canEdit = function(auth, data) {
             org_id: args.org_id
         }).then(function(resp) {
             c.targetOrg = resp.data.selectedOrg;
+					  c.userAuth = resp.data.userAuth;
             var model = projManager.gridOpts.api.getFilterModel();
             projManager.setGridData(resp.data.tableData); //set grid data
             projManager.gridOpts.api.setFilterModel(model);
@@ -186,10 +221,12 @@ c.canEdit = function(auth, data) {
 		}
         if (input.mode == "setOrg") {
             data.selectedOrgID = input.org_id;
+					 
         }
 
     }
    // data.investment= FMSUtility.getInvestment();
+	 data.userAuth = FMSUtility.getUserAuth();
     data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_PROJECT, "organization_ref=" + data.selectedOrg, true); //get all expense item info
 	
 	data.tableName = FMSConstants.TABLE_PROJECT;
@@ -200,14 +237,14 @@ c.canEdit = function(auth, data) {
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-29 16:09:57</sys_created_on>
         <sys_id>a80573d01b289c100a4a10ad9c4bcb93</sys_id>
-        <sys_mod_count>73</sys_mod_count>
+        <sys_mod_count>86</sys_mod_count>
         <sys_name>Project Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_a80573d01b289c100a4a10ad9c4bcb93</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-09-28 13:15:13</sys_updated_on>
+        <sys_updated_on>2020-10-01 20:07:42</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

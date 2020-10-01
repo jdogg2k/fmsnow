@@ -11,60 +11,56 @@
         <name>Allocation Pool - Check Received Amount</name>
         <order/>
         <script><![CDATA[function onChange(control, oldValue, newValue, isLoading, isTemplate) {
-   if (isLoading || newValue === '') {
-      return;
-   }
+    if (isLoading || newValue === '') {
+        return;
+    }
 
-   var newAmount = parseFloat(newValue.replace("USD;", ""));
-	var distAmount = parseFloat(g_form.getValue("distributed_amt").replace("USD;", ""));
-	var allocAmount = parseFloat(g_form.getValue("allocated_amt").replace("USD;", ""));
-	
-   if (!g_form.isNewRecord()) {	
-	if (newAmount < distAmount || newAmount < allocAmount || newAmount < (allocAmount + distAmount)) {
-		g_form.clearValue('receive_amt');
-		g_form.showFieldMsg('receive_amt', 'Received amount cannot be changed to a value that is less than the sum of all distributed or allocated amounts.', 'error');
-	} else {
-		g_form.hideFieldMsg('receive_amt');
-	}
-		
-   }
+    var newAmount = parseFloat(newValue.replace("USD;", "").replace(",", ""));
+    var distAmount = parseFloat(g_form.getValue("distributed_amt").replace("USD;", ""));
+    var allocAmount = parseFloat(g_form.getValue("allocated_amt").replace("USD;", ""));
 
-   if (g_form.getValue("pool_parent_ref") != "") {
-	   //get amount
-	   var mod = new GlideAjax('x_g_irm_fms.FMSHelper');
-	   mod.addParam('sysparm_name','getParentPoolAmount');
-	   mod.addParam('sysparm_parent', g_form.getValue("pool_parent_ref"));
-	   mod.getXML(processParent);
-   }
-   
-   function processParent(response) {
-	var parentAmount = parseFloat(response.responseXML.documentElement.getAttribute("answer"));
-	   if (newAmount > parentAmount) {
-			g_form.clearValue('receive_amt');
-			g_form.showFieldMsg('receive_amt', 'Received amount cannot exceed the recieved amount of the parent pool.', 'error');
-	   } else {
-			g_form.hideFieldMsg('receive_amt');
-		}
-	}
+    if (!g_form.isNewRecord()) {
+        if (newAmount < distAmount || newAmount < allocAmount || newAmount < (allocAmount + distAmount)) {
+            g_form.showFieldMsg('receive_amt', 'Received amount cannot be changed to a value that is less than the sum of all distributed or allocated amounts.', 'error');
+        } else {
+            g_form.hideFieldMsg('receive_amt');
+        }
 
-}
+    }
 
-]]></script>
+    if (g_form.getValue("pool_parent_ref") != "") {
+        //get amount
+        var mod = new GlideAjax('x_g_irm_fms.FMSHelper');
+        mod.addParam('sysparm_name', 'getParentPoolAmount');
+        mod.addParam('sysparm_parent', g_form.getValue("pool_parent_ref"));
+        mod.getXML(processParent);
+    }
+
+    function processParent(response) {
+        var parentAmount = parseFloat(response.responseXML.documentElement.getAttribute("answer"));
+        if (newAmount > parentAmount) {
+            g_form.showFieldMsg('receive_amt', 'Received amount cannot exceed the recieved amount of the parent pool.', 'error');
+        } else {
+            g_form.hideFieldMsg('receive_amt');
+        }
+    }
+
+}]]></script>
         <sys_class_name>sys_script_client</sys_class_name>
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-08-19 14:53:25</sys_created_on>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>678598681b3618100a4a10ad9c4bcbd0</sys_id>
-        <sys_mod_count>23</sys_mod_count>
+        <sys_mod_count>31</sys_mod_count>
         <sys_name>Allocation Pool - Check Received Amount</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_client_678598681b3618100a4a10ad9c4bcbd0</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-09-01 20:29:47</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-10-01 15:20:12</sys_updated_on>
         <table>x_g_irm_fms_allocation_pool</table>
         <type>onChange</type>
         <ui_type>10</ui_type>
