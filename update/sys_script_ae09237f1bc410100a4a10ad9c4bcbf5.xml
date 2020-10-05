@@ -6,7 +6,7 @@
         <action_insert>true</action_insert>
         <action_query>false</action_query>
         <action_update>true</action_update>
-        <active>false</active>
+        <active>true</active>
         <add_message>false</add_message>
         <advanced>true</advanced>
         <change_fields>false</change_fields>
@@ -40,6 +40,14 @@
         gs.addErrorMessage("Allocation Group is required when status is 'Obligated'.");
         current.setAbortAction(true);
     }
+	var thisFY = parseInt(current.fy);
+	var thisDate = new GlideDateTime(current.tran_date.toString());
+	var FYStart = new GlideDateTime((thisFY - 1).toString() + "-10-01");
+	var FYEnd = new GlideDateTime(thisFY.toString() + "-9-30");
+	if (!(thisDate >= FYStart && thisDate <= FYEnd)) {
+		gs.addErrorMessage('Transaction Date must be within the selected Fiscal Year for this record.');
+		current.setAbortAction(true);
+	} 
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
@@ -47,15 +55,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>ae09237f1bc410100a4a10ad9c4bcbf5</sys_id>
-        <sys_mod_count>6</sys_mod_count>
+        <sys_mod_count>8</sys_mod_count>
         <sys_name>Financial Transaction Validation</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_ae09237f1bc410100a4a10ad9c4bcbf5</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-23 17:30:18</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-10-05 12:06:32</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>

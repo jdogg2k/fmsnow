@@ -978,7 +978,6 @@
 			accentedSort: true,
 			pivotMode: c.usePivot,
 			//groupIncludeFooter: true,
-			//groupIncludeTotalFooter: true,
 			sideBar: {
 				toolPanels: [
 				  {
@@ -1034,6 +1033,9 @@
 
 		if (c.data.reportType != "phasing")
 			gridOptions.autoGroupColumnDef.sort = 'asc';
+
+		if (c.data.reportType == "budget_plans")
+			gridOptions.groupIncludeTotalFooter = true;
 
 		c.fiscalYears = [];
 
@@ -1705,13 +1707,18 @@
 					if (input.budget_type == "Actual") {
 						baseEQ += "^budget_ref.budget_typeINActual,Execution";
 
+						var actualProjects = [];
+
 						//filter on actual budget's project
 						var actualQuery = new GlideRecord(FMSConstants.TABLE_BUDGET);
 						actualQuery.addEncodedQuery("project_ref.organization_refIN" + allOrgs.join(",") + "^fy=" + input.fy + "^budget_type=Actual");
 						actualQuery.query();
-						if (actualQuery.next()) {
-							baseEQ += "^budget_ref.project_ref=" + actualQuery.project_ref.toString();
+						while (actualQuery.next()) {
+							actualProjects.push(actualQuery.project_ref.toString());
 						}
+
+						if (actualProjects.length > 0)
+							baseEQ += "^budget_ref.project_ref.sys_idIN" + actualProjects.join(", ");
 						
 					} else {
 						baseEQ += "^budget_ref.budget_type=" + input.budget_type;
@@ -2530,14 +2537,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>730</sys_mod_count>
+        <sys_mod_count>738</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-09-02 13:43:39</sys_updated_on>
+        <sys_updated_on>2020-10-05 19:19:41</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">

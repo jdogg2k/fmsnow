@@ -78,7 +78,7 @@
 	var thisDate = new GlideDateTime(current.receive_date.toString());
 	var FYStart = new GlideDateTime((thisFY - 1).toString() + "-10-01");
 	var FYEnd = new GlideDateTime(thisFY.toString() + "-9-30");
-	if (!(thisDate >= FYStart && thisDate <= FYEnd)) {
+	if (!current.receive_date.nil() && !(thisDate >= FYStart && thisDate <= FYEnd)) {
 		gs.addErrorMessage('Received Date must be within the selected Fiscal Year for this record.');
 		current.setAbortAction(true);
 	} 
@@ -103,7 +103,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>8588aaeb1b0014101f7e113d9c4bcbaf</sys_id>
-        <sys_mod_count>26</sys_mod_count>
+        <sys_mod_count>27</sys_mod_count>
         <sys_name>Allocation Pool Validation</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
@@ -111,7 +111,7 @@
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_8588aaeb1b0014101f7e113d9c4bcbaf</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-09-29 17:37:54</sys_updated_on>
+        <sys_updated_on>2020-10-05 13:31:10</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>
