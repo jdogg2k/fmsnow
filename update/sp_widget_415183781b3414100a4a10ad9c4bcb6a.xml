@@ -69,7 +69,6 @@
                 values: [ 'Actual', 'Baseline','Execution', 'Forecast', 'WhatIf' ]
             },
             sort: 'asc',
-            sortingOrder: 2,
             cellStyle: {
                 color: 'blue',
                 'text-decoration': 'underline',
@@ -84,7 +83,6 @@
                 values: c.data.fiscalYears
             },
             sort: 'desc',
-            sortingOrder: 1
         },
         {
             field: 'budget_status',
@@ -102,7 +100,6 @@
             headerName: 'Version/Revision',
             maxWidth: 80,
             sort: 'desc',
-            sortingOrder: 3,
 					 filter: 'agSetColumnFilter'
         },
         {
@@ -286,14 +283,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-13 11:56:49</sys_created_on>
         <sys_id>415183781b3414100a4a10ad9c4bcb6a</sys_id>
-        <sys_mod_count>46</sys_mod_count>
+        <sys_mod_count>47</sys_mod_count>
         <sys_name>Budget Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_415183781b3414100a4a10ad9c4bcb6a</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-30 17:44:41</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-10-06 13:30:25</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
