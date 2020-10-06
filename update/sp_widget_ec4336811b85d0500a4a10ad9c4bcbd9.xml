@@ -1387,8 +1387,6 @@
 		var expItemRec = calcQ.fti_expense_item_ref;
 		var expRef = expItemRec.toString();
 
-		console.log(expRef);
-
 		var baseSupObj = {};
 		baseSupObj.expense_item_ref = expRef;
 		baseSupObj.budget_ref = "";
@@ -1406,6 +1404,9 @@
 			baseSupObj.expense_item_ref_roll = rollupRec.toString();
 			baseSupObj.activity_code_roll = rollupRec.activity_code.toString();
 			baseSupObj.budget_code_roll  = rollupRec.budget_code_ref.getDisplayValue();
+		} else {
+			baseSupObj.activity_code_roll = expItemRec.activity_code.toString();
+			baseSupObj.budget_code_roll = expItemRec.budget_code_ref.getDisplayValue();
 		}
 		baseSupObj.baseline = 0;
 		baseSupObj.execution = 0;
@@ -1415,8 +1416,6 @@
 		baseSupObj.committed = 0;
 		baseSupObj.obligated = 0;
 		baseSupObj.balance = 0;
-
-		console.log(calcQ.proj_organization_ref);
 
 		return baseSupObj;
 	}
@@ -1519,6 +1518,9 @@
 							tMonthObj.expense_item_ref_roll = monthlyRollup.toString();
 							tMonthObj.activity_code_roll = monthlyRollup.activity_code.toString();
 							tMonthObj.budget_code_roll  = monthlyRollup.budget_code_ref.getDisplayValue();
+						} else {
+							tMonthObj.activity_code_roll = bCode;
+							tMonthObj.budget_code_roll  = aCode;
 						}
 						tMonthObj.org_name = oCode;
 						tMonthObj.project = pCode;
@@ -1778,6 +1780,9 @@
 							reportObj.expense_item_ref_roll = rollupRec.toString();
 							reportObj.activity_code_roll = rollupRec.activity_code.toString();
 							reportObj.budget_code_roll  = rollupRec.budget_code_ref.getDisplayValue();
+						} else {
+							reportObj.activity_code_roll = expItemRec.activity_code.toString();
+							reportObj.budget_code_roll = expItemRec.budget_code_ref.getDisplayValue();
 						}
 						if (data.reportType == "baseline") {
 							reportObj.baseline = 0;
@@ -1894,7 +1899,6 @@
 
 			if (data.reportType == "financial_transaction") {
 				var finTranQ = new GlideRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM);
-				console.log("fin_tran_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^fin_tran_ref.tran_dateBETWEENjavascript:gs.dateGenerate('" + input.start_date + "','start')@javascript:gs.dateGenerate('" + input.end_date + "','end')");
 				finTranQ.addEncodedQuery("fin_tran_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^fin_tran_ref.tran_dateBETWEENjavascript:gs.dateGenerate('" + input.start_date + "','start')@javascript:gs.dateGenerate('" + input.end_date + "','end')");
 				finTranQ.query();
 				while (finTranQ.next()) {
@@ -1926,7 +1930,10 @@
 							finTranObj.expense_item_ref_roll = transRollup.toString();
 							finTranObj.activity_code_roll = transRollup.activity_code.toString();
 							finTranObj.budget_code_roll  = transRollup.budget_code_ref.getDisplayValue();
-						}
+					} else {
+						finTranObj.activity_code_roll = finTranQ.expense_item_ref.activity_code.toString();
+						finTranObj.budget_code_roll  = finTranQ.expense_item_ref.budget_code_ref.getDisplayValue();
+					}
 					finTranObj.trans_status = finTranQ.fin_tran_ref.tran_status.toString();
 					finTranObj.trans_type = finTranQ.fin_tran_ref.tran_type.toString();
 					finTranObj.trans_date = finTranQ.fin_tran_ref.tran_date.toString();
@@ -2542,14 +2549,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>740</sys_mod_count>
+        <sys_mod_count>743</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-10-06 15:22:43</sys_updated_on>
+        <sys_updated_on>2020-10-06 17:32:53</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
