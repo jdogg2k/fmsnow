@@ -27,7 +27,7 @@
         <element default="1" label="Budget Version" max_length="40" name="budget_version" type="integer"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;v1.0&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = 'v' + current.budget_version.toString() + '.' + current.budget_revision.toString(); &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" label="Budget Version Revision" max_length="32" name="budget_version_revision" read_only="true" type="string" virtual="true"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#13;&#10;&#13;&#10;})(current);" label="Is Current?" max_length="40" name="current" read_only="true" type="boolean"/>
-        <element attributes="format=none" choice="3" choice_field="fy" choice_table="x_g_irm_fms_project_allocation" default="javascript:new Date().getFullYear();" label="FY" mandatory="true" max_length="40" name="fy" type="integer">
+        <element attributes="format=none" choice="3" choice_field="fy" choice_table="x_g_irm_fms_project_allocation" default="javascript: new x_g_irm_fms.FMSUtilities().getCurrentFY();" label="FY" mandatory="true" max_length="40" name="fy" type="integer">
             <choice>
                 <element inactive_on_update="false" label="2000" sequence="0" value="2000"/>
                 <element inactive_on_update="false" label="2001" sequence="1" value="2001"/>
