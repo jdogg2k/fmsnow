@@ -15,7 +15,7 @@
                 <element inactive_on_update="false" label="Transfer In" value="Transfer In"/>
             </choice>
         </element>
-        <element attributes="format=none" choice="3" default="javascript:new Date().getFullYear();" label="FY" mandatory="true" max_length="40" name="fy" type="integer">
+        <element attributes="format=none" choice="3" default="javascript: new x_g_irm_fms.FMSUtilities().getCurrentFY();" label="FY" mandatory="true" max_length="40" name="fy" type="integer">
             <choice>
                 <element inactive_on_update="false" label="2000" value="2000"/>
                 <element inactive_on_update="false" label="2001" value="2001"/>
