@@ -107,6 +107,7 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         if (encQry !== undefined && encQry != '')
             tableQuery.addEncodedQuery(encQry);
         tableQuery.query();
+		if (!tableQuery.canRead()) { gs.addErrorMessage("Security violation....unauthorized access"); return null; }
         while (tableQuery.next()) {
 
             var dataObj = {};
@@ -485,13 +486,13 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 18:30:12</sys_created_on>
         <sys_id>c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>197</sys_mod_count>
+        <sys_mod_count>201</sys_mod_count>
         <sys_name>FMSUtilities</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-09-15 18:59:04</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-10-14 17:09:55</sys_updated_on>
     </sys_script_include>
 </record_update>

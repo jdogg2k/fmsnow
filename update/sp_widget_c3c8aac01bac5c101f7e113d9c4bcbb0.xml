@@ -11,6 +11,8 @@
     $scope.data.myProj_name = c.data.selectedProj_name;
 
     $rootScope.userAuth = $scope.data.userAuth;
+	if (!Object.values($rootScope.userAuth.roles).some(function(role) { return role === true; }) || $rootScope.userAuth.orgs.length == 0 )
+	   if (location.href.indexOf("id=unauthorized") == -1) location.href="sp?id=unauthorized";
 
     $scope.selOrg = {
         displayValue: $scope.data.myOrg_name,
@@ -131,7 +133,7 @@
         }
         data.userOrgs.push(gr.getValue("sys_id"));
     }
-    if (gr.getRowCount() == 0) {
+    if (gr.getRowCount() == 0 && JSON.stringify(data.userAuth.roles).includes("true")) {
         data.hide_widget = true;
         gs.addErrorMessage("ERROR!!! CONTACT SYSTEM ADMINISTRATOR.  NO ORGANIZATIONS DEFINED.");
     }
@@ -145,14 +147,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-28 16:15:35</sys_created_on>
         <sys_id>c3c8aac01bac5c101f7e113d9c4bcbb0</sys_id>
-        <sys_mod_count>243</sys_mod_count>
+        <sys_mod_count>269</sys_mod_count>
         <sys_name>Organization Selection</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_c3c8aac01bac5c101f7e113d9c4bcbb0</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-06 13:00:15</sys_updated_on>
+        <sys_updated_on>2020-10-14 13:22:59</sys_updated_on>
         <template><![CDATA[<div style="display: inline-flex; text-align: left;" class="topFilters" ng-hide="c.data.hide_widget">
   <div style="display: inline-flex; align-items: center; min-width: 400px;">
     <label class="control-label">Organization:</label>
