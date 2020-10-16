@@ -26,6 +26,7 @@
 			return false;
 	}
 
+	c.canView = function(auth, data) { return c.canEdit(auth, data); }
 	c.canDelete = function(auth, data) { return c.canEdit(auth, data); }
     
     c.exportExcel = function() {
@@ -43,7 +44,6 @@
 			sortable: false,
 			cellRenderer: 'editCell',
 			cellRendererParams: function(params) { 
-				//alert(params.data);
 				return { "show": c.canEdit(c.userAuth, params.data) }; 
 			}
         },
@@ -53,11 +53,14 @@
 					 filter: 'agNumberColumnFilter',
 					sort: 'asc',
 			resizable: true,
-            cellStyle: {
-                color: 'blue',
-                'text-decoration': 'underline',
-                'cursor': 'pointer'
-            }
+            cellStyle: function(params) {
+                if (c.canView(c.userAuth, params.data)) 
+                    return { color: 'blue', 'text-decoration': 'underline', 'cursor': 'pointer' };
+            },
+			onCellClicked: function(params) { 
+				if (c.canView(c.userAuth, params.data)) 
+					orgManager.showRowDetails(params.data.sys_id, params.data[params.colDef.field]) 
+			}
         },
         {
             field: 'org_type',
@@ -104,7 +107,7 @@
         tableName: c.data.tableName, 
         dataArray: null, 
         pageType: 'Organization', 
-        linkedField: 'org_code', 
+        linkedField: null, 
         detailsPage: 'organization_detail',
         usePaging: false
     }
@@ -157,9 +160,6 @@
 	data.tableName = FMSConstants.TABLE_ORGANIZATION;
 	var orgFilter = "";
 
-//	var uOrgs = OrgHierarchy.getUserOrgs();
-//	orgFilter = "sys_idIN" + uOrgs.join(",");
-
     data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_ORGANIZATION, orgFilter, true); //get all org info
 
 })();]]></script>
@@ -168,14 +168,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-20 18:03:37</sys_created_on>
         <sys_id>f9b8b5651b9c14100a4a10ad9c4bcba9</sys_id>
-        <sys_mod_count>225</sys_mod_count>
+        <sys_mod_count>238</sys_mod_count>
         <sys_name>Organization Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_f9b8b5651b9c14100a4a10ad9c4bcba9</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-10-01 16:08:32</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-10-16 12:23:57</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

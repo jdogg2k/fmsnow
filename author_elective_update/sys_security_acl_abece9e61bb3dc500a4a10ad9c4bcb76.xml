@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_security_acl">
+    <sys_security_acl action="DELETE">
+        <active>true</active>
+        <admin_overrides>true</admin_overrides>
+        <advanced>true</advanced>
+        <condition/>
+        <description>Allow read for records in x_g_irm_fms_organization, for users with role snc_internal, and if the ACL script returns true.</description>
+        <name>x_g_irm_fms_organization</name>
+        <operation display_value="read">read</operation>
+        <script><![CDATA[answer = new x_g_irm_fms.OrgHierarchy().getUserOrgs().includes(current.sys_id) || gs.hasRole(FMSConstants.ROLE_SYSADMIN)]]></script>
+        <sys_class_name>sys_security_acl</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-10-14 19:26:20</sys_created_on>
+        <sys_id>abece9e61bb3dc500a4a10ad9c4bcb76</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>x_g_irm_fms_organization</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_security_acl_abece9e61bb3dc500a4a10ad9c4bcb76</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-10-14 19:27:49</sys_updated_on>
+        <type display_value="record">record</type>
+    </sys_security_acl>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_security_acl_abece9e61bb3dc500a4a10ad9c4bcb76</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_security_acl"&gt;&lt;sys_security_acl action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;admin_overrides&gt;true&lt;/admin_overrides&gt;&lt;advanced&gt;true&lt;/advanced&gt;&lt;condition/&gt;&lt;description&gt;Allow read for records in x_g_irm_fms_organization, for users with role snc_internal, and if the ACL script returns true.&lt;/description&gt;&lt;name&gt;x_g_irm_fms_organization&lt;/name&gt;&lt;operation display_value="read"&gt;read&lt;/operation&gt;&lt;script&gt;&lt;![CDATA[answer = new x_g_irm_fms.OrgHierarchy().getUserOrgs().includes(current.sys_id) || gs.hasRole(FMSConstants.ROLE_SYSADMIN)]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_security_acl&lt;/sys_class_name&gt;&lt;sys_created_by&gt;MarkelJR@state.gov&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-10-14 19:26:20&lt;/sys_created_on&gt;&lt;sys_id&gt;abece9e61bb3dc500a4a10ad9c4bcb76&lt;/sys_id&gt;&lt;sys_mod_count&gt;1&lt;/sys_mod_count&gt;&lt;sys_name&gt;x_g_irm_fms_organization&lt;/sys_name&gt;&lt;sys_package display_value="FMS" source="x_g_irm_fms"&gt;c728dd331b3fc8100a4a10ad9c4bcbb6&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="FMS"&gt;c728dd331b3fc8100a4a10ad9c4bcbb6&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_security_acl_abece9e61bb3dc500a4a10ad9c4bcb76&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;MarkelJR@state.gov&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-10-14 19:27:49&lt;/sys_updated_on&gt;&lt;type display_value="record"&gt;record&lt;/type&gt;&lt;/sys_security_acl&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>774030012</payload_hash>
+        <record_name>x_g_irm_fms_organization</record_name>
+        <reverted_from/>
+        <source>c180b5661b6b50500a4a10ad9c4bcbaa</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-10-14 19:27:49</sys_created_on>
+        <sys_id>016ded2a1bb3dc500a4a10ad9c4bcbc4</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>175289539ff0000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-10-14 19:27:49</sys_updated_on>
+        <type>Access Control</type>
+        <update_guid>c56ded2a81b3dc500e569e9630ddf6c3</update_guid>
+        <update_guid_history>c56ded2a81b3dc500e569e9630ddf6c3:774030012,9f0dad2a45b3dc50dfa1e7bec89eaf2a:-956500657</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-10-14 19:32:21</sys_created_on>
+        <sys_db_object display_value="" name="sys_security_acl">sys_security_acl</sys_db_object>
+        <sys_id>10b39478b1474a918252edf030d6c271</sys_id>
+        <sys_metadata>abece9e61bb3dc500a4a10ad9c4bcb76</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_g_irm_fms_organization</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent display_value="x_g_irm_fms_organization">99ee1f9d1bc050500a4a10ad9c4bcb10</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_security_acl_abece9e61bb3dc500a4a10ad9c4bcb76</sys_update_name>
+        <sys_update_version display_value="sys_security_acl_abece9e61bb3dc500a4a10ad9c4bcb76">016ded2a1bb3dc500a4a10ad9c4bcbc4</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-10-14 19:32:21</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>
