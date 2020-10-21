@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="u_appropriation_description" label="Appropriation Description" language="en" table="x_g_irm_fms_fms_load_appropriation_type">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>u_appropriation_description</element>
+            <help/>
+            <hint/>
+            <label>Appropriation Description</label>
+            <language>en</language>
+            <name>x_g_irm_fms_fms_load_appropriation_type</name>
+            <plural>Appropriation Descriptions</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>RoseJL@state.gov</sys_created_by>
+            <sys_created_on>2020-10-19 19:14:13</sys_created_on>
+            <sys_id>6a3a5bc41b4ca0100a4a10ad9c4bcbcc</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Appropriation Description</sys_name>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_documentation_x_g_irm_fms_fms_load_appropriation_type_u_appropriation_description_en</sys_update_name>
+            <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+            <sys_updated_on>2020-10-19 19:14:13</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

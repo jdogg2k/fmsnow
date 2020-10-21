@@ -4,13 +4,13 @@
             <element>basis_column</element>
             <position>0</position>
             <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-10-08 19:16:07</sys_created_on>
-            <sys_id>db217e281b3798501f7e113d9c4bcb88</sys_id>
+            <sys_created_on>2020-10-19 19:32:07</sys_created_on>
+            <sys_id>785e1b881b8ca0101f7e113d9c4bcb50</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_notification" sys_domain="global" view="Default view">5ebb50801bd810101f7e113d9c4bcb32</sys_ui_section>
             <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-10-08 19:16:07</sys_updated_on>
+            <sys_updated_on>2020-10-19 19:32:07</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -18,13 +18,13 @@
             <element>basis_relative_days</element>
             <position>1</position>
             <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-10-08 19:16:07</sys_created_on>
-            <sys_id>57217e281b3798501f7e113d9c4bcb89</sys_id>
+            <sys_created_on>2020-10-19 19:32:07</sys_created_on>
+            <sys_id>f05e1b881b8ca0101f7e113d9c4bcb51</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_notification" sys_domain="global" view="Default view">5ebb50801bd810101f7e113d9c4bcb32</sys_ui_section>
             <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-10-08 19:16:07</sys_updated_on>
+            <sys_updated_on>2020-10-19 19:32:07</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -32,13 +32,13 @@
             <element>basis_table</element>
             <position>2</position>
             <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-10-08 19:16:07</sys_created_on>
-            <sys_id>db217e281b3798501f7e113d9c4bcb89</sys_id>
+            <sys_created_on>2020-10-19 19:32:07</sys_created_on>
+            <sys_id>785e1b881b8ca0101f7e113d9c4bcb51</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_notification" sys_domain="global" view="Default view">5ebb50801bd810101f7e113d9c4bcb32</sys_ui_section>
             <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-10-08 19:16:07</sys_updated_on>
+            <sys_updated_on>2020-10-19 19:32:07</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -46,13 +46,13 @@
             <element>message_body</element>
             <position>3</position>
             <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-10-08 19:16:07</sys_created_on>
-            <sys_id>53217e281b3798501f7e113d9c4bcb8a</sys_id>
+            <sys_created_on>2020-10-19 19:32:07</sys_created_on>
+            <sys_id>fc5e1b881b8ca0101f7e113d9c4bcb51</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_notification" sys_domain="global" view="Default view">5ebb50801bd810101f7e113d9c4bcb32</sys_ui_section>
             <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-10-08 19:16:07</sys_updated_on>
+            <sys_updated_on>2020-10-19 19:32:07</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -60,13 +60,13 @@
             <element>.begin_split</element>
             <position>4</position>
             <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-10-08 19:16:07</sys_created_on>
-            <sys_id>d7217e281b3798501f7e113d9c4bcb8a</sys_id>
+            <sys_created_on>2020-10-19 19:32:07</sys_created_on>
+            <sys_id>745e1b881b8ca0101f7e113d9c4bcb52</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_notification" sys_domain="global" view="Default view">5ebb50801bd810101f7e113d9c4bcb32</sys_ui_section>
             <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-10-08 19:16:07</sys_updated_on>
+            <sys_updated_on>2020-10-19 19:32:07</sys_updated_on>
             <sys_user/>
             <type>.begin_split</type>
         </sys_ui_element>
@@ -74,13 +74,13 @@
             <element>interim_days</element>
             <position>5</position>
             <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-10-08 19:16:07</sys_created_on>
-            <sys_id>5f217e281b3798501f7e113d9c4bcb8a</sys_id>
+            <sys_created_on>2020-10-19 19:32:07</sys_created_on>
+            <sys_id>f85e1b881b8ca0101f7e113d9c4bcb52</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_notification" sys_domain="global" view="Default view">5ebb50801bd810101f7e113d9c4bcb32</sys_ui_section>
             <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-10-08 19:16:07</sys_updated_on>
+            <sys_updated_on>2020-10-19 19:32:07</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -88,13 +88,13 @@
             <element>.split</element>
             <position>6</position>
             <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-10-08 19:16:07</sys_created_on>
-            <sys_id>d3217e281b3798501f7e113d9c4bcb8b</sys_id>
+            <sys_created_on>2020-10-19 19:32:07</sys_created_on>
+            <sys_id>705e1b881b8ca0101f7e113d9c4bcb53</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_notification" sys_domain="global" view="Default view">5ebb50801bd810101f7e113d9c4bcb32</sys_ui_section>
             <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-10-08 19:16:07</sys_updated_on>
+            <sys_updated_on>2020-10-19 19:32:07</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
@@ -102,13 +102,13 @@
             <element>last_run_date</element>
             <position>7</position>
             <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-10-08 19:16:07</sys_created_on>
-            <sys_id>5b217e281b3798501f7e113d9c4bcb8b</sys_id>
+            <sys_created_on>2020-10-19 19:32:07</sys_created_on>
+            <sys_id>f45e1b881b8ca0101f7e113d9c4bcb53</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_notification" sys_domain="global" view="Default view">5ebb50801bd810101f7e113d9c4bcb32</sys_ui_section>
             <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-10-08 19:16:07</sys_updated_on>
+            <sys_updated_on>2020-10-19 19:32:07</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -116,13 +116,13 @@
             <element>.end_split</element>
             <position>8</position>
             <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-10-08 19:16:07</sys_created_on>
-            <sys_id>df217e281b3798501f7e113d9c4bcb8b</sys_id>
+            <sys_created_on>2020-10-19 19:32:07</sys_created_on>
+            <sys_id>7c5e1b881b8ca0101f7e113d9c4bcb53</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_notification" sys_domain="global" view="Default view">5ebb50801bd810101f7e113d9c4bcb32</sys_ui_section>
             <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-10-08 19:16:07</sys_updated_on>
+            <sys_updated_on>2020-10-19 19:32:07</sys_updated_on>
             <sys_user/>
             <type>.end_split</type>
         </sys_ui_element>
@@ -130,13 +130,13 @@
             <element>message_subject</element>
             <position>9</position>
             <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-10-08 19:16:07</sys_created_on>
-            <sys_id>57217e281b3798501f7e113d9c4bcb8c</sys_id>
+            <sys_created_on>2020-10-19 19:32:07</sys_created_on>
+            <sys_id>f05e1b881b8ca0101f7e113d9c4bcb54</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_notification" sys_domain="global" view="Default view">5ebb50801bd810101f7e113d9c4bcb32</sys_ui_section>
             <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-10-08 19:16:07</sys_updated_on>
+            <sys_updated_on>2020-10-19 19:32:07</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -144,41 +144,13 @@
             <element>notification_display</element>
             <position>10</position>
             <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-10-08 19:16:07</sys_created_on>
-            <sys_id>db217e281b3798501f7e113d9c4bcb8c</sys_id>
+            <sys_created_on>2020-10-19 19:32:07</sys_created_on>
+            <sys_id>785e1b881b8ca0101f7e113d9c4bcb54</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_notification" sys_domain="global" view="Default view">5ebb50801bd810101f7e113d9c4bcb32</sys_ui_section>
             <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-10-08 19:16:07</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>table_name</element>
-            <position>11</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-10-08 19:16:07</sys_created_on>
-            <sys_id>53217e281b3798501f7e113d9c4bcb8d</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_notification" sys_domain="global" view="Default view">5ebb50801bd810101f7e113d9c4bcb32</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-10-08 19:16:07</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>message_body_new</element>
-            <position>12</position>
-            <sys_created_by>PuriA@state.gov</sys_created_by>
-            <sys_created_on>2020-10-08 19:16:07</sys_created_on>
-            <sys_id>d7217e281b3798501f7e113d9c4bcb8d</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_notification" sys_domain="global" view="Default view">5ebb50801bd810101f7e113d9c4bcb32</sys_ui_section>
-            <sys_updated_by>PuriA@state.gov</sys_updated_by>
-            <sys_updated_on>2020-10-08 19:16:07</sys_updated_on>
+            <sys_updated_on>2020-10-19 19:32:07</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>

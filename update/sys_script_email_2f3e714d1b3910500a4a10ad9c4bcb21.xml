@@ -10,22 +10,51 @@
 	grNotify.get("1ad2cc351bc090500a4a10ad9c4bcbf9"); // Sys ID of the Notification Table
 	
 	
-	email.setSubject('<p>'+grNotify.message_subject+'</p>');
-	email.setBody('<p>'+grNotify.message_body+'</p>');
-       // Add your code here
+	var tSubject = grNotify.message_subject.toString();
+	var subjectMatches = tSubject.match(/\{(.*?)\}/g); //look for all curly bracket variables in string
+	var subjectReplaced = []; //array to hold replacements we've done so we don't replace the same variable multiple times in a string.
+
+	if (subjectMatches) {
+		subjectMatches.forEach(function(matchItem) { //cycle through matches and process
+			if (subjectReplaced.indexOf(matchItem) == -1){
+				subjectReplaced.push(matchItem); //mark variable replaced for this string
+				var matchVariable = matchItem.replace("{", "").replace("}", ""); //remove curly brackets
+				tSubject = tSubject.replaceAll(matchItem, current[matchVariable]); //replacing subject curly brackets with actual variables from the Contract record
+			}
+		});
+	}
+
+
+	var tBody = grNotify.message_body.toString();
+	var bodyMatches = tBody.match(/\{(.*?)\}/g); //look for all curly bracket variables in string
+	var bodyReplaced = []; //array to hold replacements we've done so we don't replace the same variable multiple times in a string.
+
+	if (bodyMatches) {
+		bodyMatches.forEach(function(matchItem) { //cycle through matches and process
+			if (bodyReplaced.indexOf(matchItem) == -1){
+				bodyReplaced.push(matchItem); //mark variable replaced for this string
+				var matchVariable = matchItem.replace("{", "").replace("}", ""); //remove curly brackets
+				tBody = tBody.replaceAll(matchItem, current[matchVariable]); //replacing subject curly brackets with actual variables from the Contract record
+			}
+		});
+	}
+
+	email.setSubject('<p>' + tSubject + '</p>');
+	email.setBody('<p>' + tBody + '</p>');
+
 
 })(current, template, email, email_action, event);]]></script>
         <sys_class_name>sys_script_email</sys_class_name>
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-07-02 18:44:59</sys_created_on>
         <sys_id>2f3e714d1b3910500a4a10ad9c4bcb21</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>1</sys_mod_count>
         <sys_name>notification_545</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_email_2f3e714d1b3910500a4a10ad9c4bcb21</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-02 18:44:59</sys_updated_on>
+        <sys_updated_on>2020-10-21 17:03:21</sys_updated_on>
     </sys_script_email>
 </record_update>

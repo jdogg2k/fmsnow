@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element extends="sys_import_set_row" label="FMS Load Appropriation Type" max_length="40" name="x_g_irm_fms_fms_load_appropriation_type" type="collection">
+        <element attributes="edge_encryption_enabled=true" label="Appropriation Description" max_length="40" name="u_appropriation_description" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Appropriation Type" label="Appropriation Type" max_length="40" name="u_appropriation_type" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Description" label="Description" max_length="50" name="u_description" type="string"/>
     </element>

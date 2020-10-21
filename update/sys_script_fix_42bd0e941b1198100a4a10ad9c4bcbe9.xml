@@ -8,23 +8,19 @@
         <record_for_rollback>false</record_for_rollback>
         <run_once>true</run_once>
         <script><![CDATA[var gr = new GlideRecord("x_g_irm_fms_fin_tran_item");
+gr.addEncodedQuery("fin_tran_ref.fy=2020^fin_tran_ref.project_ref=cee864241be89c100a4a10ad9c4bcbad");
 gr.query();
 while (gr.next()) {
-	
+
 	var quantity = 0;
+	quantity = parseInt(gr.item_qty);
 	if (!gr.received_qty.nil()) {
 		quantity = parseInt(gr.received_qty);
-	} else {
-		quantity = parseInt(gr.item_qty);
 	}
 	
 	var cost = 0;
-	if (!gr.actual_cost.nil()) {
-		if (parseFloat(gr.actual_cost) != 0) {
-			cost = parseFloat(gr.actual_cost);
-		} else {
-			cost = parseFloat(gr.item_cost);
-		}	
+	if (gr.has_actual_cost.toString() == "true") {
+		cost = parseFloat(gr.actual_cost);
 	} else if (!gr.item_cost.nil()) {
 		cost = parseFloat(gr.item_cost);
 	} else {
@@ -32,7 +28,7 @@ while (gr.next()) {
 	}
 	
     var total = quantity * cost;
-	
+
 	gr.item_total = total;
 	gr.autoSysFields(false);
 	gr.update();
@@ -41,14 +37,14 @@ while (gr.next()) {
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-06-05 15:28:19</sys_created_on>
         <sys_id>42bd0e941b1198100a4a10ad9c4bcbe9</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>10</sys_mod_count>
         <sys_name>Item Total Calculation</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_fix_42bd0e941b1198100a4a10ad9c4bcbe9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-05 16:00:46</sys_updated_on>
+        <sys_updated_on>2020-10-21 16:16:08</sys_updated_on>
         <unloadable>false</unloadable>
     </sys_script_fix>
 </record_update>

@@ -18,6 +18,7 @@
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Reconciliation Date" label="Reconciliation Date" max_length="40" name="u_reconciliation_date" type="string"/>
         <element attributes="import_attribute_name=Sys User ID" label="Sys User ID" max_length="40" name="u_sys_user_id" type="integer"/>
         <element attributes="edge_encryption_enabled=true" label="Transaction Date" max_length="40" name="u_transaction_date" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Trans Date Str" max_length="40" name="u_trans_date_str" type="string"/>
         <element attributes="import_attribute_name=Tran Date" label="Tran Date" max_length="40" name="u_tran_date" type="integer"/>
         <element attributes="import_attribute_name=Tran ID" label="Tran ID" max_length="40" name="u_tran_id" type="integer"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Tran Status" label="Tran Status" max_length="40" name="u_tran_status" type="string"/>

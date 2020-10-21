@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
     <sys_choice action="INSERT_OR_UPDATE" field="post_type" table="x_g_irm_fms_post" version="3">
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>post_type</element>
+            <name>x_g_irm_fms_post</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>markeljr@state.gov</sys_created_by>
+            <sys_created_on>2020-04-07 20:06:49</sys_created_on>
+            <sys_id>cc4817191bc050500a4a10ad9c4bcbdf</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>post_type</sys_name>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_choice_x_g_irm_fms_post_post_type</sys_update_name>
+            <sys_updated_by>markeljr@state.gov</sys_updated_by>
+            <sys_updated_on>2020-04-07 20:06:49</sys_updated_on>
+        </sys_choice_set>
         <sys_choice action="INSERT_OR_UPDATE">
             <dependent_value/>
             <element>post_type</element>
@@ -133,21 +149,5 @@
             <sys_updated_on>2020-04-07 20:08:42</sys_updated_on>
             <value>M</value>
         </sys_choice>
-        <sys_choice_set action="INSERT_OR_UPDATE">
-            <element>post_type</element>
-            <name>x_g_irm_fms_post</name>
-            <sys_class_name>sys_choice_set</sys_class_name>
-            <sys_created_by>markeljr@state.gov</sys_created_by>
-            <sys_created_on>2020-04-07 20:06:49</sys_created_on>
-            <sys_id>cc4817191bc050500a4a10ad9c4bcbdf</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_name>post_type</sys_name>
-            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
-            <sys_policy/>
-            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
-            <sys_update_name>sys_choice_x_g_irm_fms_post_post_type</sys_update_name>
-            <sys_updated_by>markeljr@state.gov</sys_updated_by>
-            <sys_updated_on>2020-04-07 20:06:49</sys_updated_on>
-        </sys_choice_set>
     </sys_choice>
 </record_update>
