@@ -36,7 +36,7 @@
         <item_table/>
         <mandatory>false</mandatory>
         <message/>
-        <message_html><![CDATA[<p>${mail_script:notification_ninety}</p>]]></message_html>
+        <message_html><![CDATA[<p>&lt;p&gt;${mail_script:notification_ninety}&lt;/p&gt;</p>]]></message_html>
         <message_list/>
         <message_text/>
         <name>Notification_90</name>
@@ -58,7 +58,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>f7a10cbc1bb1dc100a4a10ad9c4bcb2d</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>9</sys_mod_count>
         <sys_name>Notification_90</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
@@ -66,7 +66,7 @@
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sysevent_email_action_f7a10cbc1bb1dc100a4a10ad9c4bcb2d</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-10-08 19:35:16</sys_updated_on>
+        <sys_updated_on>2020-10-21 17:06:42</sys_updated_on>
         <sys_version>2</sys_version>
         <template display_value="Unsubscribe and Preferences">7ed0481f3b0b2200c869c2c703efc487</template>
         <type>email</type>
