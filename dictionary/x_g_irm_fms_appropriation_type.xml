@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Appropriation Type" max_length="40" name="x_g_irm_fms_appropriation_type" type="collection">
-        <element label="Appropriation Type" mandatory="true" max_length="8" name="appropriation_type" type="string"/>
-        <element label="Appropriation Type Description" mandatory="true" max_length="50" name="appropriation_type_desc" type="string"/>
+        <element label="Appropriation Type" mandatory="true" max_length="25" name="appropriation_type" type="string"/>
+        <element label="Appropriation Type Description" mandatory="true" max_length="75" name="appropriation_type_desc" type="string"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new appropriation type]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.appropriation_type_desc.toString() + ' [' + current.appropriation_type.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;})(current);" display="true" label="Appropriation type display" max_length="256" name="appropriation_type_display" read_only="true" type="string" virtual="true"/>
     </element>
 </database>

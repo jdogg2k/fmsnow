@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Appropriation" max_length="40" name="x_g_irm_fms_appropriation" type="collection">
         <element default="true" label="Active" max_length="40" name="active" type="boolean"/>
-        <element label="Appropriation" mandatory="true" max_length="20" name="appropriation" type="string"/>
-        <element label="Appropriation Description" max_length="50" name="appropriation_desc" type="string"/>
+        <element label="Appropriation" mandatory="true" max_length="30" name="appropriation" type="string"/>
+        <element label="Appropriation Description" max_length="75" name="appropriation_desc" type="string"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new appropriation]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.appropriation_desc.toString() + ' [' + current.appropriation.toString() + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" display="true" label="Appropriation display" max_length="256" name="appropriation_display" read_only="true" type="string" virtual="true"/>
         <element label="Appropriation Type" mandatory="true" max_length="32" name="appropriation_type" reference="x_g_irm_fms_appropriation_type" type="reference"/>
         <index name="index">

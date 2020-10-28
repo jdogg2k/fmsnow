@@ -434,10 +434,11 @@
 				modalOpen = true;
 
 				g_dirty_form_warning_enabled = true;
-
+				
 				spModal.open({
 					title: titlePrefix + ' ' + modalName,
 					size: 'lg',
+					//widget: 'fms-form-widget',
 					widget: 'fms-form-widget',
 					buttons: [],
 					backdrop: 'static',
@@ -685,12 +686,13 @@
 						if (table.altAction)
 							altAction = true;
 					}
-					this.setupDetailGrid(table.banner, table.name, table.columnDefs, table.parentRef, params.api, params.data.sys_id, showButton, altAction);
+
+					this.setupDetailGrid(table.banner, table.name, table.columnDefs, table.parentRef, params.api, params.data.sys_id, showButton, altAction, params.data);
 				}.bind(this));
 				this.masterGridApi = params.api;
 				this.masterRowIndex = params.data.sys_id;
 			};
-			DetailCellRenderer.prototype.setupDetailGrid = function (detailName, detailTable, detailCols, parentRef, masterGridApi, targSys, showButton, altAction) {
+			DetailCellRenderer.prototype.setupDetailGrid = function (detailName, detailTable, detailCols, parentRef, masterGridApi, targSys, showButton, altAction, parentData) {
 
 				pageController.detailLoading = true;
 
@@ -723,25 +725,44 @@
 						};
 
 						masterGridApi.addDetailGridInfo(detailGridId, gridInfo);
-						masterGridApi.getDetailGridInfo(detailGridId).api.showLoadingOverlay(); //show loading message
 
-						var req = {
-							mode: 'getDetailData',
-							parentRef: parentRef,
-							parentID: targSys,
-							detailTable: detailTable
-						}; //build request
+						var checkChildren = true;
 
-						pageController.server.get(req).then(function (saveResp) { //call to server to get live details data
-							var detailData = saveResp.data[detailTable];
-							if (detailData.length > 0) {
-								masterGridApi.getDetailGridInfo(detailGridId).api.setRowData(detailData); //set returned data to grid
-								masterGridApi.getDetailGridInfo(detailGridId).api.hideOverlay(); //hide loading
-							} else {
-								masterGridApi.getDetailGridInfo(detailGridId).api.showNoRowsOverlay()
-							}
-							masterGridApi.getDetailGridInfo(detailGridId).api.sizeColumnsToFit(); //fit columns
-						});
+						if (parentData.distributed_amt != undefined && detailTable == "x_g_irm_fms_allocation_pool") {
+							if (parentData.distributed_amt == 0)
+								checkChildren = false;
+						}
+
+						if (parentData.allocated_amt != undefined && detailTable == "x_g_irm_fms_project_allocation") {
+							if (parentData.allocated_amt == 0)
+								checkChildren = false;
+						}
+
+						if (checkChildren) {
+
+							masterGridApi.getDetailGridInfo(detailGridId).api.showLoadingOverlay(); //show loading message
+
+							var req = {
+								mode: 'getDetailData',
+								parentRef: parentRef,
+								parentID: targSys,
+								detailTable: detailTable
+							}; //build request
+
+							pageController.server.get(req).then(function (saveResp) { //call to server to get live details data
+								var detailData = saveResp.data[detailTable];
+								if (detailData.length > 0) {
+									masterGridApi.getDetailGridInfo(detailGridId).api.setRowData(detailData); //set returned data to grid
+									masterGridApi.getDetailGridInfo(detailGridId).api.hideOverlay(); //hide loading
+								} else {
+									masterGridApi.getDetailGridInfo(detailGridId).api.showNoRowsOverlay()
+								}
+								masterGridApi.getDetailGridInfo(detailGridId).api.sizeColumnsToFit(); //fit columns
+							});
+
+						} else {
+							masterGridApi.getDetailGridInfo(detailGridId).api.showNoRowsOverlay();
+						}
 					},
 					overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Getting ' + detailName + ' ... Stand By...</span>',
 					overlayNoRowsTemplate: '<span class="ag-overlay-loading-center">There are no ' + detailName + '</span>',
@@ -1107,14 +1128,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>757</sys_mod_count>
+        <sys_mod_count>770</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-10-16 12:10:30</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-10-27 18:46:56</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

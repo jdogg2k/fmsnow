@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_embedded_tour_step">
+    <sys_embedded_tour_step action="DELETE">
+        <action>true</action>
+        <action_event>click</action_event>
+        <action_target/>
+        <action_target_ref display_value="xpath">1357fa911b80e4101f7e113d9c4bcb86</action_target_ref>
+        <active>true</active>
+        <content><![CDATA[Click to show existing budgets for the organization selected.]]></content>
+        <guide display_value="How to Create a Budget">b733ba911b80e4101f7e113d9c4bcbb7</guide>
+        <implicit>true</implicit>
+        <link/>
+        <name/>
+        <options>{"url":"/fms?id=fms_home"}</options>
+        <order>3</order>
+        <placement>bottom</placement>
+        <step_type>step</step_type>
+        <sys_class_name>sys_embedded_tour_step</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-10-23 13:54:19</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>d757fa911b80e4101f7e113d9c4bcb87</sys_id>
+        <sys_mod_count>12</sys_mod_count>
+        <sys_name/>
+        <sys_overrides/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_embedded_tour_step_d757fa911b80e4101f7e113d9c4bcb87</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-10-23 16:20:44</sys_updated_on>
+        <target/>
+        <target_ref display_value="xpath">1357fa911b80e4101f7e113d9c4bcb86</target_ref>
+        <title/>
+        <ui_version>dynamic</ui_version>
+        <view/>
+        <window>fms</window>
+    </sys_embedded_tour_step>
+    <sys_translated_text action="DELETE" query="documentkey=d757fa911b80e4101f7e113d9c4bcb87"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_embedded_tour_step_d757fa911b80e4101f7e113d9c4bcb87</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_embedded_tour_step"&gt;&lt;sys_embedded_tour_step action="INSERT_OR_UPDATE"&gt;&lt;action&gt;true&lt;/action&gt;&lt;action_event&gt;click&lt;/action_event&gt;&lt;action_target/&gt;&lt;action_target_ref display_value="xpath"&gt;1357fa911b80e4101f7e113d9c4bcb86&lt;/action_target_ref&gt;&lt;active&gt;true&lt;/active&gt;&lt;content&gt;&lt;![CDATA[Click to show existing budgets for the organization selected.]]&gt;&lt;/content&gt;&lt;guide display_value="How to Create a Budget"&gt;b733ba911b80e4101f7e113d9c4bcbb7&lt;/guide&gt;&lt;implicit&gt;true&lt;/implicit&gt;&lt;link/&gt;&lt;name/&gt;&lt;options&gt;{"url":"/fms?id=fms_home"}&lt;/options&gt;&lt;order&gt;3&lt;/order&gt;&lt;placement&gt;bottom&lt;/placement&gt;&lt;step_type&gt;step&lt;/step_type&gt;&lt;sys_class_name&gt;sys_embedded_tour_step&lt;/sys_class_name&gt;&lt;sys_created_by&gt;MarkelJR@state.gov&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-10-23 13:54:19&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;d757fa911b80e4101f7e113d9c4bcb87&lt;/sys_id&gt;&lt;sys_mod_count&gt;12&lt;/sys_mod_count&gt;&lt;sys_name/&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="FMS" source="x_g_irm_fms"&gt;c728dd331b3fc8100a4a10ad9c4bcbb6&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="FMS"&gt;c728dd331b3fc8100a4a10ad9c4bcbb6&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_embedded_tour_step_d757fa911b80e4101f7e113d9c4bcb87&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;MarkelJR@state.gov&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-10-23 16:20:44&lt;/sys_updated_on&gt;&lt;target/&gt;&lt;target_ref display_value="xpath"&gt;1357fa911b80e4101f7e113d9c4bcb86&lt;/target_ref&gt;&lt;title/&gt;&lt;ui_version&gt;dynamic&lt;/ui_version&gt;&lt;view/&gt;&lt;window&gt;fms&lt;/window&gt;&lt;/sys_embedded_tour_step&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=d757fa911b80e4101f7e113d9c4bcb87"/&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>999734786</payload_hash>
+        <record_name/>
+        <reverted_from/>
+        <source>c180b5661b6b50500a4a10ad9c4bcbaa</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-10-23 16:20:44</sys_created_on>
+        <sys_id>d4e897d51b04e4101f7e113d9c4bcb2e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17556432d030000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-10-23 16:20:44</sys_updated_on>
+        <type>Guided Tour Step</type>
+        <update_guid>9ce897d57704e4106b947e58d2ee5c2d</update_guid>
+        <update_guid_history>9ce897d57704e4106b947e58d2ee5c2d:999734786,51c897550c04e4109627e961688356cc:-302179295,75985795a304e4105a1a211b750191ab:999734786,4661dbdd56c0e410353dc41bec3df6b0:-1993318429,ec5fc7d9a1c0e41067fc18902fa68fb5:-691404348,f43b3e590180e41081c60bb50b934b39:-1993318429,5f0bba594080e410c30b30ba74f5d805:999734786,711a3e19e080e4102c310c8358835e6f:-1993318429,010af219bf80e4103c9feb61e7d8f838:999734786,a529b6952080e410570b37a120ddd7fe:-1993318429,4fa8b6952180e4107e7d02647ccb6b29:-516613634,fd67fe159e80e410c945b9629e782a7a:-669982984,6757fa910980e41028e6500180bb6488:1021156150</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-10-23 16:20:52</sys_created_on>
+        <sys_db_object display_value="" name="sys_embedded_tour_step">sys_embedded_tour_step</sys_db_object>
+        <sys_id>03047da3e3c7420e8015237995aedf21</sys_id>
+        <sys_metadata>d757fa911b80e4101f7e113d9c4bcb87</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_embedded_tour_step_d757fa911b80e4101f7e113d9c4bcb87</sys_update_name>
+        <sys_update_version display_value="sys_embedded_tour_step_d757fa911b80e4101f7e113d9c4bcb87">d4e897d51b04e4101f7e113d9c4bcb2e</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-10-23 16:20:52</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_embedded_tour_guide">
+    <sys_embedded_tour_guide action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <additional_parameters/>
+        <autolaunch_order>0</autolaunch_order>
+        <context>fms?id=fms_home&amp;gtd_portal_title=Financial Management System&amp;gtd_page_title=FMS Home</context>
+        <description/>
+        <has_concl>false</has_concl>
+        <has_intro>true</has_intro>
+        <name>FMS Create a new Budget</name>
+        <options/>
+        <roles>x_g_irm_fms.analyst</roles>
+        <sp_page display_value="fms_home">279e522f1b0cd0100a4a10ad9c4bcb28</sp_page>
+        <sp_portal display_value="Financial Management System">68fc92a71b0cd0100a4a10ad9c4bcb41</sp_portal>
+        <status>draft</status>
+        <sys_class_name>sys_embedded_tour_guide</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-10-23 13:36:19</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>b733ba911b80e4101f7e113d9c4bcbb7</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>FMS Create a new Budget</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_embedded_tour_guide_b733ba911b80e4101f7e113d9c4bcbb7</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-10-23 16:27:21</sys_updated_on>
+        <type>service_portal</type>
+    </sys_embedded_tour_guide>
+</record_update>

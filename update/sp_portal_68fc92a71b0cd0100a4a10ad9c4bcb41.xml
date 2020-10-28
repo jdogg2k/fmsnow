@@ -27,7 +27,7 @@ $text-muted:#666666;
         <icon>509107331b8410101f7e113d9c4bcb93</icon>
         <kb_knowledge_base/>
         <kb_knowledge_page/>
-        <login_page/>
+        <login_page display_value="fms_authentication">320ba5071b0c2c100a4a10ad9c4bcb5b</login_page>
         <logo>7771cfff1b4410101f7e113d9c4bcb1f</logo>
         <notfound_page/>
         <quick_start_config/>
@@ -41,14 +41,14 @@ $text-muted:#666666;
         <sys_created_by>rosejl@state.gov</sys_created_by>
         <sys_created_on>2020-04-14 15:34:13</sys_created_on>
         <sys_id>68fc92a71b0cd0100a4a10ad9c4bcb41</sys_id>
-        <sys_mod_count>21</sys_mod_count>
+        <sys_mod_count>22</sys_mod_count>
         <sys_name>Financial Management System</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_portal_68fc92a71b0cd0100a4a10ad9c4bcb41</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-04-20 18:47:41</sys_updated_on>
+        <sys_updated_on>2020-10-28 18:51:54</sys_updated_on>
         <theme display_value="FMS Theme">9e524aad1b9c14100a4a10ad9c4bcba0</theme>
         <title>Financial Management System</title>
         <ts_index_group/>

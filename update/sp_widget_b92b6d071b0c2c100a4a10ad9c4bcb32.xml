@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function loginCtrl($scope, $http, $window, $location, glideUserSession, glideSystemProperties, spUtil) {
+	/*
+	 * @global - c - this
+	 * @global - c.remember_me - User session storage
+	 * @global - c.data.pageURI - the current window URL
+	 */
+	var c = this;
+	c.remember_me = c.data.forgetMeDefault;
+	c.data.pageURI = window.location.pathname + window.location.search;
+
+	// Checks if user is not logged-in
+	if (!c.data.is_logged_in && c.data.multisso_enabled && c.data.default_idp) {
+		//Sends an update to the server to do Single Sign-On
+		c.server.get({
+			action: "set_sso_destination",
+			pageURI: c.data.pageURI
+		}).then(function() {
+			$window.location = "/login_with_sso.do?glide_sso_id=" + c.data.default_idp;
+		});
+	}
+
+	/*
+	 * @overview - A function that logs a user-in
+	 * @params - username - Current username
+	 * @params - password - Current password
+	 * @returns - Returns a JS Promise to log the user in
+	 */
+	c.login = function(username, password) {
+		var url = spUtil.getURL({sysparm_type: 'view_form.login'});
+		
+		// If the page isn't public, then the ID in the
+		// URL won't match the rendered page ID
+		var pageId = $location.search().id || $scope.page.id;
+		var isLoginPage = $scope.portal.login_page_dv == pageId;
+
+		return $http({
+			method: 'post',
+			url: url,
+			data: $.param({
+				'sysparm_type': 'login',
+				'ni.nolog.user_password': true,
+				'remember_me': !!c.remember_me ? true : false,
+				'user_name': username,
+				'user_password': password,
+				'get_redirect_url': true,
+				'sysparm_goto_url': isLoginPage ? null : $location.url(),
+				'mfa_redirect_url': c.data.pageURI
+			}),
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			}
+		}).then(function(response) {
+			if (!response.data) {
+				c.message = $scope.data.errorMsg;
+				return;
+			}
+			
+			//if successful response redirect to multi-factor authentication
+			if (response.data.status == 'success') {
+				if (c.data.multiFactorAuthEnabled) {
+					c.server.get({
+						action: "multi_factor_auth_setup",
+						directTo: response.data.redirect_url
+					}).then(handleLoginSuccess.bind(response));
+				} else {
+					handleLoginSuccess.call(response);
+				}
+			} else if (response.data.status == 'mfa_code_required') {
+					$window.location = '/validate_multifactor_auth_code.do';
+			} else {
+				// wrong username or password
+				c.message = response.data.message;
+				c.password = "";
+				c.username = "";
+				angular.element("#username").focus();
+			}
+
+		}, function errorCallback(response) {
+			c.message = $scope.data.errorMsg;
+		});
+	};
+
+	/*
+	 * @overview - Checks if user is not logged in, sets the SSO destination and redirects to login
+	 * @function - externalLogin
+	 */
+	c.externalLogin = function() {
+		c.server.get({
+			action: "set_sso_destination",
+			pageURI: c.data.pageURI
+		}).then(function() {
+			glideSystemProperties.set("glide.authenticate.multisso.enabled", true);
+
+			glideUserSession.getSsoRedirectUrlForUsername(c.username)
+				.then(function(url) {
+					$window.location = url;
+				}, function(err) {
+					spUtil.addErrorMessage($scope.data.errorMsg2);
+				});
+		});
+	}
+
+	/*
+	 * @overview - Redirects for successful login
+	 * @function - handleLoginSuccess
+	 */
+	function handleLoginSuccess() {
+		c.success = this.data.message;
+		$window.location = this.data.redirect_url;
+	}
+
+	/*
+	 * @overview - Useless function
+	 * @TODO - Delete function
+	 */
+	c.setExternalLogin = function(newVal) {
+		c.externalLoginMode = newVal;
+	}
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.redirect-box {&#13;
+ margin-top: 50px; &#13;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>fms-authentication</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>FMS Authentication</name>
+        <option_schema>[{"name":"show_panel","section":"Presentation","default_value":"true","label":"Show Panel","type":"boolean"}]</option_schema>
+        <public>true</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	options.show_panel = options.show_panel == "true" || options.show_panel == true;
+	
+	if (input && input.action === "multi_factor_auth_setup") {
+		if (gs.getProperty("setup_multifactor_authn")) {
+			gs.getSession().putProperty("nav_to", input.directTo);
+			gs.getSession().putProperty("starting_page", input.directTo);
+			gs.getSession().putProperty("is_direct_redirect", "true");
+		}
+		return;
+	}
+	
+	// We don't want to set a starting page until we've begun the login process.
+	if (input && input.action === "set_sso_destination") {
+		var gs_nav_to = gs.getProperty("nav_to");
+		gs.getSession().putProperty("nav_to", null);
+		if (!gs.getProperty("starting_page"))
+			gs.getSession().putProperty("starting_page", gs_nav_to);
+
+		return;
+	}
+
+	data.errorMsg = gs.getMessage("There was an error processing your request");
+	data.errorMsg2 = gs.getMessage("An error has occurred - please contact your system administrator");
+	data.passwordMsg = gs.getMessage("Password");
+	data.usernameMsg = gs.getMessage("User name");
+	//data.forgetMe = GlideProperties.getBoolean("glide.ui.forgetme");
+	//data.forgetMeDefault = GlideProperties.getBoolean('glide.ui.remember.me.default', true);
+	data.forgetMe = true;
+	data.forgetMeDefault = true;
+	data.is_logged_in = gs.getSession().isLoggedIn();
+	var bypass_sso = options.bypass_sso == "true";
+	
+	//data.multisso_enabled = !bypass_sso && GlideProperties.getBoolean("glide.authenticate.multisso.enabled");			
+	data.default_idp = gs.getProperty("glide.authenticate.sso.redirect.idp");
+	data.multisso_enabled = true;
+	
+	//data.default_idp = GlideProperties.get("glide.authenticate.sso.redirect.idp");
+	//data.pageURI = new GlideSPUtil().getPageUri();
+	//data.multiFactorAuthEnabled = GlideProperties.getBoolean('glide.authenticate.multifactor', false);
+	data.multiFactorAuthEnabled = false;
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-10-28 18:50:42</sys_created_on>
+        <sys_id>b92b6d071b0c2c100a4a10ad9c4bcb32</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>FMS Authentication</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_widget_b92b6d071b0c2c100a4a10ad9c4bcb32</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-10-28 18:52:08</sys_updated_on>
+        <template><![CDATA[<div ng-if="data.is_logged_in">
+  You are currently logged into the FMS Financial Application.  Please use the navigation above to continue.
+</div>
+<div ng-if="!data.is_logged_in" class="row">
+  <div class="col-md-offset-2 col-lg-8">
+    <div class="panel panel-default redirect-box">
+      <div class="panel-heading text-center">
+        Redirecting to State Department Authentication
+      </div>
+      <div class="panel-body">
+      	If redirect does not occur after five seconds, please contact your FMS Administrator
+      </div>
+     </div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>
