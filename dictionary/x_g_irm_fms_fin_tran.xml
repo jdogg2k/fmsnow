@@ -64,7 +64,7 @@
         <element label="Received By" max_length="50" name="received_by" type="string"/>
         <element label="Reconciliation Date" max_length="40" name="reconcile_date" type="glide_date"/>
         <element calculation="(function calculatedFieldValue(current) {&#13;&#10;    var items = new GlideRecord('x_g_irm_fms_fin_tran_item');&#13;&#10;    items.addQuery('fin_tran_ref', current.sys_id);&#13;&#10;    items.query();&#13;&#10;    var total = 0;&#13;&#10;    while (items.next()) {&#13;&#10;        //total += (parseInt(items.received_qty || items.item_qty)) * (parseFloat(items.actual_cost || items.item_cost));&#13;&#10;&#9;&#9;total += parseFloat(items.item_total);&#13;&#10;    }&#13;&#10;    return total; &#13;&#10;})(current);" label="Transaction Total" max_length="20" name="transaction_total_amt" read_only="true" type="currency" virtual="true"/>
-        <element label="Transaction Date" mandatory="true" max_length="40" name="tran_date" type="glide_date"/>
+        <element default="javascript:gs.now()" dynamic_default_value="fb7553e85f220100a9ad2572f2b477b4" label="Transaction Date" mandatory="true" max_length="40" name="tran_date" type="glide_date" use_dynamic_default="true"/>
         <element choice="1" label="Status" mandatory="true" max_length="12" name="tran_status" type="string">
             <choice>
                 <element inactive_on_update="false" label="Initiated" sequence="1" value="Initiated"/>
