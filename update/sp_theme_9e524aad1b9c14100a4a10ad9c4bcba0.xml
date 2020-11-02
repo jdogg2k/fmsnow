@@ -157,7 +157,7 @@ $list-group-hover-bg: lighten($panel-primary-heading-bg, 40%);&#13;
 &#13;
 $accessible-placeholder-gray: #565656;&#13;
 </css_variables>
-        <footer/>
+        <footer display_value="FMS Footer">73c932ac1b14a0500a4a10ad9c4bcb23</footer>
         <footer_fixed>true</footer_fixed>
         <header display_value="FMS Header">6acfb9e91b9c14100a4a10ad9c4bcb26</header>
         <name>FMS Theme</name>
@@ -166,13 +166,13 @@ $accessible-placeholder-gray: #565656;&#13;
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-20 18:45:42</sys_created_on>
         <sys_id>9e524aad1b9c14100a4a10ad9c4bcba0</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>1</sys_mod_count>
         <sys_name>FMS Theme</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_theme_9e524aad1b9c14100a4a10ad9c4bcba0</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-04-20 18:45:42</sys_updated_on>
+        <sys_updated_on>2020-11-02 16:25:59</sys_updated_on>
     </sp_theme>
 </record_update>

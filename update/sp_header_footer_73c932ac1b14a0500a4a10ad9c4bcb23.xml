@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_header_footer">
+    <sp_header_footer action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function() {
+  /* widget controller */
+  var c = this;
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>fms-footer</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>FMS Footer</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_header_footer</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-11-02 16:25:14</sys_created_on>
+        <sys_id>73c932ac1b14a0500a4a10ad9c4bcb23</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>FMS Footer</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_header_footer_73c932ac1b14a0500a4a10ad9c4bcb23</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-11-02 18:53:47</sys_updated_on>
+        <template><![CDATA[<iframe id="fmsKeepAlive" name="sessionKeepAlive" style="width:0;height:0;border:0; border:none;"></iframe>
+<script>
+  
+ /* Keeps Session Alive for FMS users*/
+ 
+ if (top == self) {
+    
+    //KEEP ALIVE
+    var keepAliveFrame = document.getElementById("fmsKeepAlive");
+    var maxRefreshes = 100;
+    var sessionCounter = 0;
+    var remainingCounter = maxRefreshes - sessionCounter;
+    console.log("FMS Session Keep Alive active.  Will refresh " + remainingCounter + " more times");
+
+    var interval = window.setInterval(function(){
+        if(sessionCounter < maxRefreshes){
+            var randomNum = Math.floor(Math.random() * 100000) + 1;
+            keepAliveFrame.src = "/alivefms?num=" + randomNum.toString();
+            sessionCounter++;
+          	remainingCounter = maxRefreshes - sessionCounter;
+          	console.log("AMS Keep Alive active.  Will refresh " + remainingCounter + " more times");
+        }else{
+            stopKeepAlive();
+        }
+    }, 590000); //keep session alive every 10 minutes
+    
+    function stopKeepAlive() {
+      window.clearInterval(interval);
+      console.log("Keep Alive stopped, session will timeout in 10 minutes");
+    }
+    
+   }
+
+</script>]]></template>
+    </sp_header_footer>
+</record_update>
