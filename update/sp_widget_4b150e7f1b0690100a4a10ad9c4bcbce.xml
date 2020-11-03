@@ -387,17 +387,39 @@
 			while (membershipQuery.next()) {
 				data.selectedUser = membershipQuery.user.name.toString();
 				data.membership.push(membershipQuery.getValue("group"));
-			//	gs.addInfoMessage("member "+data.selectedUser +" "+data.membership);
+		//	gs.addInfoMessage("member "+data.selectedUser +" "+data.membership);
 			}
+		
 			var membershipStr = data.membership.join(",");
-			data.fmsGroups.forEach(function (grpObj) {
-				if (membershipStr.indexOf(grpObj.value) == -1)
+			if(membershipStr.indexOf('8fd87e881b1ad0100a4a10ad9c4bcb67')>-1  )
 					{
+						if(membershipStr.indexOf('99287a881b1ad0100a4a10ad9c4bcb1b')>-1)
+							{
+								data.availableGroups.push();
+							}
+						else
+							{
+							var groupObj_app = {};
+							groupObj_app.name = "FMS Approvers";
+							groupObj_app.value = "99287a881b1ad0100a4a10ad9c4bcb1b";
+								data.availableGroups.push(groupObj_app);
+							}
 						
-						data.availableGroups.push(grpObj);
-						//gs.addInfoMessage("member 2 "+JSON.stringify(data.availableGroups));
 					}
+			data.fmsGroups.forEach(function (grpObj) {
+				
+		  if(membershipStr.indexOf(grpObj.value) == -1 && membershipStr.indexOf('8fd87e881b1ad0100a4a10ad9c4bcb67')==-1)
+				{
+					if(membershipStr=='')
+						data.availableGroups.push(grpObj);
+					else if(membershipStr.indexOf('99287a881b1ad0100a4a10ad9c4bcb1b')>-1)
+						data.availableGroups.push(grpObj);
 					
+				else if(grpObj.value!='8fd87e881b1ad0100a4a10ad9c4bcb67')
+					data.availableGroups.push(grpObj);
+				}
+					
+				//gs.addInfoMessage("member 2 "+JSON.stringify(grpObj));
 			});
         }
 	
@@ -469,14 +491,14 @@
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-07-23 18:35:09</sys_created_on>
         <sys_id>4b150e7f1b0690100a4a10ad9c4bcbce</sys_id>
-        <sys_mod_count>137</sys_mod_count>
+        <sys_mod_count>156</sys_mod_count>
         <sys_name>Users Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_4b150e7f1b0690100a4a10ad9c4bcbce</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-11-02 17:02:07</sys_updated_on>
+        <sys_updated_on>2020-11-03 19:54:36</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

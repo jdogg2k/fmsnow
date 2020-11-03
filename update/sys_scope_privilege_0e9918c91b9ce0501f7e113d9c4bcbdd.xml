@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_scope_privilege">
+    <sys_scope_privilege action="INSERT_OR_UPDATE">
+        <operation>execute</operation>
+        <source_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</source_scope>
+        <status>allowed</status>
+        <sys_class_name>sys_scope_privilege</sys_class_name>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2020-11-03 18:02:13</sys_created_on>
+        <sys_id>0e9918c91b9ce0501f7e113d9c4bcbdd</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ScopedGlideRecord</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_scope_privilege_0e9918c91b9ce0501f7e113d9c4bcbdd</sys_update_name>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-11-03 18:02:13</sys_updated_on>
+        <target_name>ScopedGlideRecord</target_name>
+        <target_scope display_value="Global">global</target_scope>
+        <target_type>scriptable</target_type>
+    </sys_scope_privilege>
+</record_update>
