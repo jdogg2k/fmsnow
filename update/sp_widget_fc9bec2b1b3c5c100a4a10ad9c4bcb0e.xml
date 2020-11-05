@@ -7,6 +7,7 @@
     c.targetOrg = c.data.selectedOrg;
     c.targetProj = c.data.selectedProj;
     c.userAuth = $rootScope.userAuth;
+    c.addingNewTrans = false;
 
     var fintranManager = new AGGridFactory();
 
@@ -365,6 +366,32 @@
         fintranManager.fitColumns();
     }, 250);
 
+    
+
+    $rootScope.$on('fmsgrid.recordAdded.refresh', function (event, args) { //branch out proper row on transaction add
+
+        var targetSys = args.sys_id;
+        var targetTable = args.table;
+
+        if (targetTable == c.data.tableName) {
+            fintranManager.gridOpts.api.forEachNode(function(rowNode, index) {
+                if (rowNode.data) {
+                    if (rowNode.data.sys_id == targetSys) {
+                        c.addingNewTrans = true;
+                        rowNode.setExpanded(true); //expand
+                    }      
+                }
+            });
+        }
+
+    });
+
+    $rootScope.$on('fms.transgrid.visible', function (event, args) { //branch out proper row on transaction add
+        if (c.addingNewTrans) {
+            fintranManager.editDetailGridRow("-1", "fin_tran_ref=" + args.sys_id, c.data.itemTableName, args.detailName, "detail_" + args.detailTable + args.sys_id);
+            c.addingNewTrans = false;
+        }
+    });
 
 
     $rootScope.$on('OrgChanged', function (event, args) {
@@ -500,14 +527,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-21 14:05:50</sys_created_on>
         <sys_id>fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_id>
-        <sys_mod_count>305</sys_mod_count>
+        <sys_mod_count>312</sys_mod_count>
         <sys_name>Financial Transaction Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-10-29 17:42:28</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-11-05 19:44:45</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
