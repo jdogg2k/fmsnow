@@ -747,75 +747,72 @@
 	
 	var tab, tablname;
 	//gs.addInfoMessage("test"+$sp.getParameter("sys_id")+"test");
-	if($sp.getParameter("sys_id")==null)
+	if($sp.getParameter("tableName")==null)
 		{
 			data.tableName =FMSConstants.TABLE_ALLOTMENT;
 					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_ALLOTMENT, "", true); 
 			    data.tableLabel ='Allotment Codes';
 		}
-	
-	var gr = new GlideRecord('sys_db_object');
-	gr.addQuery('sys_id',$sp.getParameter("sys_id"));
-	gr.query();
-	if(gr.next())
+
+	if($sp.getParameter("tableName") != null)
 		{
-				tab= gr.name;
-		//	gs.addInfoMessage(data.tablelabel);
-			if(gr.name == 'x_g_irm_fms_allotment')
+			
+			var tabName = $sp.getParameter("tableName");
+			if(tabName == 'TABLE_ALLOTMENT')
 				{
 					data.tableName =FMSConstants.TABLE_ALLOTMENT;
 					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_ALLOTMENT, "", true);
 					data.tableLabel ='Allotment Codes';
 				}
-			else if(gr.name == 'x_g_irm_fms_appropriation')
+			else if(tabName == 'TABLE_APPROPRIATION')
 				{
 					data.tableName = FMSConstants.TABLE_APPROPRIATION;
 				  data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_APPROPRIATION, "", true); 
 					 data.tableLabel ='Appropriation';
 				}
-				else if(gr.name == 'x_g_irm_fms_appropriation_type')
+				else if(tabName == 'TABLE_APPROPRIATION_TYPE')
 				{
 					data.tableName =FMSConstants.TABLE_APPROPRIATION_TYPE;
 					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_APPROPRIATION_TYPE, "", true); 
 					 data.tableLabel ='Appropriation Type';
 				}	
-				else if(gr.name == 'x_g_irm_fms_budget_code')
+				else if(tabName == 'TABLE_BUDGET_CODE')
 				{
 					data.tableName =FMSConstants.TABLE_BUDGET_CODE;
 					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_BUDGET_CODE, "", true); 
 					 data.tableLabel ='Budget Code';
 				}	
-				else if(gr.name == 'x_g_irm_fms_function_code')
+				else if(tabName == 'TABLE_FUNCTION_CODE')
 				{
 					data.tableName =FMSConstants.TABLE_FUNCTION_CODE;
 					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_FUNCTION_CODE, "", true); 
 					 data.tableLabel ='Function Code';
 				}
-				else if(gr.name == 'x_g_irm_fms_investment')
+				else if(tabName == 'TABLE_INVESTMENT')
 				{
 					data.tableName =FMSConstants.TABLE_INVESTMENT;
 					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_INVESTMENT, "", true); 
 					 data.tableLabel ='Investment';
 				}
-				else if(gr.name == 'x_g_irm_fms_notification')
+				else if(tabName == 'TABLE_NOTIFICATION')
 				{
 					data.tableName =FMSConstants.TABLE_NOTIFICATION;
 					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_NOTIFICATION, "", true); 
 					 data.tableLabel ='Notification';
 				}
-			 else if(gr.name == 'x_g_irm_fms_post')
+			 else if(tabName == 'TABLE_POST')
 				{
 					data.tableName =FMSConstants.TABLE_POST;
 					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_POST, "", true); 
 					 data.tableLabel ='Post';
 				}
-				else if(gr.name == 'x_g_irm_fms_region')
+				else if(tabName == 'TABLE_REGION')
 				{
 					data.tableName =FMSConstants.TABLE_REGION;
 					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_REGION, "", true); 
 					 data.tableLabel ='Region';
 				}
-				else if(gr.name == 'x_g_irm_fms_transfer_type')
+				else if(tabName == 'TABLE_TRANSFER_TYPE')
 				{
 					data.tableName =FMSConstants.TABLE_TRANSFER_TYPE;
 					data.tableData =FMSUtility.getTableData(FMSConstants.TABLE_TRANSFER_TYPE, "", true);
@@ -828,7 +825,7 @@
 	data.userAuth = FMSUtility.getUserAuth();
 //	data.tableName = FMSConstants.TABLE_ALLOTMENT;
 		//data.tableName = tab;
-	data.tab = tab;
+	//data.tab = tab;
 	//   data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_ALLOTMENT, "", true); //get all org info
 //data.tableData = FMSUtility.getTableData(tab, "", true); //get all org info
 
@@ -838,14 +835,14 @@
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-07-06 14:18:09</sys_created_on>
         <sys_id>9557e5561bf590100a4a10ad9c4bcb82</sys_id>
-        <sys_mod_count>128</sys_mod_count>
+        <sys_mod_count>132</sys_mod_count>
         <sys_name>Allotment Lookup Table</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_9557e5561bf590100a4a10ad9c4bcb82</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-09-16 19:33:49</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-11-05 20:52:14</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
