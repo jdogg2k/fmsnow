@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_embedded_tour_step">
+    <sys_embedded_tour_step action="INSERT_OR_UPDATE">
+        <action>false</action>
+        <action_event>next</action_event>
+        <action_target/>
+        <action_target_ref display_value="xpath">f9a1c2721b18a8501f7e113d9c4bcb8b</action_target_ref>
+        <active>true</active>
+        <content><![CDATA[Enter the budgeted amount.]]></content>
+        <guide display_value="FMS Create a new Budget">b733ba911b80e4101f7e113d9c4bcbb7</guide>
+        <implicit>false</implicit>
+        <link/>
+        <name/>
+        <options>{"url":"/fms?id=budget_detail&amp;budget_id=22f002721b18a8501f7e113d9c4bcb70"}</options>
+        <order>10</order>
+        <placement>bottom</placement>
+        <step_type>step</step_type>
+        <sys_class_name>sys_embedded_tour_step</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-11-09 12:06:13</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>b5a1c2721b18a8501f7e113d9c4bcb8d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_overrides/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_embedded_tour_step_b5a1c2721b18a8501f7e113d9c4bcb8d</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-11-09 12:06:13</sys_updated_on>
+        <target/>
+        <target_ref display_value="xpath">f9a1c2721b18a8501f7e113d9c4bcb8b</target_ref>
+        <title/>
+        <ui_version>dynamic</ui_version>
+        <view/>
+        <window>fms</window>
+    </sys_embedded_tour_step>
+    <sys_translated_text action="delete_multiple" query="documentkey=b5a1c2721b18a8501f7e113d9c4bcb8d"/>
+</record_update>
