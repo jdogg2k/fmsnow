@@ -28,14 +28,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-11-02 16:25:14</sys_created_on>
         <sys_id>73c932ac1b14a0500a4a10ad9c4bcb23</sys_id>
-        <sys_mod_count>7</sys_mod_count>
+        <sys_mod_count>8</sys_mod_count>
         <sys_name>FMS Footer</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_header_footer_73c932ac1b14a0500a4a10ad9c4bcb23</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-11-02 18:53:47</sys_updated_on>
+        <sys_updated_on>2020-11-10 21:00:09</sys_updated_on>
         <template><![CDATA[<iframe id="fmsKeepAlive" name="sessionKeepAlive" style="width:0;height:0;border:0; border:none;"></iframe>
 <script>
   
@@ -56,7 +56,7 @@
             keepAliveFrame.src = "/alivefms?num=" + randomNum.toString();
             sessionCounter++;
           	remainingCounter = maxRefreshes - sessionCounter;
-          	console.log("AMS Keep Alive active.  Will refresh " + remainingCounter + " more times");
+          	console.log("FMS Keep Alive active.  Will refresh " + remainingCounter + " more times");
         }else{
             stopKeepAlive();
         }

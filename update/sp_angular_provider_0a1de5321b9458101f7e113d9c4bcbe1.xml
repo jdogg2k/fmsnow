@@ -475,30 +475,33 @@
 					}
 
 					if (childTables[0].banner == 'Project Allocation') { //special case for Allocation Pool page - need to recalculate/refresh parent
-						var parentRow = delResp.data.parentRec;
-						gridOptions.api.forEachNode(function (rowNode, index) {
-							if (rowNode.data) {
-								if (rowNode.data.sys_id == parentRow.sys_id) {
-									rowNode.setDataValue("allocated_amt", parentRow.allocated_amt);
-									rowNode.setDataValue("distributed_amt", parentRow.distributed_amt);
-									rowNode.setDataValue("unassigned_amt", parentRow.unassigned_amt);
-								}
-							}
-						});
-						gridOptions.api.redrawRows(); //redraw the renderer so we the icons can change
+                        var parentRow = delResp.data.parentRec;
+                        if (parentRow != undefined) {
+                            gridOptions.api.forEachNode(function (rowNode, index) {
+                                if (rowNode.data) {
+                                    if (rowNode.data.sys_id == parentRow.sys_id) {
+                                        rowNode.setDataValue("allocated_amt", parentRow.allocated_amt);
+                                        rowNode.setDataValue("distributed_amt", parentRow.distributed_amt);
+                                        rowNode.setDataValue("unassigned_amt", parentRow.unassigned_amt);
+                                    }
+                                }
+                            });
+                            gridOptions.api.redrawRows(); //redraw the renderer so we the icons can change
+                        }
 					}
-			
-					else	if (childTables[0].banner == 'Transaction Items') { //special case for Financial Transaction details grid
+					else if (childTables[0].banner == 'Transaction Items') { //special case for Financial Transaction details grid
 
-						var parentRow = delResp.data.parentRec;;
-						gridOptions.api.forEachNode(function (rowNode, index) {
-							if (rowNode.data) {
-								if (rowNode.data.sys_id == parentRow.sys_id) {
-									rowNode.setDataValue("transaction_total_amt", parentRow.transaction_total_amt);
-									
-								}
-							}
-						});
+                        var parentRow = delResp.data.parentRec;
+                        if (parentRow != undefined) {
+                            gridOptions.api.forEachNode(function (rowNode, index) {
+                                if (rowNode.data) {
+                                    if (rowNode.data.sys_id == parentRow.sys_id) {
+                                        rowNode.setDataValue("transaction_total_amt", parentRow.transaction_total_amt);
+                                        
+                                    }
+                                }
+                            });
+                        }
 
 					}
 				}
@@ -515,7 +518,8 @@
 					});
 
 				} else {
-					spUtil.addErrorMessage(delResp.data.errorMsg);
+					if (delResp.data.errorMsg)
+						spUtil.addErrorMessage(delResp.data.errorMsg);
 				}
 			});
 		};
@@ -1150,14 +1154,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>783</sys_mod_count>
+        <sys_mod_count>787</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-11-05 19:19:53</sys_updated_on>
+        <sys_updated_on>2020-11-10 20:18:47</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

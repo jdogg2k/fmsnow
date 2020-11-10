@@ -125,7 +125,7 @@
                 <element inactive_on_update="false" label="Software" value="Software"/>
             </choice>
         </element>
-        <element label="Project" max_length="32" name="project_ref" reference="x_g_irm_fms_project" reference_qual="javascript:&quot;organization_ref=&quot; + current.organization_ref" type="reference" use_reference_qualifier="advanced"/>
+        <element label="Project" max_length="32" name="project_ref" reference="x_g_irm_fms_project" reference_qual="javascript:&quot;disabled=&quot;+false+&quot;^organization_ref=&quot; + current.organization_ref" type="reference" use_reference_qualifier="advanced"/>
         <element label="Purpose" max_length="500" name="purpose" type="string"/>
         <element label="Risk Explanation" max_length="500" name="risk_explanation" type="string"/>
         <element label="Status Detail" max_length="500" name="status_detail" type="string"/>

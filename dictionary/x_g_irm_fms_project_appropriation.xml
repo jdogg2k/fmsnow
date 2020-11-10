@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Project Appropriation" max_length="40" name="x_g_irm_fms_project_appropriation" type="collection">
         <element display="true" label="Appropriation" mandatory="true" max_length="32" name="appropriation_ref" reference="x_g_irm_fms_appropriation" reference_qual="active=true^EQ" reference_qual_condition="active=true^EQ" type="reference"/>
-        <element label="Project" mandatory="true" max_length="32" name="project_ref" reference="x_g_irm_fms_project" type="reference"/>
+        <element label="Project" mandatory="true" max_length="32" name="project_ref" reference="x_g_irm_fms_project" reference_qual="disabled=false^EQ" reference_qual_condition="disabled=false^EQ" type="reference"/>
         <index name="index">
             <element name="project_ref"/>
         </index>
