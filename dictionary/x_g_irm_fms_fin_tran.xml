@@ -58,7 +58,7 @@
         <element label="Received Date" max_length="40" name="po_receive_date" type="glide_date"/>
         <element label="Requestor" max_length="50" name="po_requestor" type="string"/>
         <element label="Tracking Number" max_length="15" name="po_tracking_number" type="string"/>
-        <element attributes="ref_auto_completer=AJAXTableCompleter,ref_ac_columns=appropriation;appropriation_ref.appropriation_type" dependent="project_ref" dependent_on_field="project_ref" label="Appropriation" mandatory="true" max_length="32" name="project_appropriation_ref" reference="x_g_irm_fms_project_appropriation" reference_qual="appropriation_ref.active=true" reference_qual_condition="appropriation_ref.active=true" type="reference" use_dependent_field="true"/>
+        <element attributes="ref_auto_completer=AJAXTableCompleter,ref_ac_columns=appropriation;appropriation_ref.appropriation_type" dependent="project_ref" dependent_on_field="project_ref" label="Appropriation" mandatory="true" max_length="32" name="project_appropriation_ref" reference="x_g_irm_fms_project_appropriation" reference_qual="appropriation_ref.disabled=false^EQ" reference_qual_condition="appropriation_ref.disabled=false^EQ" type="reference" use_dependent_field="true"/>
         <element label="Project" mandatory="true" max_length="32" name="project_ref" reference="x_g_irm_fms_project" reference_qual="javascript:&quot;disabled=&quot;+false+&quot;^organization_refIN&quot; + new FMSUtilities().getFilteredOrgs();" type="reference" use_reference_qualifier="advanced"/>
         <element label="Purchase Order" max_length="32" name="purchase_order" reference="x_g_irm_fms_fin_tran_po" type="reference"/>
         <element label="Received By" max_length="50" name="received_by" type="string"/>

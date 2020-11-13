@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_rectangle_menu_item">
+    <sp_rectangle_menu_item action="DELETE">
+        <active>true</active>
+        <color>default</color>
+        <condition/>
+        <display_1/>
+        <display_2/>
+        <display_date/>
+        <filter/>
+        <glyph>question-circle</glyph>
+        <hint/>
+        <kb_article/>
+        <kb_category/>
+        <kb_topic/>
+        <label>Help</label>
+        <order>160</order>
+        <record_script/>
+        <sc_cat_item/>
+        <sc_category/>
+        <short_description/>
+        <sp_page/>
+        <sp_rectangle_menu display_value="FMS Menu">45dd16eb1b0cd0100a4a10ad9c4bcb6e</sp_rectangle_menu>
+        <sp_rectangle_menu_item/>
+        <sys_class_name>sp_rectangle_menu_item</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-11-12 20:53:45</sys_created_on>
+        <sys_id>9d0797bb1b186c500a4a10ad9c4bcbff</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Help</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_rectangle_menu_item_9d0797bb1b186c500a4a10ad9c4bcbff</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-11-12 20:54:51</sys_updated_on>
+        <table/>
+        <type>url</type>
+        <url>javascript:alert('hey');</url>
+        <url_target/>
+    </sp_rectangle_menu_item>
+    <sys_translated_text action="DELETE" query="documentkey=9d0797bb1b186c500a4a10ad9c4bcbff"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sp_rectangle_menu_item_9d0797bb1b186c500a4a10ad9c4bcbff</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_rectangle_menu_item"><sp_rectangle_menu_item action="INSERT_OR_UPDATE"><active>true</active><color>default</color><condition/><display_1/><display_2/><display_date/><filter/><glyph>question-circle</glyph><hint/><kb_article/><kb_category/><kb_topic/><label>Help</label><order>160</order><record_script/><sc_cat_item/><sc_category/><short_description/><sp_page/><sp_rectangle_menu display_value="FMS Menu">45dd16eb1b0cd0100a4a10ad9c4bcb6e</sp_rectangle_menu><sp_rectangle_menu_item/><sys_class_name>sp_rectangle_menu_item</sys_class_name><sys_created_by>RoseJL@state.gov</sys_created_by><sys_created_on>2020-11-12 20:53:45</sys_created_on><sys_id>9d0797bb1b186c500a4a10ad9c4bcbff</sys_id><sys_mod_count>2</sys_mod_count><sys_name>Help</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sp_rectangle_menu_item_9d0797bb1b186c500a4a10ad9c4bcbff</sys_update_name><sys_updated_by>RoseJL@state.gov</sys_updated_by><sys_updated_on>2020-11-12 20:54:51</sys_updated_on><table/><type>url</type><url>javascript:alert('hey');</url><url_target/></sp_rectangle_menu_item><sys_translated_text action="delete_multiple" query="documentkey=9d0797bb1b186c500a4a10ad9c4bcbff"/></record_update>]]></payload>
+        <payload_hash>-1676931370</payload_hash>
+        <record_name>Help</record_name>
+        <reverted_from/>
+        <source>c180b5661b6b50500a4a10ad9c4bcbaa</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-11-12 20:54:51</sys_created_on>
+        <sys_id>b267dbbb1b186c500a4a10ad9c4bcbbe</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>175be3d54fe0000001</sys_recorded_at>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-11-12 20:54:51</sys_updated_on>
+        <type>Menu Item</type>
+        <update_guid>7a67dbbb4b186c508af0f7726ced18bd</update_guid>
+        <update_guid_history>7a67dbbb4b186c508af0f7726ced18bd:-1676931370,4f47d7bb7b186c505600808706b19241:1333805513,ea2797bbe0186c501d496f58598d0f10:-498199012</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="Help">f0485bbb1b186c500a4a10ad9c4bcb8e</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-11-12 20:58:32</sys_created_on>
+        <sys_db_object display_value="" name="sp_rectangle_menu_item">sp_rectangle_menu_item</sys_db_object>
+        <sys_id>257d5202f4e94dc28e1ed848e5955b21</sys_id>
+        <sys_metadata>9d0797bb1b186c500a4a10ad9c4bcbff</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Help</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sp_rectangle_menu_item_9d0797bb1b186c500a4a10ad9c4bcbff</sys_update_name>
+        <sys_update_version display_value="sp_rectangle_menu_item_9d0797bb1b186c500a4a10ad9c4bcbff">b267dbbb1b186c500a4a10ad9c4bcbbe</sys_update_version>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-11-12 20:58:32</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

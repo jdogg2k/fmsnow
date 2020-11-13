@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
-    <sys_dictionary action="INSERT_OR_UPDATE" element="appropriation_ref" table="x_g_irm_fms_project_allocation">
+    <sys_dictionary action="INSERT_OR_UPDATE" element="title" table="x_g_irm_fms_fms_issue">
         <active>true</active>
         <array>false</array>
         <array_denormalized>false</array_denormalized>
-        <attributes>ref_auto_completer=AJAXTableCompleter,ref_ac_columns=appropriation;appropriation_ref.appropriation_type</attributes>
+        <attributes/>
         <audit>false</audit>
         <calculation><![CDATA[(function calculatedFieldValue(current) {
 
@@ -14,60 +14,58 @@
         <choice/>
         <choice_field/>
         <choice_table/>
-        <column_label>Appropriation</column_label>
+        <column_label>Title</column_label>
         <comments/>
         <create_roles/>
         <default_value/>
         <defaultsort/>
         <delete_roles/>
-        <dependent>project_ref</dependent>
-        <dependent_on_field>project_ref</dependent_on_field>
+        <dependent/>
+        <dependent_on_field/>
         <display>false</display>
         <dynamic_creation>false</dynamic_creation>
         <dynamic_creation_script/>
         <dynamic_default_value/>
         <dynamic_ref_qual/>
-        <element>appropriation_ref</element>
+        <element>title</element>
         <element_reference>false</element_reference>
         <foreign_database/>
         <function_definition/>
         <function_field>false</function_field>
-        <internal_type display_value="Reference">reference</internal_type>
-        <mandatory>true</mandatory>
-        <max_length>32</max_length>
-        <name>x_g_irm_fms_project_allocation</name>
+        <internal_type display_value="String">string</internal_type>
+        <mandatory>false</mandatory>
+        <max_length>500</max_length>
+        <name>x_g_irm_fms_fms_issue</name>
         <next_element/>
         <primary>false</primary>
         <read_only>false</read_only>
         <read_roles/>
-        <reference display_value="" name="x_g_irm_fms_project_appropriation">x_g_irm_fms_project_appropriation</reference>
+        <reference/>
         <reference_cascade_rule/>
         <reference_floats>false</reference_floats>
         <reference_key/>
-        <reference_qual>appropriation_ref.disabled=false^EQ</reference_qual>
-        <reference_qual_condition table="x_g_irm_fms_project_appropriation">appropriation_ref.disabled=false^EQ<item endquery="false" field="appropriation_ref.disabled" goto="false" newquery="false" operator="=" or="false" value="false"/>
-            <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
-        </reference_qual_condition>
+        <reference_qual/>
+        <reference_qual_condition/>
         <reference_type/>
         <sizeclass/>
         <spell_check>false</spell_check>
         <staged>false</staged>
         <sys_class_name>sys_dictionary</sys_class_name>
-        <sys_created_by>markeljr@state.gov</sys_created_by>
-        <sys_created_on>2020-04-09 17:59:38</sys_created_on>
-        <sys_id>762e45421b44d0500a4a10ad9c4bcb0e</sys_id>
-        <sys_mod_count>15</sys_mod_count>
-        <sys_name>Appropriation</sys_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-11-12 20:43:25</sys_created_on>
+        <sys_id>55649f771b186c500a4a10ad9c4bcb2c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Title</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
-        <sys_update_name>sys_dictionary_x_g_irm_fms_project_allocation_appropriation_ref</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-11-13 19:06:01</sys_updated_on>
+        <sys_update_name>sys_dictionary_x_g_irm_fms_fms_issue_title</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-11-12 20:43:25</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>
-        <use_dependent_field>true</use_dependent_field>
+        <use_dependent_field>false</use_dependent_field>
         <use_dynamic_default>false</use_dynamic_default>
         <use_reference_qualifier>simple</use_reference_qualifier>
         <virtual>false</virtual>
