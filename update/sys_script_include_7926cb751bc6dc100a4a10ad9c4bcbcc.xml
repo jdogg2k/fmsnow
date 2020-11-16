@@ -39,20 +39,20 @@ organizationsUtils.prototype = {
     },
 
     getChildrenOrg: function(orgsys_id, orgobj) { // return the Sysid of the Child organization of organization already    selected in the Project Table
-		var gr_exist = new GlideRecord("x_g_irm_fms_project");
+        var gr_exist = new GlideRecord("x_g_irm_fms_project");
         gr_exist.addQuery("sys_id", orgobj);
         gr_exist.query();
         if (gr_exist.next()) {
             var orID = gr_exist.organization_ref;
             //gs.info("include 2 " + new OrgHierarchy().getOrgChildren(orgsys_id));
-			var org = [];
-            org= new OrgHierarchy().getOrgChildren(orID);
-			org.push(orID);
-			return org;
+            var org = [];
+            org = new OrgHierarchy().getOrgChildren(orID);
+            org.push(orID);
+            return org;
         } else {
             if (orgsys_id == '')
                 return new OrgHierarchy().getUserOrgs();
-           // gs.info("include 1 " + new OrgHierarchy().getUserOrgs());
+            // gs.info("include 1 " + new OrgHierarchy().getUserOrgs());
             return new OrgHierarchy().getUserOrgs();
         }
 
@@ -60,34 +60,32 @@ organizationsUtils.prototype = {
 
     checkcontractrole: function() {
         var usr = gs.getUserID();
-		if(gs.hasRole('admin'))
-			{
-				//gs.info("role inclde first if");
-				return true;
-				
-			}
-		else
-			{
-        var gr_role = new GlideRecord("sys_user_has_role");
-        gr_role.addEncodedQuery('role.nameSTARTSWITHx_g_irm_fms');
-		gr_role.addQuery('user',usr);
-        gr_role.query();
-		gs.info("role include "+gr_role.getRowCount() +" "+usr);
-        if (gr_role.next()) {
-			
-            if (gr_role.role == '817855771b3fc8100a4a10ad9c4bcb26' && gr_role.getRowCount() == 1) {
-				//gs.info("role include if ");
-                return false;
-            } else
-				{
-				//gs.info("role include else");	
-                return true;
+        if (gs.hasRole('admin')) {
+            //gs.info("role inclde first if");
+            return true;
+
+        } else {
+            var gr_role = new GlideRecord("sys_user_has_role");
+            gr_role.addEncodedQuery('role.nameSTARTSWITHx_g_irm_fms');
+            gr_role.addQuery('user', usr);
+            gr_role.query();
+            gs.info("role include " + gr_role.getRowCount() + " " + usr);
+            if (gr_role.next()) {
+
+                if (gr_role.role == '817855771b3fc8100a4a10ad9c4bcb26' && gr_role.getRowCount() == 1) {
+                    //gs.info("role include if ");
+                    return false;
+                } else {
+                    //gs.info("role include else");	
+                    return true;
+                }
+            }
         }
-		}
-			}
 
 
     },
+
+    
 
     type: 'organizationsUtils'
 };]]></script>
@@ -95,13 +93,13 @@ organizationsUtils.prototype = {
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-07-17 18:18:46</sys_created_on>
         <sys_id>7926cb751bc6dc100a4a10ad9c4bcbcc</sys_id>
-        <sys_mod_count>30</sys_mod_count>
+        <sys_mod_count>34</sys_mod_count>
         <sys_name>organizationsUtils</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_7926cb751bc6dc100a4a10ad9c4bcbcc</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-26 15:32:08</sys_updated_on>
+        <sys_updated_on>2020-11-16 17:44:24</sys_updated_on>
     </sys_script_include>
 </record_update>
