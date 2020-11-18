@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sysevent_email_action">
+    <sysevent_email_action action="INSERT_OR_UPDATE">
+        <action_insert>true</action_insert>
+        <action_update>false</action_update>
+        <active>true</active>
+        <advanced_condition/>
+        <affected_field_on_event/>
+        <category display_value="Uncategorized" name="Uncategorized">c97d83137f4432005f58108c3ffa917a</category>
+        <collection>x_g_irm_fms_fms_issue</collection>
+        <condition table="x_g_irm_fms_fms_issue">titleISNOTEMPTY^EQ<item endquery="false" field="title" goto="false" newquery="false" operator="ISNOTEMPTY" or="false" value=""/>
+            <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
+        </condition>
+        <content_type>text/html</content_type>
+        <default_interval/>
+        <description/>
+        <digest_from/>
+        <digest_html/>
+        <digest_reply_to/>
+        <digest_separator_html><![CDATA[<p>&nbsp;</p>
+<hr />
+<p>&nbsp;</p>]]></digest_separator_html>
+        <digest_separator_text><![CDATA[\n--------------------------------------------------------------------------------\n]]></digest_separator_text>
+        <digest_subject/>
+        <digest_template/>
+        <digest_text/>
+        <digestable>false</digestable>
+        <event_name>alm_transfer_order_line_subtask.escalati</event_name>
+        <event_parm_1>false</event_parm_1>
+        <event_parm_2>false</event_parm_2>
+        <exclude_delegates>false</exclude_delegates>
+        <force_delivery>false</force_delivery>
+        <from/>
+        <generation_type>engine</generation_type>
+        <importance/>
+        <include_attachments>false</include_attachments>
+        <item>event.parm1</item>
+        <item_table/>
+        <mandatory>false</mandatory>
+        <message/>
+        <message_html><![CDATA[<p>This is an automated notice to inform you that FMS Issue ${number} has been created by ${sys_created_by}</p>
+<p><strong>Title:</strong> ${title}</p>
+<p><strong>Description:</strong> ${description}</p>
+<p>The FMS Development Team will assess the issue and respond to the requesting user in a timely manner.</p>
+<p>Click Here to view the full record: ${URI}</p>]]></message_html>
+        <message_list/>
+        <message_text/>
+        <name>New FMS Issue Notice</name>
+        <omit_watermark>false</omit_watermark>
+        <order>100</order>
+        <push_message_only>false</push_message_only>
+        <recipient_fields>sys_created_by</recipient_fields>
+        <recipient_groups name="FMS Issue Notification Users">27929ef11be820100a4a10ad9c4bcbda</recipient_groups>
+        <recipient_users/>
+        <reply_to/>
+        <send_self>true</send_self>
+        <sms_alternate/>
+        <style/>
+        <subject>New FMS Issue Received</subject>
+        <subscribable>false</subscribable>
+        <sys_class_name>sysevent_email_action</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-11-18 21:14:16</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>ca2596b51be820100a4a10ad9c4bcb94</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>New FMS Issue Notice</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sysevent_email_action_ca2596b51be820100a4a10ad9c4bcb94</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-11-18 21:23:51</sys_updated_on>
+        <sys_version>2</sys_version>
+        <template/>
+        <type>email</type>
+        <weight>0</weight>
+    </sysevent_email_action>
+</record_update>

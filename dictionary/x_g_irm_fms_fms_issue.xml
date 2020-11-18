@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="FMS Issue" max_length="40" name="x_g_irm_fms_fms_issue" type="collection">
-        <element label="Description" max_length="40000" name="description" type="string"/>
+        <element label="Description" mandatory="true" max_length="40000" name="description" type="string"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
-        <element choice="1" label="Status" max_length="40" name="status" type="choice">
-            <choice/>
+        <element choice="1" default="1" label="Status" max_length="40" name="status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Open" sequence="1" value="1"/>
+                <element inactive_on_update="false" label="In Progress" sequence="2" value="2"/>
+                <element inactive_on_update="false" label="Resolved" sequence="3" value="3"/>
+                <element inactive_on_update="false" label="Cancelled" sequence="4" value="-5"/>
+            </choice>
         </element>
-        <element label="Title" max_length="500" name="title" type="string"/>
-        <element choice="1" label="Type" max_length="40" name="type" type="choice">
-            <choice/>
+        <element label="Title" mandatory="true" max_length="500" name="title" type="string"/>
+        <element choice="3" default="bug" label="Type" max_length="40" name="type" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Bug" sequence="1" value="bug"/>
+                <element inactive_on_update="false" label="Feature Request" sequence="2" value="feature"/>
+                <element inactive_on_update="false" label="Question" sequence="3" value="question"/>
+            </choice>
         </element>
         <element label="Work Notes" max_length="4000" name="work_notes" type="journal"/>
     </element>
