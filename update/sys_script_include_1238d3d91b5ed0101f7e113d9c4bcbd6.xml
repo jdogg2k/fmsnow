@@ -10,7 +10,7 @@
         <script><![CDATA[var FMSFinTran = Class.create();
 FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
-	debugMsg: true,
+	debugMsg: false,
 	allocGrpTable: FMSConstants.TABLE_ALLOCATION_GROUP,
 	projAllocTable: FMSConstants.TABLE_PROJECT_ALLOCATION,
 	finTranView: FMSConstants.VIEW_FIN_TRAN_JOIN,
@@ -54,8 +54,8 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 			isValid = isValid && this.validateAllocFY(previous.project_ref.sys_id, previous.allocation_group_ref.sys_id, previous.fy);
 		if (grp.getValue('val_tran_allotment') == true  && (current.allotment != previous.allotment || isDelete)) 
 			isValid = isValid && this.validateAllocAllotment(previous.project_ref.sys_id, previous.allocation_group_ref.sys_id, previous.fy, previous.allotment);
-		if (grp.getValue('val_tran_appropriation') == true  && (current.project_appropriation_ref != previous.project_appropriation_ref || isDelete)) 
-			isValid = isValid && this.validateAllocAppropriation(previous.project_ref.sys_id, previous.allocation_group_ref.sys_id, previous.fy, previous.project_appropriation_ref.sys_id);
+		if (grp.getValue('val_tran_appropriation') == true  && (current.appropriation_ref != previous.appropriation_ref || isDelete)) 
+			isValid = isValid && this.validateAllocAppropriation(previous.project_ref.sys_id, previous.allocation_group_ref.sys_id, previous.fy, previous.appropriation_ref.sys_id);
 		if (grp.getValue('val_tran_not_deficient') == true && (current.allocation_amt != previous.allocation_amt || isDelete)) {
 			var def = this.validateAllocDeficient(current, previous);
 			isValid = isValid && def;
@@ -65,7 +65,7 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	
 	validateAllocFY: function(proj, grp, fy) {
 		var isValid = true;
-		var fyCount = this.getAllocationCount(proj, grp, fy, null);
+		var fyCount = this.getAllocationCount(proj, grp, fy, null, null);
 		var tranCount = this.getTranCount(proj, grp, fy, null, null);
         if (fyCount == 1 && tranCount > 0) {
 			isValid = false;
@@ -76,7 +76,7 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
 	validateAllocAllotment: function(proj, grp, fy, allot) {
 		var isValid = true;
-		var allotCount = this.getAllocationCount(proj, grp, fy, allot);
+		var allotCount = this.getAllocationCount(proj, grp, fy, allot, null);
 		var tranCount = this.getTranCount(proj, grp, fy, allot, null);
         if (allotCount == 1 && tranCount > 0) {
 			isValid = false;
@@ -87,7 +87,7 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	
 	validateAllocAppropriation: function(proj, grp, fy, appro) {
 		var isValid = true;
-		var approCount = this.getAllocationCount(proj, grp, fy, appro);
+		var approCount = this.getAllocationCount(proj, grp, fy, null, appro);
 		var tranCount = this.getTranCount(proj, grp, fy, null, appro);
         if (approCount == 1 && tranCount > 0) {
 			isValid = false;
@@ -148,7 +148,7 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
 	validateTranFY: function(proj, grp, fy) {
 		var isValid = true;
-		var fyCount = this.getAllocationCount(proj, grp, fy, null);
+		var fyCount = this.getAllocationCount(proj, grp, fy, null, null);
 		if (this.debugMsg) gs.addInfoMessage('FY count: ' + fyCount);
 		if (fyCount == 0) {
 			isValid = false;
@@ -214,7 +214,7 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
 	validateGroupFY: function(proj, grp, fy) {
 		var isValid = true;
-		var fyCount = this.getAllocationCount(proj, grp, fy, null);
+		var fyCount = this.getAllocationCount(proj, grp, fy, null, null);
 		if (this.debugMsg) gs.addInfoMessage('FY count: ' + fyCount);
 		if (fyCount == 0) {
 			isValid = false;
@@ -287,13 +287,14 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         while (alloc.next()) {
 			cnt += alloc.getAggregate('COUNT');
 		}
+		if (this.debugMsg) gs.addInfoMessage('Allot count: ' + cnt + ' query: ' + alloc.getEncodedQuery());
 		return cnt;
 	},
 	
 	getTranCount: function(projKey, grpKey, fy, allotKey, approKey) {
         var alloc = new GlideAggregate(this.finTranView);
-		if (allotKey && allotKey != null) { alloc.addQuery('ft_allotment', allotKey); }
-		if (approKey && approKey != null) { alloc.addQuery('ft_appropriation_ref', approKey); }
+		if (allotKey && allotKey != null) { alloc.addQuery('ft_allotment_ref', allotKey); }
+		if (approKey && approKey != null) { alloc.addQuery('ft_project_appropriation_ref', approKey); }
 		alloc.addQuery('ft_project_ref', projKey); 
         alloc.addQuery('ft_fy', fy);
 		alloc.addQuery('ft_void', false);
@@ -305,8 +306,7 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         while (alloc.next()) {
 			cnt += alloc.getAggregate('COUNT');
 		}
-		if (this.debugMsg) gs.addInfoMessage('Tran count: ' + cnt);
-		if (this.debugMsg) gs.addInfoMessage('Tran count query: ' + alloc.getEncodedQuery());
+		if (this.debugMsg) gs.addInfoMessage('Tran count: ' + cnt +  ' query: ' + alloc.getEncodedQuery());
 		return cnt;
 	},
 
@@ -365,13 +365,13 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-07-28 16:48:32</sys_created_on>
         <sys_id>1238d3d91b5ed0101f7e113d9c4bcbd6</sys_id>
-        <sys_mod_count>218</sys_mod_count>
+        <sys_mod_count>227</sys_mod_count>
         <sys_name>FMSFinTran</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_1238d3d91b5ed0101f7e113d9c4bcbd6</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-11-18 21:22:50</sys_updated_on>
+        <sys_updated_on>2020-11-19 13:47:50</sys_updated_on>
     </sys_script_include>
 </record_update>
