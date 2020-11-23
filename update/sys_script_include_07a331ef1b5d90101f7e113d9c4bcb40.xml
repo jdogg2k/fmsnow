@@ -191,7 +191,7 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	
     createExecution: function(key, project, type, fy) {
 		var newID = this.insertBudget(key, project, "Execution", fy, 1, 0);
-		if (newID) var result = this.copyItems(key, newID);
+		if (newID) var result = this.copyItems(key, newID, true);
 		return newID;
 	},
 
@@ -264,7 +264,7 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		return result != null;
 	},
 	
-	copyItems: function(from, to) {
+	copyItems: function(from, to, zero) {
         var source = new GlideRecord(this.bitemTable);
         source.addQuery('budget_ref', from);
 		source.query();
@@ -274,14 +274,14 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 			target.initialize();
 			target.budget_ref = to;
 			target.expense_item_ref = source.expense_item_ref;
-			target.budget_amt = source.budget_amt;
+			target.budget_amt = zero == true ? 0 : source.budget_amt;
 			var newItem = target.insert();
-			var result = this.copyPhasing(source.sys_id, newItem);
+			var result = this.copyPhasing(source.sys_id, newItem, zero);
 		}		
 		return true;
 	},
 	
-	copyPhasing: function(from, to) {
+	copyPhasing: function(from, to, zero) {
         var source = new GlideRecord(this.phaseTable);
         source.addQuery('budget_item_ref', from);
 		source.query();
@@ -290,7 +290,7 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 			target.initialize();
 			target.budget_item_ref = to;
 			target.fiscal_month = source.fiscal_month;
-			target.phase_amt = source.phase_amt;
+			target.phase_amt = zero == true ? 0 : source.phase_amt;
 			target.insert();
 		}		
 		return true;
@@ -489,13 +489,13 @@ FMSBudgetUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-06-15 15:53:58</sys_created_on>
         <sys_id>07a331ef1b5d90101f7e113d9c4bcb40</sys_id>
-        <sys_mod_count>221</sys_mod_count>
+        <sys_mod_count>222</sys_mod_count>
         <sys_name>FMSBudgetUtils</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_07a331ef1b5d90101f7e113d9c4bcb40</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-10-06 11:20:45</sys_updated_on>
+        <sys_updated_on>2020-11-23 18:27:24</sys_updated_on>
     </sys_script_include>
 </record_update>
