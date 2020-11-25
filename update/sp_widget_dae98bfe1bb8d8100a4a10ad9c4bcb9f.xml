@@ -13,39 +13,39 @@
     c.addNew = function() {
         bitemManager.editRow("-1", "budget_ref=" + c.targetBudget);
     }
-	
-	c.canAdd = function() { 
-		if (c.data.budgetData.locked == true) return false;
-		if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) {
-			if (c.userAuth.orgs.indexOf(c.targetOrg) >= 0) 
-				return true;
-			else
-				return false;
-		}
-		else
-			return false;
-	}
 
-	c.canEdit = function(auth, data) {
-		if (c.data.budgetData.locked == true) return false;
-		if (auth.orgs.indexOf(c.targetOrg) >= 0 && (auth.roles.isOrgAdmin || auth.roles.isAnalyst)) 
-			return true;
-		else
-			return false;
-	}
+    c.canAdd = function() {
+        if (c.data.budgetData.locked == true) return false;
+        if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) {
+            if (c.userAuth.orgs.indexOf(c.targetOrg) >= 0)
+                return true;
+            else
+                return false;
+        } else
+            return false;
+    }
 
-	c.canDelete = function(auth, data) { return c.canEdit(auth, data); }
+    c.canEdit = function(auth, data) {
+        if (c.data.budgetData.locked == true) return false;
+        if (auth.orgs.indexOf(c.targetOrg) >= 0 && (auth.roles.isOrgAdmin || auth.roles.isAnalyst))
+            return true;
+        else
+            return false;
+    }
+
+    c.canDelete = function(auth, data) {
+        return c.canEdit(auth, data);
+    }
 
     c.exportExcel = function() {
         bitemManager.exportExcel();
     }
 
-    var bitemColumnDefs = [
-		{
+    var bitemColumnDefs = [{
             headerName: 'Budget Code',
             field: 'sys_id',
             minWidth: 175,
-			filter: 'agTextColumnFilter',
+            filter: 'agTextColumnFilter',
             cellRenderer: 'agGroupCellRenderer',
             showRowGroup: true,
             cellRendererParams: {
@@ -54,52 +54,96 @@
                 suppressDoubleClickExpand: true,
                 suppressEnterExpand: true,
                 innerRenderer: 'myGroupCellRenderer',
-				banner: { type: 'standard', 
-						 columns: [{ label: '', name: 'expense_item_ref.budget_code_ref.budget_code' }]
-						} 
+                banner: {
+                    type: 'standard',
+                    columns: [{
+                        label: '',
+                        name: 'expense_item_ref.budget_code_ref.budget_code'
+                    }]
+                }
+            },
+            pinnedRowCellRenderer: function(params) {
+                var eDiv = document.createElement('div');
+                eDiv.setAttribute('style', 'margin-left: 75px; font-size: 12pt;');
+                var cnt = 0;
+                params.api.forEachNode(function(node, idx) {
+                    if (!node.group) cnt += 1;
+                });
+                eDiv.innerHTML += 'Budget Totals (' + cnt + ' items)';
+                return eDiv;
             }
         },
-		{
+        {
             field: 'edit',
             headerName: 'Edit',
             maxWidth: 50,
             cellStyle: {
                 textAlign: 'center'
             },
-			suppressMenu: true,
-			sortable: false,
+            suppressMenu: true,
+            sortable: false,
             cellRenderer: 'editCell',
-			cellRendererParams: function(params) { 
-				return { "show": c.canEdit(c.userAuth, params.data),
-					     "editType": "inline" }; 
-			}
+            cellRendererParams: function(params) {
+                return {
+                    "show": c.canEdit(c.userAuth, params.data),
+                    "editType": "inline"
+                };
+            },
+            pinnedRowCellRenderer: function(params) {
+                return;
+            }
         },
         {
             field: 'expense_item_ref.budget_code_ref.budget_code',
             headerName: 'Budget Code',
             filter: 'agTextColumnFilter',
-			sort: 'asc',
-			rowGroup: true,
-			hide: true
+            sort: 'asc',
+            rowGroup: true,
+            hide: true
         },
         {
             field: 'expense_item_ref',
             headerName: 'Expense Item',
+            filter: 'agTextColumnFilter',
             sort: 'asc',
-            filter: 'agTextColumnFilter'
+            pinnedRowCellRenderer: function(params) {
+                var eDiv = document.createElement('div');
+                eDiv.setAttribute('style', 'color: blue; font-size: 12pt; font-weight: bold;');
+                if (c.data.budgetData.budget_type == "Execution") {
+                    var budamt = 0;
+                    params.api.forEachNode(function(node, idx) {
+                        if (!node.group) budamt += node.data.budget_amt;
+                    });
+                    var remain = c.data.allocAmt - (Math.round(budamt * 100) / 100);
+                    eDiv.innerHTML = 'Allocated: ' + bitemManager.fmtCurrency(c.data.allocAmt) + '&nbsp;'.repeat(10) + 'Remaining: ' + bitemManager.fmtCurrency(remain);
+                }
+                return eDiv;
+            }
         },
         {
             field: 'budget_amt',
             headerName: c.data.budgetData.budget_type == "Actual" ? 'Transaction Amount' : 'Budget Amount',
-			filter: 'agNumberColumnFilter',
+            filter: 'agNumberColumnFilter',
             cellStyle: {
                 textAlign: 'right'
             },
-			type: 'currency',
-			aggFunc: 'sum',
-			editable: true,
-			cellEditor: 'numericCellEditor'
-			/*headerComponentParams : {
+            type: 'currency',
+            aggFunc: 'sum',
+            editable: function(params) {
+                return c.canEdit(c.userAuth, params.data);
+            },
+            cellEditor: 'numericCellEditor',
+            pinnedRowCellRenderer: function(params) {
+                var budamt = 0;
+                params.api.forEachNode(function(node, idx) {
+                    if (!node.group) budamt += node.data.budget_amt;
+                });
+                var eDiv = document.createElement('div');
+                eDiv.setAttribute('style', 'color: blue; font-size: 12pt; font-weight: bold;');
+                eDiv.innerHTML = bitemManager.fmtCurrency(budamt);
+                return eDiv;
+            },
+            /*headerComponentParams : {
               template:
                 '<div class="ag-cell-label-container" role="presentation">' +
                 '<span ref="eText" class="ag-header-cell-text" role="columnheader"></span>' +
@@ -109,16 +153,28 @@
         {
             field: 'projected_amt',
             headerName: 'Balance',
-			filter: 'agNumberColumnFilter',
+            filter: 'agNumberColumnFilter',
             cellStyle: {
                 textAlign: 'right'
             },
-			type: 'currency',
-			aggFunc: 'sum',
-			editable: true,
-			hide: (c.data.budgetData.budget_type != "Actual"),
-			cellEditor: 'numericCellEditor'
-			/*headerComponentParams : {
+            type: 'currency',
+            aggFunc: 'sum',
+            editable: function(params) {
+                return c.canEdit(c.userAuth, params.data);
+            },
+            hide: (c.data.budgetData.budget_type != "Actual"),
+            cellEditor: 'numericCellEditor',
+            pinnedRowCellRenderer: function(params) {
+                var projamt = 0;
+                params.api.forEachNode(function(node, idx) {
+                    if (!node.group) projamt += node.data.projected_amt;
+                });
+                var eDiv = document.createElement('div');
+                eDiv.setAttribute('style', 'color: blue; font-size: 12pt; font-weight: bold;');
+                eDiv.innerHTML = bitemManager.fmtCurrency(projamt);
+                return eDiv;
+            }
+            /*headerComponentParams : {
               template:
                 '<div class="ag-cell-label-container" role="presentation">' +
                 '<span ref="eText" class="ag-header-cell-text" role="columnheader"></span>' +
@@ -132,12 +188,17 @@
             cellStyle: {
                 textAlign: 'center'
             },
-			suppressMenu: true,
-			sortable: false,
+            suppressMenu: true,
+            sortable: false,
             cellRenderer: 'deleteCell',
-			cellRendererParams: function(params) { 
-				return { "show": c.canDelete(c.userAuth, params.data) }; 
-			}
+            cellRendererParams: function(params) {
+                return {
+                    "show": c.canDelete(c.userAuth, params.data)
+                };
+            },
+            pinnedRowCellRenderer: function(params) {
+                return;
+            }
         }
     ];
 
@@ -148,34 +209,77 @@
         pageType: 'Budget Item',
         linkedField: '',
         detailsPage: '',
-		showTotals: true
+        showTotals: true
     }
 
     bitemManager.setColumns(bitemColumnDefs);
     bitemManager.setPageProperties(bitemProps);
     bitemManager.setRenderers('expense_item_ref'); //build renderers and set display field to show on delete attempt
-	bitemManager.setGridOption('groupDefaultExpanded', -1);
-	bitemManager.setGridOption('pinnedBottomRowData', [{expense_item_ref: "Test 1", 
-														budget_amt: c.data.tableData.reduce(function(accum, row) { return accum + row.budget_amt }, 0)}]);
-	bitemManager.renderGrid('bitemGrid'); //render grid objects
+    bitemManager.setGridOption('groupDefaultExpanded', -1);
+    bitemManager.setGridOption('groupIncludeTotalFooter', false);
+    bitemManager.setGridOption('pinnedBottomRowData', [{
+        expense_item_ref: "",
+        budget_amt: 0,
+        projected_amt: 0
+    }]);
+    bitemManager.renderGrid('bitemGrid'); //render grid objects
     bitemManager.setGridData(c.data.tableData); //set grid data
     bitemManager.setColumnsVisible(['edit', 'delete'], c.canEdit(c.userAuth, null));
-	$timeout(function () { bitemManager.fitColumns(); }, 250);
-	if (c.data.tableData.length == 0 && c.canAdd()) c.addNew();
+    bitemManager.gridOpts.api.refreshCells({
+        force: true,
+        rowNodes: [bitemManager.gridOpts.api.getPinnedBottomRow(0)]
+    });
+    $timeout(function() {
+        bitemManager.fitColumns();
+    }, 250);
+    if (c.data.tableData.length == 0 && c.canAdd()) c.addNew();
 
     $rootScope.$on('BudgetChanged', function(event, args) {
+        RefreshGrid(args.budget_id);
+    });
+    $rootScope.$on('fmsgrid.recordAdded', function(event, args) {
+        $timeout(function() {
+            RefreshCells(args.table);
+        }, 250);
+    });
+    $rootScope.$on('fmsgrid.recordUpdated', function(event, args) {
+        $timeout(function() {
+            RefreshCells(args.table);
+        }, 250);
+    });
+    $rootScope.$on('fmsgrid.recordDeleted', function(event, args) {
+        $timeout(function() {
+            RefreshCells(args.table);
+        }, 250);
+    });
+
+    function RefreshGrid(budgetID) {
         c.server.get({
             mode: "refresh",
-            budget_id: args.budget_id
+            budget_id: budgetID
         }).then(function(resp) {
-			c.data.budgetData = resp.data.budgetData;
-			c.targetOrg = resp.data.budgetData['project_ref.organization_ref'];
-			c.targetBudget = resp.data.selectedBudget;
+            c.data.budgetData = resp.data.budgetData;
+            c.targetOrg = resp.data.budgetData['project_ref.organization_ref'];
+            c.targetBudget = resp.data.selectedBudget;
+            c.data.allocAmt = resp.data.allocAmt;
             bitemManager.setGridData(resp.data.tableData); //set grid data
-			bitemManager.setColumnsVisible(['edit', 'delete'], c.canEdit(c.userAuth, null));
-			$timeout(function () { bitemManager.fitColumns(); }, 250);
+            bitemManager.setColumnsVisible(['edit', 'delete'], c.canEdit(c.userAuth, null));
+            RefreshCells('x_g_irm_fms_budget_item');
+            $timeout(function() {
+                bitemManager.fitColumns();
+            }, 250);
         });
-    });
+    }
+
+    function RefreshCells(table) {
+        bitemManager.gridOpts.api.refreshCells({
+            force: true,
+            rowNodes: [bitemManager.gridOpts.api.getPinnedBottomRow(0)]
+        });
+        if (table == 'x_g_irm_fms_project_allocation' || table == 'x_g_irm_fms_fin_tran') {
+            RefreshGrid(c.targetBudget);
+        }
+    }
 }]]></client_script>
         <controller_as>c</controller_as>
         <css/>
@@ -199,6 +303,7 @@
 	data.selectedBudget = "";
     var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
     var budgetUtil = new x_g_irm_fms.FMSBudgetUtils(); //helper utility for budget
+    var fintranUtil = new x_g_irm_fms.FMSFinTran(); //helper utility for financial trans
 
     var session = gs.getSession();
     if ($sp.getParameter("budget_id") && $sp.getParameter("budget_id").length > 0)
@@ -218,9 +323,13 @@
 
 	var budgetInclude = [ 'project_ref.organization_ref' ];
 	var itemInclude = [ 'expense_item_ref.budget_code_ref.budget_code' ];
+	data.allocAmt = 0;
 	data.budgetData = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET, "sys_id=" + data.selectedBudget, true, budgetInclude)[0];
 	if (data.budgetData && data.budgetData.budget_type == "Actual") {
 		budgetUtil.updateActual(data.budgetData.sys_id);
+	}
+	if (data.budgetData && data.budgetData.budget_type == "Execution") {
+		data.allocAmt = fintranUtil.getAllocationTotal(data.budgetData.project_ref_rawval, null, data.budgetData.fy);
 	}
     data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET_ITEM, "budget_ref=" + data.selectedBudget, true, itemInclude); 
 
@@ -236,14 +345,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-19 17:42:10</sys_created_on>
         <sys_id>dae98bfe1bb8d8100a4a10ad9c4bcb9f</sys_id>
-        <sys_mod_count>89</sys_mod_count>
+        <sys_mod_count>154</sys_mod_count>
         <sys_name>Budget Item Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_dae98bfe1bb8d8100a4a10ad9c4bcb9f</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-11-23 20:02:12</sys_updated_on>
+        <sys_updated_on>2020-11-25 14:39:47</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
   <div class="container">
     <div class="row">
