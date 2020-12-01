@@ -2,7 +2,7 @@
     <element label="Budget" max_length="40" name="x_g_irm_fms_budget" type="collection">
         <element label="Approved Date" max_length="40" name="approved_date" read_only="true" type="glide_date_time"/>
         <element label="Budget Description" max_length="50" name="budget_desc" type="string"/>
-        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;[new budget]&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = current.budget_desc.toString() + ' [' + current.fy.toString() + ' ' + current.budget_type.toString() + ' ' + current.budget_version_revision + ']'; &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" display="true" label="Budget display" max_length="256" name="budget_display" read_only="true" type="string" virtual="true"/>
+        <element calculation="(function calculatedFieldValue(current) {&#10;&#9;var display;&#10;&#9;if (current.sys_id.nil()) {&#10;&#9;&#9;display = &quot;[new budget]&quot;;&#10;&#9;}&#10;&#9;else {&#10;&#9;&#9;display = current.budget_desc.toString() + ' [' + current.fy.toString() + ' ' + current.budget_type.toString() + ' ' + current.budget_version_revision + ']'; &#10;&#9;}&#10;&#9;return display;&#10;&#10;})(current);" display="true" label="Budget display" max_length="256" name="budget_display" read_only="true" type="string" virtual="true"/>
         <element label="Budget Notes" max_length="500" name="budget_notes" type="string"/>
         <element default="0" label="Budget Revision" max_length="40" name="budget_revision" type="integer"/>
         <element label="Budget Source" max_length="32" name="budget_source_ref" read_only="true" reference="x_g_irm_fms_budget" type="reference"/>
@@ -14,7 +14,7 @@
                 <element inactive_on_update="false" label="Working" value="Working"/>
             </choice>
         </element>
-        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var total = 0;&#13;&#10;&#9;&#13;&#10;&#9;if (current.budget_type != &quot;&quot;) {&#13;&#10;&#9;&#9;var items = new GlideRecord('x_g_irm_fms_budget_item');&#13;&#10;&#9;&#9;items.addQuery('budget_ref', current.sys_id);&#13;&#10;&#9;&#9;items.query();&#13;&#10;&#9;&#9;while (items.next()) {&#13;&#10;&#9;&#9;&#9;total += parseFloat(items.budget_amt);&#13;&#10;&#9;&#9;}&#13;&#10;&#9;}&#13;&#10;   &#13;&#10;    return total; &#13;&#10;})(current);" label="Budget Total" max_length="20" name="budget_total_amt" read_only="true" type="currency" virtual="true"/>
+        <element calculation="(function calculatedFieldValue(current) {&#10;&#9;var total = 0;&#10;&#9;&#10;&#9;if (current.budget_type != &quot;&quot;) {&#10;&#9;&#9;var items = new GlideRecord('x_g_irm_fms_budget_item');&#10;&#9;&#9;items.addQuery('budget_ref', current.sys_id);&#10;&#9;&#9;items.query();&#10;&#9;&#9;while (items.next()) {&#10;&#9;&#9;&#9;total += parseFloat(items.budget_amt);&#10;&#9;&#9;}&#10;&#9;}&#10;   &#10;    return total; &#10;})(current);" label="Budget Total" max_length="20" name="budget_total_amt" read_only="true" type="currency" virtual="true"/>
         <element choice="1" label="Budget Type" mandatory="true" max_length="10" name="budget_type" type="string">
             <choice>
                 <element inactive_on_update="false" label="Actual" value="Actual"/>
@@ -25,8 +25,8 @@
             </choice>
         </element>
         <element default="1" label="Budget Version" max_length="40" name="budget_version" type="integer"/>
-        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#9;var display;&#13;&#10;&#9;if (current.sys_id.nil()) {&#13;&#10;&#9;&#9;display = &quot;v1.0&quot;;&#13;&#10;&#9;}&#13;&#10;&#9;else {&#13;&#10;&#9;&#9;display = 'v' + current.budget_version.toString() + '.' + current.budget_revision.toString(); &#13;&#10;&#9;}&#13;&#10;&#9;return display;&#13;&#10;&#13;&#10;})(current);" label="Budget Version Revision" max_length="32" name="budget_version_revision" read_only="true" type="string" virtual="true"/>
-        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#13;&#10;&#13;&#10;})(current);" label="Is Current?" max_length="40" name="current" read_only="true" type="boolean"/>
+        <element calculation="(function calculatedFieldValue(current) {&#10;&#9;var display;&#10;&#9;if (current.sys_id.nil()) {&#10;&#9;&#9;display = &quot;v1.0&quot;;&#10;&#9;}&#10;&#9;else {&#10;&#9;&#9;display = 'v' + current.budget_version.toString() + '.' + current.budget_revision.toString(); &#10;&#9;}&#10;&#9;return display;&#10;&#10;})(current);" label="Budget Version Revision" max_length="32" name="budget_version_revision" read_only="true" type="string" virtual="true"/>
+        <element calculation="(function calculatedFieldValue(current) {&#10;&#10;&#10;})(current);" label="Is Current?" max_length="40" name="current" read_only="true" type="boolean"/>
         <element attributes="format=none" choice="3" choice_field="fy" choice_table="x_g_irm_fms_project_allocation" default="javascript: new x_g_irm_fms.FMSUtilities().getCurrentFY();" label="FY" mandatory="true" max_length="40" name="fy" type="integer">
             <choice>
                 <element inactive_on_update="false" label="2000" sequence="0" value="2000"/>

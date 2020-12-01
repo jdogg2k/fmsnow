@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_index">
     <sys_index action="INSERT_OR_UPDATE">
         <col_name_string>number</col_name_string>
-        <index_col_name element="number" name="x_g_irm_fms_allocation_pool">c8906f3c1b3054101f7e113d9c4bcb64</index_col_name>
+        <index_col_name>c8906f3c1b3054101f7e113d9c4bcb64</index_col_name>
         <logical_table_name>x_g_irm_fms_allocation_pool</logical_table_name>
         <sys_class_name>sys_index</sys_class_name>
         <sys_created_by>system</sys_created_by>
@@ -15,7 +15,7 @@
         <sys_update_name>sys_index_x_g_irm_fms_allocation_pool_number</sys_update_name>
         <sys_updated_by>system</sys_updated_by>
         <sys_updated_on>2020-05-13 16:45:03</sys_updated_on>
-        <table display_value="Allocation Pool" name="x_g_irm_fms_allocation_pool">8359010e1b04d0500a4a10ad9c4bcb40</table>
+        <table/>
         <unique_index>false</unique_index>
     </sys_index>
 </record_update>

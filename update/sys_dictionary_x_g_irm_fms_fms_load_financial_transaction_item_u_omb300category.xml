@@ -48,7 +48,7 @@
         <sys_class_name>sys_dictionary</sys_class_name>
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-22 14:21:39</sys_created_on>
-        <sys_id>aec8f13b1bfc9c100a4a10ad9c4bcbbc</sys_id>
+        <sys_id>2c93e07d1b3cac100a4a10ad9c4bcb5d</sys_id>
         <sys_mod_count>0</sys_mod_count>
         <sys_name>OMB300Category</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
@@ -56,7 +56,7 @@
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_dictionary_x_g_irm_fms_fms_load_financial_transaction_item_u_omb300category</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-05-22 14:21:39</sys_updated_on>
+        <sys_updated_on>2020-11-30 23:13:41</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>

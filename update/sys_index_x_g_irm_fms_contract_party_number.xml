@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_index">
     <sys_index action="INSERT_OR_UPDATE">
         <col_name_string>number</col_name_string>
-        <index_col_name element="number" name="x_g_irm_fms_contract_party">0c9c1b661bec94501f7e113d9c4bcbf6</index_col_name>
+        <index_col_name>0c9c1b661bec94501f7e113d9c4bcbf6</index_col_name>
         <logical_table_name>x_g_irm_fms_contract_party</logical_table_name>
         <sys_class_name>sys_index</sys_class_name>
         <sys_created_by>system</sys_created_by>
@@ -15,7 +15,7 @@
         <sys_update_name>sys_index_x_g_irm_fms_contract_party_number</sys_update_name>
         <sys_updated_by>system</sys_updated_by>
         <sys_updated_on>2020-09-24 15:04:49</sys_updated_on>
-        <table display_value="Contract Party" name="x_g_irm_fms_contract_party">43e313e91b0890501f7e113d9c4bcb51</table>
+        <table/>
         <unique_index>false</unique_index>
     </sys_index>
 </record_update>

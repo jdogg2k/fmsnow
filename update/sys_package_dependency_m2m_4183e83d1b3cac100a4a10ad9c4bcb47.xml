@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_package_dependency_m2m">
+    <sys_package_dependency_m2m action="INSERT_OR_UPDATE">
+        <dependency display_value="System Import Sets" source="com.glide.system_import_set">e2539d661b1300101f7e113d9c4bcb0a</dependency>
+        <min_version>1.0.0</min_version>
+        <sys_created_by>rosejl@state.gov</sys_created_by>
+        <sys_created_on>2020-04-08 15:23:06</sys_created_on>
+        <sys_id>4183e83d1b3cac100a4a10ad9c4bcb47</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_updated_by>rosejl@state.gov</sys_updated_by>
+        <sys_updated_on>2020-04-08 15:23:06</sys_updated_on>
+    </sys_package_dependency_m2m>
+</record_update>

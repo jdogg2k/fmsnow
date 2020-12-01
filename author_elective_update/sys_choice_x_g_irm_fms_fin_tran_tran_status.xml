@@ -6,7 +6,7 @@
             <sys_class_name>sys_choice_set</sys_class_name>
             <sys_created_by>markeljr@state.gov</sys_created_by>
             <sys_created_on>2020-04-10 11:33:01</sys_created_on>
-            <sys_id>266fb8121b8014500a4a10ad9c4bcb4e</sys_id>
+            <sys_id>b893247d1b3cac100a4a10ad9c4bcb1c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_name>tran_status</sys_name>
             <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
