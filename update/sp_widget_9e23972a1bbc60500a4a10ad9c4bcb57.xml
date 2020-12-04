@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $rootScope, $timeout, $uibModal, spUtil, $document) {
+    /* widget controller */
+    var c = this;
+	c.data = $scope.data;
+	
+    c.openInfo = function() {
+        c.server.get({
+            mode: "getRecordInfo",
+            table: c.data.table,
+			sys_id: c.data.sys_id
+        }).then(function(resp) {
+            c.data.recordInfo = resp.data.recordInfo;
+            c.infoInstance = $uibModal.open({
+                templateUrl: 'modalInfoTemplate',
+                size: 'md',
+                scope: $scope
+            });
+        });
+    };
+
+    c.closeInfo = function() {
+        c.infoInstance.close();
+    };
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description>Shows created / updated information for a data record</description>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>record_info</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Record Info</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+    data.table = options.table ? options.table.toString() : input.table;
+    data.sys_id = options.sys_id ? options.sys_id.toString() : input.sys_id;
+	data.recordInfo = {};
+    var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+
+	if (input) { //input holds the data coming back to the server
+        if (input.mode == "getRecordInfo") {
+            var rec = FMSUtility.getRecord(input.table, input.sys_id);
+			if (!rec || rec == null) data.errorMsg = "no record found";
+			recordInfo = {
+				sys_id: rec.getValue('sys_id'),
+				sys_created_by: rec.getValue('sys_created_by'),
+				sys_created_on: rec.getDisplayValue('sys_created_on'),
+				sys_updated_by: rec.getValue('sys_updated_by'),
+				sys_updated_on: rec.getDisplayValue('sys_updated_on'),
+				sys_mod_count: rec.getValue('sys_mod_count')
+			};
+        }
+		data.recordInfo = recordInfo;
+    }
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2020-12-03 20:27:31</sys_created_on>
+        <sys_id>9e23972a1bbc60500a4a10ad9c4bcb57</sys_id>
+        <sys_mod_count>37</sys_mod_count>
+        <sys_name>Record Info</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_widget_9e23972a1bbc60500a4a10ad9c4bcb57</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-12-04 19:47:33</sys_updated_on>
+        <template><![CDATA[<div>
+    <span ng-click="c.openInfo()" title="View Record Change Information" style="font-size: 16pt">&Delta;</span>
+  </div>
+  
+  <script type="text/ng-template" id="modalInfoTemplate">
+      <style>
+  
+      </style>
+  
+      <div class="panel panel-default">
+          <div class="modal-header">
+              <button type="button" class="close" ng-click="c.closeInfo()">&times;</button>
+              <h4 class="modal-title">Record Change (Delta) Information</h4>
+          </div>
+          <div class="panel-body wrapper-md">
+              <div>Created by: {{c.data.recordInfo.sys_created_by}} on {{c.data.recordInfo.sys_created_on}}</div>
+              <div ng-if="c.data.recordInfo.sys_mod_count > 0">
+                  <div>Updated by: {{c.data.recordInfo.sys_updated_by}} on {{c.data.recordInfo.sys_updated_on}}</div>
+                  <div>Number of updates: {{c.data.recordInfo.sys_mod_count}}</div>
+              </div>
+          </div>
+      </div>
+  </script>]]></template>
+    </sp_widget>
+</record_update>

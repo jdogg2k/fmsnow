@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function ($timeout) {
+        <client_script><![CDATA[function ($timeout, $scope) {
 	/* widget controller */
 
+
+	$scope.name = 'World';
+    $scope.cars = [{id:1, name: 'Audi'}, {id:2, name: 'BMW'}, {id:1, name: 'Honda'}];
+    $scope.selectedCar = [];
+
+    $scope.fruits = [{id: 1, name: 'Apple'}, {id: 2, name: 'Orange'},{id: 3, name: 'Banana'}];
+    $scope.selectedFruit = null;
+
 	var c = this;
-	c.targetOrg = c.data.selectedOrg;
+	c.targetOrg = c.data.selectedOrgID;
 	c.usePivot = true;
 	c.canSort = true;
 	c.hideValues = false;
@@ -14,7 +22,7 @@
 	c.datesSelected = false;
 	c.selectedProject = "";
 
-	if (c.data.projects && c.data.reportType == "phasing")
+	if (c.data.projects.length > 0 && c.data.reportType == "phasing")
 		c.selectedProject = c.data.projects[0].value;
 
 	c.reportData = [];
@@ -92,7 +100,8 @@
 	c.generateReport = function () {
 
 		var reportObj = {
-			mode: 'buildReport'
+            mode: 'buildReport',
+            orgs: c.targetOrg
 		};
 
 		if (c.data.reportType == "budget_plans" || c.data.reportType == "phasing")
@@ -963,7 +972,7 @@
 					var colTotal = 0;
 					var displayedColumns = params.columnApi.getAllDisplayedColumns();
 					displayedColumns.forEach(function (col) {
-						if (col.colDef.field)
+						if (col.colDef.field && params.data)
 							if (col.colDef.type == "currency")
 								colTotal += params.data[col.colDef.field];
 					});
@@ -991,11 +1000,12 @@
 				}
 			},
 			suppressAggFuncInHeader: true,
-			groupMultiAutoColumn: true,
+            groupMultiAutoColumn: true,
 			multiSortKey: 'ctrl',
 			accentedSort: true,
 			pivotMode: c.usePivot,
-			//groupIncludeFooter: true,
+            groupIncludeFooter: true,
+            groupIncludeTotalFooter: true,
 			sideBar: {
 				toolPanels: [
 				  {
@@ -1125,10 +1135,14 @@
 
 		c.generateReport();
 
-		$rootScope.$on('OrgChanged', function (event, args) {
-			if (c.data.reportType == "phasing") {
+		$rootScope.$on('multiOrgChanged', function (event, args) {
+            
+            c.targetOrg = args.org_ids;
+            
+            if (c.data.reportType == "phasing") {
 				var projectObj = {
-					mode: 'refreshProjects'
+					mode: 'refreshProjects',
+					orgs: c.targetOrg
 				};
 		
 				c.server.get(projectObj).then(function (projResults) {
@@ -1143,7 +1157,15 @@
 	}
 ]]></client_script>
         <controller_as>c</controller_as>
-        <css>.full-grid {
+        <css>.no-orgs {
+    margin: auto;
+    text-align: center;
+    margin-top: 125px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.full-grid {
     width: 94vw;
     height: calc(100vh - 210px);
     clear: both;
@@ -1331,7 +1353,8 @@
 	var OrgHierarchy = new x_g_irm_fms.OrgHierarchy(); //org helper
 	var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
 	var orgName = "";
-	var session = gs.getSession();
+    var session = gs.getSession();
+    var allOrgs = [];
 
 	var getMonth = function(tQuery) {
 		var tDate = tQuery.ft_tran_date.toString();
@@ -1373,8 +1396,13 @@
 	}
 
 	function getProjects() {
+
+        var projOrgs = allOrgs;
+        if (projOrgs.length == 0)
+            projOrgs.push(data.selectedOrgID);
+
 		var projectQ = new GlideRecord(FMSConstants.TABLE_PROJECT);
-		projectQ.addEncodedQuery("organization_ref=" + data.selectedOrgID);
+		projectQ.addEncodedQuery("organization_refIN" + projOrgs.join(","));
 		projectQ.orderBy("project_name");
 		projectQ.query();
 		while (projectQ.next()) {
@@ -1457,10 +1485,12 @@
 		return dueInBaseObj;
 	}
 
-	var buildObligation = function(obQ, sourceType) {
+	var buildObligation = function(obligQ, sourceType) {
 		var obligObj = {};
 		obligObj.sys_id = obligQ.sys_id.toString();
-		obligObj.obligation = obligQ.obligation.toString();
+        //obligObj.obligation = obligQ.obligation.toString();
+        obligObj.org_ref = obligQ.project_ref.organization_ref.toString();
+        obligObj.org_name = obligQ.project_ref.organization_ref.getDisplayValue();
 		obligObj.source = sourceType;
 		obligObj.status = obligQ.tran_status.toString();
 		obligObj.trans_amount = parseFloat(obligQ.transaction_total_amt.toString());
@@ -1485,1049 +1515,1054 @@
 		getProjects();
 
 	if (input) {
-		if (input.mode == "refreshProjects") {
-			getProjects();
-		}
-		if (input.mode == "buildReport") {
-			data.reportData = [];
+		if (input.mode == "buildReport" || input.mode == "refreshProjects") {
+            data.reportData = [];
+            
+            var arrayUtil = new global.ArrayUtil();
+            allOrgs = [];
+            var inputOrgs = input.orgs.split(",");
+            var doRollUp = false;
 
-			//get org name
-			var orgQ = new GlideRecord(FMSConstants.TABLE_ORGANIZATION);
-			orgQ.addQuery("sys_id", data.selectedOrgID);
-			orgQ.query();
-			if (orgQ.next()) {
-				orgName = orgQ.org_name.toString();
-			}
+            inputOrgs.forEach(function (org) { //build a set of orgs to query against based on user input
+                var childOrgs = OrgHierarchy.getOrgChildren(org);
+                childOrgs.forEach(function (child) {
+                    if (!arrayUtil.contains(allOrgs, child))
+                        allOrgs.push(child);
+                });
+                if (!arrayUtil.contains(allOrgs, org))
+                        allOrgs.push(org);
+            });
 
-			var allOrgs = OrgHierarchy.getOrgChildren(data.selectedOrgID);
-			allOrgs.push(data.selectedOrgID);
+			if (allOrgs.length > 1)
+                doRollUp = true;
+
+            if (input.mode == "buildReport") {
 			
-			var doRollUp = false;
-				if (allOrgs.length > 1)
-					doRollUp = true;
-			
-			if (data.reportType == "monthly_expenditure") {
-				var monthlyQ = new GlideRecord(FMSConstants.VIEW_FIN_TRAN_REPORT);
-				monthlyQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_void=false");
-				monthlyQ.query();
-				while (monthlyQ.next()) {
-
-					var tMonthObj = {};
-					var isMonthlyExisting = false;
-					var bCode = monthlyQ.fti_expense_item_ref.budget_code_ref.budget_code.toString();
-					var aCode = monthlyQ.fti_expense_item_ref.activity_code.toString();
-					var oCode = monthlyQ.proj_organization_ref.getDisplayValue();
-					var pCode = monthlyQ.ft_project_ref.getDisplayValue();
-					var iCode = monthlyQ.proj_investment.getDisplayValue();
-
-					//check for existing object in the array
-					var existingMonthlyData = data.reportData.filter(function (el) {
-						return el.budget_code == bCode && el.activity_code == aCode && el.org_name == oCode && el.project == pCode && el.investment == iCode
-					});
-
-					if (existingMonthlyData.length > 0) { //use existing object
-						isMonthlyExisting = true;
-						tMonthObj = existingMonthlyData[0];
-					} else {
-						tMonthObj.budget_code = bCode;
-						tMonthObj.activity_code = aCode;
-						if (doRollUp) {
-							var monthlyRollup = OrgHierarchy.getRollupExpense(monthlyQ.fti_expense_item_ref, data.selectedOrgID);
-							tMonthObj.expense_item_ref_roll = monthlyRollup.toString();
-							tMonthObj.activity_code_roll = monthlyRollup.activity_code.toString();
-							tMonthObj.budget_code_roll  = monthlyRollup.budget_code_ref.getDisplayValue();
-						} else {
-							tMonthObj.activity_code_roll = bCode;
-							tMonthObj.budget_code_roll  = aCode;
-						}
-						tMonthObj.org_name = oCode;
-						tMonthObj.project = pCode;
-						tMonthObj.investment = iCode;
-						tMonthObj.omb_project = monthlyQ.ft_project_ref.omb_project_name.toString();
-						for (var mCount = 1; mCount <= 12; mCount++) {
-							tMonthObj["month_" + mCount] = 0;
-						}
-					}
-
-					tMonthObj["month_" + getMonth(monthlyQ)] += parseFloat(monthlyQ.fti_item_total);
-
-					if (!isMonthlyExisting)
-						data.reportData.push(tMonthObj);
-
-				}
-			}
-
-			if (data.reportType == "allocation") {
-
-
-				//get project allocation data
-				var projQ = new GlideAggregate(FMSConstants.TABLE_PROJECT_ALLOCATION);
-				projQ.addEncodedQuery("fy=" + input.fy + "^project_ref.organization_refIN" + allOrgs.join(","));
-				projQ.groupBy("appropriation_ref");
-				projQ.groupBy("allocation_group_ref");
-				projQ.groupBy("project_ref.organization_ref");
-				projQ.groupBy("project_ref");
-				projQ.groupBy("fund_source");
-				projQ.groupBy("transfer_type_ref");
-				projQ.addAggregate("SUM", "allocation_amt");
-				projQ.query();
-				while (projQ.next()) {
-
-					var projVal = projQ.project_ref.toString();
-					var allocGroupVal = projQ.allocation_group_ref.toString();
-					var appropVal = projQ.appropriation_ref.appropriation_ref.toString();
-					var orgVal = projQ.project_ref.organization_ref.toString();
-
-					var reportObj = {};
-					var isExisting = false;
-
-					//check for existing object in the array
-					var existingData = data.reportData.filter(function (el) {
-						return el.project_ref == projVal && el.allocation_group_ref == allocGroupVal && el.appropriation_ref == appropVal && el.org_ref == orgVal;
-					});
-
-					if (existingData.length > 0) { //use existing object
-						isExisting = true;
-						reportObj = existingData[0];
-					}
-
-					if (!isExisting) { //new entry to the array, define the default values
-
-						reportObj.org_ref = orgVal;
-						reportObj.org_name = projQ.project_ref.organization_ref.getDisplayValue();
-						reportObj.project = projQ.project_ref.getDisplayValue();
-						reportObj.project_ref = projVal;
-						reportObj.omb_project = projQ.project_ref.omb_project_name.toString();
-						reportObj.investment = projQ.project_ref.investment.investment.getDisplayValue();
-						reportObj.appropriation_type = projQ.appropriation_ref.appropriation_ref.appropriation_type.getDisplayValue();
-						reportObj.appropriation_type_ref = projQ.appropriation_ref.appropriation_ref.appropriation_type.toString();
-						reportObj.appropriation = projQ.appropriation_ref.appropriation_ref.getDisplayValue();
-						reportObj.appropriation_ref = appropVal;
-						reportObj.allocation_group = projQ.allocation_group_ref.getDisplayValue();
-						reportObj.allocation_group_ref = allocGroupVal;
-						reportObj.allocations = 0;
-						reportObj.reimbursements = 0;
-						reportObj.trans_in = 0;
-						reportObj.trans_out = 0;
-						reportObj.toaa = 0;
-						reportObj.toa = 0;
-						reportObj.vg_labor = 0;
-						reportObj.off_adjustments = 0;
-						reportObj.expended = 0;
-						reportObj.balance = 0;
-
-					}
-
-					if (projQ.fund_source == "Allocation")
-						reportObj.allocations += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
-
-					if (projQ.fund_source == "Reimbursement")
-						reportObj.reimbursements += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
-
-					if (projQ.fund_source == "Transfer In")
-						reportObj.trans_in += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
-
-					if (projQ.fund_source == "Transfer In" && projQ.transfer_type_ref == '9aa3f65d1b0850501f7e113d9c4bcbe6') //TOAA
-						reportObj.toaa += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
-
-					if (!isExisting) {
-						data.reportData.push(reportObj);
-					}
-				}
-
-				//Get supporting info
-				var endQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
-				/*var endQS = "";
-				appropriationsChecked.forEach(function(appVal){
-				    endQS += "^ft_project_appropriation_ref.appropriation_ref!=" + appVal;
-				});*/
-				endQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_void=false");
-				endQ.groupBy("ft_allocation_group_ref");
-				endQ.groupBy("ft_project_ref");
-				endQ.groupBy("ft_project_appropriation_ref");
-				endQ.groupBy("proj_organization_ref");
-				endQ.groupBy("proj_investment");
-				endQ.groupBy("ft_tran_type");
-				endQ.addAggregate("SUM", "fti_item_total");
-				endQ.query();
-				while (endQ.next()) {
-
-					var endprojVal = endQ.ft_project_ref.toString();
-					var endallocGroupVal = endQ.ft_allocation_group_ref.toString();
-					var endappropVal = endQ.ft_project_appropriation_ref.appropriation_ref.toString();
-					var endorgVal = endQ.proj_organization_ref.toString();
-
-					var endObj = {};
-					var isExists = false;
-
-					//check for existing object in the array
-					var prevData = data.reportData.filter(function (el) {
-						return el.project_ref == endprojVal && el.allocation_group_ref == endallocGroupVal && el.appropriation_ref == endappropVal && el.org_ref == endorgVal;
-					});
-
-					if (prevData.length > 0) { //use existing object
-						isExists = true;
-						endObj = prevData[0];
-					}
-
-					if (!isExists) { //new entry to the array, define the default values
-						endObj.org_ref = endorgVal;
-						endObj.org_name = endQ.proj_organization_ref.getDisplayValue();
-						endObj.project = endQ.ft_project_ref.getDisplayValue();
-						endObj.project_ref = endprojVal;
-						endObj.omb_project = endQ.ft_project_ref.omb_project_name.toString();
-						endObj.investment = endQ.proj_investment.investment.getDisplayValue();
-						//endObj.appropriation_type = endQ.ft_project_appropriation_ref.appropriation_ref.appropration_type.getDisplayValue();
-						//endObj.appropriation_type_ref = endQ.ft_project_appropriation_ref.appropriation_ref.appropration_type.toString();
-						endObj.appropriation_type = "";
-						endObj.appropriation_type_ref = "";
-						endObj.appropriation = endQ.ft_project_appropriation_ref.appropriation_ref.getDisplayValue();
-						endObj.appropriation_ref = endappropVal;
-						endObj.allocation_group = endQ.ft_allocation_group_ref.getDisplayValue();
-						endObj.allocation_group_ref = endallocGroupVal;
-						endObj.allocations = 0;
-						endObj.reimbursements = 0;
-						endObj.trans_in = 0;
-						endObj.trans_out = 0;
-						endObj.toaa = 0;
-						endObj.toa = 0;
-						endObj.vg_labor = 0;
-						endObj.off_adjustments = 0;
-						endObj.expended = 0;
-						endObj.balance = 0;
-					}
-
-					var finalCost = parseFloat(endQ.getAggregate("SUM", "fti_item_total"));
-					if (endQ.ft_tran_type == "TE" || endQ.ft_tran_type == "TI" || endQ.ft_tran_type == "TVGT") {
-						endObj.trans_out += finalCost;
-					} else if (endQ.ft_tran_type == "TVGL") {
-						endObj.vg_labor += finalCost;
-					} else if (endQ.ft_tran_type == "TOA") {
-						endObj.toa += finalCost;
-					} else {
-						endObj.expended += finalCost;
-					}
-
-					if (!isExists) {
-						data.reportData.push(endObj);
-					}
-
-				}
-
-				//total and make negative
-				data.reportData.forEach(function (item) {
-					item.vg_labor = item.vg_labor * -1;
-					item.trans_out = item.trans_out * -1;
-					item.expended = item.expended * -1;
-					item.off_adjustments = (item.toaa - item.toa);
-				});
-			}
-
-			if (data.reportType == "baseline" || data.reportType == "budget_plans") {
-
-				var baseProjects = "";
-				var baseEQ = "budget_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^budget_ref.fy=" + input.fy + "^budget_ref.current=true";
-				if (data.reportType == "budget_plans") {
-					if (input.budget_type == "Actual") {
-						baseEQ += "^budget_ref.budget_typeINActual,Execution";
-
-						var actualProjects = [];
-
-						//filter on actual budget's project
-						var actualQuery = new GlideRecord(FMSConstants.TABLE_BUDGET);
-						actualQuery.addEncodedQuery("project_ref.organization_refIN" + allOrgs.join(",") + "^fy=" + input.fy + "^budget_type=Actual");
-						actualQuery.query();
-						while (actualQuery.next()) {
-							actualProjects.push(actualQuery.project_ref.toString());
-						}
-
-						if (actualProjects.length > 0)
-							baseEQ += "^budget_ref.project_ref.sys_idIN" + actualProjects.join(", ");
-						
-					} else {
-						baseEQ += "^budget_ref.budget_type=" + input.budget_type;
-						if (input.budget_type == "baseline")
-							baseEQ += "^budget_ref.budget_status=Approved";
-					}
-
-				}
-					
-				var baseQ = new GlideAggregate(FMSConstants.TABLE_BUDGET_ITEM);
-				baseQ.addEncodedQuery(baseEQ);
-				baseQ.groupBy("budget_ref");
-				baseQ.groupBy("expense_item_ref");
-				baseQ.groupBy("budget_ref.budget_type");
-				baseQ.addAggregate("SUM", "budget_amt");
-				baseQ.query();
-
-				while (baseQ.next()) {
-
-					var reportObj = {};
-					var baseExists = false;
-					var budgetRef = baseQ.budget_ref.toString();
-					var expRef = baseQ.expense_item_ref.toString();
-					var typeRef = baseQ.budget_ref.budget_type.toString();
-					var expItemRec = baseQ.expense_item_ref;
-
-					//check for existing object in the array
-					var existBaseline = data.reportData.filter(function (el) {
-						return el.budget_ref == budgetRef && el.expense_item_ref == expRef && el.budget_type == typeRef;
-					});
-
-					if (existBaseline.length > 0) { //use existing object
-						baseExists = true;
-						reportObj = existBaseline[0];
-					}
-
-					if (!baseExists) { //new entry to the array, define the default values
-
-						reportObj.expense_item_ref = expRef;
-						reportObj.budget_ref = budgetRef;
-						reportObj.budget_type = typeRef;
-						reportObj.org_ref = baseQ.budget_ref.project_ref.organization_ref.toString();
-						reportObj.org_name = baseQ.budget_ref.project_ref.organization_ref.getDisplayValue();
-						reportObj.project = baseQ.budget_ref.project_ref.getDisplayValue();
-						reportObj.omb_project = baseQ.budget_ref.project_ref.omb_project_name.toString();
-						reportObj.project_ref = baseQ.budget_ref.project_ref.toString();
-						reportObj.investment = baseQ.budget_ref.project_ref.investment.investment.toString();
-						reportObj.activity_code = expItemRec.activity_code.toString();
-						reportObj.budget_code = expItemRec.budget_code_ref.getDisplayValue();
-						if (doRollUp) {
-							var rollupRec = OrgHierarchy.getRollupExpense(expRef, data.selectedOrgID);
-							reportObj.expense_item_ref_roll = rollupRec.toString();
-							reportObj.activity_code_roll = rollupRec.activity_code.toString();
-							reportObj.budget_code_roll  = rollupRec.budget_code_ref.getDisplayValue();
-						} else {
-							reportObj.activity_code_roll = expItemRec.activity_code.toString();
-							reportObj.budget_code_roll = expItemRec.budget_code_ref.getDisplayValue();
-						}
-						if (data.reportType == "baseline") {
-							reportObj.baseline = 0;
-							reportObj.execution = 0;
-							reportObj.transfer = 0;
-							reportObj.in_progress = 0;
-							reportObj.initiated = 0;
-							reportObj.committed = 0;
-							reportObj.obligated = 0;
-							reportObj.balance = 0;
-							baseProjects += reportObj.project_ref + ",";
-						} else {
-							reportObj.execution = 0;
-							reportObj.budget = 0;
-							reportObj.balance = 0;
-							reportObj.budget_name = baseQ.budget_ref.project_ref.project_name.toString() + " v" + baseQ.budget_ref.budget_version.toString() + "r" + baseQ.budget_ref.budget_revision.toString();
-						}
-
-					}
-
-					if (data.reportType == "baseline") {
-
-						if (reportObj.budget_type == "Baseline") {
-							reportObj.baseline += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
-						}
-
-						if (reportObj.budget_type == "Execution") {
-							reportObj.execution += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
-						}
-
-					} else {
-
-						if (input.budget_type == "Actual") {
-							if (reportObj.budget_type == "Actual") {
-								reportObj.budget += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
-							}
-	
-							if (reportObj.budget_type == "Execution") {
-								reportObj.execution += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
-							}
-						} else {
-							reportObj.budget += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
-						}
-					}
-
-					data.reportData.push(reportObj);
-				}
-
-				if (data.reportType == "baseline") {
-
-					var calcQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
-					calcQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_tran_type=TVGL^ORft_tran_type=TE^ORft_tran_type=TI^ORft_tran_type=TOA^ORft_tran_type=TVGT^ft_void=false^fti_expense_item_ref!=NULL"); //todo, remove empty clause
-					calcQ.groupBy("ft_project_ref");
-					calcQ.groupBy("fti_expense_item_ref");
-					calcQ.groupBy("proj_organization_ref");
-					calcQ.addAggregate("SUM", "fti_item_total");
-					calcQ.query();
-					while (calcQ.next()) {
-
-						//if (baseProjects.indexOf(calcQ.ft_project_ref.toString()) > -1) {
-
-						var baseSupObj = {};
-						baseSupObj = setBaselineDefaults(calcQ, doRollUp, data.selectedOrgID);
-						baseSupObj.transfer = parseFloat(calcQ.getAggregate("SUM", "fti_item_total"));
-						data.reportData.push(baseSupObj);
-
-						//}
-					}
-
-					var inProgQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
-					inProgQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_tran_type!=TVGL^ft_tran_type!=TE^ft_tran_type!=TI^ft_tran_type!=TOA^ft_tran_type!=TVGT^ft_void=false^fti_expense_item_ref!=NULL");
-					inProgQ.groupBy("ft_project_ref");
-					inProgQ.groupBy("fti_expense_item_ref");
-					inProgQ.groupBy("proj_organization_ref");
-					inProgQ.groupBy("ft_tran_status");
-					inProgQ.addAggregate("SUM", "fti_item_total");
-					inProgQ.query();
-					while (inProgQ.next()) {
-
-						var progressObj = {};
-						progressObj = setBaselineDefaults(inProgQ, doRollUp, data.selectedOrgID);
-
-						if (inProgQ.ft_tran_status == "In-Progress")
-							progressObj.in_progress = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
-
-						if (inProgQ.ft_tran_status == "Initiated")
-							progressObj.initiated = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
-
-						if (inProgQ.ft_tran_status == "Committed")
-							progressObj.committed = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
-
-						if (inProgQ.ft_tran_status == "Obligated")
-							progressObj.obligated = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
-
-						data.reportData.push(progressObj);
-
-					}
-
-					//calculate balances
-					data.reportData.forEach(function (item) {
-						item.balance = item.execution - (item.transfer + item.in_progress + item.initiated + item.committed + item.obligated);
-					});
-
-				} else {
-					if (input.budget_type == "Actual") {
-						//calculate balances
-						data.reportData.forEach(function (item) {
-							item.balance = (item.execution - item.budget);
-						});
-					}
-				}
-
-			}
-
-			if (data.reportType == "financial_transaction") {
-				var finTranQ = new GlideRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM);
-				finTranQ.addEncodedQuery("fin_tran_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^fin_tran_ref.tran_dateBETWEENjavascript:gs.dateGenerate('" + input.start_date + "','start')@javascript:gs.dateGenerate('" + input.end_date + "','end')");
-				finTranQ.query();
-				while (finTranQ.next()) {
-
-					var finTranObj = {};
-
-					finTranObj.org_ref = finTranQ.fin_tran_ref.project_ref.organization_ref.toString();
-					finTranObj.org_name = finTranQ.fin_tran_ref.project_ref.organization_ref.getDisplayValue();
-					finTranObj.project = finTranQ.fin_tran_ref.project_ref.getDisplayValue();
-					finTranObj.project_ref = finTranQ.fin_tran_ref.project_ref.toString();
-					finTranObj.omb_project = finTranQ.fin_tran_ref.project_ref.omb_project_name.toString();
-					finTranObj.omb_category = finTranQ.omb_category_ref.getDisplayValue();
-					finTranObj.investment = finTranQ.fin_tran_ref.project_ref.investment.getDisplayValue();
-					finTranObj.appropriation = finTranQ.fin_tran_ref.project_appropriation_ref.appropriation_ref.getDisplayValue();
-					finTranObj.appropriation_ref = finTranQ.fin_tran_ref.project_appropriation_ref.appropriation_ref.toString();
-					finTranObj.allocation_group = finTranQ.fin_tran_ref.allocation_group_ref.getDisplayValue();
-					finTranObj.allocation_group_ref = finTranQ.fin_tran_ref.allocation_group_ref.toString();
-					finTranObj.allotment = finTranQ.fin_tran_ref.allotment_ref.allotment.toString();
-					finTranObj.description = finTranQ.fin_tran_ref.description.toString();
-					finTranObj.cost_pool = finTranQ.boc_cost_pool.getDisplayValue();
-					finTranObj.cost_pool_ref = finTranQ.boc_cost_pool.toString();
-					finTranObj.sub_cost_pool = finTranQ.sub_boc_cost_pool.getDisplayValue();
-					finTranObj.sub_cost_pool_ref = finTranQ.sub_boc_cost_pool.toString();
-					finTranObj.cloud_related = finTranQ.cloud_related.getDisplayValue();
-					finTranObj.activity_code = finTranQ.expense_item_ref.activity_code.toString();
-					finTranObj.budget_code = finTranQ.expense_item_ref.budget_code_ref.getDisplayValue();
-					if (doRollUp) {
-							var transRollup = OrgHierarchy.getRollupExpense(finTranQ.expense_item_ref, data.selectedOrgID);
-							finTranObj.expense_item_ref_roll = transRollup.toString();
-							finTranObj.activity_code_roll = transRollup.activity_code.toString();
-							finTranObj.budget_code_roll  = transRollup.budget_code_ref.getDisplayValue();
-					} else {
-						finTranObj.activity_code_roll = finTranQ.expense_item_ref.activity_code.toString();
-						finTranObj.budget_code_roll  = finTranQ.expense_item_ref.budget_code_ref.getDisplayValue();
-					}
-					finTranObj.trans_status = finTranQ.fin_tran_ref.tran_status.toString();
-					finTranObj.trans_type = finTranQ.fin_tran_ref.tran_type.toString();
-					finTranObj.trans_date = finTranQ.fin_tran_ref.tran_date.toString();
-					finTranObj.obligation = finTranQ.fin_tran_ref.obligation.toString();
-					finTranObj.void = finTranQ.fin_tran_ref.void.toString();
-					finTranObj.post = finTranQ.post_ref.getDisplayValue();
-					finTranObj.contract_piid = finTranQ.fin_tran_ref.contract_ref.contract_piid.toString();
-					finTranObj.item_number = parseInt(finTranQ.tran_item.toString());
-					finTranObj.item_qty = parseInt(finTranQ.item_qty.toString());
-					finTranObj.received_qty = parseInt(finTranQ.received_qty.toString());
-					finTranObj.item_cost = parseFloat(finTranQ.item_cost.toString());
-					finTranObj.actual_cost = parseFloat(finTranQ.actual_cost.toString());
-					finTranObj.trans_amount = parseFloat(finTranQ.item_total.toString());
-
-					//get PO info
-					var finTranPOQ = new GlideRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM_PO);
-					finTranPOQ.addEncodedQuery("fin_tran_ref=" + finTranQ.fin_tran_ref.toString());
-					finTranPOQ.query();
-					while (finTranPOQ.next()) {
-						finTranObj.award_number = finTranPOQ.award_nmbr.toString();
-						finTranObj.pr_number = finTranPOQ.po_nmbr.toString();
-						finTranObj.vendor_name = finTranPOQ.award_vendor_name.toString();
-						finTranObj.quote_vendor_name = finTranPOQ.quote_vendor_name.toString();
-					}
-
-					data.reportData.push(finTranObj);
-
-				}
-
-			}
-
-			if (data.reportType == "obligation") {
-
-				var obligationStatus = input.obStatus;
-				var allObligations = [];
-
-				var obligQ = new GlideRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION);
-				obligQ.addEncodedQuery("project_ref.organization_refIN" + allOrgs.join(",") + "^fy=" + input.fy + "^tran_status=Obligated");
-				obligQ.query();
-				while (obligQ.next()) {
-
-					var obligObj = buildObligation(obligQ, "FinTran");			
-
-					var foundObligation = data.reportData.filter(function (el) {
-						return el.obligation == obligObj.obligation;
-					});
-
-					if (foundObligation.length == 0)
-						allObligations.push(obligObj.obligation);
-
-					data.reportData.push(obligObj);
-				}
-
-				allObligations.forEach(function (item) {
-					
-					var obligDetails = new GlideRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION);
-					obligDetails.addEncodedQuery("obligation=" + item);
-					obligDetails.query();
-					while (obligDetails.next()) {
-						var existObligation = data.reportData.filter(function (el) {
-							return el.sys_id == obligDetails.sys_id.toString();
-						});
-
-						if (existObligation.length == 0) {
-							var supportOblig = {};
-							supportOblig.sys_id = obligDetails.sys_id.toString();
-							supportOblig.obligation = obligDetails.obligation.toString();
-							supportOblig.source = "FinTran";
-							supportOblig.status = obligDetails.tran_status.toString();
-							supportOblig.trans_amount = parseFloat(obligDetails.transaction_total_amt.toString());
-							supportOblig.invoice_amount = 0;
-							supportOblig.paid_amount = 0;
-							supportOblig.paid_date = "";
-							supportOblig.estimated_cost = 0;
-							supportOblig.invoice_number = "";
-							supportOblig.contract_piid = obligDetails.contract_ref.contract_piid.toString();
-							supportOblig.reference_number = "";
-							supportOblig.notes = obligDetails.description.toString();
-							data.reportData.push(supportOblig);
-						}
-					}
-
-					//check invoices
-					var invoiceQ = new GlideRecord(FMSConstants.TABLE_INVOICE);
-					invoiceQ.addEncodedQuery("obligation=" + item);
-					invoiceQ.query();
-					while (invoiceQ.next()) {
-						var invoiceObj = {};
-						invoiceObj.sys_id = invoiceQ.sys_id.toString();
-						invoiceObj.obligation = item;
-						invoiceObj.source = "Invoice";
-						invoiceObj.status = "Billed";
-						invoiceObj.trans_amount = 0;
-						invoiceObj.invoice_amount = parseFloat(invoiceQ.invoice_amount.toString());
-						invoiceObj.paid_amount = parseFloat(invoiceQ.paid_amount.toString());
-						invoiceObj.paid_date = invoiceQ.paid_date.toString();
-						invoiceObj.estimated_cost = parseFloat(invoiceQ.estimated_cost.toString());
-						invoiceObj.invoice_number = invoiceQ.invoice_nmbr.toString();
-						invoiceObj.contract_piid = "";
-						invoiceObj.reference_number = invoiceQ.contract_number.toString();
-						invoiceObj.notes = invoiceQ.notes.toString();
-						data.reportData.push(invoiceObj);
-
-					}
-				});
-
-				var filteredObligations = [];
-				
-				allObligations.forEach(function (thisOb) {
-
-					var allObs = data.reportData.filter(function (el) {
-						return el.obligation == thisOb;
-					});
-
-					var remainCount = 0;
-
-					allObs.forEach(function (obRec) {
-						obRec.remaining = (obRec.trans_amount - obRec.paid_amount);
-						remainCount += obRec.remaining;
-					});
-
-					var remainFinal = round2Fixed(remainCount);
-
-					if (obligationStatus == "both" || (obligationStatus == "liquidated" && remainFinal == "0.00") || (obligationStatus == "unliquidated" && remainFinal != "0.00"))
-						filteredObligations.push(thisOb)
-
-				});
-
-				var newObData = [];
-					
-				filteredObligations.forEach(function (thisOb) {
-
-					var allObs = data.reportData.filter(function (el) {
-						return el.obligation == thisOb;
-					});
-
-					allObs.forEach(function (obRec) {
-						newObData.push(obRec);
-					});
-
-				});
-
-				data.reportData = newObData;				
-
-
-			}
-			
-			if (data.reportType == "funding_due_in") {
-				//https://bmpdev.servicenowservices.com/x_g_irm_fms_budget_item_phase_list.do?sysparm_query=budget_item_ref.budget_ref.project_ref.organization_ref%3D294b043d1bc090500a4a10ad9c4bcb00%5Ebudget_item_ref.budget_ref.budget_type%3DExecution%5Ebudget_item_ref.budget_ref.fy%3D2019&sysparm_view=
-				//budget_item_ref.budget_ref.project_ref.organization_ref=294b043d1bc090500a4a10ad9c4bcb00^budget_item_ref.budget_ref.budget_type=Execution^budget_item_ref.budget_ref.fy=2019
-				//budget_item_ref.budget_ref.project_ref.organization_ref=294b043d1bc090500a4a10ad9c4bcb00^budget_item_ref.budget_ref.budget_type=Baseline^budget_item_ref.budget_ref.fy=2019^budget_item_ref.budget_ref.current=true
-
-
-				//https://bmpdev.servicenowservices.com/x_g_irm_fms_budget_item_list.do?sysparm_query=budget_ref.fy%3D2019%5Ebudget_ref.project_ref.organization_ref%3Ded4bc03d1bc090500a4a10ad9c4bcb4f%5Ebudget_ref.budget_type%3DBaseline%5Ebudget_ref.current%3Dtrue&sysparm_view=
-				//budget_ref.fy=2019^budget_ref.project_ref.organization_ref=ed4bc03d1bc090500a4a10ad9c4bcb4f^budget_ref.budget_type=Baseline^budget_ref.current=true
-				//budget_ref.fy=2019^budget_ref.project_ref.organization_ref=ed4bc03d1bc090500a4a10ad9c4bcb4f^budget_ref.budget_type=Execution
-
-				var dueInBaseline = new GlideRecord(FMSConstants.TABLE_BUDGET_ITEM);
-				dueInBaseline.addEncodedQuery("budget_ref.fy=" + input.fy + "^budget_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^budget_ref.budget_type=Baseline^budget_ref.current=true");
-				dueInBaseline.query();
-				while (dueInBaseline.next()) {
-
-					var dueInBaseObj = {};
-					dueInBaseObj = setDueInBaselineDefaults(dueInBaseObj, dueInBaseline);
-					dueInBaseObj.baseline = parseFloat(dueInBaseline.budget_amt.toString());
-					dueInBaseObj.execution = 0;
-
-					data.reportData.push(dueInBaseObj);
-
-				}
-
-				var dueInExecution = new GlideRecord(FMSConstants.TABLE_BUDGET_ITEM);
-				dueInExecution.addEncodedQuery("budget_ref.fy=" + input.fy + "^budget_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^budget_ref.budget_type=Execution");
-				dueInExecution.query();
-				while (dueInExecution.next()) {
-
-					var dueInExObj = {};
-					var dueInBaseExists = false;
-					var expRef = dueInExecution.expense_item_ref.toString();
-					var projRef = dueInExecution.budget_ref.project_ref.toString();
-
-					//check for existing object in the array
-					var existDueBaseline = data.reportData.filter(function (el) {
-						return el.expense_item_ref == expRef && el.project_ref == projRef;
-					});
-
-					if (existDueBaseline.length > 0) { //use existing object
-						dueInBaseExists = true;
-						dueInExObj = existDueBaseline[0];
-					} else {
-						dueInExObj = setDueInBaselineDefaults(dueInExObj, dueInExecution);
-					}
-
-					dueInExObj.execution = parseFloat(dueInExecution.budget_amt.toString());
-					
-					if (!dueInBaseExists) {
-						dueInExObj.baseline = 0; 
-						data.reportData.push(dueInExObj);
-					}
-						
-				}
-
-				//add in quarter phasing 
-
-				var phaseQuery = new GlideRecord(FMSConstants.TABLE_BUDGET_ITEM_PHASE);
-				phaseQuery.addEncodedQuery("budget_item_ref.budget_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^budget_item_ref.budget_ref.fy=" + input.fy + "^budget_item_ref.budget_ref.budget_type=Execution");
-				phaseQuery.query();
-				while (phaseQuery.next()) {
-					var phaseItem = {};
-					var phaseBudgetItem = phaseQuery.budget_item_ref.sys_id.toString();
-					var phaseExpenseItem = phaseQuery.budget_item_ref.expense_item_ref.toString();
-					var phaseProject = phaseQuery.budget_item_ref.budget_ref.project_ref.toString();
-
-					var existingItems = data.reportData.filter(function (el) {
-						return el.expense_item_ref == phaseExpenseItem && el.project_ref == phaseProject && el.budget_item_ref == phaseBudgetItem;
-					});
-
-					if (existingItems.length > 0) {
-						phaseItem = existingItems[0];
-					} else {
-						phaseItem.budget_item_ref == phaseBudgetItem;
-						phaseItem.expense_item_ref == phaseExpenseItem;
-						phaseItem.org_ref = phaseQuery.budget_item_ref.budget_ref.project_ref.organization_ref.toString();
-						phaseItem.org_name = phaseQuery.budget_item_ref.budget_ref.project_ref.organization_ref.getDisplayValue();
-						phaseItem.project = phaseQuery.budget_item_ref.budget_ref.project_ref.getDisplayValue();
-						phaseItem.omb_project = phaseQuery.budget_item_ref.budget_ref.project_ref.omb_project_name.toString();
-						phaseItem.project_ref = phaseProject;
-						phaseItem.investment = phaseQuery.budget_item_ref.budget_ref.project_ref.investment.investment.toString();
-						phaseItem.activity_code = phaseQuery.budget_item_ref.expense_item_ref.activity_code.toString();
-						phaseItem.budget_code = phaseQuery.budget_item_ref.expense_item_ref.budget_code_ref.getDisplayValue();
-						phaseItem.q1 = 0;
-						phaseItem.q2 = 0;
-						phaseItem.q3 = 0;
-						phaseItem.q4 = 0;
-						phaseItem.baseline = 0;
-						phaseItem.execution = 0;
-						phaseItem.due_in = 0;
-					}
-
-					var tMonth = parseInt(phaseQuery.fiscal_month.toString());
-					var tValue = parseFloat(phaseQuery.phase_amt.toString());
-					if (tMonth <= 3)
-						phaseItem.q1 += tValue;
-					if (tMonth >= 4 && tMonth <= 6)
-						phaseItem.q2 += tValue;
-					if (tMonth >= 7 && tMonth <= 9)
-						phaseItem.q3 += tValue;
-					if (tMonth >= 10)
-						phaseItem.q4 += tValue;
-
-					if (existingItems.length == 0)
-						data.reportData.push(phaseItem);
-
-				}
-
-
-				//calculate due-in
-				data.reportData.forEach(function (item) {
-					item.due_in = (item.q1 + item.q2 + item.q3 + item.q4) - item.execution;
-				});
-			}
-
-			if (data.reportType == "phasing") {
-				data.phasingData = [];
-
-				var phasingQuery = new GlideRecord(FMSConstants.TABLE_BUDGET_ITEM_PHASE);
-				phasingQuery.addEncodedQuery("budget_item_ref.budget_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^budget_item_ref.budget_ref.project_ref=" + input.project + "^budget_item_ref.budget_ref.fy=" + input.fy + "^budget_item_ref.budget_ref.budget_type=" + input.budget_type);
-				phasingQuery.query();
-				while (phasingQuery.next()) {
-					var phasingItem = {};
-					var phasingBudget = phasingQuery.budget_item_ref.expense_item_ref.budget_code_ref.getDisplayValue();
-					var phasingActivity = phasingQuery.budget_item_ref.expense_item_ref.activity_code.toString();
-
-					var existingPhasing = data.phasingData.filter(function (el) {
-						return el.budget_code == phasingBudget && el.activity_code == phasingActivity;
-					});
-
-					if (existingPhasing.length > 0) {
-						phasingItem = existingPhasing[0];
-					} else {
-						phasingItem.budget = phasingQuery.budget_item_ref.budget_ref.getDisplayValue();
-						phasingItem.org_ref = phasingQuery.budget_item_ref.budget_ref.project_ref.organization_ref.toString();
-						phasingItem.org_name = phasingQuery.budget_item_ref.budget_ref.project_ref.organization_ref.getDisplayValue();
-						phasingItem.omb_project = phasingQuery.budget_item_ref.budget_ref.project_ref.omb_project_name.toString();
-						phasingItem.project_ref = phasingQuery.budget_item_ref.budget_ref.project_ref.toString();
-						phasingItem.investment = phasingQuery.budget_item_ref.budget_ref.project_ref.investment.investment.toString();
-						phasingItem.activity_code = phasingActivity;
-						phasingItem.budget_code = phasingBudget;
-						phasingItem.budget_code_short = phasingQuery.budget_item_ref.expense_item_ref.budget_code_ref.budget_code.toString();
-						phasingItem.q1 = 0;
-						phasingItem.q2 = 0;
-						phasingItem.q3 = 0;
-						phasingItem.q4 = 0;
-						phasingItem.vals = blankMonths();
-					}
-
-					var pMonth = parseInt(phasingQuery.fiscal_month.toString());
-					var pValue = parseFloat(phasingQuery.phase_amt.toString());
-					if (pMonth <= 3)
-						phasingItem.q1 += pValue;
-					if (pMonth >= 4 && pMonth <= 6)
-						phasingItem.q2 += pValue;
-					if (pMonth >= 7 && pMonth <= 9)
-						phasingItem.q3 += pValue;
-					if (pMonth >= 10)
-						phasingItem.q4 += pValue;
-
-					phasingItem.vals[pMonth.toString()] += pValue;
-
-					if (existingPhasing.length == 0)
-						data.phasingData.push(phasingItem);
-
-				}
-
-
-				var oldBudgetItem = "";
-				var phaseBudgetTotals = {};
-				phaseBudgetTotals.q1 = 0;
-				phaseBudgetTotals.q2 = 0;
-				phaseBudgetTotals.q3 = 0;
-				phaseBudgetTotals.q4 = 0;
-				phaseBudgetTotals.m1 = 0;
-				phaseBudgetTotals.m2 = 0;
-				phaseBudgetTotals.m3 = 0;
-				phaseBudgetTotals.m4 = 0;
-				phaseBudgetTotals.m5 = 0;
-				phaseBudgetTotals.m6 = 0;
-				phaseBudgetTotals.m7 = 0;
-				phaseBudgetTotals.m8 = 0;
-				phaseBudgetTotals.m9 = 0;
-				phaseBudgetTotals.m10 = 0;
-				phaseBudgetTotals.m11 = 0;
-				phaseBudgetTotals.m12 = 0;
-
-				var phaseBudgetGrandTotals = {};
-				phaseBudgetGrandTotals.q1 = 0;
-				phaseBudgetGrandTotals.q2 = 0;
-				phaseBudgetGrandTotals.q3 = 0;
-				phaseBudgetGrandTotals.q4 = 0;
-				phaseBudgetGrandTotals.m1 = 0;
-				phaseBudgetGrandTotals.m2 = 0;
-				phaseBudgetGrandTotals.m3 = 0;
-				phaseBudgetGrandTotals.m4 = 0;
-				phaseBudgetGrandTotals.m5 = 0;
-				phaseBudgetGrandTotals.m6 = 0;
-				phaseBudgetGrandTotals.m7 = 0;
-				phaseBudgetGrandTotals.m8 = 0;
-				phaseBudgetGrandTotals.m9 = 0;
-				phaseBudgetGrandTotals.m10 = 0;
-				phaseBudgetGrandTotals.m11 = 0;
-				phaseBudgetGrandTotals.m12 = 0;
-
-				function totalPhasing(totals, mode) {
-					var phasingRowTotal1 = {};
-					phasingRowTotal1 = getPhasingValues(oldBudgetItem);
-					phasingRowTotal1.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
-					if (mode == "grand"){
-						phasingRowTotal1.budget_code = oldBudgetItem.org_name + " Totals:";
-						phasingRowTotal1.activity_code = "";
-					}
-					phasingRowTotal1.m1 = "Oct:";
-					phasingRowTotal1.q1 = totals.m1;
-					phasingRowTotal1.m2 = "Jan:";
-					phasingRowTotal1.q2 = totals.m4;
-					phasingRowTotal1.m3 = "Apr:";
-					phasingRowTotal1.q3 = totals.m7;
-					phasingRowTotal1.m4 = "Jul:";
-					phasingRowTotal1.q4 = totals.m10;
-					phasingRowTotal1.total = 0;
-					data.reportData.push(phasingRowTotal1);
-
-					var phasingRowTotal2 = {};
-					phasingRowTotal2 = getPhasingValues(oldBudgetItem);
-					phasingRowTotal2.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
-					if (mode == "grand"){
-						phasingRowTotal2.budget_code = oldBudgetItem.org_name + " Totals:";
-						phasingRowTotal2.activity_code = "";
-					}
-					phasingRowTotal2.m1 = "Nov:";
-					phasingRowTotal2.q1 = totals.m2;
-					phasingRowTotal2.m2 = "Feb:";
-					phasingRowTotal2.q2 = totals.m5;
-					phasingRowTotal2.m3 = "May:";
-					phasingRowTotal2.q3 = totals.m8;
-					phasingRowTotal2.m4 = "Aug:";
-					phasingRowTotal2.q4 = totals.m11;
-					phasingRowTotal2.total = 0;
-					data.reportData.push(phasingRowTotal2);
-
-					var phasingRowTotal3 = {};
-					phasingRowTotal3 = getPhasingValues(oldBudgetItem);
-					phasingRowTotal3.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
-					if (mode == "grand"){
-						phasingRowTotal3.budget_code = oldBudgetItem.org_name + " Totals:";
-						phasingRowTotal3.activity_code = "";
-					}
-					phasingRowTotal3.m1 = "Dec:";
-					phasingRowTotal3.q1 = totals.m3;
-					phasingRowTotal3.m2 = "Mar:";
-					phasingRowTotal3.q2 = totals.m6;
-					phasingRowTotal3.m3 = "Jun:";
-					phasingRowTotal3.q3 = totals.m9;
-					phasingRowTotal3.m4 = "Sept:";
-					phasingRowTotal3.q4 = totals.m12;
-					phasingRowTotal3.total = 0;
-					data.reportData.push(phasingRowTotal3);
-
-					var phasingRowCodeTotal = {};
-					phasingRowCodeTotal = getPhasingValues(oldBudgetItem);
-					phasingRowCodeTotal.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
-					if (mode == "grand"){
-						phasingRowCodeTotal.budget_code = oldBudgetItem.org_name + " Totals:";
-						phasingRowCodeTotal.activity_code = "";
-					}
-					phasingRowCodeTotal.m1 = "Q1:";
-					phasingRowCodeTotal.q1 = totals.q1;
-					phasingRowCodeTotal.m2 = "Q2:";
-					phasingRowCodeTotal.q2 = totals.q2;
-					phasingRowCodeTotal.m3 = "Q3:";
-					phasingRowCodeTotal.q3 = totals.q3;
-					phasingRowCodeTotal.m4 = "Q4:";
-					phasingRowCodeTotal.q4 = totals.q4;
-					phasingRowCodeTotal.total = totals.q1 + totals.q2 + totals.q3 + totals.q4;
-					data.reportData.push(phasingRowCodeTotal);
-
-					if (mode != "grand"){
-
-						phaseBudgetGrandTotals.q1 += totals.q1;
-						phaseBudgetGrandTotals.q2 += totals.q2;
-						phaseBudgetGrandTotals.q3 += totals.q3;
-						phaseBudgetGrandTotals.q4 += totals.q4;
-						phaseBudgetGrandTotals.m1 += totals.m1;
-						phaseBudgetGrandTotals.m2 += totals.m2;
-						phaseBudgetGrandTotals.m3 += totals.m3;
-						phaseBudgetGrandTotals.m4 += totals.m4;
-						phaseBudgetGrandTotals.m5 += totals.m5;
-						phaseBudgetGrandTotals.m6 += totals.m6;
-						phaseBudgetGrandTotals.m7 += totals.m7;
-						phaseBudgetGrandTotals.m8 += totals.m8;
-						phaseBudgetGrandTotals.m9 += totals.m9;
-						phaseBudgetGrandTotals.m10 += totals.m10;
-						phaseBudgetGrandTotals.m11 += totals.m11;
-						phaseBudgetGrandTotals.m12 += totals.m12;
-
-						totals.q1 = 0;
-						totals.q2 = 0;
-						totals.q3 = 0;
-						totals.q4 = 0;
-						totals.m1 = 0;
-						totals.m2 = 0;
-						totals.m3 = 0;
-						totals.m4 = 0;
-						totals.m5 = 0;
-						totals.m6 = 0;
-						totals.m7 = 0;
-						totals.m8 = 0;
-						totals.m9 = 0;
-						totals.m10 = 0;
-						totals.m11 = 0;
-						totals.m12 = 0;
-					}
-
-					
-				}
-
-
-
-
-
-				data.phasingData.sort(function(a, b) {
-					if (a.budget_code < b.budget_code) {
-						return -1;
-					}
-					if (a.budget_code > b.budget_code) {
-						return 1;
-					}
-
-					if (a.activity_code < b.activity_code) {
-						return -1;
-					}
-					if (a.activity_code > b.activity_code) {
-						return 1;
-					}
-
-					return 0;
-				});
-
-				//calculate row-by-row phasing
-				data.phasingData.forEach(function (item) {
-
-					if (oldBudgetItem != "") {
-						if (item.budget_code != oldBudgetItem.budget_code) {
-							totalPhasing(phaseBudgetTotals, "regular");
-						}
-					}
-
-					var phasingRow1 = {};
-					phasingRow1 = getPhasingValues(item);
-					phasingRow1.m1 = "Oct:";
-					phasingRow1.q1 = parseFloat(item.vals["1"].toString());
-					phasingRow1.m2 = "Jan:";
-					phasingRow1.q2 = parseFloat(item.vals["4"].toString());
-					phasingRow1.m3 = "Apr:";
-					phasingRow1.q3 = parseFloat(item.vals["7"].toString());
-					phasingRow1.m4 = "Jul:";
-					phasingRow1.q4 = parseFloat(item.vals["10"].toString());
-					phasingRow1.total = 0;
-					data.reportData.push(phasingRow1);
-
-					var phasingRow2 = {};
-					phasingRow2 = getPhasingValues(item);
-					phasingRow2.m1 = "Nov:";
-					phasingRow2.q1 = parseFloat(item.vals["2"].toString());
-					phasingRow2.m2 = "Feb:";
-					phasingRow2.q2 = parseFloat(item.vals["5"].toString());
-					phasingRow2.m3 = "May:";
-					phasingRow2.q3 = parseFloat(item.vals["8"].toString());
-					phasingRow2.m4 = "Aug:";
-					phasingRow2.q4 = parseFloat(item.vals["11"].toString());
-					phasingRow2.total = 0;
-					data.reportData.push(phasingRow2);
-
-					var phasingRow3 = {};
-					phasingRow3 = getPhasingValues(item);
-					phasingRow3.m1 = "Dec:";
-					phasingRow3.q1 = parseFloat(item.vals["3"].toString());
-					phasingRow3.m2 = "Mar:";
-					phasingRow3.q2 = parseFloat(item.vals["6"].toString());
-					phasingRow3.m3 = "Jun:";
-					phasingRow3.q3 = parseFloat(item.vals["9"].toString());
-					phasingRow3.m4 = "Sept:";
-					phasingRow3.q4 = parseFloat(item.vals["12"].toString());
-					phasingRow3.total = 0;
-					data.reportData.push(phasingRow3);
-
-					var phasingRowTotal = {};
-					phasingRowTotal = getPhasingValues(item);
-					phasingRowTotal.m1 = "Q1:";
-					phasingRowTotal.q1 = item.q1;
-					phasingRowTotal.m2 = "Q2:";
-					phasingRowTotal.q2 = item.q2;
-					phasingRowTotal.m3 = "Q3:";
-					phasingRowTotal.q3 = item.q3;
-					phasingRowTotal.m4 = "Q4:";
-					phasingRowTotal.q4 = item.q4;
-					phasingRowTotal.total = item.q1 + item.q2 + item.q3 + item.q4;
-					data.reportData.push(phasingRowTotal);
-
-
-					phaseBudgetTotals.q1 += item.q1;
-					phaseBudgetTotals.q2 += item.q2;
-					phaseBudgetTotals.q3 += item.q3;
-					phaseBudgetTotals.q4 += item.q4;
-
-					phaseBudgetTotals.m1 += parseFloat(item.vals["1"].toString());
-					phaseBudgetTotals.m2 += parseFloat(item.vals["2"].toString());
-					phaseBudgetTotals.m3 += parseFloat(item.vals["3"].toString());
-					phaseBudgetTotals.m4 += parseFloat(item.vals["4"].toString());
-					phaseBudgetTotals.m5 += parseFloat(item.vals["5"].toString());
-					phaseBudgetTotals.m6 += parseFloat(item.vals["6"].toString());
-					phaseBudgetTotals.m7 += parseFloat(item.vals["7"].toString());
-					phaseBudgetTotals.m8 += parseFloat(item.vals["8"].toString());
-					phaseBudgetTotals.m9 += parseFloat(item.vals["9"].toString());
-					phaseBudgetTotals.m10 += parseFloat(item.vals["10"].toString());
-					phaseBudgetTotals.m11 += parseFloat(item.vals["11"].toString());
-					phaseBudgetTotals.m12 += parseFloat(item.vals["12"].toString());
-
-
-					oldBudgetItem = item;
-				});
-
-				if (data.reportData.length > 0) {
-					totalPhasing(phaseBudgetTotals, "regular");
-					totalPhasing(phaseBudgetGrandTotals, "grand");
-				}
-					
-			}
+                if (data.reportType == "monthly_expenditure") {
+                    var monthlyQ = new GlideRecord(FMSConstants.VIEW_FIN_TRAN_REPORT);
+                    monthlyQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_void=false");
+                    monthlyQ.query();
+                    while (monthlyQ.next()) {
+
+                        var tMonthObj = {};
+                        var isMonthlyExisting = false;
+                        var bCode = monthlyQ.fti_expense_item_ref.budget_code_ref.budget_code.toString();
+                        var aCode = monthlyQ.fti_expense_item_ref.activity_code.toString();
+                        var oCode = monthlyQ.proj_organization_ref.getDisplayValue();
+                        var pCode = monthlyQ.ft_project_ref.getDisplayValue();
+                        var iCode = monthlyQ.proj_investment.getDisplayValue();
+
+                        //check for existing object in the array
+                        var existingMonthlyData = data.reportData.filter(function (el) {
+                            return el.budget_code == bCode && el.activity_code == aCode && el.org_name == oCode && el.project == pCode && el.investment == iCode
+                        });
+
+                        if (existingMonthlyData.length > 0) { //use existing object
+                            isMonthlyExisting = true;
+                            tMonthObj = existingMonthlyData[0];
+                        } else {
+                            tMonthObj.budget_code = bCode;
+                            tMonthObj.activity_code = aCode;
+                            if (doRollUp) {
+                                var monthlyRollup = OrgHierarchy.getRollupExpense(monthlyQ.fti_expense_item_ref, data.selectedOrgID);
+                                tMonthObj.expense_item_ref_roll = monthlyRollup.toString();
+                                tMonthObj.activity_code_roll = monthlyRollup.activity_code.toString();
+                                tMonthObj.budget_code_roll  = monthlyRollup.budget_code_ref.getDisplayValue();
+                            } else {
+                                tMonthObj.activity_code_roll = bCode;
+                                tMonthObj.budget_code_roll  = aCode;
+                            }
+                            tMonthObj.org_name = oCode;
+                            tMonthObj.project = pCode;
+                            tMonthObj.investment = iCode;
+                            tMonthObj.omb_project = monthlyQ.ft_project_ref.omb_project_name.toString();
+                            for (var mCount = 1; mCount <= 12; mCount++) {
+                                tMonthObj["month_" + mCount] = 0;
+                            }
+                        }
+
+                        tMonthObj["month_" + getMonth(monthlyQ)] += parseFloat(monthlyQ.fti_item_total);
+
+                        if (!isMonthlyExisting)
+                            data.reportData.push(tMonthObj);
+
+                    }
+                }
+
+                if (data.reportType == "allocation") {
+
+
+                    //get project allocation data
+                    var projQ = new GlideAggregate(FMSConstants.TABLE_PROJECT_ALLOCATION);
+                    projQ.addEncodedQuery("fy=" + input.fy + "^project_ref.organization_refIN" + allOrgs.join(","));
+                    projQ.groupBy("appropriation_ref");
+                    projQ.groupBy("allocation_group_ref");
+                    projQ.groupBy("project_ref.organization_ref");
+                    projQ.groupBy("project_ref");
+                    projQ.groupBy("fund_source");
+                    projQ.groupBy("transfer_type_ref");
+                    projQ.addAggregate("SUM", "allocation_amt");
+                    projQ.query();
+                    while (projQ.next()) {
+
+                        var projVal = projQ.project_ref.toString();
+                        var allocGroupVal = projQ.allocation_group_ref.toString();
+                        var appropVal = projQ.appropriation_ref.appropriation_ref.toString();
+                        var orgVal = projQ.project_ref.organization_ref.toString();
+
+                        var reportObj = {};
+                        var isExisting = false;
+
+                        //check for existing object in the array
+                        var existingData = data.reportData.filter(function (el) {
+                            return el.project_ref == projVal && el.allocation_group_ref == allocGroupVal && el.appropriation_ref == appropVal && el.org_ref == orgVal;
+                        });
+
+                        if (existingData.length > 0) { //use existing object
+                            isExisting = true;
+                            reportObj = existingData[0];
+                        }
+
+                        if (!isExisting) { //new entry to the array, define the default values
+
+                            reportObj.org_ref = orgVal;
+                            reportObj.org_name = projQ.project_ref.organization_ref.getDisplayValue();
+                            reportObj.project = projQ.project_ref.getDisplayValue();
+                            reportObj.project_ref = projVal;
+                            reportObj.omb_project = projQ.project_ref.omb_project_name.toString();
+                            reportObj.investment = projQ.project_ref.investment.investment.getDisplayValue();
+                            reportObj.appropriation_type = projQ.appropriation_ref.appropriation_ref.appropriation_type.getDisplayValue();
+                            reportObj.appropriation_type_ref = projQ.appropriation_ref.appropriation_ref.appropriation_type.toString();
+                            reportObj.appropriation = projQ.appropriation_ref.appropriation_ref.getDisplayValue();
+                            reportObj.appropriation_ref = appropVal;
+                            reportObj.allocation_group = projQ.allocation_group_ref.getDisplayValue();
+                            reportObj.allocation_group_ref = allocGroupVal;
+                            reportObj.allocations = 0;
+                            reportObj.reimbursements = 0;
+                            reportObj.trans_in = 0;
+                            reportObj.trans_out = 0;
+                            reportObj.toaa = 0;
+                            reportObj.toa = 0;
+                            reportObj.vg_labor = 0;
+                            reportObj.off_adjustments = 0;
+                            reportObj.expended = 0;
+                            reportObj.balance = 0;
+
+                        }
+
+                        if (projQ.fund_source == "Allocation")
+                            reportObj.allocations += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
+
+                        if (projQ.fund_source == "Reimbursement")
+                            reportObj.reimbursements += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
+
+                        if (projQ.fund_source == "Transfer In")
+                            reportObj.trans_in += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
+
+                        if (projQ.fund_source == "Transfer In" && projQ.transfer_type_ref == '9aa3f65d1b0850501f7e113d9c4bcbe6') //TOAA
+                            reportObj.toaa += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
+
+                        if (!isExisting) {
+                            data.reportData.push(reportObj);
+                        }
+                    }
+
+                    //Get supporting info
+                    var endQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
+                    /*var endQS = "";
+                    appropriationsChecked.forEach(function(appVal){
+                        endQS += "^ft_project_appropriation_ref.appropriation_ref!=" + appVal;
+                    });*/
+                    endQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_void=false");
+                    endQ.groupBy("ft_allocation_group_ref");
+                    endQ.groupBy("ft_project_ref");
+                    endQ.groupBy("ft_project_appropriation_ref");
+                    endQ.groupBy("proj_organization_ref");
+                    endQ.groupBy("proj_investment");
+                    endQ.groupBy("ft_tran_type");
+                    endQ.addAggregate("SUM", "fti_item_total");
+                    endQ.query();
+                    while (endQ.next()) {
+
+                        var endprojVal = endQ.ft_project_ref.toString();
+                        var endallocGroupVal = endQ.ft_allocation_group_ref.toString();
+                        var endappropVal = endQ.ft_project_appropriation_ref.appropriation_ref.toString();
+                        var endorgVal = endQ.proj_organization_ref.toString();
+
+                        var endObj = {};
+                        var isExists = false;
+
+                        //check for existing object in the array
+                        var prevData = data.reportData.filter(function (el) {
+                            return el.project_ref == endprojVal && el.allocation_group_ref == endallocGroupVal && el.appropriation_ref == endappropVal && el.org_ref == endorgVal;
+                        });
+
+                        if (prevData.length > 0) { //use existing object
+                            isExists = true;
+                            endObj = prevData[0];
+                        }
+
+                        if (!isExists) { //new entry to the array, define the default values
+                            endObj.org_ref = endorgVal;
+                            endObj.org_name = endQ.proj_organization_ref.getDisplayValue();
+                            endObj.project = endQ.ft_project_ref.getDisplayValue();
+                            endObj.project_ref = endprojVal;
+                            endObj.omb_project = endQ.ft_project_ref.omb_project_name.toString();
+                            endObj.investment = endQ.proj_investment.investment.getDisplayValue();
+                            //endObj.appropriation_type = endQ.ft_project_appropriation_ref.appropriation_ref.appropration_type.getDisplayValue();
+                            //endObj.appropriation_type_ref = endQ.ft_project_appropriation_ref.appropriation_ref.appropration_type.toString();
+                            endObj.appropriation_type = "";
+                            endObj.appropriation_type_ref = "";
+                            endObj.appropriation = endQ.ft_project_appropriation_ref.appropriation_ref.getDisplayValue();
+                            endObj.appropriation_ref = endappropVal;
+                            endObj.allocation_group = endQ.ft_allocation_group_ref.getDisplayValue();
+                            endObj.allocation_group_ref = endallocGroupVal;
+                            endObj.allocations = 0;
+                            endObj.reimbursements = 0;
+                            endObj.trans_in = 0;
+                            endObj.trans_out = 0;
+                            endObj.toaa = 0;
+                            endObj.toa = 0;
+                            endObj.vg_labor = 0;
+                            endObj.off_adjustments = 0;
+                            endObj.expended = 0;
+                            endObj.balance = 0;
+                        }
+
+                        var finalCost = parseFloat(endQ.getAggregate("SUM", "fti_item_total"));
+                        if (endQ.ft_tran_type == "TE" || endQ.ft_tran_type == "TI" || endQ.ft_tran_type == "TVGT") {
+                            endObj.trans_out += finalCost;
+                        } else if (endQ.ft_tran_type == "TVGL") {
+                            endObj.vg_labor += finalCost;
+                        } else if (endQ.ft_tran_type == "TOA") {
+                            endObj.toa += finalCost;
+                        } else {
+                            endObj.expended += finalCost;
+                        }
+
+                        if (!isExists) {
+                            data.reportData.push(endObj);
+                        }
+
+                    }
+
+                    //total and make negative
+                    data.reportData.forEach(function (item) {
+                        item.vg_labor = item.vg_labor * -1;
+                        item.trans_out = item.trans_out * -1;
+                        item.expended = item.expended * -1;
+                        item.off_adjustments = (item.toaa - item.toa);
+                    });
+                }
+
+                if (data.reportType == "baseline" || data.reportType == "budget_plans") {
+
+                    var baseProjects = "";
+                    var baseEQ = "budget_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^budget_ref.fy=" + input.fy + "^budget_ref.current=true";
+                    if (data.reportType == "budget_plans") {
+                        if (input.budget_type == "Actual") {
+                            baseEQ += "^budget_ref.budget_typeINActual,Execution";
+
+                            var actualProjects = [];
+
+                            //filter on actual budget's project
+                            var actualQuery = new GlideRecord(FMSConstants.TABLE_BUDGET);
+                            actualQuery.addEncodedQuery("project_ref.organization_refIN" + allOrgs.join(",") + "^fy=" + input.fy + "^budget_type=Actual");
+                            actualQuery.query();
+                            while (actualQuery.next()) {
+                                actualProjects.push(actualQuery.project_ref.toString());
+                            }
+
+                            if (actualProjects.length > 0)
+                                baseEQ += "^budget_ref.project_ref.sys_idIN" + actualProjects.join(", ");
+                            
+                        } else {
+                            baseEQ += "^budget_ref.budget_type=" + input.budget_type;
+                            if (input.budget_type == "baseline")
+                                baseEQ += "^budget_ref.budget_status=Approved";
+                        }
+
+                    }
+                        
+                    var baseQ = new GlideAggregate(FMSConstants.TABLE_BUDGET_ITEM);
+                    baseQ.addEncodedQuery(baseEQ);
+                    baseQ.groupBy("budget_ref");
+                    baseQ.groupBy("expense_item_ref");
+                    baseQ.groupBy("budget_ref.budget_type");
+                    baseQ.addAggregate("SUM", "budget_amt");
+                    baseQ.query();
+
+                    while (baseQ.next()) {
+
+                        var reportObj = {};
+                        var baseExists = false;
+                        var budgetRef = baseQ.budget_ref.toString();
+                        var expRef = baseQ.expense_item_ref.toString();
+                        var typeRef = baseQ.budget_ref.budget_type.toString();
+                        var expItemRec = baseQ.expense_item_ref;
+
+                        //check for existing object in the array
+                        var existBaseline = data.reportData.filter(function (el) {
+                            return el.budget_ref == budgetRef && el.expense_item_ref == expRef && el.budget_type == typeRef;
+                        });
+
+                        if (existBaseline.length > 0) { //use existing object
+                            baseExists = true;
+                            reportObj = existBaseline[0];
+                        }
+
+                        if (!baseExists) { //new entry to the array, define the default values
+
+                            reportObj.expense_item_ref = expRef;
+                            reportObj.budget_ref = budgetRef;
+                            reportObj.budget_type = typeRef;
+                            reportObj.org_ref = baseQ.budget_ref.project_ref.organization_ref.toString();
+                            reportObj.org_name = baseQ.budget_ref.project_ref.organization_ref.getDisplayValue();
+                            reportObj.project = baseQ.budget_ref.project_ref.getDisplayValue();
+                            reportObj.omb_project = baseQ.budget_ref.project_ref.omb_project_name.toString();
+                            reportObj.project_ref = baseQ.budget_ref.project_ref.toString();
+                            reportObj.investment = baseQ.budget_ref.project_ref.investment.investment.toString();
+                            reportObj.activity_code = expItemRec.activity_code.toString();
+                            reportObj.budget_code = expItemRec.budget_code_ref.getDisplayValue();
+                            if (doRollUp) {
+                                var rollupRec = OrgHierarchy.getRollupExpense(expRef, data.selectedOrgID);
+                                reportObj.expense_item_ref_roll = rollupRec.toString();
+                                reportObj.activity_code_roll = rollupRec.activity_code.toString();
+                                reportObj.budget_code_roll  = rollupRec.budget_code_ref.getDisplayValue();
+                            } else {
+                                reportObj.activity_code_roll = expItemRec.activity_code.toString();
+                                reportObj.budget_code_roll = expItemRec.budget_code_ref.getDisplayValue();
+                            }
+                            if (data.reportType == "baseline") {
+                                reportObj.baseline = 0;
+                                reportObj.execution = 0;
+                                reportObj.transfer = 0;
+                                reportObj.in_progress = 0;
+                                reportObj.initiated = 0;
+                                reportObj.committed = 0;
+                                reportObj.obligated = 0;
+                                reportObj.balance = 0;
+                                baseProjects += reportObj.project_ref + ",";
+                            } else {
+                                reportObj.execution = 0;
+                                reportObj.budget = 0;
+                                reportObj.balance = 0;
+                                reportObj.budget_name = baseQ.budget_ref.project_ref.project_name.toString() + " v" + baseQ.budget_ref.budget_version.toString() + "r" + baseQ.budget_ref.budget_revision.toString();
+                            }
+
+                        }
+
+                        if (data.reportType == "baseline") {
+
+                            if (reportObj.budget_type == "Baseline") {
+                                reportObj.baseline += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
+                            }
+
+                            if (reportObj.budget_type == "Execution") {
+                                reportObj.execution += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
+                            }
+
+                        } else {
+
+                            if (input.budget_type == "Actual") {
+                                if (reportObj.budget_type == "Actual") {
+                                    reportObj.budget += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
+                                }
+        
+                                if (reportObj.budget_type == "Execution") {
+                                    reportObj.execution += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
+                                }
+                            } else {
+                                reportObj.budget += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
+                            }
+                        }
+
+                        data.reportData.push(reportObj);
+                    }
+
+                    if (data.reportType == "baseline") {
+
+                        var calcQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
+                        calcQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_tran_type=TVGL^ORft_tran_type=TE^ORft_tran_type=TI^ORft_tran_type=TOA^ORft_tran_type=TVGT^ft_void=false^fti_expense_item_ref!=NULL"); //todo, remove empty clause
+                        calcQ.groupBy("ft_project_ref");
+                        calcQ.groupBy("fti_expense_item_ref");
+                        calcQ.groupBy("proj_organization_ref");
+                        calcQ.addAggregate("SUM", "fti_item_total");
+                        calcQ.query();
+                        while (calcQ.next()) {
+
+                            //if (baseProjects.indexOf(calcQ.ft_project_ref.toString()) > -1) {
+
+                            var baseSupObj = {};
+                            baseSupObj = setBaselineDefaults(calcQ, doRollUp, data.selectedOrgID);
+                            baseSupObj.transfer = parseFloat(calcQ.getAggregate("SUM", "fti_item_total"));
+                            data.reportData.push(baseSupObj);
+
+                            //}
+                        }
+
+                        var inProgQ = new GlideAggregate(FMSConstants.VIEW_FIN_TRAN_REPORT);
+                        inProgQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_tran_type!=TVGL^ft_tran_type!=TE^ft_tran_type!=TI^ft_tran_type!=TOA^ft_tran_type!=TVGT^ft_void=false^fti_expense_item_ref!=NULL");
+                        inProgQ.groupBy("ft_project_ref");
+                        inProgQ.groupBy("fti_expense_item_ref");
+                        inProgQ.groupBy("proj_organization_ref");
+                        inProgQ.groupBy("ft_tran_status");
+                        inProgQ.addAggregate("SUM", "fti_item_total");
+                        inProgQ.query();
+                        while (inProgQ.next()) {
+
+                            var progressObj = {};
+                            progressObj = setBaselineDefaults(inProgQ, doRollUp, data.selectedOrgID);
+
+                            if (inProgQ.ft_tran_status == "In-Progress")
+                                progressObj.in_progress = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
+
+                            if (inProgQ.ft_tran_status == "Initiated")
+                                progressObj.initiated = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
+
+                            if (inProgQ.ft_tran_status == "Committed")
+                                progressObj.committed = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
+
+                            if (inProgQ.ft_tran_status == "Obligated")
+                                progressObj.obligated = parseFloat(inProgQ.getAggregate("SUM", "fti_item_total"));
+
+                            data.reportData.push(progressObj);
+
+                        }
+
+                        //calculate balances
+                        data.reportData.forEach(function (item) {
+                            item.balance = item.execution - (item.transfer + item.in_progress + item.initiated + item.committed + item.obligated);
+                        });
+
+                    } else {
+                        if (input.budget_type == "Actual") {
+                            //calculate balances
+                            data.reportData.forEach(function (item) {
+                                item.balance = (item.execution - item.budget);
+                            });
+                        }
+                    }
+
+                }
+
+                if (data.reportType == "financial_transaction") {
+                    var finTranQ = new GlideRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM);
+                    finTranQ.addEncodedQuery("fin_tran_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^fin_tran_ref.tran_dateBETWEENjavascript:gs.dateGenerate('" + input.start_date + "','start')@javascript:gs.dateGenerate('" + input.end_date + "','end')");
+                    finTranQ.query();
+                    while (finTranQ.next()) {
+
+                        var finTranObj = {};
+
+                        finTranObj.org_ref = finTranQ.fin_tran_ref.project_ref.organization_ref.toString();
+                        finTranObj.org_name = finTranQ.fin_tran_ref.project_ref.organization_ref.getDisplayValue();
+                        finTranObj.project = finTranQ.fin_tran_ref.project_ref.getDisplayValue();
+                        finTranObj.project_ref = finTranQ.fin_tran_ref.project_ref.toString();
+                        finTranObj.omb_project = finTranQ.fin_tran_ref.project_ref.omb_project_name.toString();
+                        finTranObj.omb_category = finTranQ.omb_category_ref.getDisplayValue();
+                        finTranObj.investment = finTranQ.fin_tran_ref.project_ref.investment.getDisplayValue();
+                        finTranObj.appropriation = finTranQ.fin_tran_ref.project_appropriation_ref.appropriation_ref.getDisplayValue();
+                        finTranObj.appropriation_ref = finTranQ.fin_tran_ref.project_appropriation_ref.appropriation_ref.toString();
+                        finTranObj.allocation_group = finTranQ.fin_tran_ref.allocation_group_ref.getDisplayValue();
+                        finTranObj.allocation_group_ref = finTranQ.fin_tran_ref.allocation_group_ref.toString();
+                        finTranObj.allotment = finTranQ.fin_tran_ref.allotment_ref.allotment.toString();
+                        finTranObj.description = finTranQ.fin_tran_ref.description.toString();
+                        finTranObj.cost_pool = finTranQ.boc_cost_pool.getDisplayValue();
+                        finTranObj.cost_pool_ref = finTranQ.boc_cost_pool.toString();
+                        finTranObj.sub_cost_pool = finTranQ.sub_boc_cost_pool.getDisplayValue();
+                        finTranObj.sub_cost_pool_ref = finTranQ.sub_boc_cost_pool.toString();
+                        finTranObj.cloud_related = finTranQ.cloud_related.getDisplayValue();
+                        finTranObj.activity_code = finTranQ.expense_item_ref.activity_code.toString();
+                        finTranObj.budget_code = finTranQ.expense_item_ref.budget_code_ref.getDisplayValue();
+                        if (doRollUp) {
+                                var transRollup = OrgHierarchy.getRollupExpense(finTranQ.expense_item_ref, data.selectedOrgID);
+                                finTranObj.expense_item_ref_roll = transRollup.toString();
+                                finTranObj.activity_code_roll = transRollup.activity_code.toString();
+                                finTranObj.budget_code_roll  = transRollup.budget_code_ref.getDisplayValue();
+                        } else {
+                            finTranObj.activity_code_roll = finTranQ.expense_item_ref.activity_code.toString();
+                            finTranObj.budget_code_roll  = finTranQ.expense_item_ref.budget_code_ref.getDisplayValue();
+                        }
+                        finTranObj.trans_status = finTranQ.fin_tran_ref.tran_status.toString();
+                        finTranObj.trans_type = finTranQ.fin_tran_ref.tran_type.toString();
+                        finTranObj.trans_date = finTranQ.fin_tran_ref.tran_date.toString();
+                        finTranObj.obligation = finTranQ.fin_tran_ref.obligation.toString();
+                        finTranObj.void = finTranQ.fin_tran_ref.void.toString();
+                        finTranObj.post = finTranQ.post_ref.getDisplayValue();
+                        finTranObj.contract_piid = finTranQ.fin_tran_ref.contract_ref.contract_piid.toString();
+                        finTranObj.item_number = parseInt(finTranQ.tran_item.toString());
+                        finTranObj.item_qty = parseInt(finTranQ.item_qty.toString());
+                        finTranObj.received_qty = parseInt(finTranQ.received_qty.toString());
+                        finTranObj.item_cost = parseFloat(finTranQ.item_cost.toString());
+                        finTranObj.actual_cost = parseFloat(finTranQ.actual_cost.toString());
+                        finTranObj.trans_amount = parseFloat(finTranQ.item_total.toString());
+
+                        //get PO info
+                        var finTranPOQ = new GlideRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM_PO);
+                        finTranPOQ.addEncodedQuery("fin_tran_ref=" + finTranQ.fin_tran_ref.toString());
+                        finTranPOQ.query();
+                        while (finTranPOQ.next()) {
+                            finTranObj.award_number = finTranPOQ.award_nmbr.toString();
+                            finTranObj.pr_number = finTranPOQ.po_nmbr.toString();
+                            finTranObj.vendor_name = finTranPOQ.award_vendor_name.toString();
+                            finTranObj.quote_vendor_name = finTranPOQ.quote_vendor_name.toString();
+                        }
+
+                        data.reportData.push(finTranObj);
+
+                    }
+
+                }
+
+                if (data.reportType == "obligation") {
+
+                    var obligationStatus = input.obStatus;
+                    var allObligations = [];
+
+                    var obligQ = new GlideRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION);
+                    obligQ.addEncodedQuery("project_ref.organization_refIN" + allOrgs.join(",") + "^fy=" + input.fy + "^tran_status=Obligated");
+                    obligQ.query();
+                    while (obligQ.next()) {
+
+                        var obligObj = buildObligation(obligQ, "FinTran");			
+
+                        var foundObligation = data.reportData.filter(function (el) {
+                            return el.obligation == obligObj.obligation;
+                        });
+
+                        if (foundObligation.length == 0)
+                            allObligations.push(obligObj.obligation);
+
+                        data.reportData.push(obligObj);
+                    }
+
+                    allObligations.forEach(function (item) {
+                        
+                        var obligDetails = new GlideRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION);
+                        obligDetails.addEncodedQuery("obligation=" + item);
+                        obligDetails.query();
+                        while (obligDetails.next()) {
+                            var existObligation = data.reportData.filter(function (el) {
+                                return el.sys_id == obligDetails.sys_id.toString();
+                            });
+
+                            if (existObligation.length == 0) {
+                                var supportOblig = {};
+                                supportOblig.sys_id = obligDetails.sys_id.toString();
+                                supportOblig.source = "FinTran";
+                                supportOblig.status = obligDetails.tran_status.toString();
+                                supportOblig.trans_amount = parseFloat(obligDetails.transaction_total_amt.toString());
+                                supportOblig.invoice_amount = 0;
+                                supportOblig.paid_amount = 0;
+                                supportOblig.paid_date = "";
+                                supportOblig.estimated_cost = 0;
+                                supportOblig.invoice_number = "";
+                                supportOblig.contract_piid = obligDetails.contract_ref.contract_piid.toString();
+                                supportOblig.reference_number = "";
+                                supportOblig.notes = obligDetails.description.toString();
+                                data.reportData.push(supportOblig);
+                            }
+                        }
+
+                        //check invoices
+                        var invoiceQ = new GlideRecord(FMSConstants.TABLE_INVOICE);
+                        invoiceQ.addEncodedQuery("obligation=" + item);
+                        invoiceQ.query();
+                        while (invoiceQ.next()) {
+                            var invoiceObj = {};
+                            invoiceObj.sys_id = invoiceQ.sys_id.toString();
+                            invoiceObj.obligation = item;
+                            invoiceObj.source = "Invoice";
+                            invoiceObj.status = "Billed";
+                            invoiceObj.trans_amount = 0;
+                            invoiceObj.invoice_amount = parseFloat(invoiceQ.invoice_amount.toString());
+                            invoiceObj.paid_amount = parseFloat(invoiceQ.paid_amount.toString());
+                            invoiceObj.paid_date = invoiceQ.paid_date.toString();
+                            invoiceObj.estimated_cost = parseFloat(invoiceQ.estimated_cost.toString());
+                            invoiceObj.invoice_number = invoiceQ.invoice_nmbr.toString();
+                            invoiceObj.contract_piid = "";
+                            invoiceObj.reference_number = invoiceQ.contract_number.toString();
+                            invoiceObj.notes = invoiceQ.notes.toString();
+                            data.reportData.push(invoiceObj);
+
+                        }
+                    });
+
+                    var filteredObligations = [];
+                    
+                    allObligations.forEach(function (thisOb) {
+
+                        var allObs = data.reportData.filter(function (el) {
+                            return el.obligation == thisOb;
+                        });
+
+                        var remainCount = 0;
+
+                        allObs.forEach(function (obRec) {
+                            obRec.remaining = (obRec.trans_amount - obRec.paid_amount);
+                            remainCount += obRec.remaining;
+                        });
+
+                        var remainFinal = round2Fixed(remainCount);
+
+                        if (obligationStatus == "both" || (obligationStatus == "liquidated" && remainFinal == "0.00") || (obligationStatus == "unliquidated" && remainFinal != "0.00"))
+                            filteredObligations.push(thisOb)
+
+                    });
+
+                    var newObData = [];
+                        
+                    filteredObligations.forEach(function (thisOb) {
+
+                        var allObs = data.reportData.filter(function (el) {
+                            return el.obligation == thisOb;
+                        });
+
+                        allObs.forEach(function (obRec) {
+                            newObData.push(obRec);
+                        });
+
+                    });
+
+                    data.reportData = newObData;				
+
+
+                }
+                
+                if (data.reportType == "funding_due_in") {
+                    //https://bmpdev.servicenowservices.com/x_g_irm_fms_budget_item_phase_list.do?sysparm_query=budget_item_ref.budget_ref.project_ref.organization_ref%3D294b043d1bc090500a4a10ad9c4bcb00%5Ebudget_item_ref.budget_ref.budget_type%3DExecution%5Ebudget_item_ref.budget_ref.fy%3D2019&sysparm_view=
+                    //budget_item_ref.budget_ref.project_ref.organization_ref=294b043d1bc090500a4a10ad9c4bcb00^budget_item_ref.budget_ref.budget_type=Execution^budget_item_ref.budget_ref.fy=2019
+                    //budget_item_ref.budget_ref.project_ref.organization_ref=294b043d1bc090500a4a10ad9c4bcb00^budget_item_ref.budget_ref.budget_type=Baseline^budget_item_ref.budget_ref.fy=2019^budget_item_ref.budget_ref.current=true
+
+
+                    //https://bmpdev.servicenowservices.com/x_g_irm_fms_budget_item_list.do?sysparm_query=budget_ref.fy%3D2019%5Ebudget_ref.project_ref.organization_ref%3Ded4bc03d1bc090500a4a10ad9c4bcb4f%5Ebudget_ref.budget_type%3DBaseline%5Ebudget_ref.current%3Dtrue&sysparm_view=
+                    //budget_ref.fy=2019^budget_ref.project_ref.organization_ref=ed4bc03d1bc090500a4a10ad9c4bcb4f^budget_ref.budget_type=Baseline^budget_ref.current=true
+                    //budget_ref.fy=2019^budget_ref.project_ref.organization_ref=ed4bc03d1bc090500a4a10ad9c4bcb4f^budget_ref.budget_type=Execution
+
+                    var dueInBaseline = new GlideRecord(FMSConstants.TABLE_BUDGET_ITEM);
+                    dueInBaseline.addEncodedQuery("budget_ref.fy=" + input.fy + "^budget_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^budget_ref.budget_type=Baseline^budget_ref.current=true");
+                    dueInBaseline.query();
+                    while (dueInBaseline.next()) {
+
+                        var dueInBaseObj = {};
+                        dueInBaseObj = setDueInBaselineDefaults(dueInBaseObj, dueInBaseline);
+                        dueInBaseObj.baseline = parseFloat(dueInBaseline.budget_amt.toString());
+                        dueInBaseObj.execution = 0;
+
+                        data.reportData.push(dueInBaseObj);
+
+                    }
+
+                    var dueInExecution = new GlideRecord(FMSConstants.TABLE_BUDGET_ITEM);
+                    dueInExecution.addEncodedQuery("budget_ref.fy=" + input.fy + "^budget_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^budget_ref.budget_type=Execution");
+                    dueInExecution.query();
+                    while (dueInExecution.next()) {
+
+                        var dueInExObj = {};
+                        var dueInBaseExists = false;
+                        var expRef = dueInExecution.expense_item_ref.toString();
+                        var projRef = dueInExecution.budget_ref.project_ref.toString();
+
+                        //check for existing object in the array
+                        var existDueBaseline = data.reportData.filter(function (el) {
+                            return el.expense_item_ref == expRef && el.project_ref == projRef;
+                        });
+
+                        if (existDueBaseline.length > 0) { //use existing object
+                            dueInBaseExists = true;
+                            dueInExObj = existDueBaseline[0];
+                        } else {
+                            dueInExObj = setDueInBaselineDefaults(dueInExObj, dueInExecution);
+                        }
+
+                        dueInExObj.execution = parseFloat(dueInExecution.budget_amt.toString());
+                        
+                        if (!dueInBaseExists) {
+                            dueInExObj.baseline = 0; 
+                            data.reportData.push(dueInExObj);
+                        }
+                            
+                    }
+
+                    //add in quarter phasing 
+
+                    var phaseQuery = new GlideRecord(FMSConstants.TABLE_BUDGET_ITEM_PHASE);
+                    phaseQuery.addEncodedQuery("budget_item_ref.budget_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^budget_item_ref.budget_ref.fy=" + input.fy + "^budget_item_ref.budget_ref.budget_type=Execution");
+                    phaseQuery.query();
+                    while (phaseQuery.next()) {
+                        var phaseItem = {};
+                        var phaseBudgetItem = phaseQuery.budget_item_ref.sys_id.toString();
+                        var phaseExpenseItem = phaseQuery.budget_item_ref.expense_item_ref.toString();
+                        var phaseProject = phaseQuery.budget_item_ref.budget_ref.project_ref.toString();
+
+                        var existingItems = data.reportData.filter(function (el) {
+                            return el.expense_item_ref == phaseExpenseItem && el.project_ref == phaseProject && el.budget_item_ref == phaseBudgetItem;
+                        });
+
+                        if (existingItems.length > 0) {
+                            phaseItem = existingItems[0];
+                        } else {
+                            phaseItem.budget_item_ref == phaseBudgetItem;
+                            phaseItem.expense_item_ref == phaseExpenseItem;
+                            phaseItem.org_ref = phaseQuery.budget_item_ref.budget_ref.project_ref.organization_ref.toString();
+                            phaseItem.org_name = phaseQuery.budget_item_ref.budget_ref.project_ref.organization_ref.getDisplayValue();
+                            phaseItem.project = phaseQuery.budget_item_ref.budget_ref.project_ref.getDisplayValue();
+                            phaseItem.omb_project = phaseQuery.budget_item_ref.budget_ref.project_ref.omb_project_name.toString();
+                            phaseItem.project_ref = phaseProject;
+                            phaseItem.investment = phaseQuery.budget_item_ref.budget_ref.project_ref.investment.investment.toString();
+                            phaseItem.activity_code = phaseQuery.budget_item_ref.expense_item_ref.activity_code.toString();
+                            phaseItem.budget_code = phaseQuery.budget_item_ref.expense_item_ref.budget_code_ref.getDisplayValue();
+                            phaseItem.q1 = 0;
+                            phaseItem.q2 = 0;
+                            phaseItem.q3 = 0;
+                            phaseItem.q4 = 0;
+                            phaseItem.baseline = 0;
+                            phaseItem.execution = 0;
+                            phaseItem.due_in = 0;
+                        }
+
+                        var tMonth = parseInt(phaseQuery.fiscal_month.toString());
+                        var tValue = parseFloat(phaseQuery.phase_amt.toString());
+                        if (tMonth <= 3)
+                            phaseItem.q1 += tValue;
+                        if (tMonth >= 4 && tMonth <= 6)
+                            phaseItem.q2 += tValue;
+                        if (tMonth >= 7 && tMonth <= 9)
+                            phaseItem.q3 += tValue;
+                        if (tMonth >= 10)
+                            phaseItem.q4 += tValue;
+
+                        if (existingItems.length == 0)
+                            data.reportData.push(phaseItem);
+
+                    }
+
+
+                    //calculate due-in
+                    data.reportData.forEach(function (item) {
+                        item.due_in = (item.q1 + item.q2 + item.q3 + item.q4) - item.execution;
+                    });
+                }
+
+                if (data.reportType == "phasing") {
+                    data.phasingData = [];
+
+                    var phasingQuery = new GlideRecord(FMSConstants.TABLE_BUDGET_ITEM_PHASE);
+                    phasingQuery.addEncodedQuery("budget_item_ref.budget_ref.project_ref.organization_refIN" + allOrgs.join(",") + "^budget_item_ref.budget_ref.project_ref=" + input.project + "^budget_item_ref.budget_ref.fy=" + input.fy + "^budget_item_ref.budget_ref.budget_type=" + input.budget_type);
+                    phasingQuery.query();
+                    while (phasingQuery.next()) {
+                        var phasingItem = {};
+                        var phasingBudget = phasingQuery.budget_item_ref.expense_item_ref.budget_code_ref.getDisplayValue();
+                        var phasingActivity = phasingQuery.budget_item_ref.expense_item_ref.activity_code.toString();
+
+                        var existingPhasing = data.phasingData.filter(function (el) {
+                            return el.budget_code == phasingBudget && el.activity_code == phasingActivity;
+                        });
+
+                        if (existingPhasing.length > 0) {
+                            phasingItem = existingPhasing[0];
+                        } else {
+                            phasingItem.budget = phasingQuery.budget_item_ref.budget_ref.getDisplayValue();
+                            phasingItem.org_ref = phasingQuery.budget_item_ref.budget_ref.project_ref.organization_ref.toString();
+                            phasingItem.org_name = phasingQuery.budget_item_ref.budget_ref.project_ref.organization_ref.getDisplayValue();
+                            phasingItem.omb_project = phasingQuery.budget_item_ref.budget_ref.project_ref.omb_project_name.toString();
+                            phasingItem.project_ref = phasingQuery.budget_item_ref.budget_ref.project_ref.toString();
+                            phasingItem.investment = phasingQuery.budget_item_ref.budget_ref.project_ref.investment.investment.toString();
+                            phasingItem.activity_code = phasingActivity;
+                            phasingItem.budget_code = phasingBudget;
+                            phasingItem.budget_code_short = phasingQuery.budget_item_ref.expense_item_ref.budget_code_ref.budget_code.toString();
+                            phasingItem.q1 = 0;
+                            phasingItem.q2 = 0;
+                            phasingItem.q3 = 0;
+                            phasingItem.q4 = 0;
+                            phasingItem.vals = blankMonths();
+                        }
+
+                        var pMonth = parseInt(phasingQuery.fiscal_month.toString());
+                        var pValue = parseFloat(phasingQuery.phase_amt.toString());
+                        if (pMonth <= 3)
+                            phasingItem.q1 += pValue;
+                        if (pMonth >= 4 && pMonth <= 6)
+                            phasingItem.q2 += pValue;
+                        if (pMonth >= 7 && pMonth <= 9)
+                            phasingItem.q3 += pValue;
+                        if (pMonth >= 10)
+                            phasingItem.q4 += pValue;
+
+                        phasingItem.vals[pMonth.toString()] += pValue;
+
+                        if (existingPhasing.length == 0)
+                            data.phasingData.push(phasingItem);
+
+                    }
+
+
+                    var oldBudgetItem = "";
+                    var phaseBudgetTotals = {};
+                    phaseBudgetTotals.q1 = 0;
+                    phaseBudgetTotals.q2 = 0;
+                    phaseBudgetTotals.q3 = 0;
+                    phaseBudgetTotals.q4 = 0;
+                    phaseBudgetTotals.m1 = 0;
+                    phaseBudgetTotals.m2 = 0;
+                    phaseBudgetTotals.m3 = 0;
+                    phaseBudgetTotals.m4 = 0;
+                    phaseBudgetTotals.m5 = 0;
+                    phaseBudgetTotals.m6 = 0;
+                    phaseBudgetTotals.m7 = 0;
+                    phaseBudgetTotals.m8 = 0;
+                    phaseBudgetTotals.m9 = 0;
+                    phaseBudgetTotals.m10 = 0;
+                    phaseBudgetTotals.m11 = 0;
+                    phaseBudgetTotals.m12 = 0;
+
+                    var phaseBudgetGrandTotals = {};
+                    phaseBudgetGrandTotals.q1 = 0;
+                    phaseBudgetGrandTotals.q2 = 0;
+                    phaseBudgetGrandTotals.q3 = 0;
+                    phaseBudgetGrandTotals.q4 = 0;
+                    phaseBudgetGrandTotals.m1 = 0;
+                    phaseBudgetGrandTotals.m2 = 0;
+                    phaseBudgetGrandTotals.m3 = 0;
+                    phaseBudgetGrandTotals.m4 = 0;
+                    phaseBudgetGrandTotals.m5 = 0;
+                    phaseBudgetGrandTotals.m6 = 0;
+                    phaseBudgetGrandTotals.m7 = 0;
+                    phaseBudgetGrandTotals.m8 = 0;
+                    phaseBudgetGrandTotals.m9 = 0;
+                    phaseBudgetGrandTotals.m10 = 0;
+                    phaseBudgetGrandTotals.m11 = 0;
+                    phaseBudgetGrandTotals.m12 = 0;
+
+                    function totalPhasing(totals, mode) {
+                        var phasingRowTotal1 = {};
+                        phasingRowTotal1 = getPhasingValues(oldBudgetItem);
+                        phasingRowTotal1.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
+                        if (mode == "grand"){
+                            phasingRowTotal1.budget_code = oldBudgetItem.org_name + " Totals:";
+                            phasingRowTotal1.activity_code = "";
+                        }
+                        phasingRowTotal1.m1 = "Oct:";
+                        phasingRowTotal1.q1 = totals.m1;
+                        phasingRowTotal1.m2 = "Jan:";
+                        phasingRowTotal1.q2 = totals.m4;
+                        phasingRowTotal1.m3 = "Apr:";
+                        phasingRowTotal1.q3 = totals.m7;
+                        phasingRowTotal1.m4 = "Jul:";
+                        phasingRowTotal1.q4 = totals.m10;
+                        phasingRowTotal1.total = 0;
+                        data.reportData.push(phasingRowTotal1);
+
+                        var phasingRowTotal2 = {};
+                        phasingRowTotal2 = getPhasingValues(oldBudgetItem);
+                        phasingRowTotal2.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
+                        if (mode == "grand"){
+                            phasingRowTotal2.budget_code = oldBudgetItem.org_name + " Totals:";
+                            phasingRowTotal2.activity_code = "";
+                        }
+                        phasingRowTotal2.m1 = "Nov:";
+                        phasingRowTotal2.q1 = totals.m2;
+                        phasingRowTotal2.m2 = "Feb:";
+                        phasingRowTotal2.q2 = totals.m5;
+                        phasingRowTotal2.m3 = "May:";
+                        phasingRowTotal2.q3 = totals.m8;
+                        phasingRowTotal2.m4 = "Aug:";
+                        phasingRowTotal2.q4 = totals.m11;
+                        phasingRowTotal2.total = 0;
+                        data.reportData.push(phasingRowTotal2);
+
+                        var phasingRowTotal3 = {};
+                        phasingRowTotal3 = getPhasingValues(oldBudgetItem);
+                        phasingRowTotal3.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
+                        if (mode == "grand"){
+                            phasingRowTotal3.budget_code = oldBudgetItem.org_name + " Totals:";
+                            phasingRowTotal3.activity_code = "";
+                        }
+                        phasingRowTotal3.m1 = "Dec:";
+                        phasingRowTotal3.q1 = totals.m3;
+                        phasingRowTotal3.m2 = "Mar:";
+                        phasingRowTotal3.q2 = totals.m6;
+                        phasingRowTotal3.m3 = "Jun:";
+                        phasingRowTotal3.q3 = totals.m9;
+                        phasingRowTotal3.m4 = "Sept:";
+                        phasingRowTotal3.q4 = totals.m12;
+                        phasingRowTotal3.total = 0;
+                        data.reportData.push(phasingRowTotal3);
+
+                        var phasingRowCodeTotal = {};
+                        phasingRowCodeTotal = getPhasingValues(oldBudgetItem);
+                        phasingRowCodeTotal.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
+                        if (mode == "grand"){
+                            phasingRowCodeTotal.budget_code = oldBudgetItem.org_name + " Totals:";
+                            phasingRowCodeTotal.activity_code = "";
+                        }
+                        phasingRowCodeTotal.m1 = "Q1:";
+                        phasingRowCodeTotal.q1 = totals.q1;
+                        phasingRowCodeTotal.m2 = "Q2:";
+                        phasingRowCodeTotal.q2 = totals.q2;
+                        phasingRowCodeTotal.m3 = "Q3:";
+                        phasingRowCodeTotal.q3 = totals.q3;
+                        phasingRowCodeTotal.m4 = "Q4:";
+                        phasingRowCodeTotal.q4 = totals.q4;
+                        phasingRowCodeTotal.total = totals.q1 + totals.q2 + totals.q3 + totals.q4;
+                        data.reportData.push(phasingRowCodeTotal);
+
+                        if (mode != "grand"){
+
+                            phaseBudgetGrandTotals.q1 += totals.q1;
+                            phaseBudgetGrandTotals.q2 += totals.q2;
+                            phaseBudgetGrandTotals.q3 += totals.q3;
+                            phaseBudgetGrandTotals.q4 += totals.q4;
+                            phaseBudgetGrandTotals.m1 += totals.m1;
+                            phaseBudgetGrandTotals.m2 += totals.m2;
+                            phaseBudgetGrandTotals.m3 += totals.m3;
+                            phaseBudgetGrandTotals.m4 += totals.m4;
+                            phaseBudgetGrandTotals.m5 += totals.m5;
+                            phaseBudgetGrandTotals.m6 += totals.m6;
+                            phaseBudgetGrandTotals.m7 += totals.m7;
+                            phaseBudgetGrandTotals.m8 += totals.m8;
+                            phaseBudgetGrandTotals.m9 += totals.m9;
+                            phaseBudgetGrandTotals.m10 += totals.m10;
+                            phaseBudgetGrandTotals.m11 += totals.m11;
+                            phaseBudgetGrandTotals.m12 += totals.m12;
+
+                            totals.q1 = 0;
+                            totals.q2 = 0;
+                            totals.q3 = 0;
+                            totals.q4 = 0;
+                            totals.m1 = 0;
+                            totals.m2 = 0;
+                            totals.m3 = 0;
+                            totals.m4 = 0;
+                            totals.m5 = 0;
+                            totals.m6 = 0;
+                            totals.m7 = 0;
+                            totals.m8 = 0;
+                            totals.m9 = 0;
+                            totals.m10 = 0;
+                            totals.m11 = 0;
+                            totals.m12 = 0;
+                        }
+
+                        
+                    }
+
+
+
+
+
+                    data.phasingData.sort(function(a, b) {
+                        if (a.budget_code < b.budget_code) {
+                            return -1;
+                        }
+                        if (a.budget_code > b.budget_code) {
+                            return 1;
+                        }
+
+                        if (a.activity_code < b.activity_code) {
+                            return -1;
+                        }
+                        if (a.activity_code > b.activity_code) {
+                            return 1;
+                        }
+
+                        return 0;
+                    });
+
+                    //calculate row-by-row phasing
+                    data.phasingData.forEach(function (item) {
+
+                        if (oldBudgetItem != "") {
+                            if (item.budget_code != oldBudgetItem.budget_code) {
+                                totalPhasing(phaseBudgetTotals, "regular");
+                            }
+                        }
+
+                        var phasingRow1 = {};
+                        phasingRow1 = getPhasingValues(item);
+                        phasingRow1.m1 = "Oct:";
+                        phasingRow1.q1 = parseFloat(item.vals["1"].toString());
+                        phasingRow1.m2 = "Jan:";
+                        phasingRow1.q2 = parseFloat(item.vals["4"].toString());
+                        phasingRow1.m3 = "Apr:";
+                        phasingRow1.q3 = parseFloat(item.vals["7"].toString());
+                        phasingRow1.m4 = "Jul:";
+                        phasingRow1.q4 = parseFloat(item.vals["10"].toString());
+                        phasingRow1.total = 0;
+                        data.reportData.push(phasingRow1);
+
+                        var phasingRow2 = {};
+                        phasingRow2 = getPhasingValues(item);
+                        phasingRow2.m1 = "Nov:";
+                        phasingRow2.q1 = parseFloat(item.vals["2"].toString());
+                        phasingRow2.m2 = "Feb:";
+                        phasingRow2.q2 = parseFloat(item.vals["5"].toString());
+                        phasingRow2.m3 = "May:";
+                        phasingRow2.q3 = parseFloat(item.vals["8"].toString());
+                        phasingRow2.m4 = "Aug:";
+                        phasingRow2.q4 = parseFloat(item.vals["11"].toString());
+                        phasingRow2.total = 0;
+                        data.reportData.push(phasingRow2);
+
+                        var phasingRow3 = {};
+                        phasingRow3 = getPhasingValues(item);
+                        phasingRow3.m1 = "Dec:";
+                        phasingRow3.q1 = parseFloat(item.vals["3"].toString());
+                        phasingRow3.m2 = "Mar:";
+                        phasingRow3.q2 = parseFloat(item.vals["6"].toString());
+                        phasingRow3.m3 = "Jun:";
+                        phasingRow3.q3 = parseFloat(item.vals["9"].toString());
+                        phasingRow3.m4 = "Sept:";
+                        phasingRow3.q4 = parseFloat(item.vals["12"].toString());
+                        phasingRow3.total = 0;
+                        data.reportData.push(phasingRow3);
+
+                        var phasingRowTotal = {};
+                        phasingRowTotal = getPhasingValues(item);
+                        phasingRowTotal.m1 = "Q1:";
+                        phasingRowTotal.q1 = item.q1;
+                        phasingRowTotal.m2 = "Q2:";
+                        phasingRowTotal.q2 = item.q2;
+                        phasingRowTotal.m3 = "Q3:";
+                        phasingRowTotal.q3 = item.q3;
+                        phasingRowTotal.m4 = "Q4:";
+                        phasingRowTotal.q4 = item.q4;
+                        phasingRowTotal.total = item.q1 + item.q2 + item.q3 + item.q4;
+                        data.reportData.push(phasingRowTotal);
+
+
+                        phaseBudgetTotals.q1 += item.q1;
+                        phaseBudgetTotals.q2 += item.q2;
+                        phaseBudgetTotals.q3 += item.q3;
+                        phaseBudgetTotals.q4 += item.q4;
+
+                        phaseBudgetTotals.m1 += parseFloat(item.vals["1"].toString());
+                        phaseBudgetTotals.m2 += parseFloat(item.vals["2"].toString());
+                        phaseBudgetTotals.m3 += parseFloat(item.vals["3"].toString());
+                        phaseBudgetTotals.m4 += parseFloat(item.vals["4"].toString());
+                        phaseBudgetTotals.m5 += parseFloat(item.vals["5"].toString());
+                        phaseBudgetTotals.m6 += parseFloat(item.vals["6"].toString());
+                        phaseBudgetTotals.m7 += parseFloat(item.vals["7"].toString());
+                        phaseBudgetTotals.m8 += parseFloat(item.vals["8"].toString());
+                        phaseBudgetTotals.m9 += parseFloat(item.vals["9"].toString());
+                        phaseBudgetTotals.m10 += parseFloat(item.vals["10"].toString());
+                        phaseBudgetTotals.m11 += parseFloat(item.vals["11"].toString());
+                        phaseBudgetTotals.m12 += parseFloat(item.vals["12"].toString());
+
+
+                        oldBudgetItem = item;
+                    });
+
+                    if (data.reportData.length > 0) {
+                        totalPhasing(phaseBudgetTotals, "regular");
+                        totalPhasing(phaseBudgetGrandTotals, "grand");
+                    }
+                        
+                }
+                
+            } else {
+                getProjects();
+            }
 
 		}
 	}
@@ -2566,24 +2601,22 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>750</sys_mod_count>
+        <sys_mod_count>783</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-10-21 19:30:03</sys_updated_on>
+        <sys_updated_on>2020-12-04 16:10:22</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
         <div>
             <div class="row">
                 <div class="col-sm-9 form-group">
+
                     <div class="reportTitle">{{c.reportTitle}}</div>
-                    <div class="orgSpan">
-                        <widget id="organization_selection" options='{"hide_widget": false, "hide_project": true}'></widget>
-                    </div>
                     <div class="yearSelect orgSpan" ng-if="c.data.reportType != 'financial_transaction'">
                         <label for="selFY" class="selectLabel">FY:</label>
                         <select class="reportSelect" id="selFY" ng-model="c.selectedFY" ng-change="c.generateReport();">
@@ -2592,6 +2625,7 @@
                             </option>
                         </select>
                     </div>
+                    <div class="orgSpan"><widget id="organization_selection" options='{"hide_widget": false, "hide_project": true, "multi_select": true}'></widget></div>
                     <div class="yearSelect orgSpan" ng-if="c.data.reportType == 'financial_transaction'">
                         <div class="orgSpan">
                             <label for="startDate" class="selectLabel">Start Date</label>
@@ -2632,9 +2666,14 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" ng-show="c.targetOrg != ''">
             <div class="col-sm-12">
                 <div id="reportGrid" class="ag-theme-balham full-grid"></div>
+            </div>
+        </div>
+        <div class="row" ng-show="c.targetOrg == ''">
+            <div class="col-sm-12">
+                <div class="no-orgs">**Please select at least one Organization to run a report**</div>
             </div>
         </div>
     </div>

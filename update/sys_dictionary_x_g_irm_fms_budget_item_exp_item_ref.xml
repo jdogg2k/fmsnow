@@ -45,7 +45,7 @@
         <reference_floats>false</reference_floats>
         <reference_key/>
         <reference_qual>organization_ref=2d4bc03d1bc090500a4a10ad9c4bcbff^EQ</reference_qual>
-        <reference_qual_condition table="x_g_irm_fms_expense_item">organization_ref=2d4bc03d1bc090500a4a10ad9c4bcbff^EQ<item endquery="false" field="organization_ref" goto="false" newquery="false" operator="=" or="false" value="2d4bc03d1bc090500a4a10ad9c4bcbff"/>
+        <reference_qual_condition table="x_g_irm_fms_expense_item">organization_ref=2d4bc03d1bc090500a4a10ad9c4bcbff^EQ<item display_table="x_g_irm_fms_organization" display_value="ITI [184200]" endquery="false" field="organization_ref" goto="false" newquery="false" operator="=" or="false" value="2d4bc03d1bc090500a4a10ad9c4bcbff"/>
             <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
         </reference_qual_condition>
         <reference_type/>

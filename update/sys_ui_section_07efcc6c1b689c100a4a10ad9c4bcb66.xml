@@ -70,6 +70,20 @@
             <sys_user/>
             <type>.end_split</type>
         </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>disabled</element>
+            <position>5</position>
+            <sys_created_by>PuriA@state.gov</sys_created_by>
+            <sys_created_on>2020-12-03 17:20:01</sys_created_on>
+            <sys_id>b8af6aee1b3860501f7e113d9c4bcb1f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_omb_category" sys_domain="global" view="Default view">07efcc6c1b689c100a4a10ad9c4bcb66</sys_ui_section>
+            <sys_updated_by>PuriA@state.gov</sys_updated_by>
+            <sys_updated_on>2020-12-03 17:20:01</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
         <sys_ui_section action="INSERT_OR_UPDATE">
             <caption/>
             <header>false</header>

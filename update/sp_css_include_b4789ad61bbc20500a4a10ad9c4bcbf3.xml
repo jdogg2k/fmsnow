@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_css_include">
+    <sp_css_include action="INSERT_OR_UPDATE">
+        <name>Twitter Bootstrap</name>
+        <source>local</source>
+        <sp_css display_value="Twitter Bootstrap Icons">caf8921a1bbc20500a4a10ad9c4bcbe3</sp_css>
+        <sys_class_name>sp_css_include</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-12-02 21:00:43</sys_created_on>
+        <sys_id>b4789ad61bbc20500a4a10ad9c4bcbf3</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Twitter Bootstrap</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_css_include_b4789ad61bbc20500a4a10ad9c4bcbf3</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-12-02 21:03:42</sys_updated_on>
+        <url/>
+    </sp_css_include>
+</record_update>
