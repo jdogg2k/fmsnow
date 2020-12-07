@@ -69,14 +69,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-12-03 20:27:31</sys_created_on>
         <sys_id>9e23972a1bbc60500a4a10ad9c4bcb57</sys_id>
-        <sys_mod_count>37</sys_mod_count>
+        <sys_mod_count>48</sys_mod_count>
         <sys_name>Record Info</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_9e23972a1bbc60500a4a10ad9c4bcb57</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-12-04 19:47:33</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2020-12-07 15:00:46</sys_updated_on>
         <template><![CDATA[<div>
     <span ng-click="c.openInfo()" title="View Record Change Information" style="font-size: 16pt">&Delta;</span>
   </div>
@@ -92,10 +92,23 @@
               <h4 class="modal-title">Record Change (Delta) Information</h4>
           </div>
           <div class="panel-body wrapper-md">
-              <div>Created by: {{c.data.recordInfo.sys_created_by}} on {{c.data.recordInfo.sys_created_on}}</div>
+          	  <div class="row">
+              	<div class="d-inline col-sm-3 text-right">Created by:</div>
+              	<div class="d-inline col-sm-4">{{c.data.recordInfo.sys_created_by}}</div>
+              	<div class="d-inline col-sm-1 text-right">on/at:</div>
+              	<div class="d-inline col-sm-4">{{c.data.recordInfo.sys_created_on}}</div>
+              </div>
               <div ng-if="c.data.recordInfo.sys_mod_count > 0">
-                  <div>Updated by: {{c.data.recordInfo.sys_updated_by}} on {{c.data.recordInfo.sys_updated_on}}</div>
-                  <div>Number of updates: {{c.data.recordInfo.sys_mod_count}}</div>
+              	  <div class="row">
+                  	<div class="d-inline col-sm-3 text-right">Updated by:</div>
+                  	<div class="d-inline col-sm-4">{{c.data.recordInfo.sys_updated_by}}</div>
+                  	<div class="d-inline col-sm-1 text-right">on/at:</div>
+                  	<div class="d-inline col-sm-4">{{c.data.recordInfo.sys_updated_on}}</div>
+                  </div>
+                  <div class="row">
+                  	<div class="d-inline col-sm-3 text-right">Total Updates:</div>
+                  	<div class="d-inline col-sm-2">{{c.data.recordInfo.sys_mod_count}}</div>
+                  </div>
               </div>
           </div>
       </div>

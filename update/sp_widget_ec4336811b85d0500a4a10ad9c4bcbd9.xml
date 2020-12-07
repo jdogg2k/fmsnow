@@ -4,14 +4,6 @@
         <client_script><![CDATA[function ($timeout, $scope) {
 	/* widget controller */
 
-
-	$scope.name = 'World';
-    $scope.cars = [{id:1, name: 'Audi'}, {id:2, name: 'BMW'}, {id:1, name: 'Honda'}];
-    $scope.selectedCar = [];
-
-    $scope.fruits = [{id: 1, name: 'Apple'}, {id: 2, name: 'Orange'},{id: 3, name: 'Banana'}];
-    $scope.selectedFruit = null;
-
 	var c = this;
 	c.targetOrg = c.data.selectedOrgID;
 	c.usePivot = true;
@@ -21,6 +13,7 @@
 	c.selectedBudgetType = "Baseline";
 	c.datesSelected = false;
 	c.selectedProject = "";
+	c.groupOrgs = false;
 
 	if (c.data.projects.length > 0 && c.data.reportType == "phasing")
 		c.selectedProject = c.data.projects[0].value;
@@ -99,51 +92,47 @@
 
 	c.generateReport = function () {
 
-		var reportObj = {
-            mode: 'buildReport',
-            orgs: c.targetOrg
-		};
+		if (c.targetOrg != "") {
 
-		if (c.data.reportType == "budget_plans" || c.data.reportType == "phasing")
-			reportObj.budget_type = c.selectedBudgetType;
+			var reportObj = {
+				mode: 'buildReport',
+				orgs: c.targetOrg
+			};
 
-		if (c.data.reportType == "phasing")
-			reportObj.project = c.selectedProject;
+			c.groupOrgs = false;
 
-		if (c.data.reportType == "obligation")
-			reportObj.obStatus = c.selectedObligationType;
+			if(c.targetOrg.indexOf(",") > -1)
+				c.groupOrgs = true;
 
-		if (c.data.reportType == "financial_transaction") {
-			reportObj.start_date = parseDate(c.startdt.value);
-			reportObj.end_date = parseDate(c.enddt.value);
-		} else {
-			reportObj.fy = c.selectedFY;
-		}
+			if (c.data.reportType == "budget_plans" || c.data.reportType == "phasing")
+				reportObj.budget_type = c.selectedBudgetType;
 
+			if (c.data.reportType == "phasing")
+				reportObj.project = c.selectedProject;
 
-		c.server.get(reportObj).then(function (reportResults) {
-			c.reportData = reportResults.data.reportData;
-			gridOptions.api.setColumnDefs(generateColumns());
-			gridOptions.api.setRowData(c.reportData);
-			if (c.data.reportType != "phasing")
-				gridOptions.api.sizeColumnsToFit();
-			if (c.data.reportType == "financial_transaction" || c.data.reportType == "phasing"){
-				c.toggleExpand(true);
+			if (c.data.reportType == "obligation")
+				reportObj.obStatus = c.selectedObligationType;
+
+			if (c.data.reportType == "financial_transaction") {
+				reportObj.start_date = parseDate(c.startdt.value);
+				reportObj.end_date = parseDate(c.enddt.value);
+			} else {
+				reportObj.fy = c.selectedFY;
 			}
-				
-		});
-	}
 
-	/*c.filterStuff = function() {
-		var remainingFilter = gridOptions.api.getFilterInstance('trans_amount');
-				remainingFilter.setModel({
-					type: 'greaterThan',
-					filter: 100000,
-					filterTo: null,
-				});
-				
-				gridOptions.api.onFilterChanged();
-	}*/
+			c.server.get(reportObj).then(function (reportResults) {
+				c.reportData = reportResults.data.reportData;
+				gridOptions.api.setColumnDefs(generateColumns());
+				gridOptions.api.setRowData(c.reportData);
+				if (c.data.reportType != "phasing")
+					gridOptions.api.sizeColumnsToFit();
+				if (c.data.reportType == "financial_transaction" || c.data.reportType == "phasing"){
+					c.toggleExpand(true);
+				}
+					
+			});
+		}
+	}
 	
 	c.getReportTitle = function() {
 		var title = "";
@@ -303,7 +292,7 @@
                 field: 'budget_code',
                 enableRowGroup: true,
 				rowGroup: true,
-				rowGroupIndex: 0,
+				rowGroupIndex: 1,
 				filter: true,
 				hide: c.hideValues,
 				minWidth: 225
@@ -313,7 +302,7 @@
                 field: 'activity_code',
 				enableRowGroup: true,
 				rowGroup: true,
-				rowGroupIndex: 1,
+				rowGroupIndex: 2,
 				filter: true,
 				hide: c.hideValues,
 				minWidth: 175
@@ -355,15 +344,25 @@
 			});
 			
 		}
-		
-		colArray.push({
+
+		var orgCol = {
 			headerName: 'Organization',
 			field: 'org_name',
 			enablePivot: true,
 			enableRowGroup: true,
+			rowGroup: c.groupOrgs,
 			filter: true,
 			hide: c.hideValues
-		});
+		};
+
+		if (c.groupOrgs) {
+			orgCol.rowGroup = true;
+			orgCol.rowGroupIndex = 0;
+		}
+
+		colArray.push(orgCol);
+
+
 		if (c.data.reportType != "phasing") {
 			colArray.push({
 				headerName: 'Project',
@@ -2601,14 +2600,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>783</sys_mod_count>
+        <sys_mod_count>788</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-12-04 16:10:22</sys_updated_on>
+        <sys_updated_on>2020-12-07 15:40:42</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
