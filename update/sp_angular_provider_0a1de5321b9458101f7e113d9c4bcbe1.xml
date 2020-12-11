@@ -256,7 +256,7 @@
 		var formView = "portal";
 		var gridOptions = {
 			defaultColDef: {
-				editable: false,
+				editable: true,
 				sortable: true,
 				resizable: true,
 				filter: false,
@@ -271,7 +271,8 @@
 			suppressAggFuncInHeader: true,
 			groupSuppressAutoColumn: true,
 			groupDefaultExpanded: 0,
-			rowSelection: 'single',
+			enableRangeSelection: true,
+  			rowSelection: 'multiple',
 			//floatingFilter: true,
 			pagination: true,
 			paginateChildRows: false,
@@ -303,7 +304,7 @@
 							item.colDef.cellRendererParams(params).editType &&
 							item.colDef.cellRendererParams(params).editType == 'inline') return true;
 					}))
-					inlineEdit(activeTable, params.node.rowIndex);
+					inlineEdit(activeTable, params);
 			},
 			onCellEditingStarted: function (event) {
 				oldEditVal = event.value;
@@ -395,13 +396,16 @@
 			gridOptions.api.paginationSetPageSize(Number(value));
 		}
 
-		var inlineEdit = function (table, row) {
+		var inlineEdit = function (table, params) {
 			activeTable = table;
 			gridOptions.editType = 'fullRow';
 			gridOptions.api.startEditingCell({
-				rowIndex: row,
+				rowIndex: params.node.rowIndex,
 				colKey: gridOptions.columnApi.getAllDisplayedColumns().filter(function (col) {
-					return col.getColDef().editable == true;
+					if (typeof(col.getColDef().editable) === "function")
+						return col.getColDef().editable(params);
+					else
+						return col.getColDef().editable == true;
 				})[0]
 			});
 		};
@@ -882,7 +886,7 @@
 						if (!('editType' in params) || params.editType == 'popup')
 							editGridRow(tID, "", tTable, (params.banner || pageName || null), tGrid);
 						else
-							inlineEdit(tTable, params.node.rowIndex);
+							inlineEdit(tTable, params);
 					};
 					this.eButton.addEventListener('click', this.eventListener);
 				}
@@ -1154,14 +1158,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>799</sys_mod_count>
+        <sys_mod_count>804</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-11-30 17:45:48</sys_updated_on>
+        <sys_updated_on>2020-12-10 16:43:31</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

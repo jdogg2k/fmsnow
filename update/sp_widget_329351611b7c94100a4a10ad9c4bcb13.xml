@@ -114,7 +114,7 @@
             budget_type: type,
             fy: c.data.selBudget.fy_rawval
         }).then(function(resp) {
-			$location.url("/fms?id=budget_detail&budget_id=" + resp.data.selBudget.sys_id);
+			c.setNewLocation(resp.data.selBudget);
         });
     };
 
@@ -167,7 +167,7 @@
             mode: "newRevision",
             budget_id: c.data.selBudget.sys_id
         }).then(function(resp) {
-            c.budgetChanged(resp.data.selBudget);
+			c.setNewLocation(resp.data.selBudget);
         });
     };
     c.newVersion = function() {
@@ -175,17 +175,25 @@
             mode: "newVersion",
             budget_id: c.data.selBudget.sys_id
         }).then(function(resp) {
-            c.budgetChanged(resp.data.selBudget);
+            c.setNewLocation(resp.data.selBudget);
         });
     };
     c.newCopy = function(type, fy) {
+		if (!(type || fy)) {
+			alert('Please select a budget type and/or fiscal year.');
+			return;
+		}
+		if (type == c.data.selBudget.budget_type && fy == c.data.selBudget.fy) {
+			alert('Budget type and/or fiscal year should be different than source budget.');
+			return;
+		}
         c.server.get({
             mode: "newCopy",
             budget_id: c.data.selBudget.sys_id,
             budget_fy: fy,
             budget_type: type
         }).then(function(resp) {
-            c.budgetChanged(resp.data.selBudget);
+            c.setNewLocation(resp.data.selBudget);
         });
     };
     c.lockBudget = function() {
@@ -220,6 +228,10 @@
 			proj_id: bud.project_ref,
 			fy: bud.fy
 		});
+	};
+
+	c.setNewLocation = function(bud) {
+		$location.url('/fms?id=budget_detail&budget_id=' + bud.sys_id);
 	};
 
 	$rootScope.$on('BudgetChanged', function(event, args) {
@@ -401,14 +413,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-15 11:52:52</sys_created_on>
         <sys_id>329351611b7c94100a4a10ad9c4bcb13</sys_id>
-        <sys_mod_count>335</sys_mod_count>
+        <sys_mod_count>345</sys_mod_count>
         <sys_name>Budget Detail</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_329351611b7c94100a4a10ad9c4bcb13</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-11-02 22:45:40</sys_updated_on>
+        <sys_updated_on>2020-12-10 12:20:19</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
   <widget id="organization_selection" options='{"hide_widget": true, "hide_project": true}'></widget>
   <div class="container" style="padding: 0px;">
@@ -543,16 +555,16 @@
               <div class="col-sm-6">
                 <div class="row">
                   <div class="col-sm-3 text-right" style="padding: 0px;">
-                    <label for="newFY">Fiscal Year:</label>
+                    <label for="newFY" style="padding: 6px;">Fiscal Year:</label>
                   </div>
-                  <div class="col-sm-3">  
+                  <div class="col-sm-3" style="padding: 0px;">  
                     <select class="form-control" id="newFY" style="width: 100px;" ng-model="c.data.newFY">
                         <option ng-repeat="year in data.fiscalYears" value="{{year}}">{{year}}
                         </option>
                     </select>
                   </div>
                   <div class="col-sm-3 text-right" style="padding: 0px;">
-                    <label for="newType">Budget Type:</label>
+                    <label for="newType" style="padding: 6px;">Budget Type:</label>
                   </div>
                   <div class="col-sm-3" style="padding: 0px;">  
                     <select class="form-control" id="newType" style="width: 100px;" ng-model="c.data.newType">
@@ -562,9 +574,13 @@
                     </select>
                   </div>
                 </div>
-                <div class="row" style="text-align: center; padding-top: 10px;">  
-	              <a href="javascript:void(0)" ng-click="c.newCopy(c.data.newType, c.data.newFY);" class="btn btn-info" title="Create a new copy when the budget type or fiscal year changes.">
-                    Create New Copy</a>
+                <div class="row" style="text-align: center; padding-top: 10px;">
+                  <div class="col-sm-3 text-right" style="padding: 0px;"></div>
+                  <div class="col-sm-9 text-center" style="padding: 0px;">
+	              	<a href="javascript:void(0)" ng-click="c.newCopy(c.data.newType, c.data.newFY);" class="btn btn-info" title="Create a new copy when the budget type or fiscal year changes.">
+                    	Create New Copy
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

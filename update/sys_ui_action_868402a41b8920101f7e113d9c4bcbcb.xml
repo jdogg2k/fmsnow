@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_ui_action">
+    <sys_ui_action action="INSERT_OR_UPDATE">
+        <action_name>sysverb_fms_generate</action_name>
+        <active>true</active>
+        <client>false</client>
+        <client_script_v2><![CDATA[function onClick(g_form) {
+
+}]]></client_script_v2>
+        <comments/>
+        <condition/>
+        <form_action>false</form_action>
+        <form_button>false</form_button>
+        <form_button_v2>false</form_button_v2>
+        <form_context_menu>false</form_context_menu>
+        <form_link>false</form_link>
+        <form_menu_button_v2>false</form_menu_button_v2>
+        <form_style/>
+        <hint/>
+        <isolate_script>false</isolate_script>
+        <list_action>true</list_action>
+        <list_banner_button>true</list_banner_button>
+        <list_button>false</list_button>
+        <list_choice>false</list_choice>
+        <list_context_menu>false</list_context_menu>
+        <list_link>false</list_link>
+        <list_save_with_form_button>false</list_save_with_form_button>
+        <list_style>primary</list_style>
+        <name>Generate FMS Releases</name>
+        <onclick/>
+        <order>100</order>
+        <script><![CDATA[var gr = new GlideRecord("rm_release_scrum");
+gr.addEncodedQuery('short_descriptionSTARTSWITHFMS Release');
+gr.orderByDesc('short_description');
+gr.query();
+if (gr.next()) {
+    var desc = gr.getValue('short_description');
+
+    var b = desc.split('Release v');
+    var c = b[1].split('.');
+    var d = b[1].replace(".", "");
+    var e = parseInt(d.replace(".", ""));
+
+    for (var i = 0; i < 25; i++) {
+        e++;
+        gr.initialize();
+        e = e.toString();
+        var h = e.split("");
+        gr.short_description = 'FMS Release v' + h[0] + "." + h[1] + "." + h[2];
+
+        var dateTimeNow = new GlideDateTime().getDisplayValue();
+
+        var dateTimeNow = new GlideDateTime().getDisplayValue();
+        gr.start_date = dateTimeNow;
+        var gdt = new GlideDateTime(dateTimeNow);
+        gdt.addDaysLocalTime(7);
+        var futuredate = gdt.getLocalDate();
+        gr.end_date = futuredate;
+        gr.duration = '07 00:00:00';
+        gr.state = '1';
+        gr.insert();
+
+
+
+    }
+
+}
+
+action.setRedirectURL('/rm_release_scrum_list.do?sysparm_nostack=true&sysparm_userpref_module=359f285c1b8de0101f7e113d9c4bcb91&sysparm_query=short_descriptionSTARTSWITHFMS+Release%5EEQ');]]></script>
+        <show_insert>true</show_insert>
+        <show_multiple_update>false</show_multiple_update>
+        <show_query>false</show_query>
+        <show_update>true</show_update>
+        <sys_class_name>sys_ui_action</sys_class_name>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2020-12-09 19:50:10</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>868402a41b8920101f7e113d9c4bcbcb</sys_id>
+        <sys_mod_count>30</sys_mod_count>
+        <sys_name>Generate FMS Releases</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_ui_action_868402a41b8920101f7e113d9c4bcbcb</sys_update_name>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2020-12-11 16:56:39</sys_updated_on>
+        <table>rm_release_scrum</table>
+        <ui11_compatible>true</ui11_compatible>
+        <ui16_compatible>false</ui16_compatible>
+    </sys_ui_action>
+</record_update>
