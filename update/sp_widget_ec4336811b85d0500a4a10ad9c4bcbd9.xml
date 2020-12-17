@@ -423,6 +423,17 @@
 			hide: c.hideValues
 		});
 
+		colArray.push({
+            headerName: 'IT Tower',
+            field: 'it_tower',
+			colId: 'it_tower',
+            pivot: false,
+            enablePivot: true,
+            enableRowGroup: true,
+			filter: true,
+			hide: true
+		});
+
 		if (c.data.reportType == "budget_plans") {
 			colArray.push({
                 headerName: 'Budget Amount',
@@ -1534,7 +1545,9 @@
 		newObj.org_name = tItem.org_name;
 		newObj.project = tItem.project;
 		newObj.omb_project = tItem.omb_project;
-		newObj.project_ref = tItem.project_ref;
+        newObj.project_ref = tItem.project_ref;
+        newObj.it_tower_ref = tItem.it_tower_ref;
+        newObj.it_tower = tItem.it_tower;
 		newObj.investment = tItem.investment;
 		newObj.activity_code = tItem.activity_code;
 		newObj.budget_code = tItem.budget_code;
@@ -1588,7 +1601,9 @@
 		baseSupObj.org_name = calcQ.proj_organization_ref.getDisplayValue();
 		baseSupObj.project = calcQ.ft_project_ref.getDisplayValue();
 		baseSupObj.omb_project = calcQ.ft_project_ref.omb_project_name.toString();
-		baseSupObj.project_ref = calcQ.ft_project_ref.toString();
+        baseSupObj.project_ref = calcQ.ft_project_ref.toString();
+        baseSupObj.it_tower_ref = calcQ.ft_project_ref.it_tower.toString();
+        baseSupObj.it_tower = calcQ.ft_project_ref.it_tower.getDisplayValue();
 		baseSupObj.investment = calcQ.proj_investment.investment.getDisplayValue();
 		baseSupObj.activity_code = expItemRec.activity_code.toString();
 		baseSupObj.budget_code = expItemRec.budget_code_ref.getDisplayValue();
@@ -1620,7 +1635,9 @@
 		dueInBaseObj.org_name = dueInBaseline.budget_ref.project_ref.organization_ref.getDisplayValue();
 		dueInBaseObj.project = dueInBaseline.budget_ref.project_ref.getDisplayValue();
 		dueInBaseObj.omb_project = dueInBaseline.budget_ref.project_ref.omb_project_name.toString();
-		dueInBaseObj.project_ref = dueInBaseline.budget_ref.project_ref.toString();
+        dueInBaseObj.project_ref = dueInBaseline.budget_ref.project_ref.toString();
+        dueInBaseObj.it_tower_ref = dueInBaseline.budget_ref.project_ref.it_tower.toString();
+        dueInBaseObj.it_tower = dueInBaseline.budget_ref.project_ref.it_tower.getDisplayValue();
 		dueInBaseObj.investment = dueInBaseline.budget_ref.project_ref.investment.investment.toString();
 		dueInBaseObj.activity_code = dueInBaseline.expense_item_ref.activity_code.toString();
 		dueInBaseObj.budget_code = dueInBaseline.expense_item_ref.budget_code_ref.getDisplayValue();
@@ -1721,6 +1738,7 @@
                             }
                             tMonthObj.org_name = oCode;
                             tMonthObj.project = pCode;
+                            tMonthObj.it_tower = monthlyQ.ft_project_ref.it_tower.getDisplayValue();
                             tMonthObj.investment = iCode;
                             tMonthObj.omb_project = monthlyQ.ft_project_ref.omb_project_name.toString();
                             for (var mCount = 1; mCount <= 12; mCount++) {
@@ -1777,6 +1795,8 @@
                             reportObj.project = projQ.project_ref.getDisplayValue();
                             reportObj.project_ref = projVal;
                             reportObj.omb_project = projQ.project_ref.omb_project_name.toString();
+                            reportObj.it_tower_ref = projQ.project_ref.it_tower.toString();
+                            reportObj.it_tower = projQ.project_ref.it_tower.getDisplayValue();
                             reportObj.investment = projQ.project_ref.investment.investment.getDisplayValue();
                             reportObj.appropriation_type = projQ.appropriation_ref.appropriation_ref.appropriation_type.getDisplayValue();
                             reportObj.appropriation_type_ref = projQ.appropriation_ref.appropriation_ref.appropriation_type.toString();
@@ -1796,6 +1816,8 @@
                             reportObj.balance = 0;
 
                         }
+
+                        //JLR continue here
 
                         if (projQ.fund_source == "Allocation")
                             reportObj.allocations += parseFloat(projQ.getAggregate("SUM", "allocation_amt"));
@@ -1858,6 +1880,8 @@
                             endObj.investment = endQ.proj_investment.investment.getDisplayValue();
                             //endObj.appropriation_type = endQ.ft_project_appropriation_ref.appropriation_ref.appropration_type.getDisplayValue();
                             //endObj.appropriation_type_ref = endQ.ft_project_appropriation_ref.appropriation_ref.appropration_type.toString();
+                            endObj.it_tower_ref = endQ.ft_project_ref.it_tower.toString();
+                            endObj.it_tower = endQ.ft_project_ref.it_tower.getDisplayValue();
                             endObj.appropriation_type = "";
                             endObj.appropriation_type_ref = "";
                             endObj.appropriation = endQ.ft_project_appropriation_ref.appropriation_ref.getDisplayValue();
@@ -1968,6 +1992,8 @@
                             reportObj.project = baseQ.budget_ref.project_ref.getDisplayValue();
                             reportObj.omb_project = baseQ.budget_ref.project_ref.omb_project_name.toString();
                             reportObj.project_ref = baseQ.budget_ref.project_ref.toString();
+                            reportObj.it_tower_ref = baseQ.budget_ref.project_ref.it_tower.toString();
+                            reportObj.it_tower = baseQ.budget_ref.project_ref.it_tower.getDisplayValue();
                             reportObj.investment = baseQ.budget_ref.project_ref.investment.investment.toString();
                             reportObj.activity_code = expItemRec.activity_code.toString();
                             reportObj.budget_code = expItemRec.budget_code_ref.getDisplayValue();
@@ -2107,6 +2133,8 @@
                         finTranObj.project_ref = finTranQ.fin_tran_ref.project_ref.toString();
                         finTranObj.omb_project = finTranQ.fin_tran_ref.project_ref.omb_project_name.toString();
                         finTranObj.omb_category = finTranQ.omb_category_ref.getDisplayValue();
+                        finTranObj.it_tower_ref = finTranQ.it_tower.toString();
+                        finTranObj.it_tower = finTranQ.it_tower.getDisplayValue();
                         finTranObj.investment = finTranQ.fin_tran_ref.project_ref.investment.getDisplayValue();
                         finTranObj.appropriation = finTranQ.fin_tran_ref.project_appropriation_ref.appropriation_ref.getDisplayValue();
                         finTranObj.appropriation_ref = finTranQ.fin_tran_ref.project_appropriation_ref.appropriation_ref.toString();
@@ -2358,6 +2386,8 @@
                             phaseItem.project = phaseQuery.budget_item_ref.budget_ref.project_ref.getDisplayValue();
                             phaseItem.omb_project = phaseQuery.budget_item_ref.budget_ref.project_ref.omb_project_name.toString();
                             phaseItem.project_ref = phaseProject;
+                            phaseItem.it_tower_ref = phaseQuery.budget_item_ref.budget_ref.project_ref.it_tower.toString();
+                            phaseItem.it_tower = phaseQuery.budget_item_ref.budget_ref.project_ref.it_tower.getDisplayValue();
                             phaseItem.investment = phaseQuery.budget_item_ref.budget_ref.project_ref.investment.investment.toString();
                             phaseItem.activity_code = phaseQuery.budget_item_ref.expense_item_ref.activity_code.toString();
                             phaseItem.budget_code = phaseQuery.budget_item_ref.expense_item_ref.budget_code_ref.getDisplayValue();
@@ -2416,6 +2446,8 @@
                             phasingItem.org_name = phasingQuery.budget_item_ref.budget_ref.project_ref.organization_ref.getDisplayValue();
                             phasingItem.omb_project = phasingQuery.budget_item_ref.budget_ref.project_ref.omb_project_name.toString();
                             phasingItem.project_ref = phasingQuery.budget_item_ref.budget_ref.project_ref.toString();
+                            phasingItem.it_tower_ref = phasingQuery.budget_item_ref.budget_ref.project_ref.it_tower.toString();
+                            phasingItem.it_tower = phasingQuery.budget_item_ref.budget_ref.project_ref.it_tower.getDisplayValue();
                             phasingItem.investment = phasingQuery.budget_item_ref.budget_ref.project_ref.investment.investment.toString();
                             phasingItem.activity_code = phasingActivity;
                             phasingItem.budget_code = phasingBudget;
@@ -2750,14 +2782,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>821</sys_mod_count>
+        <sys_mod_count>824</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-12-10 16:24:35</sys_updated_on>
+        <sys_updated_on>2020-12-17 16:14:02</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">

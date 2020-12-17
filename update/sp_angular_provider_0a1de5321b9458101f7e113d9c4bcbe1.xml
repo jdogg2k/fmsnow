@@ -304,7 +304,7 @@
 							item.colDef.cellRendererParams(params).editType &&
 							item.colDef.cellRendererParams(params).editType == 'inline') return true;
 					}))
-					inlineEdit(activeTable, params);
+					if (params.colDef.field != "delete") inlineEdit(activeTable, params);
 			},
 			onCellEditingStarted: function (event) {
 				oldEditVal = event.value;
@@ -790,6 +790,8 @@
 					getRowNodeId: function (data) {
 						return data.sys_id;
 					},
+					enableRangeSelection: true,
+					rowSelection: 'multiple',
 					suppressAggFuncInHeader: true,
 					groupSuppressAutoColumn: true,
 					groupIncludeTotalFooter: true,
@@ -1158,14 +1160,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>804</sys_mod_count>
+        <sys_mod_count>806</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-12-10 16:43:31</sys_updated_on>
+        <sys_updated_on>2020-12-15 15:38:52</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

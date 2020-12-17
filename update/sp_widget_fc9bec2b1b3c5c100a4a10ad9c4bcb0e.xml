@@ -9,13 +9,38 @@
     c.userAuth = $rootScope.userAuth;
     c.addingNewTrans = false;
 
-    $scope.selYear = {
-        displayValue: c.data.selectedFY,
-        value: c.data.selectedFY,
-        name: 'selYear'
-    };
-
     var fintranManager = new AGGridFactory();
+
+    $(document).ready(function() {
+
+        $.each(c.data.fiscalYears, function( index, value ) {
+            $('#yearSelect').append("<option value='" + value + "'>" + value + "</option>");
+        });
+        
+        $('#yearSelect').select2({
+            placeholder: 'Select a Year'
+        }).val(c.data.selectedFY).trigger('change');
+        
+        $('#yearSelect').on('change', function (e) {
+            if (e.val.length > 0) {
+                c.server.get({
+                    mode: "getTransData",
+                    selFY: e.val.join(",")
+                }).then(function(resp) {
+                    var model = fintranManager.gridOpts.api.getFilterModel();
+                    fintranManager.setGridData(resp.data.tableData); //set grid data
+                    fintranManager.gridOpts.api.setFilterModel(model);
+                    fintranManager.setGridFilter('fy', 'equals', args.fy);
+                });
+            } else {
+                var model = fintranManager.gridOpts.api.getFilterModel();
+                fintranManager.setGridData([]); //set grid data
+                fintranManager.gridOpts.api.setFilterModel(model);
+                spUtil.addInfoMessage("Please select a valid fiscal year...");
+            }
+        });
+
+    });
 
     c.addNew = function () {
         fintranManager.editRow("-1", "project_ref=" + c.targetProj, c.data.tableName);
@@ -46,7 +71,8 @@
     }
 
     c.exportExcel = function () {
-        fintranManager.exportExcel();
+        //fintranManager.exportExcel();
+        console.log($('#yearSelect').select2('data'));
     }
 
     var fintranColumnDefs = [{
@@ -368,20 +394,6 @@
         fintranManager.fitColumns();
     }, 250);
 
-    $scope.$on("field.change", function(evt, parms) {
-        c.server.get({
-            mode: "getData",
-            selFY: parms.newValue
-        }).then(function(resp) {
-            var model = fintranManager.gridOpts.api.getFilterModel();
-            fintranManager.setGridData(resp.data.tableData); //set grid data
-            fintranManager.gridOpts.api.setFilterModel(model);
-            fintranManager.setGridFilter('fy', 'equals', args.fy);
-        });
-    });
-
-    
-
     $rootScope.$on('fmsgrid.recordAdded.refresh', function (event, args) { //branch out proper row on transaction add
 
         var targetSys = args.sys_id;
@@ -447,12 +459,15 @@
 
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.yearSelection {&#13;
-    float: left;&#13;
-    margin-right: 5px;&#13;
-}&#13;
-.yearLabel {&#13;
-    margin-top: 5px;&#13;
+        <css>.yearSelection {
+    float: left;
+    margin-right: 5px;
+}
+.yearLabel {
+    margin-top: 5px;
+}
+.select2-input {
+    min-width: 100px !important;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -473,7 +488,7 @@
 
 	data.selectedOrg = "";
     data.selectedProj = "";
-
+    data.selectedFY = "";
 
 
 	//	gs.addInfoMessage("load"+data.selectedProj+"test");
@@ -483,7 +498,9 @@
 	if (session.getClientData('org_id') && session.getClientData('org_id').length > 0)
 		data.selectedOrg = session.getClientData('org_id');
 	if (session.getClientData('proj_id') && session.getClientData('proj_id').length > 0)
-		data.selectedProj = session.getClientData('proj_id');
+        data.selectedProj = session.getClientData('proj_id');
+    if (session.getClientData('fintran_fy') && session.getClientData('fintran_fy').length > 0)
+		data.selectedFY = session.getClientData('fintran_fy');
 
     if (input) { //input holds the data coming back to the server
 
@@ -521,8 +538,9 @@
         if (input.mode == "setProj") {
             data.selectedProj = input.proj_id.toString();
         }
-        if (input.mode == "getData") {
+        if (input.mode == "getTransData") {
             data.selectedFY = input.selFY.toString();
+            session.putClientData('fintran_fy', data.selectedFY);
         }
 
 	} else if ($sp.getParameter("budget_id") && $sp.getParameter("budget_id").length > 0) {
@@ -532,6 +550,7 @@
     } else {
         data.fiscalYears = FMSUtility.getFiscalYears();
         data.selectedFY = FMSUtility.getCurrentFY();
+        session.putClientData('fintran_fy', data.selectedFY);
     }
 
     //var filter = "fy=2021"; make FYs come from client control
@@ -555,16 +574,16 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-21 14:05:50</sys_created_on>
         <sys_id>fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_id>
-        <sys_mod_count>339</sys_mod_count>
+        <sys_mod_count>389</sys_mod_count>
         <sys_name>Financial Transaction Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_update_name>
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-12-09 21:12:21</sys_updated_on>
+        <sys_updated_on>2020-12-15 21:38:39</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
-
+  <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
     <div class="container">
       <div class="row">
         <div class="form-group col-sm-12 fms-list-header">
@@ -573,7 +592,7 @@
                 Fiscal Years Loaded: 
             </div>
             <div class="yearSelection"> 
-                <sn-record-picker field="selYear" table="'sys_choice'" multiple="true" default-query="'name=x_g_irm_fms_allocation_pool^element=fy'" display-field="'value'" value-field="'value'" search-fields="'value'" page-size="100" ></sn-record-picker>
+              <select id="yearSelect" class="js-example-basic-multiple" multiple="multiple"/>
             </div>
               
             <a href="javascript:void(0)" ng-click="c.exportExcel();" class="btn btn-primary excel-button">Export to Excel</a>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_fix">
+    <sys_script_fix action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <before>false</before>
+        <description>Forces all non-true disabled appropriations to false</description>
+        <flush_cache>false</flush_cache>
+        <name>Default Approp and Type to NOT Disabled</name>
+        <record_for_rollback>false</record_for_rollback>
+        <run_once>true</run_once>
+        <script><![CDATA[var gr = new GlideRecord("x_g_irm_fms_appropriation");
+gr.addEncodedQuery("disabled!=true^ORdisabledISEMPTY");
+gr.query();
+while (gr.next()) {
+	gr.disabled = false;
+	gr.setWorkflow(false);
+	gr.autoSysFields(false);
+	gr.update();
+}
+
+var grapp = new GlideRecord("x_g_irm_fms_appropriation_type");
+grapp.addEncodedQuery("disabled!=true^ORdisabledISEMPTY");
+grapp.query();
+while (grapp.next()) {
+	grapp.disabled = false;
+	grapp.setWorkflow(false);
+	grapp.autoSysFields(false);
+	grapp.update();
+}]]></script>
+        <sys_class_name>sys_script_fix</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2020-12-14 16:21:01</sys_created_on>
+        <sys_id>093b8b821b41a4100a4a10ad9c4bcbfb</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Default Approp and Type to NOT Disabled</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_script_fix_093b8b821b41a4100a4a10ad9c4bcbfb</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2020-12-15 21:50:19</sys_updated_on>
+        <unloadable>false</unloadable>
+    </sys_script_fix>
+</record_update>

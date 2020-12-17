@@ -191,7 +191,8 @@
             headerName: 'Del.',
             maxWidth: 50,
             cellStyle: {
-                textAlign: 'center'
+                textAlign: 'center',
+				border: 'none'
             },
             suppressMenu: true,
             sortable: false,
@@ -243,7 +244,7 @@
     $rootScope.$on('BudgetChanged', function(event, args) {
         RefreshGrid(args.budget_id);
     });
-    $rootScope.$on('fmsgrid.recordAdded', function(event, args) {
+    $rootScope.$on('fmsgrid.recordAdded.refresh', function(event, args) {
         $timeout(function() {
             RefreshCells(args.table);
         }, 250);
@@ -351,14 +352,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-19 17:42:10</sys_created_on>
         <sys_id>dae98bfe1bb8d8100a4a10ad9c4bcb9f</sys_id>
-        <sys_mod_count>159</sys_mod_count>
+        <sys_mod_count>164</sys_mod_count>
         <sys_name>Budget Item Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_dae98bfe1bb8d8100a4a10ad9c4bcb9f</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-12-11 13:33:28</sys_updated_on>
+        <sys_updated_on>2020-12-15 11:58:56</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
   <div class="container">
     <div class="row">
