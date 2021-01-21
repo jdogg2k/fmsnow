@@ -307,7 +307,7 @@
         <roles/>
         <script><![CDATA[(function() {
 
-	data.selectedBudget = "";
+	data.selectedBudget = ""; 
     var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
     var budgetUtil = new x_g_irm_fms.FMSBudgetUtils(); //helper utility for budget
     var fintranUtil = new x_g_irm_fms.FMSFinTran(); //helper utility for financial trans
@@ -336,7 +336,7 @@
 		budgetUtil.updateActual(data.budgetData.sys_id);
 	}
 	if (data.budgetData && data.budgetData.budget_type == "Execution") {
-		data.allocAmt = fintranUtil.getAllocationTotal(data.budgetData.project_ref_rawval, null, data.budgetData.fy);
+		data.allocAmt = fintranUtil.getAllocationTotal(data.budgetData.project_ref_rawval, data.budgetData.fy_rawval, null, null);
 	}
     data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET_ITEM, "budget_ref=" + data.selectedBudget, true, itemInclude); 
 
@@ -352,14 +352,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-19 17:42:10</sys_created_on>
         <sys_id>dae98bfe1bb8d8100a4a10ad9c4bcb9f</sys_id>
-        <sys_mod_count>164</sys_mod_count>
+        <sys_mod_count>167</sys_mod_count>
         <sys_name>Budget Item Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_dae98bfe1bb8d8100a4a10ad9c4bcb9f</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-12-15 11:58:56</sys_updated_on>
+        <sys_updated_on>2021-01-20 13:12:10</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
   <div class="container">
     <div class="row">

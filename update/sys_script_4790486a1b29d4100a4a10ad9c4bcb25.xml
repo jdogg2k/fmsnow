@@ -5,7 +5,7 @@
         <action_delete>false</action_delete>
         <action_insert>true</action_insert>
         <action_query>false</action_query>
-        <action_update>false</action_update>
+        <action_update>true</action_update>
         <active>true</active>
         <add_message>false</add_message>
         <advanced>true</advanced>
@@ -32,6 +32,7 @@
      var newID = current.number;
     var uniqueCheck = new GlideRecord(FMSConstants.TABLE_ALLOCATION_POOL);
     uniqueCheck.addQuery("number", newID);
+	uniqueCheck.addQuery('sys_id', '!=', current.sys_id);
     uniqueCheck.query();
     if (uniqueCheck.next()) { //we have existing records with that ID, notify and cancel update
         gs.addErrorMessage("Allocation Pool ID " + newID + " is not unique. That value already exists on an existing Allocation Pool.  Update Failed.");
@@ -44,7 +45,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>4790486a1b29d4100a4a10ad9c4bcb25</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>1</sys_mod_count>
         <sys_name>Allocation Pool Unique Validation</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
@@ -52,7 +53,7 @@
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_4790486a1b29d4100a4a10ad9c4bcb25</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-06-24 15:11:16</sys_updated_on>
+        <sys_updated_on>2020-12-30 20:43:08</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>
