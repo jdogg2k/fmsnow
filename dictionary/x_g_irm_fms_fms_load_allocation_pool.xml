@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element extends="sys_import_set_row" label="FMS Load Allocation Pool" max_length="40" name="x_g_irm_fms_fms_load_allocation_pool" type="collection">
+    <element extends="sys_import_set_row" label="FMS Load Allocation Pool" max_length="40" name="x_g_irm_fms_fms_load_allocation_pool" sizeclass="0" type="collection">
         <element attributes="import_attribute_name=Allocated Amount" label="Allocated Amount" max_length="15" name="u_allocated_amount" type="decimal"/>
         <element attributes="import_attribute_name=Allocation Org" label="Allocation Org" max_length="40" name="u_allocation_org" type="integer"/>
         <element attributes="edge_encryption_enabled=true" label="Allocation Org Code" max_length="40" name="u_allocation_org_code" type="string"/>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller=function() {
+  /* widget controller */
+  var c = this;
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description>Display and update all user preferences for a given application scope.</description>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>application_preferences</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Application Preferences</name>
+        <option_schema>[{"name":"application_scope","section":"Data","label":"Application Scope","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+
+    var applScope = $sp.getParameter('scope') || (options.application_scope ? options.application_scope.toString() : "");
+    if (applScope.length == 0) { gs.addErrorMessage("The application scope option is required."); return; }
+    var choicePrefs= [{}];
+    var pref = new GlideRecord('sys_user_preference');
+    pref.addQuery('name', 'STARTSWITH', applScope);
+    pref.addQuery('system', true);
+    pref.orderBy('name');
+    pref.query();
+    if (pref.getRowCount() == 0) { gs.addErrorMessage("No user preferences found for application scope."); return; }
+    while (pref.next()) {
+		if (pref.getValue('name').substring(applScope.length + 1) == "choice_preferences.meta") {  // should be first row, if exists
+			try { choicePrefs = JSON.parse(pref.getValue('value')); }
+			catch(err)  { gs.addErrorMessage("Error parsing choice preferences metadata."); }
+			continue;
+		}
+        options = {};
+        options.name = pref.getValue('name');
+        options.type = pref.getValue('type') || "string";
+        options.value = pref.getValue('value');
+        options.description = pref.getValue('description');
+
+		var choice = choicePrefs.filter(function(item) { return item.name == options.name; })[0];
+		if (choice) {
+            var opts = choice.choiceItems ? choice.choiceItems : [{}];
+            var def = opts.filter(function(item) { return item.isDefault == true; })[0];
+            options.value = def != null ? def.value : options.value;
+            for (var attr in choice) {
+                options[attr] = choice[attr];
+            }
+        }
+        data[options.name] = $sp.getWidget("user_preference", options);
+    }
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-01-25 13:05:26</sys_created_on>
+        <sys_id>9d11feeb1bf1a0100a4a10ad9c4bcbba</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>Application Preferences</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_widget_9d11feeb1bf1a0100a4a10ad9c4bcbba</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-01-28 19:46:16</sys_updated_on>
+        <template><![CDATA[<div style="width: 75%; height: 80%;">
+	<div class="form-group">
+        <div class="row" style="margin: 0px; padding: 0px;">
+          <ul id="prefTabs" class="nav nav-tabs fms-tabs">
+            <li class="active"><a data-toggle="tab" href="#general">General</a>
+            <li><a data-toggle="tab" href="#lists">Lists</a></li>
+            <li><a data-toggle="tab" href="#reports">Reports</a>
+          </ul>
+        </div>
+        <div class="row" style="margin: 0px; padding: 0px;">
+          <div class="tab-content" style="border: 1px solid #ddd;">
+            <div id="general" class="tab-pane active in">
+              <div class="row" style="padding: 5px;">
+              	<div class="col-md-6 text-right">Preference Description</div>
+              	<div class="col-md-5 text-left">Preferred Default Value</div>
+              	<div class="col-md-1">Clear/Reset</div>
+              </div>
+              <div style="text-align: left; margin: 5px;">
+                <sp-widget widget='data["x_g_irm_fms.general.defaultOrg"]'></sp-widget>
+              </div>
+              <div style="text-align: left; margin: 5px;">
+                <sp-widget widget='data["x_g_irm_fms.general.showClock"]'></sp-widget>
+              </div>
+              <div style="text-align: left; margin: 5px;">
+                <sp-widget widget='data["x_g_irm_fms.general.tranType"]'></sp-widget>
+              </div>
+            </div>
+            <div id="lists" class="tab-pane">
+              <div class="row" style="padding: 5px;">
+              	<div class="col-md-6 text-right">Preference Description</div>
+              	<div class="col-md-5 text-left">Preferred Default Value</div>
+              	<div class="col-md-1">Clear/Reset</div>
+              </div>
+              <div style="text-align: left; margin: 5px;">
+                <sp-widget widget='data["x_g_irm_fms.lists.pageSize"]'></sp-widget>
+              </div>
+            </div>
+            <div id="reports" class="tab-pane">
+              <div class="row" style="padding: 5px;">
+              	<div class="col-md-6 text-right">Preference Description</div>
+              	<div class="col-md-5 text-left">Preferred Default Value</div>
+              	<div class="col-md-1">Clear/Reset</div>
+              </div>
+              <div style="text-align: left; margin: 5px;">
+                <sp-widget widget='data["x_g_irm_fms.reports.test1"]'></sp-widget>
+              </div>
+              <div style="text-align: left; margin: 5px;">
+                <sp-widget widget='data["x_g_irm_fms.reports.finTranCols"]'></sp-widget>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+]]></template>
+    </sp_widget>
+</record_update>

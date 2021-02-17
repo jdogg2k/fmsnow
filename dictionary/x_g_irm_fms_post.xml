@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Post" max_length="40" name="x_g_irm_fms_post" type="collection">
+    <element label="Post" max_length="40" name="x_g_irm_fms_post" sizeclass="376" type="collection">
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element label="Post City" mandatory="true" max_length="50" name="post_city" type="string"/>
         <element label="Post Country" mandatory="true" max_length="50" name="post_country" type="string"/>

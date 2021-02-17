@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element extends="sys_import_set_row" label="FMS Load Budget" max_length="40" name="x_g_irm_fms_fms_load_budget" type="collection">
+    <element extends="sys_import_set_row" label="FMS Load Budget" max_length="40" name="x_g_irm_fms_fms_load_budget" sizeclass="0" type="collection">
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Approved Date" label="Approved Date" max_length="40" name="u_approved_date" type="glide_date"/>
         <element attributes="edge_encryption_enabled=true" label="Budget Description" max_length="40" name="u_budget_description" type="string"/>
         <element attributes="edge_encryption_enabled=true" label="Budget FY" max_length="40" name="u_budget_fy" type="string"/>

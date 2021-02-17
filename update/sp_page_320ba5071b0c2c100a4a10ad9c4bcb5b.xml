@@ -6,8 +6,10 @@
         <dynamic_title_structure/>
         <id>fms_authentication</id>
         <internal>false</internal>
+        <omit_watcher>false</omit_watcher>
         <public>false</public>
         <roles/>
+        <seo_script/>
         <short_description>FMS Login</short_description>
         <sys_class_name>sp_page</sys_class_name>
         <sys_created_by>RoseJL@state.gov</sys_created_by>
@@ -22,6 +24,7 @@
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
         <sys_updated_on>2020-10-28 18:50:29</sys_updated_on>
         <title>FMS Login</title>
+        <use_seo_script>false</use_seo_script>
     </sp_page>
     <sys_translated_text action="delete_multiple" query="documentkey=320ba5071b0c2c100a4a10ad9c4bcb5b"/>
 </record_update>

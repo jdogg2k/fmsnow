@@ -13,6 +13,7 @@
         <options>{"url":"/fms?id=budget_detail&amp;budget_id=22f002721b18a8501f7e113d9c4bcb70"}</options>
         <order>10</order>
         <placement>bottom</placement>
+        <skippable>false</skippable>
         <step_type>step</step_type>
         <sys_class_name>sys_embedded_tour_step</sys_class_name>
         <sys_created_by>MarkelJR@state.gov</sys_created_by>

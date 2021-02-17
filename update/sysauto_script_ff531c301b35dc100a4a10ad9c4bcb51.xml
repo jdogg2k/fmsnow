@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sysauto_script">
     <sysauto_script action="INSERT_OR_UPDATE">
         <active>true</active>
+        <business_calendar/>
         <condition><![CDATA[var today = new GlideDateTime();
 var gr1 = new GlideRecord("x_g_irm_fms_notification");
 gr1.query();
@@ -9,7 +10,10 @@ while(g1.next())
 		
 	}]]></condition>
         <conditional>false</conditional>
+        <entered_time/>
         <name>Contract Daily Notifications</name>
+        <offset/>
+        <offset_type>0</offset_type>
         <run_as display_value="Ajay Puri">1e2322591bd55c100a4a10ad9c4bcbc2</run_as>
         <run_as_tz/>
         <run_dayofmonth>1</run_dayofmonth>
@@ -90,6 +94,7 @@ while (gr.next()) {
         <sys_update_name>sysauto_script_ff531c301b35dc100a4a10ad9c4bcb51</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
         <sys_updated_on>2020-07-13 20:00:43</sys_updated_on>
+        <time_zone/>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

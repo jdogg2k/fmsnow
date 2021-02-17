@@ -12,8 +12,10 @@
         <dynamic_title_structure/>
         <id>project_allocation_list</id>
         <internal>false</internal>
+        <omit_watcher>false</omit_watcher>
         <public>false</public>
         <roles/>
+        <seo_script/>
         <short_description/>
         <sys_class_name>sp_page</sys_class_name>
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
@@ -28,6 +30,7 @@
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
         <sys_updated_on>2020-05-20 13:11:00</sys_updated_on>
         <title>Project Allocation List</title>
+        <use_seo_script>false</use_seo_script>
     </sp_page>
     <sys_translated_text action="delete_multiple" query="documentkey=56555f071b305c101f7e113d9c4bcbc7"/>
 </record_update>

@@ -12,8 +12,10 @@
         <dynamic_title_structure/>
         <id>allocation_pools</id>
         <internal>false</internal>
+        <omit_watcher>false</omit_watcher>
         <public>false</public>
         <roles/>
+        <seo_script/>
         <short_description/>
         <sys_class_name>sp_page</sys_class_name>
         <sys_created_by>RoseJL@state.gov</sys_created_by>
@@ -28,6 +30,7 @@
         <sys_updated_by>RoseJL@state.gov</sys_updated_by>
         <sys_updated_on>2020-05-18 17:12:16</sys_updated_on>
         <title>Allocation Pools</title>
+        <use_seo_script>false</use_seo_script>
     </sp_page>
     <sys_translated_text action="delete_multiple" query="documentkey=72693d2a1b7498100a4a10ad9c4bcb9a"/>
 </record_update>

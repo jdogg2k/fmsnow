@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Investment" max_length="40" name="x_g_irm_fms_investment" type="collection">
+    <element label="Investment" max_length="40" name="x_g_irm_fms_investment" sizeclass="6" type="collection">
         <element label="Investment" mandatory="true" max_length="8" name="investment" type="string"/>
         <element label="Investment Description" mandatory="true" max_length="50" name="investment_desc" type="string"/>
         <element calculation="(function calculatedFieldValue(current) {&#10;&#9;var display;&#10;&#9;if (current.sys_id.nil()) {&#10;&#9;&#9;display = &quot;[new investment]&quot;;&#10;&#9;}&#10;&#9;else {&#10;&#9;&#9;display = current.investment_desc.toString() + '\t\t\t\t[' + current.investment.toString() + ']'; &#10;&#9;}&#10;&#9;return display;&#10;})(current);" display="true" label="Investment display" max_length="256" name="investment_display" type="string" virtual="true"/>

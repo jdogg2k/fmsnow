@@ -1,14 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function (AGGridFactory, $timeout) {
+        <client_script><![CDATA[function ($scope,AGGridFactory, $timeout,spUtil) {
     /* widget controller */
     var c = this;
     c.targetOrg = c.data.selectedOrg;
     c.userAuth = $rootScope.userAuth;
-
+		//c.addingNewTrans = false;
+	
     var poolManager = new AGGridFactory();
 
+	 c.onload = function() {
+        $.each(c.data.fiscalYears, function( index, value ) {
+            $('#yearSelect').append("<option value='" + value + "'>" + value + "</option>");
+        });
+        
+        $('#yearSelect').select2({
+            placeholder: 'Select a Year'
+        }).val(c.data.selectedFY).trigger('change');
+        
+        $('#yearSelect').on('change', function (e) {
+            if (e.val.length > 0) {
+                c.server.get({
+                    mode: "getTransData",
+                    selFY: e.val.join(",")
+                }).then(function(resp) {
+                    var model = poolManager.gridOpts.api.getFilterModel();
+                    poolManager.setGridData(resp.data.tableData); //set grid data
+                    poolManager.gridOpts.api.setFilterModel(model);
+                    //fintranManager.setGridFilter('fy', 'equals', resp.data.selectedFY);
+                });
+            } else {
+                var model = poolManager.gridOpts.api.getFilterModel();
+                poolManager.setGridData([]); //set grid data
+                poolManager.gridOpts.api.setFilterModel(model);
+                spUtil.addInfoMessage("Please select a valid fiscal year...");
+            }
+        });
+
+    }
+	
     c.addNew = function () {
         poolManager.editRow("-1", "organization_ref=" + c.targetOrg, c.data.tableName);
     }
@@ -90,7 +121,7 @@
             }
         },
 											 
-		{
+	/*	{
             field: 'fy',
             headerName: 'FY',
             filter: 'agSetColumnFilter',
@@ -101,6 +132,14 @@
             sort: 'desc',
 			suppressMenu: true,					 
             rowGroup: true
+        },*/
+											
+				{
+            field: 'fy',
+            headerName: 'FY',
+            filter: 'agSetColumnFilter',
+            sort: 'desc',
+           rowGroup: true
         },
         {
             field: 'fy_qtr',
@@ -477,7 +516,7 @@
     poolManager.setRenderers('allocation_pool_display'); //build renderers and set display field to show on delete attempt
     poolManager.renderGrid('allocationPoolGrid'); //render grid objects
     poolManager.setGridData(c.data.tableData); //set grid data
-	  poolManager.setGridFilter('fy', 'equals', c.data.selectedFY);
+	  //poolManager.setGridFilter('fy', 'equals', c.data.selectedFY);
     poolManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst));
     poolManager.fitColumns();
 
@@ -496,7 +535,16 @@
     });
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css/>
+        <css>.yearSelection {
+    float: left;
+    margin-right: 5px;
+}
+.yearLabel {
+    margin-top: 5px;
+}
+.select2-input {
+    min-width: 100px !important;
+}</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -515,9 +563,17 @@
         <script><![CDATA[(function() {
 
     data.selectedOrg = "";
+	 data.selectedFY = "";
 
     var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
     var session = gs.getSession();
+	
+    data.pageID = $sp.getParameter("id");
+
+    if (data.selectedOrg.length == 0 && session.getClientData('org_id') && session.getClientData('org_id').length > 0)
+        data.selectedOrg = session.getClientData('org_id');
+	  if (session.getClientData('fintran_fy') && session.getClientData('fintran_fy').length > 0)
+		data.selectedFY = session.getClientData('fintran_fy');
 
     if (input) { //input holds the data coming back to the server
 
@@ -540,6 +596,11 @@
 
             data.parentRec = FMSUtility.getTableData(FMSConstants.TABLE_ALLOCATION_POOL, "sys_id=" + poolRefID, true)[0];
         }
+			 if (input.mode == "getTransData") {
+            data.selectedFY = input.selFY.toString();
+            session.putClientData('fintran_fy', data.selectedFY);
+        }
+			
 
         if (input.mode == "deleteRow") {
             
@@ -573,15 +634,13 @@
         }
     } else {
         data.fiscalYears = FMSUtility.getFiscalYears();
+        data.fiscalYears.reverse();
         data.selectedFY = FMSUtility.getCurrentFY();
+        session.putClientData('fintran_fy', data.selectedFY)
     }
-
-    data.pageID = $sp.getParameter("id");
-
-    if (data.selectedOrg.length == 0 && session.getClientData('org_id') && session.getClientData('org_id').length > 0)
-        data.selectedOrg = session.getClientData('org_id');
-
-    data.tableData = FMSUtility.getAllAllocationData(FMSConstants.TABLE_ALLOCATION_POOL, "organization_ref=" + data.selectedOrg, true);
+//"organization_ref=" + data.selectedOrg 
+ var filter =  "organization_ref=" +data.selectedOrg+"^"+"fyIN" +data.selectedFY;
+    data.tableData = FMSUtility.getAllAllocationData(FMSConstants.TABLE_ALLOCATION_POOL, filter, true);
     data.tableName = FMSConstants.TABLE_ALLOCATION_POOL;
     data.projAllocTableName = FMSConstants.TABLE_PROJECT_ALLOCATION;
 
@@ -596,16 +655,16 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-18 17:12:53</sys_created_on>
         <sys_id>eb99716a1b7498100a4a10ad9c4bcb7e</sys_id>
-        <sys_mod_count>172</sys_mod_count>
+        <sys_mod_count>179</sys_mod_count>
         <sys_name>Allocation Pool Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_eb99716a1b7498100a4a10ad9c4bcb7e</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-11-30 17:56:58</sys_updated_on>
-        <template><![CDATA[<div style="width: 100%; height: 100%">
-
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2021-01-28 17:58:43</sys_updated_on>
+        <template><![CDATA[<div style="width: 100%; height: 100%" ng-init="c.onload()">
+ <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
     <div class="container">
         <div class="row">
             <div class="form-group col-sm-12 fms-list-header">
@@ -618,6 +677,12 @@
                             </option>
                         </select>
                     </div-->
+                  <div class="yearSelection yearLabel"> 
+                Fiscal Years Loaded: 
+            </div>
+            <div class="yearSelection"> 
+              <select id="yearSelect" class="js-example-basic-multiple" multiple="multiple"/>
+            </div>
                     <a href="javascript:void(0)" ng-click="c.exportExcel();" class="btn btn-primary excel-button">Export to Excel</a>
                   <a href="javascript:void(0)" ng-click="c.addNew();" ng-show="c.canAdd()" class="btn btn-info new-button">Add Allocation Pool</a>
                 </div>

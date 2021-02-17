@@ -12,8 +12,10 @@
         <dynamic_title_structure/>
         <id>users_list</id>
         <internal>false</internal>
+        <omit_watcher>false</omit_watcher>
         <public>false</public>
         <roles/>
+        <seo_script/>
         <short_description/>
         <sys_class_name>sp_page</sys_class_name>
         <sys_created_by>PuriA@state.gov</sys_created_by>
@@ -28,6 +30,7 @@
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
         <sys_updated_on>2020-07-23 19:12:45</sys_updated_on>
         <title>Users List</title>
+        <use_seo_script>false</use_seo_script>
     </sp_page>
     <sys_translated_text action="delete_multiple" query="documentkey=94bd8a3b1b4690100a4a10ad9c4bcba4"/>
 </record_update>

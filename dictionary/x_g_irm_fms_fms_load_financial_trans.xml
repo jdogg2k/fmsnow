@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element extends="sys_import_set_row" label="FMS Load Financial Trans" max_length="40" name="x_g_irm_fms_fms_load_financial_trans" type="collection">
+    <element extends="sys_import_set_row" label="FMS Load Financial Trans" max_length="40" name="x_g_irm_fms_fms_load_financial_trans" sizeclass="0" type="collection">
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Account Number" label="Account Number" max_length="40" name="u_account_number" type="string"/>
         <element attributes="import_attribute_name=Allocation Group ID" label="Allocation Group ID" max_length="40" name="u_allocation_group_id" type="integer"/>
         <element attributes="import_attribute_name=Allotment" label="Allotment" max_length="40" name="u_allotment" type="integer"/>

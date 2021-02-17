@@ -13,6 +13,7 @@
         <options>{"url":"/fms?id=budget_list"}</options>
         <order>3</order>
         <placement>right</placement>
+        <skippable>false</skippable>
         <step_type>step</step_type>
         <sys_class_name>sys_embedded_tour_step</sys_class_name>
         <sys_created_by>MarkelJR@state.gov</sys_created_by>

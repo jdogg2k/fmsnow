@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element extends="sys_import_set_row" label="FMS Load Contract" max_length="40" name="x_g_irm_fms_fms_load_contract" type="collection">
+    <element extends="sys_import_set_row" label="FMS Load Contract" max_length="40" name="x_g_irm_fms_fms_load_contract" sizeclass="0" type="collection">
         <element attributes="import_attribute_name=AQM Delay" label="AQM Delay" max_length="40" name="u_aqm_delay" type="integer"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Award Level" label="Award Level" max_length="40" name="u_award_level" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=BaseValue" label="BaseValue" max_length="40" name="u_basevalue" type="string"/>

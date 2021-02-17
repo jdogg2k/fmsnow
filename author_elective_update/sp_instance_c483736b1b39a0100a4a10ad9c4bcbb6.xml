@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="DELETE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>1</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="2">1073336b1b39a0100a4a10ad9c4bcb99</sp_column>
+        <sp_widget display_value="Application Preferences">9d11feeb1bf1a0100a4a10ad9c4bcbba</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-01-25 17:53:14</sys_created_on>
+        <sys_id>c483736b1b39a0100a4a10ad9c4bcbb6</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_instance_c483736b1b39a0100a4a10ad9c4bcbb6</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-01-25 17:53:14</sys_updated_on>
+        <title/>
+        <url/>
+        <widget_parameters/>
+    </sp_instance>
+    <sys_translated_text action="DELETE" query="documentkey=c483736b1b39a0100a4a10ad9c4bcbb6"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sp_instance_c483736b1b39a0100a4a10ad9c4bcbb6</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance"><sp_instance action="INSERT_OR_UPDATE"><active>true</active><class_name/><color>default</color><css/><glyph/><id/><order>1</order><roles/><short_description/><size>md</size><sp_column display_value="2">1073336b1b39a0100a4a10ad9c4bcb99</sp_column><sp_widget display_value="Application Preferences">9d11feeb1bf1a0100a4a10ad9c4bcbba</sp_widget><sys_class_name>sp_instance</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-01-25 17:53:14</sys_created_on><sys_id>c483736b1b39a0100a4a10ad9c4bcbb6</sys_id><sys_mod_count>0</sys_mod_count><sys_name/><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sp_instance_c483736b1b39a0100a4a10ad9c4bcbb6</sys_update_name><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-01-25 17:53:14</sys_updated_on><title/><url/><widget_parameters/></sp_instance><sys_translated_text action="delete_multiple" query="documentkey=c483736b1b39a0100a4a10ad9c4bcbb6"/></record_update>]]></payload>
+        <payload_hash>-1543594169</payload_hash>
+        <record_name/>
+        <reverted_from/>
+        <source>9184e2af1bb1a0100a4a10ad9c4bcb27</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-01-25 17:53:14</sys_created_on>
+        <sys_id>c883736b1b39a0100a4a10ad9c4bcbb8</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1773aada5990000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-01-25 17:53:14</sys_updated_on>
+        <type>Instance</type>
+        <update_guid>c083736bcf39a0108e3a3dcefa566bb8</update_guid>
+        <update_guid_history>c083736bcf39a0108e3a3dcefa566bb8:-1543594169</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">6093f36b1b39a0100a4a10ad9c4bcb0d</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-01-25 17:53:33</sys_created_on>
+        <sys_db_object display_value="" name="sp_instance">sp_instance</sys_db_object>
+        <sys_id>b62af5b66bc74a108f94c7b4d3130900</sys_id>
+        <sys_metadata>c483736b1b39a0100a4a10ad9c4bcbb6</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sp_instance_c483736b1b39a0100a4a10ad9c4bcbb6</sys_update_name>
+        <sys_update_version display_value="sp_instance_c483736b1b39a0100a4a10ad9c4bcbb6">c883736b1b39a0100a4a10ad9c4bcbb8</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-01-25 17:53:33</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

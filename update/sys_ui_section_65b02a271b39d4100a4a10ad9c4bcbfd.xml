@@ -236,7 +236,7 @@
             <sys_domain_path>/</sys_domain_path>
             <sys_id>65b02a271b39d4100a4a10ad9c4bcbfd</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_name>Purchase Order Details</sys_name>
+            <sys_name>x_g_irm_fms_fin_tran</sys_name>
             <sys_overrides/>
             <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
             <sys_policy/>

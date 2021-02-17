@@ -22,8 +22,10 @@ th.text-nowrap.ng-scope {&#13;
         <dynamic_title_structure/>
         <id>lookup_table</id>
         <internal>false</internal>
+        <omit_watcher>false</omit_watcher>
         <public>false</public>
         <roles/>
+        <seo_script/>
         <short_description/>
         <sys_class_name>sp_page</sys_class_name>
         <sys_created_by>PuriA@state.gov</sys_created_by>
@@ -38,6 +40,7 @@ th.text-nowrap.ng-scope {&#13;
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
         <sys_updated_on>2020-07-09 17:38:43</sys_updated_on>
         <title>Lookup Table</title>
+        <use_seo_script>false</use_seo_script>
     </sp_page>
     <sys_translated_text action="delete_multiple" query="documentkey=19aa92961bb990100a4a10ad9c4bcbfe"/>
 </record_update>

@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller = function($scope, $rootScope, $timeout, spUtil) {
+    /* widget controller */
+    var c = this;
+	c.data.searchInput = "";
+    $scope.statusDD = {
+        isopen: false
+    };
+    $scope.openDD = function () {
+        $scope.statusDD.isopen = true;
+    };
+    $scope.closeDD = function () {
+        $scope.statusDD.isopen = false;
+    };
+	$scope.filterDD = function(text) { 
+		return function(item) {
+			return !text || text.length == 0 || item.label.toLowerCase().indexOf(text.toLowerCase()) >= 0;    
+		};
+	};
+	
+	$scope.removeChoice = function($event, item) {
+		item.isSelected = false; 
+		$scope.openDD(); 
+		$event.stopPropagation();		
+	};
+	
+    $scope.updatePref = function(val) {
+        if ((val ? val : $scope.data.value) == null || val == $scope.data.value) return;
+        $scope.data.value = val ? val : $scope.data.value;
+        spUtil.setPreference($scope.data.name, $scope.data.value);
+        spUtil.addTrivialMessage("Preference updated for: " + $scope.data.name + " value: " + (val ? val : $scope.data.value));
+    };
+
+    $scope.deletePref = function() {
+        spUtil.setPreference($scope.data.name, null);
+        c.data.value = c.data.defaultValue;
+		c.data.choiceItems.forEach(function(ele) { ele.isSelected = (c.data.defaultValue || []).indexOf(ele.value) >= 0 || false; });
+        spUtil.addTrivialMessage("Preference removed for: " + $scope.data.name);
+    };
+	
+	$scope.toggleDD = function($event) {
+		$event.preventDefault();
+		$event.stopPropagation();
+		$scope.statusDD.isopen = !$scope.statusDD.isopen;
+	};
+	
+	$scope.toggled = function(open) {
+		if (!$scope.statusDD.isopen) {
+			c.data.searchInput = "";
+			var list = $scope.data.choiceItems.filter(function (item) { return item.isSelected == true; });
+			if (list.length == 0 || (list.length == ($scope.data.value || "").length && $scope.data.value.every(function(v,i) { return ($.inArray(v,list) != -1); }))) return;
+			$scope.updatePref(JSON.stringify(list.map(function (obj) { return obj.value; })));
+		} 
+		else
+			angular.element(('#' + c.data.name + '_search').replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).focus();
+	};
+
+    $scope.userPref = {
+        displayValue: c.data.display,
+        value: c.data.value,
+        name: 'userPref'
+    };
+
+    $scope.$on("field.change", function(evt, parms) {
+        if (parms.field.name == 'userPref') c.updatePref(parms.newValue);
+    });
+
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.select2-container.select2-allowclear .select2-choice abbr { &#13;
+  display: none; &#13;
+}&#13;
+.select2-container.select2-dropdown-open {&#13;
+  outline: 5px auto #1f8476;&#13;
+  box-shadow: #1f8476 0px 0px 12px;&#13;
+}&#13;
+.dropdown-menu {&#13;
+  width: 100%;&#13;
+  padding: 0px;&#13;
+  margin: 0px;&#13;
+}&#13;
+.dropdown.open ul.select2-results {&#13;
+  padding: 1em;&#13;
+  border: solid 1px;&#13;
+  list-style-type: none;&#13;
+  display: flex;&#13;
+  flex: 1;&#13;
+  flex-wrap: nowrap;&#13;
+  flex-direction: column;&#13;
+}&#13;
+input[type=radio]:hover + label.radio-label:before {&#13;
+	border-color: #1f8476; &#13;
+}&#13;
+input[type=radio]:checked + label.radio-label:before {&#13;
+	font-family: "retina_icons";&#13;
+	display: inline-block;&#13;
+	vertical-align: middle;&#13;
+	line-height: 1;&#13;
+	font-weight: normal;&#13;
+	font-style: normal;&#13;
+	speak: none;&#13;
+	text-decoration: inherit;&#13;
+	text-transform: none;&#13;
+	text-rendering: optimizeLegibility;&#13;
+	-webkit-font-smoothing: antialiased;&#13;
+	-moz-osx-font-smoothing: grayscale;&#13;
+	content: ""; &#13;
+}&#13;
+input[type=radio]:checked + label.radio-label:before {&#13;
+	color: #1f8476; &#13;
+}&#13;
+input[type=radio].disabled + label.radio-label:before {&#13;
+	background: #e6e9eb;&#13;
+	border-color: #cbcbcb; &#13;
+}&#13;
+input[type=radio]:focus + label.radio-label:before {&#13;
+	box-shadow: 0 0 6px 0 #1f8476;&#13;
+	border-color: #1f8476; &#13;
+}&#13;
+input[type=radio] + label.radio-label:before {&#13;
+    color: transparent;&#13;
+    position: relative;&#13;
+    margin-right: 8px;&#13;
+    background: #ffffff;&#13;
+    border: 1px solid #cbcbcb;&#13;
+    border-radius: 10px;&#13;
+    padding: 2px;&#13;
+    display: inline-block;&#13;
+    box-sizing: border-box;&#13;
+    width: 21px;&#13;
+    height: 21px;&#13;
+    text-align: center;&#13;
+    vertical-align: middle;&#13;
+    content: "";&#13;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description>This widget handles display and update of a single user preference value.</description>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>user_preference</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>User Preference</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+    data.name = options.name ? options.name.toString() : input ? input.name : "UNKNOWN";
+    data.type = options.type ? options.type.toString() : input ? input.type : "UNKNOWN";
+    data.defaultValue = options.value ? options.value : options.defaults ? options.defaults : null;
+    data.description = options.description ? options.description.toString() : null;
+    options.choiceType = options.choiceType ? options.choiceType : "N/A";
+
+    var userPref = gs.getUser().getPreference(data.name);
+    if (userPref == null || userPref.length == 0) userPref = data.defaultValue;
+    data.value = userPref;
+
+    if (options.choiceType == "select" || options.choiceType == "multiSelect" || options.choiceType == "radio") {
+        data.type = options.choiceType;
+        if (options.table) {
+			var items;
+			var skip = "column_labelISNOTEMPTY^element!=disabled^elementNOT LIKEsys_^nameNOT LIKEvar__m_sys_^internal_type!=collection^choiceISEMPTY";
+			if (options.table == 'sys_dictionary') {
+				items = new GlideRecord(options.table);
+				items.addEncodedQuery(skip);
+				if (options.query && options.query.length > 0) items.addEncodedQuery(options.query);
+				items.orderBy('column_label');
+			}
+			else if (options.table == 'sys_db_view_table' || options.table == 'sys_db_view_table_field') {
+				items = new GlideRecord('sys_dictionary');
+				items.addEncodedQuery(skip);
+				if (options.table == 'sys_db_view_table') {
+					var vw = items.addJoinQuery(options.table, 'name', 'table');
+					vw.addCondition('view.name', '=', options.view);
+				}
+				else if (options.table == 'sys_db_view_table_field') {
+					var cols = items.addJoinQuery(options.table, 'element', 'field');
+					cols.addCondition('view_table.view.name', '=', options.view);
+				}
+				items.orderBy('column_label');
+			} else {
+				items = new GlideRecord("sys_choice");
+				items.addQuery('name', options.table);
+				items.addQuery('element', options.field);
+				items.addQuery('label', 'DOES NOT CONTAIN', 'javascript');
+				items.addQuery('language', 'en');
+				items.addQuery('inactive', false);
+				items.orderBy('sequence');
+			}
+            items.query();
+            data.choiceItems = [];
+            while (items.next()) {
+                data.choiceItems.push({
+                    "table": items.getValue('name'),
+                    "label": items.getValue('label') || items.getValue('column_label'),
+                    "value": items.getValue('value') || items.getValue('element')
+                });
+            }
+        } else if (options.choiceItems) {
+            data.choiceItems = options.choiceItems;
+        }
+		if (options.choiceType == "multiSelect" && (data.value != null || options.defaults)) {
+			var prefItems = [];
+			try { prefItems = JSON.parse(JSON.stringify((data.value || options.defaults))); } 
+			finally {  
+				data.choiceItems.forEach(function(ele) { ele.isSelected = prefItems.indexOf(ele.value) >= 0; });
+			}
+		}
+		data.choiceItems = data.choiceItems.filter(function(item, index, arr)  {  //de-dup
+			return arr.map(function(mapObj) { return (mapObj.label); }).indexOf(item.label) === index;
+		});
+		try { data.defaultValue = JSON.parse(JSON.stringify((options.defaults || data.defaultValue))); } 
+		catch (err) {  
+			gs.addErrorMessage("Unable to parse multi-select default values.");
+		}
+    }
+
+    if ((data.type == "reference" || options.choiceType == "reference") && options.table) {
+        data.table = options.table ? options.table.toString() : "UNKNOWN";
+        if (options.query && options.query.length > 0) data.query = options.query;
+        data.field = options.field ? options.field.toString() : "UNKNOWN";
+        data.search = options.search ? options.search.toString() : "UNKNOWN";
+        var ref = new GlideRecord(data.table);
+        ref.get(data.value || data.defaultValue);
+        if (ref.getRowCount() > 0)
+            data.display = ref.getValue(data.field);
+        else {
+            data.display = "";
+            gs.getUser().savePreference(data.name, null); // reset invalid data
+        }
+    }
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-01-22 14:10:55</sys_created_on>
+        <sys_id>e0f1e76e1bf5a0100a4a10ad9c4bcb8c</sys_id>
+        <sys_mod_count>202</sys_mod_count>
+        <sys_name>User Preference</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_widget_e0f1e76e1bf5a0100a4a10ad9c4bcb8c</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-02-16 18:43:03</sys_updated_on>
+        <template><![CDATA[<div class="row">
+  <div class="col-md-6" style="font-size: 14pt; text-align: right;">
+    <span ng-if="c.data.name == null">UNKNOWN</span>
+    <span ng-if="c.data.name.length > 0">{{c.data.description}}</span>
+  </div>
+  <div class="col-md-5">
+    <span ng-if="c.data.type == 'string' && options.choiceType != 'reference'">
+      <input type="text" class="form-control text-left" style="width: 350px;" title="Enter new value and press {Tab} to update" 
+             name="{{c.data.name}}" id="{{c.data.name}}" 
+             ng-model="c.data.value" ng-change="c.updatePref();" ng-model-options="{ updateOn: 'blur' }" ng-keyup="cancel($event)" />
+    </span>
+    <span class="input-switch" ng-if="c.data.type == 'boolean'">
+      <input type="checkbox" ng-change="c.updatePref();" ng-model="c.data.value"  ng-true-value="'true'" ng-false-value="'false'"
+             name="{{c.data.name}}" id="{{c.data.name}}" class="ng-pristine ng-untouched ng-valid ng-empty" role="checkbox" aria-invalid="false"> 
+      <label class="switch" for="{{c.data.name}}" ng-click="toggle($event, c.data.value)" role="presentation" aria-hidden="true" 
+             style="margin: 0px; vertical-align: middle;"></label> 
+    </span>
+    <span ng-if="c.data.type == 'integer'">
+      <input type="number" step="1" class="form-control text-right" style="width: 150px;" string-to-number
+             name="{{c.data.name}}" id="{{c.data.name}}" 
+             ng-model="c.data.value" ng-change="c.updatePref();" ng-model-options="{ updateOn: 'blur' }" ng-keyup="cancel($event)">
+    </span>
+    <span ng-if="c.data.type == 'select'">
+        <sn-choice-list sn-model="c.data.value" sn-value-field="value" sn-text-field="label"
+            name="{{c.data.name}}" id="{{c.data.name}}"
+			sn-items="c.data.choiceItems" sn-on-change="c.updatePref(selectedValue);">
+		</sn-choice-list>
+    </span>
+    <fieldset ng-if="data.type == 'radio'" style="height: auto;">
+       <div ng-repeat="item in c.data.choiceItems track by $index" style="display: inline-block; padding-right: 15px;">
+          <span style="vertical-align: middle; padding: 2px;">
+              <input type="radio" name="{{data.name}}" id="{{data.name + '-' + $index}}" ng-model="data.value" value="{{item.value}}" 
+                     ng-change="c.updatePref();" style="width: 0px;">
+              <label for="{{data.name + '-' + $index}}" class="radio-label" style="margin: 0px;">{{item.label}}</label>
+          </span>
+      </div>
+    </fieldset>    
+    <span ng-if="c.data.type == 'reference'">
+      <sn-record-picker field="userPref" table="c.data.table" default-query="c.data.query"
+            name="{{c.data.name}}" id="{{c.data.name}}"
+            display-field="c.data.field" value-field="'sys_id'" search-fields="c.data.search" page-size="100">
+      </sn-record-picker>
+    </span>
+    <span ng-if="c.data.type == 'multiSelect'">
+      <div class="dropdown select2-container select2-container-multi" ng-class="{'select2-dropdown-open': statusDD.isopen}"
+           name="{{c.data.name}}" id="{{c.data.name}}"
+           uib-dropdown auto-close="outsideClick" on-toggle="toggled(statusDD.isopen)" is-open="statusDD.isopen">
+          <span class="select2-choice" tabindex="-1" style="border-bottom: 1px solid #bdc0c4;">
+              <ul class="select2-choices" style="border: none; padding-right: 25px;" ng-click="toggleDD($event);">
+                  <li ng-repeat="item in c.data.choiceItems | filter: { isSelected: true }" class="select2-search-choice" 
+                      style="padding: 3px 18px 3px 5px; margin: 5px 5px 3px 0px;">
+                      <div>{{item.label}}</div>
+                      <a href="javascript:void(0)" role="button" class="select2-search-choice-close" style="left: initial;" tabindex="-1" ng-click="removeChoice($event, item);"></a>
+                  </li>
+              </ul>
+              <a href="javascript:void(0)" tabindex="0" class="drop-toggle" uib-dropdown-toggle role="button">
+                <span class="select2-arrow" aria-hidden="true" style="border-left: 1px solid #bdc0c4;"><b></b></span>
+              </a>
+          </span>
+        <div class="dropdown-menu" uib-dropdown-menu> 
+            <div class="select2-search" style="margin: 4px 0px 4px 0px;">
+                <label for="s2id_autogen2_search" class="select2-offscreen"></label>
+                <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input" role="combobox"
+                       ng-model="c.data.searchInput" aria-expanded="true" aria-autocomplete="list" id="{{c.data.name + '_search'}}" placeholder="">
+            </div>
+            <ul class="select2-results" style="max-height: 400px; overflow: auto; padding: 10px; margin: 0px;" ng-if="$index == selectedFilterIndex">  
+                <li ng-repeat="item in filteredItems = (c.data.choiceItems | filter:filterDD(c.data.searchInput))">
+                    <div class="checkbox" style="margin-top: 0px;">
+                        <label>
+                            <input type="checkbox" ng-model="item.isSelected">
+                            {{item.label}}
+                        </label>
+                    </div>
+                </li>
+                <li ng-show="filteredItems.length==0" class="select2-no-results">No matches found</li>
+            </ul>
+        </div>
+      </div>
+    </span>
+  </div>
+  <div class="col-md-1">
+      <i class="fa fa-eraser" aria-hidden="true" style="font-size: 24px; margin-left: 50px; position: absolute; margin-top: 3px;"
+         title="Delete personal preference and restore application default" ng-click="deletePref();"></i>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

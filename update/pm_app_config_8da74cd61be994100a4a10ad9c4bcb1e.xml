@@ -10,6 +10,7 @@
         <dmn_demand_task_table/>
         <dmn_stakeholder_register_table/>
         <idea_table/>
+        <is_non_teamspace>false</is_non_teamspace>
         <pm_portfolio_goal_table/>
         <pm_portfolio_issue_table/>
         <pm_portfolio_project_table/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element extends="sys_import_set_row" label="FMS Load Allocation Groups" max_length="40" name="x_g_irm_fms_fms_load_allocation_groups" type="collection">
+    <element extends="sys_import_set_row" label="FMS Load Allocation Groups" max_length="40" name="x_g_irm_fms_fms_load_allocation_groups" sizeclass="0" type="collection">
         <element attributes="import_attribute_name=Allocation Group ID" label="Allocation Group ID" max_length="40" name="u_allocation_group_id" type="integer"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Disabled" label="Disabled" max_length="40" name="u_disabled" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Group Description" label="Group Description" max_length="40" name="u_group_description" type="string"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Expense Item" max_length="40" name="x_g_irm_fms_expense_item" type="collection">
+    <element label="Expense Item" max_length="40" name="x_g_irm_fms_expense_item" sizeclass="2310" type="collection">
         <element label="Activity Code" max_length="60" name="activity_code" type="string"/>
         <element label="Budget Code" mandatory="true" max_length="32" name="budget_code_ref" reference="x_g_irm_fms_budget_code" reference_qual="disabled=false^EQ" reference_qual_condition="disabled=false^EQ" type="reference"/>
         <element label="Disabled" max_length="40" name="disabled" type="boolean"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element extends="sys_import_set_row" label="FMS Load Region" max_length="40" name="x_g_irm_fms_fms_load_region" type="collection">
+    <element extends="sys_import_set_row" label="FMS Load Region" max_length="40" name="x_g_irm_fms_fms_load_region" sizeclass="0" type="collection">
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Region Code" label="Region Code" max_length="40" name="u_region_code" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Region Name" label="Region Name" max_length="40" name="u_region_name" type="string"/>
     </element>

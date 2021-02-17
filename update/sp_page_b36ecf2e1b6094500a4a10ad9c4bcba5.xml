@@ -17,8 +17,10 @@
         <dynamic_title_structure/>
         <id>project_detail</id>
         <internal>false</internal>
+        <omit_watcher>false</omit_watcher>
         <public>false</public>
         <roles/>
+        <seo_script/>
         <short_description/>
         <sys_class_name>sp_page</sys_class_name>
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
@@ -33,6 +35,7 @@
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
         <sys_updated_on>2020-05-06 13:08:39</sys_updated_on>
         <title>Project Detail</title>
+        <use_seo_script>false</use_seo_script>
     </sp_page>
     <sys_translated_text action="delete_multiple" query="documentkey=b36ecf2e1b6094500a4a10ad9c4bcba5"/>
 </record_update>

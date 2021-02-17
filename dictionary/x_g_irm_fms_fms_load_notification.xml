@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element extends="sys_import_set_row" label="FMS Load Notification" max_length="40" name="x_g_irm_fms_fms_load_notification" type="collection">
+    <element extends="sys_import_set_row" label="FMS Load Notification" max_length="40" name="x_g_irm_fms_fms_load_notification" sizeclass="0" type="collection">
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Basis Column" label="Basis Column" max_length="40" name="u_basis_column" type="string"/>
         <element attributes="edge_encryption_enabled=true,import_attribute_name=Basis Table" label="Basis Table" max_length="40" name="u_basis_table" type="string"/>
         <element attributes="import_attribute_name=Interim Days" label="Interim Days" max_length="40" name="u_interim_days" type="integer"/>

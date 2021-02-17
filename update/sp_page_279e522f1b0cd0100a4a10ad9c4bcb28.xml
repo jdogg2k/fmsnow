@@ -10,8 +10,10 @@
         <dynamic_title_structure/>
         <id>fms_home</id>
         <internal>false</internal>
+        <omit_watcher>false</omit_watcher>
         <public>false</public>
         <roles/>
+        <seo_script/>
         <short_description/>
         <sys_class_name>sp_page</sys_class_name>
         <sys_created_by>rosejl@state.gov</sys_created_by>
@@ -26,6 +28,7 @@
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
         <sys_updated_on>2020-08-06 11:54:16</sys_updated_on>
         <title>FMS Home</title>
+        <use_seo_script>false</use_seo_script>
     </sp_page>
     <sys_translated_text action="delete_multiple" query="documentkey=279e522f1b0cd0100a4a10ad9c4bcb28"/>
 </record_update>

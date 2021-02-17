@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Notification" max_length="40" name="x_g_irm_fms_notification" type="collection">
+    <element label="Notification" max_length="40" name="x_g_irm_fms_notification" sizeclass="7" type="collection">
         <element choice="1" label="Basis Column" mandatory="true" max_length="128" name="basis_column" type="string">
             <choice>
                 <element inactive_on_update="false" label="Current OY End Date" value="ContractCurrentOYEndDate"/>

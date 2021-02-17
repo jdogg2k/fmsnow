@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_fix">
+    <sys_script_fix action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <before>false</before>
+        <description/>
+        <flush_cache>false</flush_cache>
+        <name>Set FMS IRM F Reference Values</name>
+        <record_for_rollback>false</record_for_rollback>
+        <run_once>true</run_once>
+        <script><![CDATA[var gr = new GlideRecord("x_g_irm_fms_fin_tran_item");
+gr.addEncodedQuery("boc_cost_poolISNOTEMPTY^ORit_towerISNOTEMPTY^ORsub_boc_cost_poolISNOTEMPTY");
+gr.query();
+while (gr.next()) {
+
+    var costPoolName = gr.boc_cost_pool.name.toString();
+    var itTowerName = gr.it_tower.name.toString();
+    var subCostPoolName = gr.sub_boc_cost_pool.name.toString();
+
+    if (costPoolName != "") {
+        var costPoolQ = new GlideRecord("x_g_irmb_irm_finan_cost_pool");
+        costPoolQ.addQuery("name", costPoolName);
+        costPoolQ.query();
+        if (costPoolQ.next())
+            gr.irm_f_cost_pool = costPoolQ.sys_id.toString();
+    }
+
+    if (itTowerName != "") {
+        var itTowerQ = new GlideRecord("x_g_irmb_irm_finan_it_tower");
+        itTowerQ.addQuery("name", itTowerName);
+        itTowerQ.query();
+        if (itTowerQ.next())
+            gr.irm_f_it_tower = itTowerQ.sys_id.toString();
+    }
+
+    if (subCostPoolName != "") {
+        var subCostPoolQ = new GlideRecord("x_g_irmb_irm_finan_sub_cost_pool");
+        subCostPoolQ.addQuery("name", subCostPoolName);
+        subCostPoolQ.query();
+        if (subCostPoolQ.next())
+            gr.irm_f_sub_cost_pool = subCostPoolQ.sys_id.toString();
+    }
+
+    gr.autoSysFields(false); // avoid "updated" and "updated_by" changes
+    //gr.setWorkflow(false);
+    gr.update();        
+
+}
+
+var projectQ = new GlideRecord("x_g_irm_fms_project");
+projectQ.addEncodedQuery("it_towerISNOTEMPTY");
+projectQ.query();
+while (projectQ.next()) {
+
+    var projectTowerName = projectQ.it_tower.name.toString();
+
+    if (projectTowerName != "") {
+        var projectTowerQ = new GlideRecord("x_g_irmb_irm_finan_it_tower");
+        projectTowerQ.addQuery("name", projectTowerName);
+        projectTowerQ.query();
+        if (projectTowerQ.next())
+            projectQ.irm_f_it_tower = projectTowerQ.sys_id.toString();
+    }
+
+    projectQ.autoSysFields(false); // avoid "updated" and "updated_by" changes
+    //projectTowerQ.setWorkflow(false);
+    projectQ.update(); 
+
+}
+]]></script>
+        <sys_class_name>sys_script_fix</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2021-01-26 18:49:27</sys_created_on>
+        <sys_id>34e9c9841b42e0101f7e113d9c4bcb84</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>Set FMS IRM F Reference Values</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_script_fix_34e9c9841b42e0101f7e113d9c4bcb84</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2021-01-26 21:51:47</sys_updated_on>
+        <unloadable>false</unloadable>
+    </sys_script_fix>
+</record_update>

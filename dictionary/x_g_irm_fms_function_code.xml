@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Function Code" max_length="40" name="x_g_irm_fms_function_code" type="collection">
+    <element label="Function Code" max_length="40" name="x_g_irm_fms_function_code" sizeclass="17" type="collection">
         <element attributes="format=none" label="Function Code" mandatory="true" max_length="40" name="function_code" type="integer"/>
         <element calculation="(function calculatedFieldValue(current) {&#10;&#9;var display;&#10;&#9;if (current.sys_id.nil()) {&#10;&#9;&#9;display = &quot;[new function code&quot;;&#10;&#9;}&#10;&#9;else {&#10;&#9;&#9;display = current.function_desc.toString() + ' [' + current.function_code.toString() + ']'; &#10;&#9;}&#10;&#9;return display;&#10;})(current);" display="true" label="Function Code display" max_length="256" name="function_code_display" type="string" virtual="true"/>
         <element label="Function Description" mandatory="true" max_length="50" name="function_desc" type="string"/>
