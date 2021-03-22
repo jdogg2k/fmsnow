@@ -50,17 +50,17 @@ if(current.relationship_type.toString() == "Contract/Task Order"){&#13;
 &#13;
      if(current.contract_ref.contract_class.toString()=="Contract"){&#13;
 &#13;
-           "contract_classIN" + current.relationship_type.split('/')[1].toString(); &#13;
+         "operational_status="+"Active"+ "^contract_classIN" + current.relationship_type.split('/')[1].toString(); &#13;
    }&#13;
 &#13;
       else if(current.contract_ref.contract_class.toString()=="Task Order"){&#13;
 &#13;
-               "contract_classIN" + current.relationship_type.split('/')[0].toString(); &#13;
+              "operational_status="+"Active"+ "^contract_classIN" + current.relationship_type.split('/')[0].toString(); &#13;
     }&#13;
 }&#13;
 &#13;
 else{&#13;
- "contract_classIN" + current.relationship_type.split('/')[1].toString(); &#13;
+"operational_status="+"Active"+ "^contract_classIN" + current.relationship_type.split('/')[1].toString(); &#13;
 }</reference_qual>
         <reference_qual_condition/>
         <reference_type/>
@@ -71,14 +71,14 @@ else{&#13;
         <sys_created_by>markeljr@state.gov</sys_created_by>
         <sys_created_on>2020-04-08 14:22:59</sys_created_on>
         <sys_id>8093a07d1b3cac100a4a10ad9c4bcb82</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>Related Contract</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_dictionary_x_g_irm_fms_contract_contract_contract_rel_ref</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-11-30 23:13:13</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2021-02-23 17:54:27</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>

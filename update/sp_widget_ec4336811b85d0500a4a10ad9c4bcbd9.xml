@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function ($timeout, $scope) {
+        <client_script><![CDATA[api.controller = function ($timeout, $scope, spUtil, spModal) {
 	/* widget controller */
 
 	var c = this;
 	c.savedStates = {};
 	c.gridActive = false;
 	c.targetOrg = c.data.selectedOrgID;
+	c.rowGrps = [];
 	c.usePivot = true;
 	c.canSort = true;
 	c.hideValues = false;
@@ -15,9 +16,8 @@
 	c.selectedBudgetType = "Baseline";
 	c.datesSelected = false;
 	c.selectedProject = "";
-	c.groupOrgs = false;
 	c.loadCount = 0;
-
+	
 	if (c.data.projects.length > 0 && c.data.reportType == "phasing")
 		c.selectedProject = c.data.projects[0].value;
 
@@ -43,11 +43,11 @@
 		var endYear = "";
 		var docDate = new Date();
 		if ((docDate.getMonth() + 1) <= 3) {
-		  startYear = docDate.getFullYear() - 1;
-		  endYear = docDate.getFullYear();
+			startYear = docDate.getFullYear() - 1;
+			endYear = docDate.getFullYear();
 		} else {
-		  startYear = docDate.getFullYear();
-		  endYear = docDate.getFullYear() + 1;
+			startYear = docDate.getFullYear();
+			endYear = docDate.getFullYear() + 1;
 		}
 
 		if (type == "end") {
@@ -57,21 +57,63 @@
 		} else {
 			return endYear.toString();
 		}
-	  }
+	}
 
 	function parseDate(s) {
 		var d = new Date();
 		var retDate = s;
-		var months = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,
-						jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+		var months = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
 		
 		if ( Object.prototype.toString.call(s) === "[object Date]" )  {
 			d = s;
-			retDate = d.toISOString().split('T')[0]
+			retDate = d.toISOString().split('T')[0];
 		}
 
 		return retDate;
 	}
+	
+	c.saveState = function() {
+		c.savedStates.columnState = gridOptions.columnApi.getColumnState();
+		c.savedStates.groupState = gridOptions.columnApi.getColumnGroupState();
+		c.savedStates.sortState = gridOptions.api.getSortModel();
+		c.savedStates.filterState = gridOptions.api.getFilterModel();
+	};
+	c.setState = function(savedStates) {
+		gridOptions.columnApi.setColumnState(savedStates.columnState);
+		gridOptions.columnApi.setColumnGroupState(savedStates.groupState);
+		gridOptions.api.setSortModel(savedStates.sortState);
+		gridOptions.api.setFilterModel(savedStates.filterState);
+	};
+
+	c.savePref = function(rptType) {
+		spModal.confirm("Save the current report layout as ongoing default format?").then(function(confirmed) {
+			if (confirmed) {
+				c.server.get({
+					mode: "savePreference",
+					value: { 
+						columnState: gridOptions.columnApi.getColumnState(),
+						groupState: gridOptions.columnApi.getColumnGroupState(),
+						sortState: gridOptions.api.getSortModel(),
+						filterState: gridOptions.api.getFilterModel()
+					}
+				}).then(function(resp) {
+					spUtil.addTrivialMessage("Report preference saved");
+				});
+			}
+		});
+	};
+
+	c.deletePref = function(rptType) {
+		spModal.confirm("Restore the default report layout?").then(function(confirmed) {
+			if (confirmed) {
+				c.data.reportPref = null;
+				c.setState(c.savedStates);
+				spUtil.setPreference(c.data.prefPrefix + c.data.reportType + ".state", null);
+				spUtil.addTrivialMessage("Report preference deleted");
+				c.generateReport();
+			} 
+		});
+	};
 
 	c.startdt = {
 		displayValue: getCurrentFinancialYear("start").toLocaleDateString(),
@@ -91,27 +133,16 @@
 			c.generateReport();
 			c.datesSelected = false;
 		}
-	}
+	};
 
 	c.generateReport = function () {
 
 		if (c.targetOrg != "") {
-
-			//save states
-			c.savedStates.colState = gridOptions.columnApi.getColumnState();
-			c.savedStates.groupState = gridOptions.columnApi.getColumnGroupState();
-			c.savedStates.sortState = gridOptions.api.getSortModel();
-			c.savedStates.filterState = gridOptions.api.getFilterModel();
-
+			c.saveState();
 			var reportObj = {
 				mode: 'buildReport',
 				orgs: c.targetOrg
 			};
-
-			c.groupOrgs = false;
-
-			if(c.targetOrg.indexOf(",") > -1)
-				c.groupOrgs = true;
 
 			if (c.data.reportType == "budget_plans" || c.data.reportType == "phasing")
 				reportObj.budget_type = c.selectedBudgetType;
@@ -150,9 +181,13 @@
 					c.toggleExpand(true);
 				}
 					
+				if (c.data.reportPref && c.data.reportPref.columnState != null) {
+					if (c.loadCount ==0 ) spUtil.addTrivialMessage("Report preferred laout loaded");
+					c.setState(c.data.reportPref);
+				} 
 			});
 		}
-	}
+	};
 	
 	c.getReportTitle = function() {
 		var title = "";
@@ -161,42 +196,47 @@
 
 		switch (c.data.reportType) {
 			case "allocation":
-			  title = "Allocation Activity";
-			  break;
+				title = "Allocation Activity";
+				c.rowGrps = [ "investment", "project", "appropriation" ];
+				break;
 			case "baseline":
-			  title = "Baseline Activity";
-			  break;
+				title = "Baseline Activity";
+				c.rowGrps = [ "investment", "project", "budget_code", "activity_code" ];
+				break;
 			case "budget_plans":
-			  title = "Budget Plans";
-			  break;
+				title = "Budget Plans";
+				c.rowGrps = [ "org_name", "project", "budget_code", "activity_code" ];
+				break;
 			case "financial_transaction":
-			  title = "Financial Transaction Detail";
-			  c.usePivot = false;
-			  c.hideValues = true;
-			  break;
+				title = "Financial Transaction Detail";
+				c.rowGrps = [ "investment", "project", "budget_code", "activity_code" ];
+				c.usePivot = false;
+				c.hideValues = true;
+				break;
 			case "funding_due_in":
-			  title = "Funding Due-In";
-			  break;
+				title = "Funding Due-In";
+				c.rowGrps = [ "budget_code", "activity_code" ];
+				break;
 			case "monthly_expenditure":
-			  title = "Monthly Expenditure";
-			  break;
+				title = "Monthly Expenditure";
+				c.rowGrps = [ "budget_code", "activity_code" ];
+				break;
 			case "obligation":
-			  title = "Obligation Reconciliation";
-			  c.usePivot = false;
-			  c.hideValues = true;
-			  break;
+				title = "Obligation Reconciliation";
+				c.rowGrps = [ "obligation" ];
+				c.usePivot = false;
+				c.hideValues = true;
+				break;
 			case "phasing":
 				title = "Phasing Plan";
+				c.rowGrps = [ "budget_code", "activity_code" ];
 				c.usePivot = false;
 				c.hideValues = true;
 				c.canSort = false;
-				
-
-
 		}
 		title += " Report";
-		return title
-	}
+		return title;
+	};
 
 	c.reportTitle = c.getReportTitle();
 
@@ -205,7 +245,7 @@
 			if (rowNode.group)
 				rowNode.setExpanded(mode);
 		});
-	}
+	};
 
 	function currencyCssFunc(params) {
 		if (params.value !== null && params.value !== undefined && params.value < 0) {
@@ -270,9 +310,6 @@
 
 			if (c.data.reportType == "financial_transaction") {
 				appropCol.hide = true;
-			} else {
-				appropCol.rowGroup = true;
-				appropCol.rowGroupIndex = 1;
 			}
 
 			colArray.push(appropCol);
@@ -316,8 +353,6 @@
                 field: 'budget_code',
 				colId: 'budget_code',
                 enableRowGroup: true,
-				rowGroup: true,
-				rowGroupIndex: 1,
 				filter: true,
 				hide: c.hideValues,
 				minWidth: 225
@@ -327,8 +362,6 @@
                 field: 'activity_code',
 				colId: 'activity_code',
 				enableRowGroup: true,
-				rowGroup: true,
-				rowGroupIndex: 2,
 				filter: true,
 				hide: c.hideValues,
 				minWidth: 175
@@ -339,7 +372,7 @@
 		if (c.data.reportType == "baseline" || c.data.reportType == "budget_plans" || c.data.reportType == "financial_transaction" || c.data.reportType == "monthly_expenditure") {
 			
             colArray.push({
-                headerName: 'Top Budget Code',
+                headerName: 'Parent Budget Code',
                 field: 'budget_code_roll',
 				colId: 'budget_code_roll',
                 enableRowGroup: true,
@@ -349,7 +382,7 @@
 				minWidth: 225
 			});
 			colArray.push({
-                headerName: 'Top Activity Code',
+                headerName: 'Parent Activity Code',
                 field: 'activity_code_roll',
 				colId: 'activity_code_roll',
 				enableRowGroup: true,
@@ -380,18 +413,11 @@
 			colId: 'org_name',
 			enablePivot: true,
 			enableRowGroup: true,
-			rowGroup: c.groupOrgs,
 			filter: true,
 			hide: c.hideValues
 		};
 
-		if (c.groupOrgs) {
-			orgCol.rowGroup = true;
-			orgCol.rowGroupIndex = 0;
-		}
-
 		colArray.push(orgCol);
-
 
 		if (c.data.reportType != "phasing") {
 			var projCol = {
@@ -404,11 +430,6 @@
 				filter: true,
 				hide: c.hideValues
 			};
-
-			if (c.data.reportType == "allocation") {
-				projCol.rowGroup = true;
-				projCol.rowGroupIndex = 0;
-			}
 
 			colArray.push(projCol);
 		}
@@ -432,7 +453,7 @@
 				enablePivot: true,
 				enableRowGroup: true,
 				filter: true,
-				hide: true
+				hide: c.data.reportType != "financial_transaction"
 			});
 		}
 
@@ -453,7 +474,7 @@
 				field: 'obligation',
 				colId: 'obligation',
 				enableRowGroup: true,
-				rowGroup: true,
+				filter: true,
 				hide: c.hideValues
 			});
 			colArray.push({
@@ -654,13 +675,15 @@
                 headerName: 'Item Number',
                 field: 'item_number',
 				colId: 'item_number',
-                enableValue: true
+                enableValue: true,
+				hide: true
 			});
 			colArray.push({
                 headerName: 'Item Qty',
                 field: 'item_qty',
 				colId: 'item_qty',
-                enableValue: true
+                enableValue: true,
+				hide: true
 			});
 		}
 		
@@ -773,27 +796,30 @@
 				colId: 'void',
 				filter: true,
 				hide: true,
-				lockVisible: true
+				lockVisible: false
 			});
 			colArray.push({
                 headerName: 'Item Cost',
                 field: 'item_cost',
 				colId: 'item_cost',
                 type: 'currency',
-                enableValue: true
+                enableValue: true,
+				hide: true
 			});
 			colArray.push({
                 headerName: 'Actual Cost',
                 field: 'actual_cost',
 				colId: 'actual_cost',
                 type: 'currency',
-                enableValue: true
+                enableValue: true,
+				hide: true
 			});
 			colArray.push({
                 headerName: 'Received Qty',
                 field: 'received_qty',
 				colId: 'received_qty',
-                enableValue: true
+                enableValue: true,
+				hide: true
 			});
 			colArray.push({
                 headerName: 'OMB300 Category',
@@ -801,7 +827,7 @@
 				colId: 'omb_category',
 				filter: true,
 				enableRowGroup: true,
-                enableValue: true
+               enableValue: true
 			});
 			colArray.push({
                 headerName: 'Allotment',
@@ -813,7 +839,7 @@
 				lockVisible: true
 			});
 			colArray.push({
-                headerName: 'BOC / Cost Pool',
+               headerName: 'BOC / Cost Pool',
 				field: 'cost_pool',
 				colId: 'cost_pool',
 				enableRowGroup: true,
@@ -837,7 +863,8 @@
 				enableRowGroup: true,
                 field: 'post',
 				colId: 'post',
-                enableValue: true
+                enableValue: true,
+				hide: true
 			});
 			colArray.push({
 				headerName: 'Trans. Type',
@@ -882,7 +909,8 @@
 				enableRowGroup: true,
                 field: 'award_number',
 				colId: 'award_number',
-                enableValue: true
+                enableValue: true,
+				hide: true
 			});
 			colArray.push({
                 headerName: 'Description',
@@ -894,7 +922,8 @@
                 headerName: 'Quote Vendor Name',
 				field: 'quote_vendor_name',
 				colId: 'quote_vendor_name',
-                enableValue: true
+                enableValue: true,
+				hide: true
 			});
 			colArray.push({
                 headerName: 'Vendor Name',
@@ -1130,6 +1159,12 @@
 			});
 		}
 
+        var grpCols = colArray.filter(function(col) { return c.rowGrps.includes(col.field); });
+        grpCols.forEach(function(col) {
+            col.rowGroup = true;
+            col.rowGroupIndex = c.rowGrps.indexOf(col.field);
+        });
+		
         return colArray;
     }
 
@@ -1137,15 +1172,7 @@
 			columnDefs: generateColumns(),
 			onRowDataChanged: function () {
 				if (c.loadCount > 1) {
-						//load states
-
-						gridOptions.columnApi.setColumnState(c.savedStates.colState);
-						gridOptions.columnApi.setColumnGroupState(c.savedStates.groupState);
-						gridOptions.api.setSortModel(c.savedStates.sortState);
-						gridOptions.api.setFilterModel(c.savedStates.filterState);
-						console.log("loaded");
-						//gridOptions.api.onFilterChanged();
-
+					c.setState(c.savedStates);
 				} else {
 					c.loadCount++;
 				}
@@ -1164,6 +1191,7 @@
 			},
 			suppressAggFuncInHeader: true,
             groupMultiAutoColumn: true,
+	//		showOpenedGroup: true,         needs version  v25+
 			multiSortKey: 'ctrl',
 			accentedSort: true,
 			pivotMode: c.usePivot,
@@ -1187,7 +1215,7 @@
 				  },
 				],
 				position: 'right',
-				defaultToolPanel: 'columns',
+				defaultToolPanel: c.data.defaultToolPanel,
 			},
 			columnTypes: {
 				'currency': {
@@ -1241,7 +1269,7 @@
 				columnGroups: true,
 				//customFooter: getGridTotals() NOTE WILL WORK WITH NEW AG GRID LICENSE
 			});
-		}
+		};
 
 		function getGridTotals() {
 			var hasColumns = false;
@@ -1291,7 +1319,7 @@
 				}, totalCols]
 			];
 
-		};
+		}
 
 		var gridDiv = document.querySelector('#reportGrid');
 		new agGrid.Grid(gridDiv, gridOptions);
@@ -1317,181 +1345,185 @@
 				c.generateReport();
 			}
 		});
-	}
+	};
 ]]></client_script>
         <controller_as>c</controller_as>
-        <css>.no-orgs {
-    margin: auto;
-    text-align: center;
-    margin-top: 125px;
-    font-size: 22px;
-    font-weight: bold;
-}
-
-.full-grid {
-    width: 94vw;
-    height: calc(100vh - 210px);
-    clear: both;
-}
-
-.fms-list-header {
-    margin-bottom: 0px !important;
-}
-
-.pageLabel {
-    float: left;
-    margin-right: 10px;
-}
-
-.row-button {
-    cursor: pointer;
-}
-
-.new-button {
-    float: right;
-    margin-right: 5px;
-}
-
-.excel-button {
-    float: right;
-}
-
-.edit-pencil {
-    color: #003ade;
-    font-size: 16px;
-    margin-right: 5px;
-}
-
-.action-enabled {
-    color: #0b8800;
-    font-size: 16px;
-    margin-right: 5px;
-    cursor: pointer;
-}
-
-.action-disabled {
-    color: #808080;
-    font-size: 16px;
-    margin-right: 5px;
-}
-
-.delete-x {
-    color: #000000;
-    font-size: 13px;
-}
-
-.updated-row {
-    background-color: #FFFFCC;
-}
-
-.phaseTotalRow {
-    background-color: #eaf3d2;
-}
-
-.ag-header-cell-label .ag-header-icon.ag-sort-order {
-    display: none
-}
-
-.ag-row-group {
-    font-weight: bold;
-}
-
-.full-width-panel {
-    position: relative;
-    background: #EDF6FF;
-    height: 100%;
-    width: 100%;
-    padding: 5px;
-}
-
-.full-row-details {
-    position: relative;
-    background: #FFFFFF;
-    height: 100%;
-    width: 100%;
-    padding-left: 12px;
-    padding-top: 4px;
-}
-
-.call-record-cell {
-    text-align: right;
-}
-
-.full-width-detail {
-    padding-top: 4px;
-}
-
-.full-width-title {
-    font-size: 10pt;
-    font-weight: bold;
-    float: left;
-}
-
-.contract-button {
-    float: right;
-    margin-top: -13px;
-}
-
-.full-width-details {
-    float: left;
-    padding: 5px;
-    margin: 5px;
-    width: 100%;
-    clear: both;
-}
-
-.details-grid {
-    display: block;
-    clear: both;
-    height: 100px;
-    margin-bottom: 5px;
-}
-
-.full-width-grid-toolbar {
-    top: 4px;
-    left: 30px;
-    margin-left: 150px;
-    display: block;
-    position: absolute;
-}
-
-.full-width-phone-icon {
-    padding-right: 10px;
-}
-
-.full-width-search {
-    border: 1px solid #eee;
-    margin-left: 10px;
-}
-
-.reportSelect {
-    padding: 6px 12px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.reportTitle {
-    float: left;
-    margin-right: 23px;
-    padding-top: 4px;
-    font-weight: bold;
-    font-size: 16px;
-}
-
-.orgSpan { 
-    float: left;
-}
-
-.datePick {
-    float: left;
-    width: 140px !important;
-    margin-left: 5px;
-  }
-
-  .phaseTotals {
-      font-weight: bold;
-  }
+        <css>.no-orgs {&#13;
+    margin: auto;&#13;
+    text-align: center;&#13;
+    margin-top: 125px;&#13;
+    font-size: 22px;&#13;
+    font-weight: bold;&#13;
+}&#13;
+&#13;
+.full-grid {&#13;
+    width: 94vw;&#13;
+    height: calc(100vh - 210px);&#13;
+    clear: both;&#13;
+}&#13;
+&#13;
+.fms-list-header {&#13;
+    margin-bottom: 0px !important;&#13;
+}&#13;
+&#13;
+.pageLabel {&#13;
+    float: left;&#13;
+    margin-right: 10px;&#13;
+}&#13;
+&#13;
+.row-button {&#13;
+    cursor: pointer;&#13;
+}&#13;
+&#13;
+.new-button {&#13;
+    float: right;&#13;
+    margin-right: 5px;&#13;
+}&#13;
+&#13;
+.excel-button {&#13;
+    float: right;&#13;
+}&#13;
+&#13;
+.edit-pencil {&#13;
+    color: #003ade;&#13;
+    font-size: 16px;&#13;
+    margin-right: 5px;&#13;
+}&#13;
+&#13;
+.action-enabled {&#13;
+    color: #0b8800;&#13;
+    font-size: 16px;&#13;
+    margin-right: 5px;&#13;
+    cursor: pointer;&#13;
+}&#13;
+&#13;
+.action-disabled {&#13;
+    color: #808080;&#13;
+    font-size: 16px;&#13;
+    margin-right: 5px;&#13;
+}&#13;
+&#13;
+.delete-x {&#13;
+    color: #000000;&#13;
+    font-size: 13px;&#13;
+}&#13;
+&#13;
+.updated-row {&#13;
+    background-color: #FFFFCC;&#13;
+}&#13;
+&#13;
+.phaseTotalRow {&#13;
+    background-color: #eaf3d2;&#13;
+}&#13;
+&#13;
+.ag-header-cell-label .ag-header-icon.ag-sort-order {&#13;
+    display: none&#13;
+}&#13;
+&#13;
+.ag-row-group {&#13;
+    font-weight: bold;&#13;
+}&#13;
+&#13;
+.full-width-panel {&#13;
+    position: relative;&#13;
+    background: #EDF6FF;&#13;
+    height: 100%;&#13;
+    width: 100%;&#13;
+    padding: 5px;&#13;
+}&#13;
+&#13;
+.full-row-details {&#13;
+    position: relative;&#13;
+    background: #FFFFFF;&#13;
+    height: 100%;&#13;
+    width: 100%;&#13;
+    padding-left: 12px;&#13;
+    padding-top: 4px;&#13;
+}&#13;
+&#13;
+.call-record-cell {&#13;
+    text-align: right;&#13;
+}&#13;
+&#13;
+.full-width-detail {&#13;
+    padding-top: 4px;&#13;
+}&#13;
+&#13;
+.full-width-title {&#13;
+    font-size: 10pt;&#13;
+    font-weight: bold;&#13;
+    float: left;&#13;
+}&#13;
+&#13;
+.contract-button {&#13;
+    float: right;&#13;
+    margin-top: -13px;&#13;
+}&#13;
+&#13;
+.full-width-details {&#13;
+    float: left;&#13;
+    padding: 5px;&#13;
+    margin: 5px;&#13;
+    width: 100%;&#13;
+    clear: both;&#13;
+}&#13;
+&#13;
+.details-grid {&#13;
+    display: block;&#13;
+    clear: both;&#13;
+    height: 100px;&#13;
+    margin-bottom: 5px;&#13;
+}&#13;
+&#13;
+.full-width-grid-toolbar {&#13;
+    top: 4px;&#13;
+    left: 30px;&#13;
+    margin-left: 150px;&#13;
+    display: block;&#13;
+    position: absolute;&#13;
+}&#13;
+&#13;
+.full-width-phone-icon {&#13;
+    padding-right: 10px;&#13;
+}&#13;
+&#13;
+.full-width-search {&#13;
+    border: 1px solid #eee;&#13;
+    margin-left: 10px;&#13;
+}&#13;
+&#13;
+.reportSelect {&#13;
+    padding: 6px 12px;&#13;
+    font-size: 14px;&#13;
+    border: 1px solid #ccc;&#13;
+    border-radius: 4px;&#13;
+}&#13;
+&#13;
+.reportTitle {&#13;
+    float: left;&#13;
+    margin-right: 23px;&#13;
+    padding-top: 4px;&#13;
+    font-weight: bold;&#13;
+    font-size: 16px;&#13;
+}&#13;
+&#13;
+.orgSpan { &#13;
+    float: left;&#13;
+}&#13;
+&#13;
+.select2-container-multi .select2-choices, .select2-drop, .select2-drop-active {&#13;
+  max-width: 325px;&#13;
+}&#13;
+&#13;
+.datePick {&#13;
+    float: left;&#13;
+    width: 140px !important;&#13;
+    margin-left: 5px;&#13;
+  }&#13;
+&#13;
+  .phaseTotals {&#13;
+      font-weight: bold;&#13;
+  }&#13;
 </css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -1508,205 +1540,222 @@
         <option_schema/>
         <public>false</public>
         <roles/>
-        <script><![CDATA[(function (options) {
+        <script><![CDATA[(function(options) {
 
-	data.reportType = options.report_type.toString();
-	data.projects = [];
+    data.reportType = options.report_type.toString();
+    data.projects = [];
+    var user = gs.getUser();
+    data.prefPrefix = "x_g_irm_fms.reports.";
+    data.defaultToolPanel = user.getPreference(data.prefPrefix + "toolPanel") || 'columns';
+    try {
+        data.reportPref = JSON.parse(user.getPreference(data.prefPrefix + data.reportType + ".state"));
+    } catch (err) {
+        gs.addErrorMessage("Error parsing report column preferences.");
+    }
 
-	var OrgHierarchy = new x_g_irm_fms.OrgHierarchy(); //org helper
-	var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
-	var orgName = "";
+    var OrgHierarchy = new x_g_irm_fms.OrgHierarchy(); //org helper
+    var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+    var orgName = "";
     var session = gs.getSession();
     var allOrgs = [];
 
-	var getMonth = function(tQuery) {
-		var tDate = tQuery.ft_obligation_date.toString();
-		var month = parseInt(tDate.split('-')[1]);
-		return month;
-	}
+    var getMonth = function(tQuery) {
+        var tDate = tQuery.ft_obligation_date.toString();
+        var month = parseInt(tDate.split('-')[1]);
+        return month;
+    };
 
-	function blankMonths() {
-		var monthObj = {
-			"1": 0,
-			"2": 0,
-			"3": 0,
-			"4": 0,
-			"5": 0,
-			"6": 0,
-			"7": 0,
-			"8": 0,
-			"9": 0,
-			"10": 0,
-			"11": 0,
-			"12": 0
-		}
-		return monthObj;
-	}
+    function blankMonths() {
+        var monthObj = {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0,
+            "10": 0,
+            "11": 0,
+            "12": 0
+        };
+        return monthObj;
+    }
 
-	function getPhasingValues(tItem) {
-		var newObj = {};
-		newObj.budget = tItem.budget;
-		newObj.org_ref = tItem.org_ref;
-		newObj.org_name = tItem.org_name;
-		newObj.project = tItem.project;
-		newObj.omb_project = tItem.omb_project;
+    function getPhasingValues(tItem) {
+        var newObj = {};
+        newObj.budget = tItem.budget;
+        newObj.org_ref = tItem.org_ref;
+        newObj.org_name = tItem.org_name;
+        newObj.project = tItem.project;
+        newObj.omb_project = tItem.omb_project;
         newObj.project_ref = tItem.project_ref;
         newObj.it_tower_ref = tItem.it_tower_ref;
         newObj.it_tower = tItem.it_tower;
-		newObj.investment = tItem.investment;
-		newObj.activity_code = tItem.activity_code;
-		newObj.budget_code = tItem.budget_code;
-		newObj.budget_code_short = tItem.budget_code_short;
-		return newObj;
-	}
+        newObj.investment = tItem.investment;
+        newObj.activity_code = tItem.activity_code;
+        newObj.budget_code = tItem.budget_code;
+        newObj.budget_code_short = tItem.budget_code_short;
+        return newObj;
+    }
 
-	function getProjects() {
+    function getProjects() {
 
         var projOrgs = allOrgs;
         if (projOrgs.length == 0)
             projOrgs.push(data.selectedOrgID);
 
-		var projectQ = new GlideRecord(FMSConstants.TABLE_PROJECT);
-		projectQ.addEncodedQuery("organization_refIN" + projOrgs.join(","));
-		projectQ.orderBy("project_name");
-		projectQ.query();
-		while (projectQ.next()) {
-			var tProjObj = {};
-			tProjObj.name = projectQ.project_name.toString();
-			tProjObj.value = projectQ.sys_id.toString();
-			data.projects.push(tProjObj);
-		}
-	}
+        var projectQ = new GlideRecord(FMSConstants.TABLE_PROJECT);
+        projectQ.addEncodedQuery("organization_refIN" + projOrgs.join(","));
+        projectQ.orderBy("project_name");
+        projectQ.query();
+        while (projectQ.next()) {
+            var tProjObj = {};
+            tProjObj.name = projectQ.project_name.toString();
+            tProjObj.value = projectQ.sys_id.toString();
+            data.projects.push(tProjObj);
+        }
+    }
 
-	function round2Fixed(value) {
-		value = +value;
-	  
-		if (isNaN(value))
-		  return NaN;
-	  
-		// Shift
-		value = value.toString().split('e');
-		value = Math.round(+(value[0] + 'e' + (value[1] ? (+value[1] + 2) : 2)));
-	  
-		// Shift back
-		value = value.toString().split('e');
-		return (+(value[0] + 'e' + (value[1] ? (+value[1] - 2) : -2))).toFixed(2);
-	  }
+    function round2Fixed(value) {
+        value = +value;
 
-	var setBaselineDefaults = function (calcQ, rollUp, tOrg) {
+        if (isNaN(value)) return NaN;
 
-		var expItemRec = calcQ.fti_expense_item_ref;
-		var expRef = expItemRec.toString();
+        // Shift
+        value = value.toString().split('e');
+        value = Math.round(+(value[0] + 'e' + (value[1] ? (+value[1] + 2) : 2)));
 
-		var baseSupObj = {};
-		baseSupObj.expense_item_ref = expRef;
-		baseSupObj.budget_ref = "";
-		baseSupObj.budget_type = "";
-		baseSupObj.org_ref = calcQ.proj_organization_ref.toString();
-		baseSupObj.org_name = calcQ.proj_organization_ref.getDisplayValue();
-		baseSupObj.project = calcQ.ft_project_ref.getDisplayValue();
-		baseSupObj.omb_project = calcQ.ft_project_ref.omb_project_name.toString();
+        // Shift back
+        value = value.toString().split('e');
+        return (+(value[0] + 'e' + (value[1] ? (+value[1] - 2) : -2))).toFixed(2);
+    }
+
+    var setBaselineDefaults = function(calcQ, rollUp, tOrg) {
+
+        var expItemRec = calcQ.fti_expense_item_ref;
+        var expRef = expItemRec.toString();
+
+        var baseSupObj = {};
+        baseSupObj.expense_item_ref = expRef;
+        baseSupObj.budget_ref = "";
+        baseSupObj.budget_type = "";
+        baseSupObj.org_ref = calcQ.proj_organization_ref.toString();
+        baseSupObj.org_name = calcQ.proj_organization_ref.getDisplayValue();
+        baseSupObj.project = calcQ.ft_project_ref.getDisplayValue();
+        baseSupObj.omb_project = calcQ.ft_project_ref.omb_project_name.toString();
         baseSupObj.project_ref = calcQ.ft_project_ref.toString();
         baseSupObj.it_tower_ref = calcQ.ft_project_ref.irm_f_it_tower.toString();
         baseSupObj.it_tower = calcQ.ft_project_ref.irm_f_it_tower.getDisplayValue();
-		baseSupObj.investment = calcQ.proj_investment.investment.getDisplayValue();
-		baseSupObj.activity_code = expItemRec.activity_code.toString();
-		baseSupObj.budget_code = expItemRec.budget_code_ref.getDisplayValue();
-		if (doRollUp) {
-			var rollupRec = OrgHierarchy.getRollupExpense(expRef, tOrg);
-			baseSupObj.expense_item_ref_roll = rollupRec.toString();
-			baseSupObj.activity_code_roll = rollupRec.activity_code.toString();
-			baseSupObj.budget_code_roll  = rollupRec.budget_code_ref.getDisplayValue();
-		} else {
-			baseSupObj.activity_code_roll = expItemRec.activity_code.toString();
-			baseSupObj.budget_code_roll = expItemRec.budget_code_ref.getDisplayValue();
-		}
-		baseSupObj.baseline = 0;
-		baseSupObj.execution = 0;
-		baseSupObj.transfer = 0;
-		baseSupObj.in_progress = 0;
-		baseSupObj.initiated = 0;
-		baseSupObj.committed = 0;
-		baseSupObj.obligated = 0;
-		baseSupObj.balance = 0;
+        baseSupObj.investment = calcQ.proj_investment.investment.getDisplayValue();
+        baseSupObj.activity_code = expItemRec.activity_code.toString();
+        baseSupObj.budget_code = expItemRec.budget_code_ref.getDisplayValue();
+        if (doRollUp) {
+            var rollupRec = OrgHierarchy.getRollupExpense(expRef, tOrg);
+            baseSupObj.expense_item_ref_roll = rollupRec.toString();
+            baseSupObj.activity_code_roll = rollupRec.activity_code.toString();
+            baseSupObj.budget_code_roll = rollupRec.budget_code_ref.getDisplayValue();
+        } else {
+            baseSupObj.activity_code_roll = expItemRec.activity_code.toString();
+            baseSupObj.budget_code_roll = expItemRec.budget_code_ref.getDisplayValue();
+        }
+        baseSupObj.baseline = 0;
+        baseSupObj.execution = 0;
+        baseSupObj.transfer = 0;
+        baseSupObj.in_progress = 0;
+        baseSupObj.initiated = 0;
+        baseSupObj.committed = 0;
+        baseSupObj.obligated = 0;
+        baseSupObj.balance = 0;
 
-		return baseSupObj;
-	}
+        return baseSupObj;
+    };
 
-	var setDueInBaselineDefaults = function (dueInBaseObj, dueInBaseline) {
-		dueInBaseObj.budget_item_ref = dueInBaseline.sys_id.toString();
-		dueInBaseObj.expense_item_ref = dueInBaseline.expense_item_ref.toString();
-		dueInBaseObj.org_ref = dueInBaseline.budget_ref.project_ref.organization_ref.toString();
-		dueInBaseObj.org_name = dueInBaseline.budget_ref.project_ref.organization_ref.getDisplayValue();
-		dueInBaseObj.project = dueInBaseline.budget_ref.project_ref.getDisplayValue();
-		dueInBaseObj.omb_project = dueInBaseline.budget_ref.project_ref.omb_project_name.toString();
+    var setDueInBaselineDefaults = function(dueInBaseObj, dueInBaseline) {
+        dueInBaseObj.budget_item_ref = dueInBaseline.sys_id.toString();
+        dueInBaseObj.expense_item_ref = dueInBaseline.expense_item_ref.toString();
+        dueInBaseObj.org_ref = dueInBaseline.budget_ref.project_ref.organization_ref.toString();
+        dueInBaseObj.org_name = dueInBaseline.budget_ref.project_ref.organization_ref.getDisplayValue();
+        dueInBaseObj.project = dueInBaseline.budget_ref.project_ref.getDisplayValue();
+        dueInBaseObj.omb_project = dueInBaseline.budget_ref.project_ref.omb_project_name.toString();
         dueInBaseObj.project_ref = dueInBaseline.budget_ref.project_ref.toString();
         dueInBaseObj.it_tower_ref = dueInBaseline.budget_ref.project_ref.irm_f_it_tower.toString();
         dueInBaseObj.it_tower = dueInBaseline.budget_ref.project_ref.irm_f_it_tower.getDisplayValue();
-		dueInBaseObj.investment = dueInBaseline.budget_ref.project_ref.investment.investment.toString();
-		dueInBaseObj.activity_code = dueInBaseline.expense_item_ref.activity_code.toString();
-		dueInBaseObj.budget_code = dueInBaseline.expense_item_ref.budget_code_ref.getDisplayValue();
-		dueInBaseObj.q1 = 0;
-		dueInBaseObj.q2 = 0;
-		dueInBaseObj.q3 = 0;
-		dueInBaseObj.q4 = 0;
-		dueInBaseObj.due_in = 0;
-		return dueInBaseObj;
-	}
+        dueInBaseObj.investment = dueInBaseline.budget_ref.project_ref.investment.investment.toString();
+        dueInBaseObj.activity_code = dueInBaseline.expense_item_ref.activity_code.toString();
+        dueInBaseObj.budget_code = dueInBaseline.expense_item_ref.budget_code_ref.getDisplayValue();
+        dueInBaseObj.q1 = 0;
+        dueInBaseObj.q2 = 0;
+        dueInBaseObj.q3 = 0;
+        dueInBaseObj.q4 = 0;
+        dueInBaseObj.due_in = 0;
+        return dueInBaseObj;
+    };
 
-	var buildObligation = function(obligQ, sourceType) {
-		var obligObj = {};
-		obligObj.sys_id = obligQ.sys_id.toString();
-        //obligObj.obligation = obligQ.obligation.toString();
+    var buildObligation = function(obligQ, sourceType) {
+        var obligObj = {};
+        obligObj.sys_id = obligQ.sys_id.toString();
+        obligObj.obligation = obligQ.obligation.toString();
         obligObj.org_ref = obligQ.project_ref.organization_ref.toString();
         obligObj.org_name = obligQ.project_ref.organization_ref.getDisplayValue();
-		obligObj.source = sourceType;
-		obligObj.status = obligQ.tran_status.toString();
-		obligObj.trans_amount = parseFloat(obligQ.transaction_total_amt.toString());
-		obligObj.invoice_amount = 0;
-		obligObj.paid_amount = 0;
-		obligObj.paid_date = "";
-		obligObj.estimated_cost = 0;
-		obligObj.invoice_number = "";
-		obligObj.contract_piid = obligQ.contract_ref.contract_piid.toString();
-		obligObj.reference_number = "";
-		obligObj.remaining = 0;
-		obligObj.notes = obligQ.description.toString();
-		return obligObj;
-	}
+        obligObj.source = sourceType;
+        obligObj.status = obligQ.tran_status.toString();
+        obligObj.trans_amount = parseFloat(obligQ.transaction_total_amt.toString());
+        obligObj.invoice_amount = 0;
+        obligObj.paid_amount = 0;
+        obligObj.paid_date = "";
+        obligObj.estimated_cost = 0;
+        obligObj.invoice_number = "";
+        obligObj.contract_piid = obligQ.contract_ref.contract_piid.toString();
+        obligObj.reference_number = "";
+        obligObj.remaining = 0;
+        obligObj.notes = obligQ.description.toString();
+        return obligObj;
+    };
 
-	if ($sp.getParameter("org_id") && $sp.getParameter("org_id").length > 0)
-		data.selectedOrgID = $sp.getParameter("org_id");
-	else
-		data.selectedOrgID = session.getClientData('org_id');
+    if ($sp.getParameter("org_id") && $sp.getParameter("org_id").length > 0)
+        data.selectedOrgID = $sp.getParameter("org_id");
+    else
+        data.selectedOrgID = gs.getUser().getPreference("x_g_irm_fms.reports.defaultOrgs") || session.getClientData('org_id');
 
-	if ($sp.getParameter("id") == "phasing_plan_report")
-		getProjects();
+    data.orgSelectionOpts = {
+        "selectedOrg": data.selectedOrgID,
+        "hide_widget": false,
+        "hide_project": true,
+        "multi_select": true
+    };
 
-	if (input) {
-		if (input.mode == "buildReport" || input.mode == "refreshProjects") {
+    if ($sp.getParameter("id") == "phasing_plan_report")
+        getProjects();
+
+    if (input) {
+        if (input.mode == "savePreference") {
+            user.savePreference(data.prefPrefix + data.reportType + ".state", JSON.stringify(input.value));
+        }
+        if (input.mode == "buildReport" || input.mode == "refreshProjects") {
             data.reportData = [];
-            
+
             var arrayUtil = new global.ArrayUtil();
             allOrgs = [];
             var inputOrgs = input.orgs.split(",");
             var doRollUp = false;
 
-            inputOrgs.forEach(function (org) { //build a set of orgs to query against based on user input
+            inputOrgs.forEach(function(org) { //build a set of orgs to query against based on user input
                 var childOrgs = OrgHierarchy.getOrgChildren(org);
-                childOrgs.forEach(function (child) {
+                childOrgs.forEach(function(child) {
                     if (!arrayUtil.contains(allOrgs, child))
                         allOrgs.push(child);
                 });
                 if (!arrayUtil.contains(allOrgs, org))
-                        allOrgs.push(org);
+                    allOrgs.push(org);
             });
-
-			if (allOrgs.length > 1)
+           
+            if (allOrgs.length > 1)
                 doRollUp = true;
 
             if (input.mode == "buildReport") {
-			
+
                 if (data.reportType == "monthly_expenditure") {
                     var monthlyQ = new GlideRecord(FMSConstants.VIEW_FIN_TRAN_REPORT);
                     monthlyQ.addEncodedQuery("proj_organization_refIN" + allOrgs.join(",") + "^ft_fy=" + input.fy + "^ft_void=false");
@@ -1722,8 +1771,8 @@
                         var iCode = monthlyQ.proj_investment.getDisplayValue();
 
                         //check for existing object in the array
-                        var existingMonthlyData = data.reportData.filter(function (el) {
-                            return el.budget_code == bCode && el.activity_code == aCode && el.org_name == oCode && el.project == pCode && el.investment == iCode
+                        var existingMonthlyData = data.reportData.filter(function(el) {
+                            return el.budget_code == bCode && el.activity_code == aCode && el.org_name == oCode && el.project == pCode && el.investment == iCode;
                         });
 
                         if (existingMonthlyData.length > 0) { //use existing object
@@ -1736,10 +1785,10 @@
                                 var monthlyRollup = OrgHierarchy.getRollupExpense(monthlyQ.fti_expense_item_ref, data.selectedOrgID);
                                 tMonthObj.expense_item_ref_roll = monthlyRollup.toString();
                                 tMonthObj.activity_code_roll = monthlyRollup.activity_code.toString();
-                                tMonthObj.budget_code_roll  = monthlyRollup.budget_code_ref.getDisplayValue();
+                                tMonthObj.budget_code_roll = monthlyRollup.budget_code_ref.getDisplayValue();
                             } else {
                                 tMonthObj.activity_code_roll = bCode;
-                                tMonthObj.budget_code_roll  = aCode;
+                                tMonthObj.budget_code_roll = aCode;
                             }
                             tMonthObj.org_name = oCode;
                             tMonthObj.project = pCode;
@@ -1784,7 +1833,7 @@
                         var isExisting = false;
 
                         //check for existing object in the array
-                        var existingData = data.reportData.filter(function (el) {
+                        var existingData = data.reportData.filter(function(el) {
                             return el.project_ref == projVal && el.allocation_group_ref == allocGroupVal && el.appropriation_ref == appropVal && el.org_ref == orgVal;
                         });
 
@@ -1867,7 +1916,7 @@
                         var isExists = false;
 
                         //check for existing object in the array
-                        var prevData = data.reportData.filter(function (el) {
+                        var prevData = data.reportData.filter(function(el) {
                             return el.project_ref == endprojVal && el.allocation_group_ref == endallocGroupVal && el.appropriation_ref == endappropVal && el.org_ref == endorgVal;
                         });
 
@@ -1923,7 +1972,7 @@
                     }
 
                     //total and make negative
-                    data.reportData.forEach(function (item) {
+                    data.reportData.forEach(function(item) {
                         item.vg_labor = item.vg_labor * -1;
                         item.trans_out = item.trans_out * -1;
                         item.expended = item.expended * -1;
@@ -1951,7 +2000,7 @@
 
                             if (actualProjects.length > 0)
                                 baseEQ += "^budget_ref.project_ref.sys_idIN" + actualProjects.join(", ");
-                            
+
                         } else {
                             baseEQ += "^budget_ref.budget_type=" + input.budget_type;
                             if (input.budget_type == "baseline")
@@ -1959,7 +2008,7 @@
                         }
 
                     }
-                        
+
                     var baseQ = new GlideAggregate(FMSConstants.TABLE_BUDGET_ITEM);
                     baseQ.addEncodedQuery(baseEQ);
                     baseQ.groupBy("budget_ref");
@@ -1978,7 +2027,7 @@
                         var expItemRec = baseQ.expense_item_ref;
 
                         //check for existing object in the array
-                        var existBaseline = data.reportData.filter(function (el) {
+                        var existBaseline = data.reportData.filter(function(el) {
                             return el.budget_ref == budgetRef && el.expense_item_ref == expRef && el.budget_type == typeRef;
                         });
 
@@ -2006,7 +2055,7 @@
                                 var rollupRec = OrgHierarchy.getRollupExpense(expRef, data.selectedOrgID);
                                 reportObj.expense_item_ref_roll = rollupRec.toString();
                                 reportObj.activity_code_roll = rollupRec.activity_code.toString();
-                                reportObj.budget_code_roll  = rollupRec.budget_code_ref.getDisplayValue();
+                                reportObj.budget_code_roll = rollupRec.budget_code_ref.getDisplayValue();
                             } else {
                                 reportObj.activity_code_roll = expItemRec.activity_code.toString();
                                 reportObj.budget_code_roll = expItemRec.budget_code_ref.getDisplayValue();
@@ -2046,7 +2095,7 @@
                                 if (reportObj.budget_type == "Actual") {
                                     reportObj.budget += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
                                 }
-        
+
                                 if (reportObj.budget_type == "Execution") {
                                     reportObj.execution += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
                                 }
@@ -2109,14 +2158,14 @@
                         }
 
                         //calculate balances
-                        data.reportData.forEach(function (item) {
+                        data.reportData.forEach(function(item) {
                             item.balance = item.execution - (item.transfer + item.in_progress + item.initiated + item.committed + item.obligated);
                         });
 
                     } else {
                         if (input.budget_type == "Actual") {
                             //calculate balances
-                            data.reportData.forEach(function (item) {
+                            data.reportData.forEach(function(item) {
                                 item.balance = (item.execution - item.budget);
                             });
                         }
@@ -2155,19 +2204,19 @@
                         finTranObj.activity_code = finTranQ.expense_item_ref.activity_code.toString();
                         finTranObj.budget_code = finTranQ.expense_item_ref.budget_code_ref.getDisplayValue();
                         if (doRollUp) {
-                                var transRollup = OrgHierarchy.getRollupExpense(finTranQ.expense_item_ref, data.selectedOrgID);
-                                finTranObj.expense_item_ref_roll = transRollup.toString();
-                                finTranObj.activity_code_roll = transRollup.activity_code.toString();
-                                finTranObj.budget_code_roll  = transRollup.budget_code_ref.getDisplayValue();
+                            var transRollup = OrgHierarchy.getRollupExpense(finTranQ.expense_item_ref, data.selectedOrgID);
+                            finTranObj.expense_item_ref_roll = transRollup.toString();
+                            finTranObj.activity_code_roll = transRollup.activity_code.toString();
+                            finTranObj.budget_code_roll = transRollup.budget_code_ref.getDisplayValue();
                         } else {
                             finTranObj.activity_code_roll = finTranQ.expense_item_ref.activity_code.toString();
-                            finTranObj.budget_code_roll  = finTranQ.expense_item_ref.budget_code_ref.getDisplayValue();
+                            finTranObj.budget_code_roll = finTranQ.expense_item_ref.budget_code_ref.getDisplayValue();
                         }
                         finTranObj.trans_status = finTranQ.fin_tran_ref.tran_status.toString();
                         finTranObj.trans_type = finTranQ.fin_tran_ref.tran_type.toString();
                         finTranObj.trans_date = finTranQ.fin_tran_ref.tran_date.toString();
                         finTranObj.obligation = finTranQ.fin_tran_ref.obligation.toString();
-                        finTranObj.void = finTranQ.fin_tran_ref.void.toString();
+                        finTranObj['void'] = finTranQ.fin_tran_ref['void'].toString();
                         finTranObj.post = finTranQ.post_ref.getDisplayValue();
                         finTranObj.contract_piid = finTranQ.fin_tran_ref.contract_ref.contract_piid.toString();
                         finTranObj.item_number = parseInt(finTranQ.tran_item.toString());
@@ -2206,9 +2255,9 @@
                     obligQ.query();
                     while (obligQ.next()) {
 
-                        var obligObj = buildObligation(obligQ, "FinTran");			
+                        var obligObj = buildObligation(obligQ, "FinTran");
 
-                        var foundObligation = data.reportData.filter(function (el) {
+                        var foundObligation = data.reportData.filter(function(el) {
                             return el.obligation == obligObj.obligation;
                         });
 
@@ -2218,13 +2267,12 @@
                         data.reportData.push(obligObj);
                     }
 
-                    allObligations.forEach(function (item) {
-                        
+                    allObligations.forEach(function(item) {
                         var obligDetails = new GlideRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION);
                         obligDetails.addEncodedQuery("obligation=" + item);
                         obligDetails.query();
                         while (obligDetails.next()) {
-                            var existObligation = data.reportData.filter(function (el) {
+                            var existObligation = data.reportData.filter(function(el) {
                                 return el.sys_id == obligDetails.sys_id.toString();
                             });
 
@@ -2271,16 +2319,16 @@
                     });
 
                     var filteredObligations = [];
-                    
-                    allObligations.forEach(function (thisOb) {
 
-                        var allObs = data.reportData.filter(function (el) {
+                    allObligations.forEach(function(thisOb) {
+
+                        var allObs = data.reportData.filter(function(el) {
                             return el.obligation == thisOb;
                         });
 
                         var remainCount = 0;
 
-                        allObs.forEach(function (obRec) {
+                        allObs.forEach(function(obRec) {
                             obRec.remaining = (obRec.trans_amount - obRec.paid_amount);
                             remainCount += obRec.remaining;
                         });
@@ -2288,29 +2336,29 @@
                         var remainFinal = round2Fixed(remainCount);
 
                         if (obligationStatus == "both" || (obligationStatus == "liquidated" && remainFinal == "0.00") || (obligationStatus == "unliquidated" && remainFinal != "0.00"))
-                            filteredObligations.push(thisOb)
+                            filteredObligations.push(thisOb);
 
                     });
 
                     var newObData = [];
-                        
-                    filteredObligations.forEach(function (thisOb) {
 
-                        var allObs = data.reportData.filter(function (el) {
+                    filteredObligations.forEach(function(thisOb) {
+
+                        var allObs = data.reportData.filter(function(el) {
                             return el.obligation == thisOb;
                         });
 
-                        allObs.forEach(function (obRec) {
+                        allObs.forEach(function(obRec) {
                             newObData.push(obRec);
                         });
 
                     });
 
-                    data.reportData = newObData;				
+                    data.reportData = newObData;
 
 
                 }
-                
+
                 if (data.reportType == "funding_due_in") {
                     //https://bmpdev.servicenowservices.com/x_g_irm_fms_budget_item_phase_list.do?sysparm_query=budget_item_ref.budget_ref.project_ref.organization_ref%3D294b043d1bc090500a4a10ad9c4bcb00%5Ebudget_item_ref.budget_ref.budget_type%3DExecution%5Ebudget_item_ref.budget_ref.fy%3D2019&sysparm_view=
                     //budget_item_ref.budget_ref.project_ref.organization_ref=294b043d1bc090500a4a10ad9c4bcb00^budget_item_ref.budget_ref.budget_type=Execution^budget_item_ref.budget_ref.fy=2019
@@ -2346,7 +2394,7 @@
                         var projRef = dueInExecution.budget_ref.project_ref.toString();
 
                         //check for existing object in the array
-                        var existDueBaseline = data.reportData.filter(function (el) {
+                        var existDueBaseline = data.reportData.filter(function(el) {
                             return el.expense_item_ref == expRef && el.project_ref == projRef;
                         });
 
@@ -2358,12 +2406,12 @@
                         }
 
                         dueInExObj.execution = parseFloat(dueInExecution.budget_amt.toString());
-                        
+
                         if (!dueInBaseExists) {
-                            dueInExObj.baseline = 0; 
+                            dueInExObj.baseline = 0;
                             data.reportData.push(dueInExObj);
                         }
-                            
+
                     }
 
                     //add in quarter phasing 
@@ -2377,7 +2425,7 @@
                         var phaseExpenseItem = phaseQuery.budget_item_ref.expense_item_ref.toString();
                         var phaseProject = phaseQuery.budget_item_ref.budget_ref.project_ref.toString();
 
-                        var existingItems = data.reportData.filter(function (el) {
+                        var existingItems = data.reportData.filter(function(el) {
                             return el.expense_item_ref == phaseExpenseItem && el.project_ref == phaseProject && el.budget_item_ref == phaseBudgetItem;
                         });
 
@@ -2423,7 +2471,7 @@
 
 
                     //calculate due-in
-                    data.reportData.forEach(function (item) {
+                    data.reportData.forEach(function(item) {
                         item.due_in = (item.q1 + item.q2 + item.q3 + item.q4) - item.execution;
                     });
                 }
@@ -2439,7 +2487,7 @@
                         var phasingBudget = phasingQuery.budget_item_ref.expense_item_ref.budget_code_ref.getDisplayValue();
                         var phasingActivity = phasingQuery.budget_item_ref.expense_item_ref.activity_code.toString();
 
-                        var existingPhasing = data.phasingData.filter(function (el) {
+                        var existingPhasing = data.phasingData.filter(function(el) {
                             return el.budget_code == phasingBudget && el.activity_code == phasingActivity;
                         });
 
@@ -2524,7 +2572,7 @@
                         var phasingRowTotal1 = {};
                         phasingRowTotal1 = getPhasingValues(oldBudgetItem);
                         phasingRowTotal1.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
-                        if (mode == "grand"){
+                        if (mode == "grand") {
                             phasingRowTotal1.budget_code = oldBudgetItem.org_name + " Totals:";
                             phasingRowTotal1.activity_code = "";
                         }
@@ -2542,7 +2590,7 @@
                         var phasingRowTotal2 = {};
                         phasingRowTotal2 = getPhasingValues(oldBudgetItem);
                         phasingRowTotal2.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
-                        if (mode == "grand"){
+                        if (mode == "grand") {
                             phasingRowTotal2.budget_code = oldBudgetItem.org_name + " Totals:";
                             phasingRowTotal2.activity_code = "";
                         }
@@ -2560,7 +2608,7 @@
                         var phasingRowTotal3 = {};
                         phasingRowTotal3 = getPhasingValues(oldBudgetItem);
                         phasingRowTotal3.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
-                        if (mode == "grand"){
+                        if (mode == "grand") {
                             phasingRowTotal3.budget_code = oldBudgetItem.org_name + " Totals:";
                             phasingRowTotal3.activity_code = "";
                         }
@@ -2578,7 +2626,7 @@
                         var phasingRowCodeTotal = {};
                         phasingRowCodeTotal = getPhasingValues(oldBudgetItem);
                         phasingRowCodeTotal.activity_code = oldBudgetItem.budget_code_short + " Totals: ";
-                        if (mode == "grand"){
+                        if (mode == "grand") {
                             phasingRowCodeTotal.budget_code = oldBudgetItem.org_name + " Totals:";
                             phasingRowCodeTotal.activity_code = "";
                         }
@@ -2593,7 +2641,7 @@
                         phasingRowCodeTotal.total = totals.q1 + totals.q2 + totals.q3 + totals.q4;
                         data.reportData.push(phasingRowCodeTotal);
 
-                        if (mode != "grand"){
+                        if (mode != "grand") {
 
                             phaseBudgetGrandTotals.q1 += totals.q1;
                             phaseBudgetGrandTotals.q2 += totals.q2;
@@ -2630,11 +2678,7 @@
                             totals.m12 = 0;
                         }
 
-                        
                     }
-
-
-
 
 
                     data.phasingData.sort(function(a, b) {
@@ -2656,7 +2700,7 @@
                     });
 
                     //calculate row-by-row phasing
-                    data.phasingData.forEach(function (item) {
+                    data.phasingData.forEach(function(item) {
 
                         if (oldBudgetItem != "") {
                             if (item.budget_code != oldBudgetItem.budget_code) {
@@ -2743,65 +2787,63 @@
                         totalPhasing(phaseBudgetTotals, "regular");
                         totalPhasing(phaseBudgetGrandTotals, "grand");
                     }
-                        
+
                 }
-                
+
             } else {
                 getProjects();
             }
 
-		}
-	}
+        }
+    }
 
 
 
-	data.orgData = FMSUtility.getAllAllocationData(FMSConstants.TABLE_ORGANIZATION, '', true);
-	data.orgData.sort(function (a, b) {
-		var x = a.organization_display.toLowerCase();
-		var y = b.organization_display.toLowerCase();
-		if (x < y) {
-			return -1;
-		}
-		if (x > y) {
-			return 1;
-		}
-		return 0;
-	});
+    data.orgData = FMSUtility.getAllAllocationData(FMSConstants.TABLE_ORGANIZATION, '', true);
+    data.orgData.sort(function(a, b) {
+        var x = a.organization_display.toLowerCase();
+        var y = b.organization_display.toLowerCase();
+        if (x < y) {
+            return -1;
+        }
+        if (x > y) {
+            return 1;
+        }
+        return 0;
+    });
 
-	var budgetTypes = [];
-	var typeQuery = new GlideRecord("sys_choice");
-	typeQuery.addEncodedQuery("name=x_g_irm_fms_budget^element=budget_type");
-	typeQuery.query();
-	while (typeQuery.next()) {
-		var typeObj = {};
-		typeObj.value = typeQuery.value.toString();
-		typeObj.name = typeQuery.label.toString();
-		budgetTypes.push(typeObj);
-	}
-	data.budgetTypes = budgetTypes;
+    var budgetTypes = [];
+    var typeQuery = new GlideRecord("sys_choice");
+    typeQuery.addEncodedQuery("name=x_g_irm_fms_budget^element=budget_type");
+    typeQuery.query();
+    while (typeQuery.next()) {
+        var typeObj = {};
+        typeObj.value = typeQuery.value.toString();
+        typeObj.name = typeQuery.label.toString();
+        budgetTypes.push(typeObj);
+    }
+    data.budgetTypes = budgetTypes;
 
-})(options);
-]]></script>
+})(options);]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>831</sys_mod_count>
+        <sys_mod_count>963</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2021-02-16 18:17:08</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-03-18 17:54:49</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
         <div>
             <div class="row">
-                <div class="col-sm-9 form-group">
-
+                <div class="col-auto">
                     <div class="reportTitle">{{c.reportTitle}}</div>
                     <div class="yearSelect orgSpan" ng-if="c.data.reportType != 'financial_transaction'">
                         <label for="selFY" class="selectLabel">FY:</label>
@@ -2811,7 +2853,7 @@
                             </option>
                         </select>
                     </div>
-                    <div class="orgSpan"><widget id="organization_selection" options='{"hide_widget": false, "hide_project": true, "multi_select": true}'></widget></div>
+                    <div class="orgSpan"><widget id="organization_selection" options='data.orgSelectionOpts'></widget></div>
                     <div class="yearSelect orgSpan" ng-if="c.data.reportType == 'financial_transaction'">
                         <div class="orgSpan">
                             <label for="startDate" class="selectLabel">Start Date</label>
@@ -2845,7 +2887,20 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-3 form-group">
+                <div class="col-auto form-group">
+                    <div class="new-button" uib-dropdown>
+                      <button type="button" class="btn btn-light new-button" uib-dropdown-toggle>
+                        <i class="icon-menu" style="vertical-align: middle;"></i>
+                      </button>
+                      <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button" style="left: -120px;">
+                        <li role="menuitem">
+                            <a href="javascript:void(0)" title="Save current report layout as personal preference" ng-click="c.savePref(c.data.reportType)">Save Layout</a>
+                        </li>
+                        <li role="menuitem">
+                            <a href="javascript:void(0)" title="Delete personal report layout preference and restore application default" ng-click="c.deletePref(c.data.reportType)">Delete Layout</a>
+                        </li>
+                      </ul>
+                    </div>
                     <a href="javascript:void(0)" ng-click="c.toggleExpand(false);" class="btn btn-info new-button">Collapse All Rows</a>
                     <a href="javascript:void(0)" ng-click="c.toggleExpand(true);" class="btn btn-info new-button">Expand All Rows</a>
                     <a href="javascript:void(0)" ng-click="c.exportToCsv();" class="btn btn-success new-button">Export to Excel</a>
@@ -2859,7 +2914,7 @@
         </div>
         <div class="row" ng-show="c.targetOrg == ''">
             <div class="col-sm-12">
-                <div class="no-orgs">**Please select at least one Organization to run a report**</div>
+                <div class="no-orgs">**Please select at least one Organization to run the report**</div>
             </div>
         </div>
     </div>

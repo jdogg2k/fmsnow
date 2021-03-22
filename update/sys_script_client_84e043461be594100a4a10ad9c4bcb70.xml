@@ -33,14 +33,12 @@
 
 
     var a = g_form.getValue('item_cost');
-    var b = a.split(';');
-    var c = b[1].split('.');
+    var c = parseInt(a);
 
     var a1 = g_form.getValue('actual_cost');
-    var b1 = a1.split(';');
-    var c1 = b1[1].split('.');
+    var c1 = parseInt(a1);
 
-    if (c1[0] == 0 && c[0] == 0) {
+    if (c1 == 0 && c == 0) {
         alert("Estimated Cost or Actual Cost is required.");
         return false;
     }
@@ -52,15 +50,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>84e043461be594100a4a10ad9c4bcb70</sys_id>
-        <sys_mod_count>41</sys_mod_count>
+        <sys_mod_count>43</sys_mod_count>
         <sys_name>Field Validations</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_client_84e043461be594100a4a10ad9c4bcb70</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-10-13 15:04:57</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2021-03-08 20:14:55</sys_updated_on>
         <table>x_g_irm_fms_fin_tran_item</table>
         <type>onSubmit</type>
         <ui_type>10</ui_type>

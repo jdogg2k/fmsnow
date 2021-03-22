@@ -9,7 +9,7 @@
     $scope.data.myOrg_name = c.data.selectedOrg_name;
     $scope.data.myProj_id = c.data.selectedProj;
     $scope.data.myProj_name = c.data.selectedProj_name;
-    $scope.data.isMultiple = false;
+    $scope.data.isMultiple = c.data.selectedOrg.split(",").length > 1;
 
     $rootScope.userAuth = $scope.data.userAuth;
 	if (!Object.values($rootScope.userAuth.roles).some(function(role) { return role === true; }) || $rootScope.userAuth.orgs.length == 0 )
@@ -29,12 +29,8 @@
 
     $scope.$on("field.change", function(evt, parms) {
         if (parms.field.name == 'selOrg') {
+		   if (parms.newValue.length == 0 && !c.data.multi_select) return;
            if (c.data.multi_select) {
-                if (parms.newValue.indexOf(",") > -1) {
-                        $scope.data.isMultiple = true;
-                } else {
-                        $scope.data.isMultiple = false;
-                }
                 $rootScope.$broadcast('multiOrgChanged', {
                     org_ids: parms.newValue
                 });
@@ -87,7 +83,7 @@
         <public>false</public>
         <roles/>
         <script><![CDATA[(function(options) {
-    data.selectedOrg = "";
+    data.selectedOrg = options.selectedOrg || "";
     data.selectedProj = "";
     var session = gs.getSession();
     var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries	
@@ -97,13 +93,20 @@
 			session.putClientData("proj_id", "");
 		}
 	}
-	if (session.getClientData("org_id"))
+	if (data.selectedOrg.length == 0 && session.getClientData("org_id"))
         data.selectedOrg = session.getClientData('org_id').toString();
     if ($sp.getParameter("proj_id") && $sp.getParameter("proj_id").length > 0)
         session.putClientData("proj_id", $sp.getParameter("proj_id"));
     if (session.getClientData("proj_id"))
         data.selectedProj = session.getClientData('proj_id').toString();
-
+    if (data.selectedOrg.length == 0 && data.selectedProj.length == 0) {
+        var userPref = gs.getUser().getPreference("x_g_irm_fms.general.defaultOrg");
+        if (userPref != null && userPref.length > 0) {
+			data.selectedOrg = userPref;
+            session.putClientData("org_id", userPref);
+		}
+    }
+	
     if (input) { //input holds the data coming back to the server
         if (input.org_id) {
             data.selectedOrg = input.org_id;
@@ -138,16 +141,20 @@
     gr.addEncodedQuery('sys_idIN' + data.userAuth.orgs.join(","));
     gr.orderBy('org_name');
     gr.query();
+    data.org_names = [];
+    var orgList = (data.selectedOrg || "").split(",");
+    if (orgList.length > 1 && !data.multi_select) orgList.length = 1;
     while (gr.next()) {
-        if (data.userOrgs.length == 0 || data.selectedOrg == gr.getValue("sys_id")) {
+        if (orgList.indexOf(gr.getValue("sys_id")) >= 0) 
+            data.org_names[orgList.indexOf(gr.getValue("sys_id"))] = gr.getValue("organization_display");
+        if (data.selectedOrg.length == 0) {
+            data.selectedOrg = gr.getValue("sys_id").toString();
             data.selectedOrg_name = gr.getValue("organization_display");
-            if (data.selectedOrg.length == 0) {
-                data.selectedOrg = gr.getValue("sys_id").toString();
-                session.putClientData('org_id', gr.getValue("sys_id").toString());
-            }
+            session.putClientData("org_id", gr.getValue("sys_id").toString());
         }
         data.userOrgs.push(gr.getValue("sys_id"));
     }
+	data.selectedOrg_name = data.org_names.join(",");
     if (gr.getRowCount() == 0 && JSON.stringify(data.userAuth.roles).includes("true")) {
         data.hide_widget = true;
         gs.addErrorMessage("ERROR!!! CONTACT SYSTEM ADMINISTRATOR.  NO ORGANIZATIONS DEFINED.");
@@ -162,14 +169,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-28 16:15:35</sys_created_on>
         <sys_id>c3c8aac01bac5c101f7e113d9c4bcbb0</sys_id>
-        <sys_mod_count>281</sys_mod_count>
+        <sys_mod_count>299</sys_mod_count>
         <sys_name>Organization Selection</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_c3c8aac01bac5c101f7e113d9c4bcbb0</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-12-03 20:45:19</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-03-17 12:24:43</sys_updated_on>
         <template><![CDATA[<div style="display: inline-flex; text-align: left;" class="topFilters" ng-hide="c.data.hide_widget">
     <div style="display: inline-flex; align-items: center; min-width: 400px;">
       <label class="control-label" ng-show="!c.data.isMultiple">Organization:</label>
@@ -179,7 +186,7 @@
     &nbsp;&nbsp;
     <div style="display: inline-flex; align-items: center; min-width: 400px;" ng-hide="c.data.hide_project">
       <label class="control-label">Project:</label>
-      <sn-record-picker field="selProj" table="data.projTableName" default-query="'organization_ref=' + data.myOrg_id" display-field="'project_display'" value-field="'sys_id'" search-fields="'project_name'" page-size="100" sn-disabled="!data.myOrg_id"></sn-record-picker>
+      <sn-record-picker field="selProj" table="data.projTableName" default-query="'organization_refIN' + data.myOrg_id" display-field="'project_display'" value-field="'sys_id'" search-fields="'project_name'" page-size="100" sn-disabled="!data.myOrg_id"></sn-record-picker>
     </div>
   </div>]]></template>
     </sp_widget>

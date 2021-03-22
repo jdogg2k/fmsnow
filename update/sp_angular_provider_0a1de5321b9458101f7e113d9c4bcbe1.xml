@@ -276,9 +276,8 @@
 			rowDeselection: true,
 			//floatingFilter: true,
 			pagination: true,
-			paginateChildRows: false,
-			//paginationPageSize:num,
 			paginationAutoPageSize: true,
+			paginateChildRows: false,
 			suppressFieldDotNotation: true,
 			suppressColumnVirtualisation: true,
 			stopEditingWhenGridLosesFocus: true,
@@ -362,7 +361,7 @@
 				myDetailCellRenderer: DetailCellRenderer,
 				myGroupCellRenderer: getGroupCellRenderer(),
 				numericCellEditor: NumericCellEditor
-			}
+			},
 		};
 
 		var launchRowDetails = function (rowID, linkVal) {
@@ -393,7 +392,11 @@
 		};
 
 		this.PageSizeChanged = function (value) {
-			gridOptions.paginationAutoPageSize = false;
+			SetPageSize(value);
+		};
+		
+		function SetPageSize (value) {
+			gridOptions.paginationAutoPageSize = (Number(value) === 0);
 			gridOptions.api.paginationSetPageSize(Number(value));
 		}
 
@@ -532,6 +535,7 @@
 		//setting functions called from widget
 		this.renderGrid = function (ele) {
 			var gridDiv = document.querySelector('#' + ele);
+			spUtil.getPreference("x_g_irm_fms.lists.pageSize", function(response) { SetPageSize(response); });
 			new agGrid.Grid(gridDiv, gridOptions);
 		};
 		this.fmtCurrency = function (val) {
@@ -1161,14 +1165,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>808</sys_mod_count>
+        <sys_mod_count>820</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-12-29 16:48:30</sys_updated_on>
+        <sys_updated_on>2021-02-22 12:05:51</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

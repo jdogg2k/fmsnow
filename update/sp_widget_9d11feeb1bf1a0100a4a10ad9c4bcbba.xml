@@ -44,12 +44,10 @@
         options.type = pref.getValue('type') || "string";
         options.value = pref.getValue('value');
         options.description = pref.getValue('description');
+		options.refresh = options.name.includes(".general.defaultOrg") ||options.name.includes(".contains") || options.name.includes(".showClock"); 
 
 		var choice = choicePrefs.filter(function(item) { return item.name == options.name; })[0];
 		if (choice) {
-            var opts = choice.choiceItems ? choice.choiceItems : [{}];
-            var def = opts.filter(function(item) { return item.isDefault == true; })[0];
-            options.value = def != null ? def.value : options.value;
             for (var attr in choice) {
                 options[attr] = choice[attr];
             }
@@ -63,15 +61,15 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2021-01-25 13:05:26</sys_created_on>
         <sys_id>9d11feeb1bf1a0100a4a10ad9c4bcbba</sys_id>
-        <sys_mod_count>7</sys_mod_count>
+        <sys_mod_count>24</sys_mod_count>
         <sys_name>Application Preferences</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_9d11feeb1bf1a0100a4a10ad9c4bcbba</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-01-28 19:46:16</sys_updated_on>
-        <template><![CDATA[<div style="width: 75%; height: 80%;">
+        <sys_updated_on>2021-03-09 22:49:40</sys_updated_on>
+        <template><![CDATA[<div>
 	<div class="form-group">
         <div class="row" style="margin: 0px; padding: 0px;">
           <ul id="prefTabs" class="nav nav-tabs fms-tabs">
@@ -84,8 +82,9 @@
           <div class="tab-content" style="border: 1px solid #ddd;">
             <div id="general" class="tab-pane active in">
               <div class="row" style="padding: 5px;">
-              	<div class="col-md-6 text-right">Preference Description</div>
-              	<div class="col-md-5 text-left">Preferred Default Value</div>
+              	<div class="col-md-5 text-right">Preference Description</div>
+              	<div class="col-md-5 text-left" style="padding: 0px;">Preferred Default Value</div>
+              	<div class="col-md-1"></div>
               	<div class="col-md-1">Clear/Reset</div>
               </div>
               <div style="text-align: left; margin: 5px;">
@@ -97,11 +96,21 @@
               <div style="text-align: left; margin: 5px;">
                 <sp-widget widget='data["x_g_irm_fms.general.tranType"]'></sp-widget>
               </div>
+              <div style="text-align: left; margin: 5px;">
+                <sp-widget widget='data["x_g_irm_fms_budget_code.autocomplete.contains"]'></sp-widget>
+              </div>
+              <div style="text-align: left; margin: 5px;">
+                <sp-widget widget='data["x_g_irm_fms_expense_item.autocomplete.contains"]'></sp-widget>
+              </div>
+              <div style="text-align: left; margin: 5px;">
+                <sp-widget widget='data["x_g_irm_fms_contract.autocomplete.contains"]'></sp-widget>
+              </div>
             </div>
             <div id="lists" class="tab-pane">
               <div class="row" style="padding: 5px;">
-              	<div class="col-md-6 text-right">Preference Description</div>
-              	<div class="col-md-5 text-left">Preferred Default Value</div>
+              	<div class="col-md-5 text-right">Preference Description</div>
+              	<div class="col-md-5 text-left" style="padding: 0px;">Preferred Default Value</div>
+                <div class="col-md-1"></div>
               	<div class="col-md-1">Clear/Reset</div>
               </div>
               <div style="text-align: left; margin: 5px;">
@@ -110,15 +119,16 @@
             </div>
             <div id="reports" class="tab-pane">
               <div class="row" style="padding: 5px;">
-              	<div class="col-md-6 text-right">Preference Description</div>
-              	<div class="col-md-5 text-left">Preferred Default Value</div>
+              	<div class="col-md-5 text-right">Preference Description</div>
+              	<div class="col-md-5 text-left" style="padding: 0px;">Preferred Default Value</div>
+                <div class="col-md-1"></div>
               	<div class="col-md-1">Clear/Reset</div>
               </div>
               <div style="text-align: left; margin: 5px;">
-                <sp-widget widget='data["x_g_irm_fms.reports.test1"]'></sp-widget>
+                <sp-widget widget='data["x_g_irm_fms.reports.defaultOrgs"]'></sp-widget>
               </div>
               <div style="text-align: left; margin: 5px;">
-                <sp-widget widget='data["x_g_irm_fms.reports.finTranCols"]'></sp-widget>
+                <sp-widget widget='data["x_g_irm_fms.reports.toolPanel"]'></sp-widget>
               </div>
             </div>
           </div>
