@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller = function($scope, $http, spUtil, $uibModalStack, $timeout) {
+    /* widget controller */
+    var c = this;
+    var g_form;
+
+    c.$onInit = function() {
+        $scope.$on('spModel.gForm.initialized', function(e, gFormInstance) {
+            g_form = gFormInstance;
+        });
+    };
+
+    $scope.closePopover = function(reason) {
+        if ($uibModalStack.getTop())
+            $uibModalStack.close($uibModalStack.getTop().key, reason);
+        // $uibModalStack.dismissAll();
+    };
+
+    $scope.saveForm = function() {
+        if (g_form) {
+            g_form.save().then(function() {
+                $scope.closePopover({
+                    "status": 'saved',
+                    "value": $scope.data.form._fields[$scope.data.fieldName].value
+                });
+            });
+        }
+    };
+
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.popover-content {&#13;
+  margin: 5px;&#13;
+}&#13;
+&#13;
+.icon-pop { &#13;
+  font-size: 28px; &#13;
+  padding: 10px; &#13;
+  height: auto; &#13;
+  width: auto; &#13;
+  background-image: none;&#13;
+  background-color: transparent;&#13;
+}&#13;
+&#13;
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>editable_field</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Editable Field</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+    data.tableName = options.table ? options.table.toString() : input ? input.table : "UNKNOWN";
+    data.fieldName = options.field ? options.field.toString() : input ? input.field : "UNKNOWN";
+    data.editable = options.editable ? options.editable : input ? input.editable : false;
+    data.sys_id = options.id ? options.id.toString() : input ? input.id : "UNKNOWN";
+    var user = gs.getUser().getID();
+    data.canEdit = true;
+    data.form = $sp.getForm(data.tableName, data.sys_id, null, 'sp');
+    data.view = data.form._view;
+    data.model = data.form._fields;
+    Object.keys(data.model).forEach(function(fld) {
+        if (fld != data.fieldName) delete data.model[fld];
+    });
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-03-25 12:10:35</sys_created_on>
+        <sys_id>01a592e21b0b28101f7e113d9c4bcb03</sys_id>
+        <sys_mod_count>83</sys_mod_count>
+        <sys_name>Editable Field</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_widget_01a592e21b0b28101f7e113d9c4bcb03</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-04-07 12:09:55</sys_updated_on>
+        <template><![CDATA[<div style="min-width: 250px;" class="popover-content" click-outside="closePopover('outside click')">
+  <table style="width: 100%;">
+    <tr><td>
+      <h4 class="popover-title" ng-bind="title" ng-show="title"></h4>
+    </td></tr>
+    <tr>
+      <td ng-if="c.data.editiable == false">
+        <span>This element is not editable from the list.</span>
+      </td>
+      <td ng-if="c.data.editiable == true">
+		<sp-model form-model="c.data.form" mandatory template-url="editable-field-template"></sp-model>
+      </td>
+      <td style="width: 50px;">
+        <button type="button" id="cell_edit_ok" class="btn btn-icon icon-pop icon-check-circle" 
+                style="color: green;" ng-click="saveForm()" ng-if="c.data.editiable == true">
+        </button>
+      </td>
+      <td style="width: 50px;">
+        <button type="button" id="cell_edit_cancel" class="btn btn-icon icon-pop icon-cross-circle" 
+                style="color: red;" ng-click="closePopover('cancelled')">
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+]]></template>
+    </sp_widget>
+</record_update>

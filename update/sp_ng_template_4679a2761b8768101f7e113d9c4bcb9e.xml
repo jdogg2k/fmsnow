@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_ng_template">
+    <sp_ng_template action="INSERT_OR_UPDATE">
+        <id>editable-field-template</id>
+        <sp_widget display_value="Editable Field">01a592e21b0b28101f7e113d9c4bcb03</sp_widget>
+        <sys_class_name>sp_ng_template</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-03-26 07:53:37</sys_created_on>
+        <sys_id>4679a2761b8768101f7e113d9c4bcb9e</sys_id>
+        <sys_mod_count>31</sys_mod_count>
+        <sys_name>editable-field-template</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_ng_template_4679a2761b8768101f7e113d9c4bcb9e</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-03-26 15:56:05</sys_updated_on>
+        <template><![CDATA[<div ng-init="execItemScripts()">
+	<form id="editableSaveForm" ng-submit="saveForm();">
+        <div ng-repeat="container in containers">
+          <div ng-repeat="column in container.columns">
+            <div ng-switch="::f.type" ng-repeat="f in ::column.fields" id="" ng-class="::{'form-inline': isInlineForm === true }">
+              <div ng-switch-when="label" ng-if="formModel._fields[f.name]" ng-show="formModel._fields[f.name].isVisible()">
+                <label ng-bind-html="f.label"></label>
+                <span ng-if="formModel._fields[f.name].instructions" ng-bind-html="formModel._fields[f.name].instructions"></span>
+                <p ng-if="formModel._fields[f.name].help_text" title=""
+                   class="help-block" ng-bind-html="formModel._fields[f.name].help_text"></p>
+                <hr class="sp_label_hr"/>
+              </div>
+              <sp-form-field ng-switch-when="field" id="inline-edit-value" ng-if="formModel._fields[f.name]" form-model="formModel" field="formModel._fields[f.name]" glide-form="getGlideForm()" ng-show="formModel._fields[f.name].isVisible()"></sp-form-field>
+              <sp-variable-layout ng-switch-when="container" ng-init="containers=[f]"></sp-variable-layout>
+              <sp-variable-layout ng-switch-when="checkbox_container" ng-init="containers=f.containers" class="checkbox-container"></sp-variable-layout>
+              <sp-widget ng-switch-when="formatter" ng-if="formModel._formatters[f.id].widgetInstance" widget="formModel._formatters[f.id].widgetInstance" page="{g_form: getGlideForm()}"></sp-widget>
+              <hr ng-switch-when="break"/>
+            </div>
+          </div>
+    	</div>
+    </form>
+</div>]]></template>
+    </sp_ng_template>
+</record_update>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Financial Transaction Purchase Order" max_length="40" name="x_g_irm_fms_fin_tran_po" sizeclass="3935" type="collection">
+    <element label="Financial Transaction Purchase Order" max_length="40" name="x_g_irm_fms_fin_tran_po" sizeclass="3940" type="collection">
         <element label="Approved" max_length="40" name="approved" type="boolean"/>
         <element label="AQM Approval Date" max_length="40" name="aqm_approval_date" type="glide_date"/>
         <element label="AQM POC" max_length="50" name="aqm_poc" type="string"/>

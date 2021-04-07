@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step">
+    <sys_atf_step action="DELETE">
+        <active>true</active>
+        <copied_from/>
+        <description>Navigate to the 'Expense Items' module in the 'FMS' application</description>
+        <display_name>Navigate to Module</display_name>
+        <inputs/>
+        <mugshots_cache_json/>
+        <notes>Navigate to Expense Item List</notes>
+        <order>2</order>
+        <snapshot/>
+        <step_config display_value="Navigate to Module">c832fc4073720300c79260bdfaf6a7a0</step_config>
+        <sys_class_name>sys_atf_step</sys_class_name>
+        <sys_created_by>CaronWF@state.gov</sys_created_by>
+        <sys_created_on>2021-03-29 16:07:58</sys_created_on>
+        <sys_id>ae67737f1b8be8100a4a10ad9c4bcb28</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Navigate to Module</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_atf_step_ae67737f1b8be8100a4a10ad9c4bcb28</sys_update_name>
+        <sys_updated_by>CaronWF@state.gov</sys_updated_by>
+        <sys_updated_on>2021-03-29 16:07:58</sys_updated_on>
+        <table>x_g_irm_fms_expense_item</table>
+        <test display_value="Assemble-Expense-Item">a990fff71b8be8100a4a10ad9c4bcb2c</test>
+        <timeout/>
+        <warning_message/>
+    </sys_atf_step>
+    <sys_variable_value action="DELETE" query="document_key=ae67737f1b8be8100a4a10ad9c4bcb28"/>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>ae67737f1b8be8100a4a10ad9c4bcb28</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>CaronWF@state.gov</sys_created_by>
+        <sys_created_on>2021-03-29 16:07:58</sys_created_on>
+        <sys_id>c097b77f1b8be8100a4a10ad9c4bcb28</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>CaronWF@state.gov</sys_updated_by>
+        <sys_updated_on>2021-03-29 16:07:58</sys_updated_on>
+        <value>3ccd388e1bc0d0500a4a10ad9c4bcb27</value>
+        <variable display_value="">b6d2b40c73720300c79260bdfaf6a786</variable>
+    </sys_variable_value>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_atf_step_ae67737f1b8be8100a4a10ad9c4bcb28</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step"><sys_atf_step action="INSERT_OR_UPDATE"><active>true</active><copied_from/><description>Navigate to the 'Expense Items' module in the 'FMS' application</description><display_name>Navigate to Module</display_name><inputs/><mugshots_cache_json/><notes>Navigate to Expense Item List</notes><order>2</order><snapshot/><step_config display_value="Navigate to Module">c832fc4073720300c79260bdfaf6a7a0</step_config><sys_class_name>sys_atf_step</sys_class_name><sys_created_by>CaronWF@state.gov</sys_created_by><sys_created_on>2021-03-29 16:07:58</sys_created_on><sys_id>ae67737f1b8be8100a4a10ad9c4bcb28</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Navigate to Module</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_atf_step_ae67737f1b8be8100a4a10ad9c4bcb28</sys_update_name><sys_updated_by>CaronWF@state.gov</sys_updated_by><sys_updated_on>2021-03-29 16:07:58</sys_updated_on><table>x_g_irm_fms_expense_item</table><test display_value="Assemble-Expense-Item">a990fff71b8be8100a4a10ad9c4bcb2c</test><timeout/><warning_message/></sys_atf_step><sys_variable_value action="delete_multiple" query="document_key=ae67737f1b8be8100a4a10ad9c4bcb28"/><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>ae67737f1b8be8100a4a10ad9c4bcb28</document_key><order>100</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>CaronWF@state.gov</sys_created_by><sys_created_on>2021-03-29 16:07:58</sys_created_on><sys_id>c097b77f1b8be8100a4a10ad9c4bcb28</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>CaronWF@state.gov</sys_updated_by><sys_updated_on>2021-03-29 16:07:58</sys_updated_on><value>3ccd388e1bc0d0500a4a10ad9c4bcb27</value><variable display_value="">b6d2b40c73720300c79260bdfaf6a786</variable></sys_variable_value></record_update>]]></payload>
+        <payload_hash>1902069340</payload_hash>
+        <record_name>Navigate to Module</record_name>
+        <reverted_from/>
+        <source>8bd4c78e1b8fa4101f7e113d9c4bcbcc</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>CaronWF@state.gov</sys_created_by>
+        <sys_created_on>2021-03-29 16:07:58</sys_created_on>
+        <sys_id>4497b77f1b8be8100a4a10ad9c4bcb2a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1787ebde9b30000001</sys_recorded_at>
+        <sys_updated_by>CaronWF@state.gov</sys_updated_by>
+        <sys_updated_on>2021-03-29 16:07:58</sys_updated_on>
+        <type>Test Step</type>
+        <update_guid>4c97b77f068be810a2853b935319ef29</update_guid>
+        <update_guid_history>4c97b77f068be810a2853b935319ef29:1902069340</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>CaronWF@state.gov</sys_created_by>
+        <sys_created_on>2021-03-29 16:34:02</sys_created_on>
+        <sys_db_object display_value="" name="sys_atf_step">sys_atf_step</sys_db_object>
+        <sys_id>432b80b3b2fa4498aa5d83ae6c9b9651</sys_id>
+        <sys_metadata>ae67737f1b8be8100a4a10ad9c4bcb28</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Navigate to Module</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_atf_step_ae67737f1b8be8100a4a10ad9c4bcb28</sys_update_name>
+        <sys_update_version display_value="sys_atf_step_ae67737f1b8be8100a4a10ad9c4bcb28">4497b77f1b8be8100a4a10ad9c4bcb2a</sys_update_version>
+        <sys_updated_by>CaronWF@state.gov</sys_updated_by>
+        <sys_updated_on>2021-03-29 16:34:02</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

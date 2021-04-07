@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="User Organization" max_length="40" name="x_g_irm_fms_user_organization" sizeclass="6" type="collection">
+    <element label="User Organization" max_length="40" name="x_g_irm_fms_user_organization" sizeclass="8" type="collection">
         <element label="Organization" mandatory="true" max_length="32" name="organization_ref" reference="x_g_irm_fms_organization" reference_qual="org_type=I^EQ" reference_qual_condition="org_type=I^EQ" type="reference"/>
         <element label="User" mandatory="true" max_length="32" name="user_ref" reference="sys_user" type="reference"/>
         <index name="index">

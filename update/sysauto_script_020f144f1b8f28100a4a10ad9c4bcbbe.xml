@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysauto_script">
+    <sysauto_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <business_calendar/>
+        <condition/>
+        <conditional>false</conditional>
+        <entered_time>1970-01-01 23:50:00</entered_time>
+        <name>Contract Operational Status Change</name>
+        <offset/>
+        <offset_type/>
+        <run_as display_value="Ajay Puri">1e2322591bd55c100a4a10ad9c4bcbc2</run_as>
+        <run_as_tz/>
+        <run_dayofmonth>1</run_dayofmonth>
+        <run_dayofweek>1</run_dayofweek>
+        <run_period/>
+        <run_start>2021-03-26 16:26:29</run_start>
+        <run_time>1970-01-01 05:00:00</run_time>
+        <run_type>daily</run_type>
+        <script><![CDATA[var ContractGR = new GlideRecord("x_g_irm_fms_contract");
+ContractGR.addQuery("operational_status",'Active');
+ContractGR.query();
+
+while (ContractGR.next()){
+	var today = new GlideDateTime();
+    var dateToday = today.getDate();
+	var performanceDate = new GlideDateTime(ContractGR.getValue("perform_end_date"));
+    var diff = new GlideDateTime.subtract(performanceDate,dateToday);
+    var perint = parseInt(diff.getDisplayValue());
+	
+	
+	if(perint>=0){
+	ContractGR.operational_status = "Expired";
+	ContractGR.update();
+	}
+	
+}
+	
+]]></script>
+        <sys_class_name>sysauto_script</sys_class_name>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2021-03-26 16:27:09</sys_created_on>
+        <sys_id>020f144f1b8f28100a4a10ad9c4bcbbe</sys_id>
+        <sys_mod_count>11</sys_mod_count>
+        <sys_name>Contract Operational Status Change</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sysauto_script_020f144f1b8f28100a4a10ad9c4bcbbe</sys_update_name>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2021-03-26 19:25:02</sys_updated_on>
+        <time_zone>US/Eastern</time_zone>
+        <upgrade_safe>false</upgrade_safe>
+    </sysauto_script>
+</record_update>

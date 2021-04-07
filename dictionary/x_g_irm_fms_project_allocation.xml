@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Project Allocation" max_length="40" name="x_g_irm_fms_project_allocation" sizeclass="4276" type="collection">
+    <element label="Project Allocation" max_length="40" name="x_g_irm_fms_project_allocation" sizeclass="4290" type="collection">
         <element label="Agreement Number" max_length="10" name="agreement_nmbr" type="string"/>
         <element label="Allocation Amount" mandatory="true" max_length="20" name="allocation_amt" type="currency"/>
         <element label="Allocation Date" mandatory="true" max_length="40" name="allocation_date" type="glide_date"/>

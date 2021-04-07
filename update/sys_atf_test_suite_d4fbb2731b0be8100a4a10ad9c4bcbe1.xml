@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_test_suite">
+    <sys_atf_test_suite action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <description>Expense Item Test Suite</description>
+        <input_filter/>
+        <name>FMS-Test-Expense-Item</name>
+        <parent/>
+        <sys_class_name>sys_atf_test_suite</sys_class_name>
+        <sys_created_by>CaronWF@state.gov</sys_created_by>
+        <sys_created_on>2021-03-29 11:49:02</sys_created_on>
+        <sys_id>d4fbb2731b0be8100a4a10ad9c4bcbe1</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>FMS-Test-Expense-Item</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_atf_test_suite_d4fbb2731b0be8100a4a10ad9c4bcbe1</sys_update_name>
+        <sys_updated_by>CaronWF@state.gov</sys_updated_by>
+        <sys_updated_on>2021-03-29 11:49:02</sys_updated_on>
+    </sys_atf_test_suite>
+</record_update>

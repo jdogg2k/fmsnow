@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_ng_pro_sp_widget">
+    <m2m_sp_ng_pro_sp_widget action="INSERT_OR_UPDATE">
+        <sp_angular_provider display_value="clickOutside">0b27c4811bd320501f7e113d9c4bcbcd</sp_angular_provider>
+        <sp_widget display_value="Editable Field">01a592e21b0b28101f7e113d9c4bcb03</sp_widget>
+        <sys_class_name>m2m_sp_ng_pro_sp_widget</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-04-01 19:51:13</sys_created_on>
+        <sys_id>d36784451bd320501f7e113d9c4bcb77</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>clickOutside.Editable Field</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>m2m_sp_ng_pro_sp_widget_d36784451bd320501f7e113d9c4bcb77</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-04-01 19:51:13</sys_updated_on>
+    </m2m_sp_ng_pro_sp_widget>
+</record_update>

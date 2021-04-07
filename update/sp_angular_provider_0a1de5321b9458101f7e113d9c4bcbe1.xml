@@ -5,7 +5,7 @@
 
 	var AGGridFactory = function () {
 
-
+		var isDoubleClick = false; 
 		var DeleteCellRenderer = function () {};
 		var EditCellRenderer = function () {};
 		var CheckBoxRenderer = function () {};
@@ -295,7 +295,13 @@
 			},
 			onCellClicked: function (params) {
 				if (params.data && params.data.sys_id && params.colDef.field == linkField) {
-					launchRowDetails(params.data.sys_id, params.data[params.colDef.field]);
+					this.timer = 0;
+					isDoubleClick = false;
+					this.timer = setTimeout(function () {
+						if (!isDoubleClick) {
+							launchRowDetails(params.data.sys_id, params.data[params.colDef.field]);
+						} 
+					}, 500);
 				}
 				if (params.columnApi.getAllDisplayedColumns().filter(function (col) {
 						return col.getColDef().cellRendererParams;
@@ -634,7 +640,7 @@
 		this.setUpdatedID = function (id) {
 			updatedID = id;
 		};
-
+		
 		this.exportExcel = function (cols, grps, pivot, cellCB) {
 			if (!excelExporting) {
 				excelExporting = true;
@@ -655,6 +661,11 @@
 				excelExporting = false;
 			}
 		};
+		
+		var SNowPopupEditor = function (params) {
+			isDoubleClick = true;
+			
+		}
 
 		function replaceVariables(data, html) {
 			//function to take variable names enclosed in brackets from HTML passed from grid widget and replace them with values from the params.data object in AG Grid
@@ -1004,6 +1015,7 @@
 			CheckBoxRenderer.prototype.destroy = function () {
 				// do cleanup
 			};
+
 		};
 
 		$rootScope.$on("fms.form.closed", function (evt, response) {
@@ -1165,14 +1177,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>820</sys_mod_count>
+        <sys_mod_count>848</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-02-22 12:05:51</sys_updated_on>
+        <sys_updated_on>2021-04-05 19:07:44</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

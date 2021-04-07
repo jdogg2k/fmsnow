@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_angular_provider">
+    <sp_angular_provider action="INSERT_OR_UPDATE">
+        <name>clickOutside</name>
+        <script><![CDATA[function($document) {
+    return {
+        restrict: 'A',
+        scope: {
+            clickOutside: '&'
+        },
+        link: function(scope, el, attr) {
+            $document.on('mouseup', function(e) {
+                if (el !== e.target && !el[0].contains(e.target)) {
+					if ($(e.target).is('.modal-content') || $(e.target).parents('.modal-content').length > 0) return;
+                    console.log('outside click');
+					scope.$applyAsync(function() {
+                        scope.$eval(scope.clickOutside);
+                    });
+					$document.off('mouseup');
+                }
+            });
+        }
+    }
+}]]></script>
+        <sys_class_name>sp_angular_provider</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-04-01 19:50:23</sys_created_on>
+        <sys_id>0b27c4811bd320501f7e113d9c4bcbcd</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>clickOutside</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_angular_provider_0b27c4811bd320501f7e113d9c4bcbcd</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-04-02 14:47:46</sys_updated_on>
+        <type>directive</type>
+    </sp_angular_provider>
+</record_update>
