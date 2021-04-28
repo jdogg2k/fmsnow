@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_angular_provider">
+    <sp_angular_provider action="DELETE">
+        <name>select2WidthAuto</name>
+        <script><![CDATA[function($document) {
+    return {
+        restrict: 'A',
+        link: function(scope, el, attr) {
+			var target = el[0];
+			var observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+					console.log('mutation observed.....')
+                    if (mutation && mutation.addedNodes) {
+						console.log('mutation was new node')
+                        mutation.addedNodes.forEach(function(elm) {
+							console.log(elm)
+                            if (elm && elm.classList.contains('select2-drop')) {
+                                elm.style.width = 'auto';
+                            }
+                        });
+                    }
+                });
+            });
+            observer.observe(target, {
+                childList: true, subtree:true 
+            });
+
+        }
+    }
+}]]></script>
+        <sys_class_name>sp_angular_provider</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-04-16 14:21:55</sys_created_on>
+        <sys_id>6be8c8311b67a0100a4a10ad9c4bcb8c</sys_id>
+        <sys_mod_count>19</sys_mod_count>
+        <sys_name>select2WidthAuto</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_angular_provider_6be8c8311b67a0100a4a10ad9c4bcb8c</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-04-16 15:33:04</sys_updated_on>
+        <type>directive</type>
+    </sp_angular_provider>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sp_angular_provider_6be8c8311b67a0100a4a10ad9c4bcb8c</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_angular_provider"&gt;&lt;sp_angular_provider action="INSERT_OR_UPDATE"&gt;&lt;name&gt;select2WidthAuto&lt;/name&gt;&lt;script&gt;&lt;![CDATA[function($document) {
+    return {
+        restrict: 'A',
+        link: function(scope, el, attr) {
+			var target = el[0];
+			var observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+					console.log('mutation observed.....')
+                    if (mutation &amp;&amp; mutation.addedNodes) {
+						console.log('mutation was new node')
+                        mutation.addedNodes.forEach(function(elm) {
+							console.log(elm)
+                            if (elm &amp;&amp; elm.classList.contains('select2-drop')) {
+                                elm.style.width = 'auto';
+                            }
+                        });
+                    }
+                });
+            });
+            observer.observe(target, {
+                childList: true, subtree:true 
+            });
+
+        }
+    }
+}]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sp_angular_provider&lt;/sys_class_name&gt;&lt;sys_created_by&gt;MarkelJR@state.gov&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2021-04-16 14:21:55&lt;/sys_created_on&gt;&lt;sys_id&gt;6be8c8311b67a0100a4a10ad9c4bcb8c&lt;/sys_id&gt;&lt;sys_mod_count&gt;19&lt;/sys_mod_count&gt;&lt;sys_name&gt;select2WidthAuto&lt;/sys_name&gt;&lt;sys_package display_value="FMS" source="x_g_irm_fms"&gt;c728dd331b3fc8100a4a10ad9c4bcbb6&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="FMS"&gt;c728dd331b3fc8100a4a10ad9c4bcbb6&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_angular_provider_6be8c8311b67a0100a4a10ad9c4bcb8c&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;MarkelJR@state.gov&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2021-04-16 15:33:04&lt;/sys_updated_on&gt;&lt;type&gt;directive&lt;/type&gt;&lt;/sp_angular_provider&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-1140468789</payload_hash>
+        <record_name>select2WidthAuto</record_name>
+        <reverted_from/>
+        <source>a1e84efa1bd724101f7e113d9c4bcb57</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-04-16 15:33:04</sys_created_on>
+        <sys_id>ec3c50311ba7a0100a4a10ad9c4bcbd2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>178db506f100000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-04-16 15:33:04</sys_updated_on>
+        <type>Widget Angular Provider</type>
+        <update_guid>643c50315da7a010756c0989d0e68fd2</update_guid>
+        <update_guid_history>643c50315da7a010756c0989d0e68fd2:-1140468789,aa7b58fd7d67a01049fab98ca99ea269:807959025,836a50bd7e67a01022942b4d5470da0d:-1271406023,9a1a54bd2767a01050cb90b89221c6a9:2072229987,fa591c3d3c67a010634f9d9062d7fa29:-608328395,3d78107d0867a010daff7b1e0d048f3f:-1302133352,6ae7103db767a0100edfbfa4890e9b8d:-255584932,3a6614b95867a0100fe5f026681fc22d:357155800,7ff498b9a367a01061d35adace34989e:1209920321,1a3410b91d67a01089a8ef318f4638cd:338659869,2014d079ed67a0102bcbcf463e1ee075:-1165821379,01e29c391a67a0102182b218c58fd9a3:-926457247,d98214398967a010aa285e3e890a5bb2:-288367594,f3c1dcf5a867a0105934e9cffdc4331a:-1024170483,a7bfc0351367a010fe9f4b993bf80706:1785883859,660fc0752b67a010531d04f34ec7e2f9:1900453680,6cddcc35c967a01028bc90b323212ace:-341028368,462d4035af67a010f14340a178f55c57:-764493102,558c00359467a0108c7f5afb71a08081:1152118004,9aeb08f1ed67a0104eb03961e382f119:1683470899</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="select2WidthAuto">44c564f51ba7a0100a4a10ad9c4bcb1f</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-04-16 16:14:49</sys_created_on>
+        <sys_db_object display_value="" name="sp_angular_provider">sp_angular_provider</sys_db_object>
+        <sys_id>1b35ed7686b64b2988b204c8cf14d919</sys_id>
+        <sys_metadata>6be8c8311b67a0100a4a10ad9c4bcb8c</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>select2WidthAuto</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sp_angular_provider_6be8c8311b67a0100a4a10ad9c4bcb8c</sys_update_name>
+        <sys_update_version display_value="sp_angular_provider_6be8c8311b67a0100a4a10ad9c4bcb8c">ec3c50311ba7a0100a4a10ad9c4bcbd2</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-04-16 16:14:49</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

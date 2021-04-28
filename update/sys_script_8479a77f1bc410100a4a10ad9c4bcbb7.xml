@@ -40,6 +40,10 @@
         gs.addErrorMessage("Estimated Cost or Actual Cost is required.");
         current.setAbortAction(true);
     }
+    if (current.actual_cost != 0) 
+		current.has_actual_cost = true; 
+	else 
+		current.has_actual_cost = false;
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
@@ -47,15 +51,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>8479a77f1bc410100a4a10ad9c4bcbb7</sys_id>
-        <sys_mod_count>5</sys_mod_count>
+        <sys_mod_count>7</sys_mod_count>
         <sys_name>Financial Transaction Item Validation</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_8479a77f1bc410100a4a10ad9c4bcbb7</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-10-20 15:19:46</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-04-21 17:18:58</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>

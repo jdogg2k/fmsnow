@@ -153,27 +153,35 @@
             headerName: 'Status',
             filter: 'agSetColumnFilter',
             sort: 'asc',
-        //    editable: function(params) {
-        //        return c.canEdit(c.userAuth, params.data);
-        //    }
+            editable: function(params) {
+                return c.canEdit(c.userAuth, params.data);
+            }
         },
         {
             field: 'fy',
             headerName: 'FY',
             filter: 'agSetColumnFilter',
-            sort: 'desc'
-           // rowGroup: true
+            sort: 'desc',
+            editable: function(params) {
+                return c.canEdit(c.userAuth, params.data);
+            }
         },
         {
             field: 'description',
             headerName: 'Description',
-            filter: 'agTextColumnFilter'
+            filter: 'agTextColumnFilter',
+            editable: function(params) {
+                return c.canEdit(c.userAuth, params.data);
+            }
         },
         {
             field: 'tran_date',
             headerName: 'Trans. Date',
-					  type:'date',
-            sort: 'desc'
+			type:'date',
+            sort: 'desc',
+            editable: function(params) {
+                return c.canEdit(c.userAuth, params.data);
+            }
         },
         {
             field: 'transaction_total_amt',
@@ -195,22 +203,23 @@
             field: 'project_appropriation_ref',
             headerName: 'Appropriation',
             filter: 'agTextColumnFilter',
-        //    editable: function(params) {
-        //        return c.canEdit(c.userAuth, params.data);
-        //    }
+            editable: function(params) {
+                return c.canEdit(c.userAuth, params.data);
+            }
         },
-												 
         {
             field: 'allocation_group_ref',
             headerName: 'Allocation Group',
             filter: 'agTextColumnFilter',
-            hide: true
+            hide: true,
+            editable: function(params) {
+                return c.canEdit(c.userAuth, params.data);
+            }
         },
-													{
+		{
             field: 'project_appropriation_ref.appropriation_ref.appropriation_type.appropriation_type_display',
             headerName: 'Appropriation Type',
             filter: 'agSetColumnFilter'
-         
         },							 
        /* {
             field: 'cost_pool_ref',
@@ -221,12 +230,18 @@
         {
             field: 'contract_ref',
             headerName: 'Contract',
-            filter: 'agTextColumnFilter'
+            filter: 'agTextColumnFilter',
+            editable: function(params) {
+                return c.canEdit(c.userAuth, params.data);
+            }
         },
         {
             field: 'obligation',
             headerName: 'Obligation',
             filter: 'agTextColumnFilter',
+            editable: function(params) {
+                return c.canEdit(c.userAuth, params.data);
+            },
             cellStyle: {
                 color: 'blue',
                 'text-decoration': 'underline',
@@ -237,9 +252,9 @@
             field: 'obligation_date',
             headerName: 'Obligation Date',
             type: 'date',
-        //    editable: function(params) {
-        //        return c.canEdit(c.userAuth, params.data);
-        //    }
+            editable: function(params) {
+                return c.canEdit(c.userAuth, params.data);
+            }
         },
         {
             field: 'void',
@@ -299,7 +314,10 @@
         },
         {
             field: 'item_qty',
-            headerName: 'Order Quantity'
+            headerName: 'Order Quantity',
+            editable: function(params) {
+                return c.canEdit(c.userAuth, params.data);
+            }
         },
         {
             field: 'item_cost',
@@ -308,6 +326,9 @@
                 textAlign: 'right'
             },
             type: 'currency',
+            editable: function(params) {
+                return c.canEdit(c.userAuth, params.data);
+            },
             aggFunc: 'sum'
             /*headerComponentParams: {
                 template: '<div class="ag-cell-label-container" role="presentation">' +
@@ -318,7 +339,10 @@
         {
             field: 'received_qty',
             headerName: 'Received Quantity',
-            filter: 'agNumberColumnFilter'
+            filter: 'agNumberColumnFilter',
+            editable: function(params) {
+                return c.canEdit(c.userAuth, params.data);
+            }
         },
         {
             field: 'actual_cost',
@@ -327,6 +351,9 @@
                 textAlign: 'right'
             },
             type: 'currency',
+            editable: function(params) {
+                return c.canEdit(c.userAuth, params.data);
+            },
             aggFunc: 'sum'
             /*headerComponentParams: {
                 template: '<div class="ag-cell-label-container" role="presentation">' +
@@ -355,23 +382,35 @@
         {
             field: 'expense_item_ref',
             headerName: 'Expense Item',
-            filter: 'agTextColumnFilter'
+            filter: 'agTextColumnFilter',
+            editable: function(params) {
+                return c.canEdit(c.userAuth, params.data);
+            }
         },
 				{
             field: 'irm_f_cost_pool',
             headerName: 'BOC/Cost Pool',
-            filter: 'agTextColumnFilter'
+            filter: 'agTextColumnFilter',
+            editable: function(params) {
+                return c.canEdit(c.userAuth, params.data);
+            }
         },
 														 
         {
             field: 'post_ref',
             headerName: 'Post',
-            filter: 'agTextColumnFilter'
+            filter: 'agTextColumnFilter',
+            editable: function(params) {
+                return c.canEdit(c.userAuth, params.data);
+            }
         },
         {
             field: 'omb_category_ref',
             headerName: 'OMB Category',
-            filter: 'agTextColumnFilter'
+            filter: 'agTextColumnFilter',
+            editable: function(params) {
+                return c.canEdit(c.userAuth, params.data);
+            }
         },
         {
             field: 'delete_item',
@@ -405,6 +444,7 @@
         detailsPage: 'obligation_reconciliation',
         detailsHeight: 150,
         groupDefaultExpanded: 1,
+		enableSNowInlineEdit: true,
         childTables: [{
             banner: 'Transaction Items',
             name: c.data.itemTableName,
@@ -544,23 +584,23 @@
         if (input.mode == "getDetailData") {
             data[input.detailTable] = FMSUtility.getTableData(input.detailTable, input.parentRef + '=' + input.parentID, true); 
         }
-			  if (input.mode == "getNewRec") {
+		if (input.mode == "getNewRec") {
            data.newRec = FMSUtility.getTableData(input.targetTable, "sys_id=" + input.newSysID, true)[0];
-					 
-					var financialRefID = "";
+ 
+			var financialRefID = "";
             
-              financialRefID = data.newRec.fin_tran_ref_rawval;
+            financialRefID = data.newRec.fin_tran_ref_rawval;
 
             data.parentRec = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "sys_id=" + financialRefID, true)[0];
         }
         if (input.mode == "deleteRow") {
-					  if (input.delTable != FMSConstants.TABLE_FINANCIAL_TRANSACTION) {
-							 var deletedRec = new GlideRecord(input.delTable);
+			if (input.delTable != FMSConstants.TABLE_FINANCIAL_TRANSACTION) {
+				var deletedRec = new GlideRecord(input.delTable);
                 deletedRec.get(input.rowID);
                 var dParentID = deletedRec.fin_tran_ref.toString();
                 data.parentRec = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "sys_id=" + dParentID, true)[0];
             }
-					  FMSUtility.deleteRecord(input.delTable, input.rowID);
+			FMSUtility.deleteRecord(input.delTable, input.rowID);
 
             if (input.delTable != FMSConstants.TABLE_FINANCIAL_TRANSACTION) {
                 data.parentRec = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "sys_id=" + dParentID, true)[0];
@@ -612,14 +652,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-21 14:05:50</sys_created_on>
         <sys_id>fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_id>
-        <sys_mod_count>591</sys_mod_count>
+        <sys_mod_count>602</sys_mod_count>
         <sys_name>Financial Transaction Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-04-05 17:09:47</sys_updated_on>
+        <sys_updated_on>2021-04-26 11:43:56</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%" ng-init="c.onload()">
  <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
     <div class="container">

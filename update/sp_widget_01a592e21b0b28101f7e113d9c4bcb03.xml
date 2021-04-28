@@ -4,30 +4,144 @@
         <client_script><![CDATA[api.controller = function($scope, $http, spUtil, $uibModalStack, $timeout) {
     /* widget controller */
     var c = this;
+    var drop;
     var g_form;
+    var debugLog = false;
 
     c.$onInit = function() {
+        $rootScope.formTable = c.data.tableName;
         $scope.$on('spModel.gForm.initialized', function(e, gFormInstance) {
             g_form = gFormInstance;
+            Object.keys(c.data.model).forEach(function(fld) {
+                if (fld == c.data.fieldName)
+                    g_form.setVisible(fld, true);
+                else
+                    g_form.setVisible(fld, false);
+            });
+        });
+        $scope.select2Observer();
+    };
+
+    $scope.select2Observer = function() {
+        drop = new MutationObserver($scope.dropMutation);
+        drop.observe(document.body, {
+            childList: true,
+            subtree: false,
+            attributes: false
         });
     };
 
+    $scope.dropMutation = function(mutations) {
+        var s2Nodes = [];
+        mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+                if (node.tagName && node.classList.contains('select2-drop')) {
+                    s2Nodes.push(node);
+                }
+            });
+        });
+        $scope.attrMutation(s2Nodes);
+    };
+
+    $scope.attrMutation = function(s2Nodes) {
+        s2Nodes.forEach(function(entry) {
+            (new MutationObserver(
+                function(dropMutation) {
+                    dropMutation.forEach(function(attr) {
+                        if (attr.target.classList.contains('select2-results') && attr.target.style.display != 'none') {
+                            $(entry).css({
+                                'width': 'auto',
+                                'min-width': $(entry).width()
+                            });
+                        }
+                    });
+                }
+            )).observe(entry, {
+                childList: true,
+                subtree: true,
+                attributes: true,
+                attributeFilter: ["class", "style"]
+            });
+        });
+    };
+
+    $scope.$on('field-editor:resized', function() {
+        if (debugLog) console.log('.........window resized....');
+        if (!g_form) return;
+        $scope.$parent.adjustWindowSize($scope.getDisplayedFields().length);
+    });
+
+    $scope.$on('field.change', function(evt, parms) {
+        if (debugLog) console.log('Value changed: ' + parms.field.name);
+        if (!g_form.isUserModified()) {    // this is probably an onLoad action (like PO load) 
+            g_form.setVisible(parms.field.name, false);
+			g_form.getField(parms.field.name).originalValue = parms.field.value;
+            return;
+        } 
+        $scope.valueChanged(parms.field.name, parms.field.originalValue, parms.field.value);
+    });
+
+    $scope.valueChanged = function(fieldname, originalValue, newValue) {
+        if (debugLog) console.log('Field (' + fieldname + ') has a new value of: ' + newValue + "(was: " + originalValue + ")");
+        var flds = g_form.getFieldNames();
+        flds.forEach(function(fld) {
+            g_form.setVisible(fld, showFormField(fld));
+        });
+
+    };
+
+    $scope.getDisplayedFields = function() {
+        var fieldList = g_form.getFieldNames();
+        return fieldList.filter(showFormField);
+    };
+
+    function formIsDirty() {
+		var mods = g_form.getFieldNames().filter(function(fld) { 
+			return g_form.getField(fld).value != g_form.getField(fld).originalValue; 
+		});
+		return mods.length > 0;
+	}
+	
+    function showFormField(fld) {
+        var show = true;
+        if ((!g_form.isMandatory(fld) && g_form.getField(fld).originalValue == g_form.getField(fld).value) ||
+            (g_form.isMandatory(fld) && g_form.getValue(fld).length > 0 && g_form.getField(fld).originalValue == g_form.getField(fld).value))
+            show = false;
+        if (fld == c.data.fieldName) // always show primary field
+            show = true;
+        if (g_form.getField(fld).originalValue != g_form.getField(fld).value) // always show fields that have changed
+            show = true;
+        if (g_form.getField(fld).messages && g_form.getField(fld).messages.length > 0) // always show fields with messages
+            show = true;
+        return show;
+    }
+
     $scope.closePopover = function(reason) {
+        drop.disconnect();
         if ($uibModalStack.getTop())
             $uibModalStack.close($uibModalStack.getTop().key, reason);
-        // $uibModalStack.dismissAll();
     };
 
     $scope.saveForm = function() {
-        if (g_form) {
-            g_form.save().then(function() {
-                $scope.closePopover({
-                    "status": 'saved',
-                    "value": $scope.data.form._fields[$scope.data.fieldName].value
-                });
+        if (!g_form) return;
+        if (g_form.isUserModified() || formIsDirty()) g_form.save();
+        else $scope.closePopover("save without data modification");
+    };
+
+    $scope.$on("spModel.uiActionComplete", function(e, response) {
+        var noError = true;
+        if (response.$$uiNotification.length > 0) {
+            if (response.$$uiNotification[0].type == "error")
+                noError = false;
+        }
+        if (noError) {
+            $scope.closePopover({
+                "status": 'saved',
+                "value": $scope.data.form._fields[$scope.data.fieldName].value,
+                "sys_id": c.data.sys_id
             });
         }
-    };
+    });
 
 };]]></client_script>
         <controller_as>c</controller_as>
@@ -44,7 +158,14 @@
   background-color: transparent;&#13;
 }&#13;
 &#13;
-</css>
+.modal-drop {&#13;
+  background-color: red;&#13;
+  width: auto !important;&#13;
+}&#13;
+&#13;
+.add-on &gt; button.lookup {&#13;
+  display:none !important;&#13;
+}  </css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -62,49 +183,47 @@
         <roles/>
         <script><![CDATA[(function() {
     data.tableName = options.table ? options.table.toString() : input ? input.table : "UNKNOWN";
+    data.viewName = options.view ? options.view.toString() : input ? input.view : "sp";
     data.fieldName = options.field ? options.field.toString() : input ? input.field : "UNKNOWN";
     data.editable = options.editable ? options.editable : input ? input.editable : false;
     data.sys_id = options.id ? options.id.toString() : input ? input.id : "UNKNOWN";
     var user = gs.getUser().getID();
     data.canEdit = true;
-    data.form = $sp.getForm(data.tableName, data.sys_id, null, 'sp');
+    data.form = $sp.getForm(data.tableName, data.sys_id, null, data.viewName);
     data.view = data.form._view;
     data.model = data.form._fields;
-    Object.keys(data.model).forEach(function(fld) {
-        if (fld != data.fieldName) delete data.model[fld];
-    });
 })();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2021-03-25 12:10:35</sys_created_on>
         <sys_id>01a592e21b0b28101f7e113d9c4bcb03</sys_id>
-        <sys_mod_count>83</sys_mod_count>
+        <sys_mod_count>258</sys_mod_count>
         <sys_name>Editable Field</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_01a592e21b0b28101f7e113d9c4bcb03</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-04-07 12:09:55</sys_updated_on>
-        <template><![CDATA[<div style="min-width: 250px;" class="popover-content" click-outside="closePopover('outside click')">
+        <sys_updated_on>2021-04-28 14:27:42</sys_updated_on>
+        <template><![CDATA[<div style="min-width: 250px;" class="popover-content" element-resized="field-editor" click-outside="closePopover('outside click')">
   <table style="width: 100%;">
-    <tr><td>
+    <tr><td colspan="3">
       <h4 class="popover-title" ng-bind="title" ng-show="title"></h4>
     </td></tr>
     <tr>
-      <td ng-if="c.data.editiable == false">
+      <td ng-if="c.data.editable == false">
         <span>This element is not editable from the list.</span>
       </td>
-      <td ng-if="c.data.editiable == true">
+      <td ng-if="c.data.editable == true">
 		<sp-model form-model="c.data.form" mandatory template-url="editable-field-template"></sp-model>
       </td>
-      <td style="width: 50px;">
+      <td style="width: 50px; vertical-align: top; padding-top: 15px;">
         <button type="button" id="cell_edit_ok" class="btn btn-icon icon-pop icon-check-circle" 
-                style="color: green;" ng-click="saveForm()" ng-if="c.data.editiable == true">
+                style="color: green;" ng-click="saveForm()" ng-if="c.data.editable == true">
         </button>
       </td>
-      <td style="width: 50px;">
+      <td style="width: 50px; vertical-align: top; padding-top: 15px;">
         <button type="button" id="cell_edit_cancel" class="btn btn-icon icon-pop icon-cross-circle" 
                 style="color: red;" ng-click="closePopover('cancelled')">
         </button>

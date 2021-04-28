@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_angular_provider">
+    <sp_angular_provider action="INSERT_OR_UPDATE">
+        <name>elementResized</name>
+        <script><![CDATA[function($rootScope, $timeout) {
+    return {
+        restrict: 'A',
+        link: function(scope, el, attr) {
+		    scope.$watch(function () { 
+				return {
+				   width: el.width(),
+				   height: el.height(),
+				}
+			},
+			function () { 
+				console.log('Event: ' + attr.elementResized + ':resized');
+				scope.$emit(attr.elementResized + ':resized');
+			},
+				true //deep watch
+			);
+		}
+    }
+}]]></script>
+        <sys_class_name>sp_angular_provider</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-04-15 14:28:12</sys_created_on>
+        <sys_id>21a3c3d51b6760100a4a10ad9c4bcbc6</sys_id>
+        <sys_mod_count>50</sys_mod_count>
+        <sys_name>elementResized</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sp_angular_provider_21a3c3d51b6760100a4a10ad9c4bcbc6</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-04-15 22:03:58</sys_updated_on>
+        <type>directive</type>
+    </sp_angular_provider>
+</record_update>

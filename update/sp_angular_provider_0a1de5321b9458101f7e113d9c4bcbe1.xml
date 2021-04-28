@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_angular_provider">
     <sp_angular_provider action="INSERT_OR_UPDATE">
         <name>AGGridFactory</name>
-        <script><![CDATA[function AGGridFactory($http, $rootScope, spUtil, spModal, spNavStateManager, $uibModalStack, $timeout) {
+        <script><![CDATA[function AGGridFactory($http, $rootScope, spUtil, spModal, spNavStateManager, $uibModal, $uibModalStack, $timeout) {
 
 	var AGGridFactory = function () {
 
@@ -293,6 +293,9 @@
 					suppressCount: true
 				}
 			},
+			onGridReady: function (params) {
+				params.api.gridOptionsWrapper.gridOptions.tableName = dataTable;
+			},
 			onCellClicked: function (params) {
 				if (params.data && params.data.sys_id && params.colDef.field == linkField) {
 					this.timer = 0;
@@ -322,6 +325,19 @@
 					if (Number.isNaN(newValue))
 						newValue = oldEditVal;
 				}
+				pageController.server.get({
+					mode: 'updateField',
+					table: activeTable,
+					record: event.data.sys_id,
+					field: event.colDef.field,
+					value: newValue
+				}).then(function (saveResp) {
+					//broadcast edit to rootscope
+					$rootScope.$broadcast('fmsgrid.recordUpdated', {
+						table: activeTable,
+						sys_id: event.data.sys_id
+					});
+				});
 			},
 			onRowValueChanged: function (event) {
 				if (event.node.group) return;
@@ -636,6 +652,10 @@
 				gridOptions.onFilterChanged = pageProps.filterFunc;
 			if (pageProps.rowDataUpdatedFunc != null)
 				gridOptions.onRowDataChanged = pageProps.rowDataUpdatedFunc;
+			if (pageProps.enableSNowInlineEdit || false) {
+				gridOptions.suppressClickEdit = true;
+				gridOptions.onCellDoubleClicked = SNowPopupEditor;
+			}
 		};
 		this.setUpdatedID = function (id) {
 			updatedID = id;
@@ -652,8 +672,12 @@
 				var exportColumns = [];
 				var allCols = gridOptions.columnApi.getAllColumns();
 				allCols.forEach(function (col) {
-					if (col.colId != "edit" && col.colId != "delete")
-						exportColumns.push(col.colId);
+
+					var columnID = col.colId;
+
+					if (columnID != "edit" && columnID != "delete" && columnID.indexOf("_rawval") == -1 )
+						exportColumns.push(columnID);
+
 				});
 				if (!pivot) params.columnKeys = exportColumns;
 				params.fileName = dataTable + "_" + ((new Date()).toJSON()).slice(0, 19) + ".xlsx";
@@ -664,7 +688,96 @@
 		
 		var SNowPopupEditor = function (params) {
 			isDoubleClick = true;
-			
+			return;
+			if (!params.data) return;
+			if (params.node.isRowPinned()) return;
+			if (!params.api.gridOptionsWrapper.gridOptions.suppressClickEdit) return;
+			if (params.colDef.rowGroup == true || params.node.group == true) return;
+			if (params.colDef.cellRenderer == "editCell" || params.colDef.cellRenderer == "deleteCell") return;
+			activeGrid = params.api.gridOptionsWrapper.gridOptions.detailGridId || null;
+			activeTable = params.api.gridOptionsWrapper.gridOptions.tableName;
+			activeRow = params.data.sys_id;
+			var editable = typeof(params.colDef.editable) === "function" ? params.colDef.editable(params) : params.colDef.editable || false;
+			var widgetURL = spUtil.getWidgetURL('editable_field');
+			var widgetOpts = { "table": activeTable, 
+							   "view": formView, 
+							   "field": params.colDef.field, 
+							   "id": params.data.sys_id, 
+							   "editable": editable };
+			jQuery(params.event.srcElement).append('<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="position: absolute; left: 50%; font-size: 20px;"></i>');
+			$http.post(widgetURL, widgetOpts).success(function(response) {
+				var widgetPayload = response.result;
+				var winSize = "sm";
+				var formField = widgetPayload.data.form._fields[params.colDef.field];
+				if (formField && formField.type == "reference" && editable) {
+					winSize = "md";
+				}
+				$uibModal.open({
+					template: '<sp-widget widget="widgetPayload"></sp-widget>',  
+					controller: ModalFieldEditCtrl,
+					scope: $rootScope,
+					windowClass: 'editable-field',
+					backdrop: false,
+					size: winSize,
+					resolve: {
+						widgetPayload: function() { return widgetPayload; },
+						event: function() { return params.event; },
+						editable: function() { return editable; }
+					}
+				});
+			});
+		}
+
+		function ModalFieldEditCtrl($scope, $uibModalInstance, widgetPayload, event, editable) {
+		    var $ctrl = this;
+			$scope.widgetPayload = widgetPayload;
+			$uibModalInstance.rendered.then(function () {
+				$scope.adjustWindowSize(1);
+				$(window).on('wheel', function(evt) { 
+					if (!$(evt.target).hasClass('modal-content') && $(evt.target).parents('.modal-content, .select2-drop').length == 0)
+						$scope.$dismiss("scroll") 
+				});
+			});
+			$uibModalInstance.opened.then(function () {
+				spUtil.addTrivialMessage('In-line editing start.'); 
+			});
+
+			$uibModalInstance.closed.then(function () {
+				 jQuery('.bootstrap-datetimepicker-widget.picker-open').hide(); 
+			});
+
+			$scope.adjustWindowSize = function(itemCount) {
+				jQuery(event.srcElement).children('i').remove();
+				jQuery('.editable-field').css({'border': 0, 'box-shadow': 'none', 'overflow': 'visible' }); 
+				jQuery('.editable-field').find('.modal-dialog').css({'position': 'absolute', 'margin': '0px'}); 
+				var win = document.querySelector('body').getBoundingClientRect();
+				var popup = document.querySelector('.modal-content');
+				var popRect = popup.getBoundingClientRect();
+				var top = (event.clientY - 120) - (editable ? 10 : 0);
+				var left = event.clientX - (popRect.width / 2);
+				if (left < 0) { left = 0; }
+				if (left + popRect.width > win.width) { left = win.width - popRect.width; }
+				if (top + popRect.height > win.height) { top = win.height - popRect.height; }
+				jQuery('.editable-field').css({ 'top': top, 'left': left, 'height': 100, 'width': 200 }); 
+				jQuery('#popover-arrow').remove();
+				var arrow = [];
+				if (itemCount == 1) { 
+					arrow.border = 'border-top-color: '; arrow.pos = "left: " + (event.clientX - left) + "px; "; 
+				}
+				else if (left + popRect.width > win.width / 2) {
+					arrow.border = 'border-right-color: '; arrow.pos = "top: " + (event.clientY - top - 10) + "px; " + "left: -8px; "; 
+				}
+				else {
+					arrow.border = 'border-left-color: '; arrow.pos = "top: " + (event.clientY - top - 10) + "px; " + "right: -24px; "; 
+				}
+				jQuery('.editable-field .modal-content').append('<div id="popover-arrow" style="' + arrow.pos +
+	                   'border: solid transparent; content: \'\'; position: absolute; ' +
+	                   arrow.border + 'white; border-width: 12px; margin-left: -16px;"></div>');
+			}
+			$scope.$on('modal.closing', function(event, reason, closed) {
+				var why = reason ? reason.status || reason : 'saved';     
+				spUtil.addTrivialMessage('In-line editing complete: ' + why); 
+			});
 		}
 
 		function replaceVariables(data, html) {
@@ -753,6 +866,8 @@
 					columnDefs: detailCols,
 					onGridReady: function (params) {
 						var detailGridId = "detail_" + detailTable + targSys;
+						params.api.gridOptionsWrapper.gridOptions.tableName = detailTable;
+						params.api.gridOptionsWrapper.gridOptions.detailGridId = detailGridId;
 
 						var gridInfo = {
 							id: detailGridId,
@@ -814,6 +929,8 @@
 					groupDefaultExpanded: -1,
 					groupHideOpenParents: true,
 					suppressFieldDotNotation: true,
+					suppressClickEdit: masterGridApi.gridOptionsWrapper.gridOptions.suppressClickEdit,       // enable SNow inline edit
+					onCellDoubleClicked: masterGridApi.gridOptionsWrapper.gridOptions.onCellDoubleClicked,   // enable SNow inline edit
 					columnTypes: {
 						'currency': {
 							valueFormatter: currencyFormatter,
@@ -1040,9 +1157,12 @@
 					}
 
 					if (noError) {
-
-						$uibModalStack.dismissAll(); //close the modal
-						modalOpen = false;
+						if (modalOpen) {                  // full form editing (NOT SNow inline editing)
+							$uibModalStack.dismissAll(); //close the modal
+							modalOpen = false;
+						} else {
+							updatedID = activeRow;
+						}
 
 						var modEventType = "fmsgrid.recordUpdated";
 
@@ -1177,14 +1297,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>848</sys_mod_count>
+        <sys_mod_count>1024</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-04-05 19:07:44</sys_updated_on>
+        <sys_updated_on>2021-04-28 14:48:06</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

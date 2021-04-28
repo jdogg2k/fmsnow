@@ -41,6 +41,38 @@
             expenseManager.fitColumns();
         }
     });
+	
+	function parentExpRenderer() {}
+
+    parentExpRenderer.prototype.init = function (params) {
+        var isGroup = false;
+        /*if (params.node) {
+            if (params.node.group) {
+                isGroup = true;
+            }
+        }*/
+        var tLabel = "";
+        /*if (!isGroup)
+            tLabel = "-Select-";*/
+        var tValue = "";
+
+        if (params.value) {
+            tValue = params.value;
+            var selRec = c.data.parentExpItem.filter(function (v) {
+                return v.value == tValue;
+            })[0];
+
+            if (selRec != undefined)
+                tLabel = selRec.name;
+        }
+
+        this.eGui = document.createElement('span');
+        this.eGui.innerHTML = tLabel;
+    };
+
+    parentExpRenderer.prototype.getGui = function () {
+        return this.eGui;
+    };
 
     //define AG Grid columns
     var expenseColumns = [{
@@ -71,13 +103,55 @@
             sort: 'asc',
             suppressMenu: true
         },
-
         {
             field: 'parent_expense_item_ref',
             headerName: 'Parent Item',
+            hide: true
+        },
+        {
+            field: 'parent_expense_item_ref_rawval',
+            headerName: 'Parent Item',
 					  filter: 'agSetColumnFilter',
             sort: 'asc',
-            suppressMenu: true
+            suppressMenu: true,
+					  editable: true,
+					  cellRenderer: parentExpRenderer,
+					  cellEditor: 'agRichSelectCellEditor',
+					 cellEditorParams: function(params){
+						          var selectedOrg = c.targetOrg;
+                        var subValues = [];
+						            var parentOrg = [];
+						           var orgRecs = c.data.orgItem.filter(function (v) {
+                            return v.value == selectedOrg;
+                        });
+						           orgRecs.forEach(function (orgObj) {
+                            parentOrg.push(orgObj.parent);
+                        });
+                       
+                        var subRecs = c.data.parentExpItem.filter(function (v) {
+                            return v.org == parentOrg;
+                        });
+						            subRecs.forEach(function (subObj) {
+                            subValues.push(subObj.value);
+                        });
+
+						             return{
+													  values: subValues
+													 
+												 }  
+						 
+                    },
+                    valueFormatter: function(params) {
+                        var dispVal = "";
+                            var selectedRec = c.data.parentExpItem.filter(function (v) {
+                                return v.value == params.value;
+                            });
+
+                            if (selectedRec[0] != undefined)
+                                dispVal = selectedRec[0].name;
+                        return dispVal;
+                      }
+					
         },
         {
             field: 'disabled',
@@ -124,6 +198,7 @@
         usePaging: true
     }
 
+		
     expenseManager.setColumns(expenseColumns);
     expenseManager.setPageProperties(pageProps);
     expenseManager.setRenderers('activity_code'); //build renderers and set display field to show on delete attempt
@@ -146,7 +221,9 @@
 
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css/>
+        <css>.ag-popup-editor {&#13;
+    min-width: 400px !important;&#13;
+}</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -165,6 +242,11 @@
         <script><![CDATA[(function() {
 
     data.selectedOrg = "";
+	  data.parentExpItem = [];
+	  data.parentExpItemValues = [];
+	  data.orgItem = [];
+	  data.orgItemValues = [];
+	
     var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
     var FMSPermissions = new x_g_irm_fms.FMSPermissions();
 
@@ -183,10 +265,36 @@
         if (input.mode == "setOrg") {
             data.selectedOrg = input.org_id.toString();
         }
+        if (input.mode == "updateField") {
+            FMSUtility.updateField(input.table, input.field, input.record, input.value);
+        }
     }
 
     data.pageID = $sp.getParameter("id");
-
+	
+   var parentExpGR = new GlideRecord('x_g_irm_fms_expense_item');
+	 parentExpGR.orderBy('expense_item_display');
+	 parentExpGR.query(); 
+	 while (parentExpGR.next()) { 
+     var expObj = {}; 
+		 expObj.value = parentExpGR.sys_id + ''; 
+     expObj.name = parentExpGR.getValue('expense_item_display'); 
+		 expObj.org =parentExpGR.getValue('organization_ref');
+    data.parentExpItem.push(expObj); 
+    data.parentExpItemValues.push(expObj.name);
+	 }
+	
+	var orgGR = new GlideRecord('x_g_irm_fms_organization'); 
+	 orgGR.query(); 
+	 while (orgGR.next()) { 
+     var orgObj = {}; 
+		 orgObj.value = orgGR.sys_id + ''; 
+     orgObj.name = orgGR.getValue('org_name'); 
+		 orgObj.parent =orgGR.getValue('organization_parent_ref');
+    data.orgItem.push(orgObj); 
+    //data.parentExpItemValues.push(expObj.name);
+	 }
+	
     data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_EXPENSE_ITEM, "organization_ref=" + data.selectedOrg, true);
     data.tableName = FMSConstants.TABLE_EXPENSE_ITEM;
 
@@ -196,14 +304,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-23 14:50:54</sys_created_on>
         <sys_id>4c69ac6a1b1018100a4a10ad9c4bcbca</sys_id>
-        <sys_mod_count>347</sys_mod_count>
+        <sys_mod_count>434</sys_mod_count>
         <sys_name>Expense Item Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_4c69ac6a1b1018100a4a10ad9c4bcbca</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-02-19 17:59:16</sys_updated_on>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2021-04-21 20:09:27</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
