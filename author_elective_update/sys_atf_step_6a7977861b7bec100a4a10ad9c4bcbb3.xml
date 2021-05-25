@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step">
+    <sys_atf_step action="DELETE">
+        <active>true</active>
+        <copied_from/>
+        <description>Open the record '' in the 'Attachments' related list on the 'Expense Item' form</description>
+        <display_name>Open a Record in List</display_name>
+        <inputs/>
+        <mugshots_cache_json/>
+        <notes/>
+        <order>5</order>
+        <snapshot/>
+        <step_config display_value="Open a Record in List">0200ac2fe72003005c85cd19d2f6a942</step_config>
+        <sys_class_name>sys_atf_step</sys_class_name>
+        <sys_created_by>CaronWF@state.gov</sys_created_by>
+        <sys_created_on>2021-04-30 12:44:57</sys_created_on>
+        <sys_id>6a7977861b7bec100a4a10ad9c4bcbb3</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Open a Record in List</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_atf_step_6a7977861b7bec100a4a10ad9c4bcbb3</sys_update_name>
+        <sys_updated_by>CaronWF@state.gov</sys_updated_by>
+        <sys_updated_on>2021-05-04 03:17:14</sys_updated_on>
+        <table>x_g_irm_fms_expense_item</table>
+        <test display_value="FMS - Expense Item List">ec68844a1bbfac100a4a10ad9c4bcbe1</test>
+        <timeout/>
+        <warning_message/>
+    </sys_atf_step>
+    <sys_variable_value action="DELETE" query="document_key=6a7977861b7bec100a4a10ad9c4bcbb3"/>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>6a7977861b7bec100a4a10ad9c4bcbb3</document_key>
+        <order>200</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>CaronWF@state.gov</sys_created_by>
+        <sys_created_on>2021-04-30 12:44:57</sys_created_on>
+        <sys_id>2afbb74a1b7bec100a4a10ad9c4bcba5</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>CaronWF@state.gov</sys_updated_by>
+        <sys_updated_on>2021-04-30 12:44:57</sys_updated_on>
+        <value>REL:b9edf0ca0a0a0b010035de2d6b579a03</value>
+        <variable display_value="">5121646fe72003005c85cd19d2f6a99a</variable>
+    </sys_variable_value>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>6a7977861b7bec100a4a10ad9c4bcbb3</document_key>
+        <order>400</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>CaronWF@state.gov</sys_created_by>
+        <sys_created_on>2021-04-30 12:44:57</sys_created_on>
+        <sys_id>66fbb74a1b7bec100a4a10ad9c4bcba5</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>CaronWF@state.gov</sys_updated_by>
+        <sys_updated_on>2021-04-30 12:44:57</sys_updated_on>
+        <value>58e8f7481bcca0100a4a10ad9c4bcb02</value>
+        <variable display_value="">b076e295531233009e02ddeeff7b12d9</variable>
+    </sys_variable_value>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>6a7977861b7bec100a4a10ad9c4bcbb3</document_key>
+        <order>50</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>CaronWF@state.gov</sys_created_by>
+        <sys_created_on>2021-04-30 12:44:57</sys_created_on>
+        <sys_id>a2fbb74a1b7bec100a4a10ad9c4bcba5</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>CaronWF@state.gov</sys_updated_by>
+        <sys_updated_on>2021-04-30 12:44:57</sys_updated_on>
+        <value>related_list</value>
+        <variable display_value="">b8c89a36538333009e02ddeeff7b12f6</variable>
+    </sys_variable_value>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>6a7977861b7bec100a4a10ad9c4bcbb3</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>CaronWF@state.gov</sys_created_by>
+        <sys_created_on>2021-04-30 12:44:57</sys_created_on>
+        <sys_id>aefbb74a1b7bec100a4a10ad9c4bcba5</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>CaronWF@state.gov</sys_updated_by>
+        <sys_updated_on>2021-04-30 12:44:57</sys_updated_on>
+        <value>x_g_irm_fms_expense_item</value>
+        <variable display_value="">6fb0a06fe72003005c85cd19d2f6a9da</variable>
+    </sys_variable_value>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>6a7977861b7bec100a4a10ad9c4bcbb3</document_key>
+        <order>300</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>CaronWF@state.gov</sys_created_by>
+        <sys_created_on>2021-04-30 12:44:57</sys_created_on>
+        <sys_id>eafbb74a1b7bec100a4a10ad9c4bcba5</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>CaronWF@state.gov</sys_updated_by>
+        <sys_updated_on>2021-04-30 12:44:57</sys_updated_on>
+        <value>sys_attachment</value>
+        <variable display_value="">c181286fe72003005c85cd19d2f6a93b</variable>
+    </sys_variable_value>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_atf_step_6a7977861b7bec100a4a10ad9c4bcbb3</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step"><sys_atf_step action="INSERT_OR_UPDATE"><active>true</active><copied_from/><description>Open the record '' in the 'Attachments' related list on the 'Expense Item' form</description><display_name>Open a Record in List</display_name><inputs/><mugshots_cache_json/><notes/><order>5</order><snapshot/><step_config display_value="Open a Record in List">0200ac2fe72003005c85cd19d2f6a942</step_config><sys_class_name>sys_atf_step</sys_class_name><sys_created_by>CaronWF@state.gov</sys_created_by><sys_created_on>2021-04-30 12:44:57</sys_created_on><sys_id>6a7977861b7bec100a4a10ad9c4bcbb3</sys_id><sys_mod_count>2</sys_mod_count><sys_name>Open a Record in List</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_atf_step_6a7977861b7bec100a4a10ad9c4bcbb3</sys_update_name><sys_updated_by>CaronWF@state.gov</sys_updated_by><sys_updated_on>2021-05-04 03:17:14</sys_updated_on><table>x_g_irm_fms_expense_item</table><test display_value="FMS - Expense Item List">ec68844a1bbfac100a4a10ad9c4bcbe1</test><timeout/><warning_message/></sys_atf_step><sys_variable_value action="delete_multiple" query="document_key=6a7977861b7bec100a4a10ad9c4bcbb3"/><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>6a7977861b7bec100a4a10ad9c4bcbb3</document_key><order>200</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>CaronWF@state.gov</sys_created_by><sys_created_on>2021-04-30 12:44:57</sys_created_on><sys_id>2afbb74a1b7bec100a4a10ad9c4bcba5</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>CaronWF@state.gov</sys_updated_by><sys_updated_on>2021-04-30 12:44:57</sys_updated_on><value>REL:b9edf0ca0a0a0b010035de2d6b579a03</value><variable display_value="">5121646fe72003005c85cd19d2f6a99a</variable></sys_variable_value><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>6a7977861b7bec100a4a10ad9c4bcbb3</document_key><order>400</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>CaronWF@state.gov</sys_created_by><sys_created_on>2021-04-30 12:44:57</sys_created_on><sys_id>66fbb74a1b7bec100a4a10ad9c4bcba5</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>CaronWF@state.gov</sys_updated_by><sys_updated_on>2021-04-30 12:44:57</sys_updated_on><value>58e8f7481bcca0100a4a10ad9c4bcb02</value><variable display_value="">b076e295531233009e02ddeeff7b12d9</variable></sys_variable_value><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>6a7977861b7bec100a4a10ad9c4bcbb3</document_key><order>50</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>CaronWF@state.gov</sys_created_by><sys_created_on>2021-04-30 12:44:57</sys_created_on><sys_id>a2fbb74a1b7bec100a4a10ad9c4bcba5</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>CaronWF@state.gov</sys_updated_by><sys_updated_on>2021-04-30 12:44:57</sys_updated_on><value>related_list</value><variable display_value="">b8c89a36538333009e02ddeeff7b12f6</variable></sys_variable_value><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>6a7977861b7bec100a4a10ad9c4bcbb3</document_key><order>100</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>CaronWF@state.gov</sys_created_by><sys_created_on>2021-04-30 12:44:57</sys_created_on><sys_id>aefbb74a1b7bec100a4a10ad9c4bcba5</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>CaronWF@state.gov</sys_updated_by><sys_updated_on>2021-04-30 12:44:57</sys_updated_on><value>x_g_irm_fms_expense_item</value><variable display_value="">6fb0a06fe72003005c85cd19d2f6a9da</variable></sys_variable_value><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>6a7977861b7bec100a4a10ad9c4bcbb3</document_key><order>300</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>CaronWF@state.gov</sys_created_by><sys_created_on>2021-04-30 12:44:57</sys_created_on><sys_id>eafbb74a1b7bec100a4a10ad9c4bcba5</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>CaronWF@state.gov</sys_updated_by><sys_updated_on>2021-04-30 12:44:57</sys_updated_on><value>sys_attachment</value><variable display_value="">c181286fe72003005c85cd19d2f6a93b</variable></sys_variable_value></record_update>]]></payload>
+        <payload_hash>1241915537</payload_hash>
+        <record_name>Open a Record in List</record_name>
+        <reverted_from/>
+        <source>f107c80a1bbfac100a4a10ad9c4bcbe5</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>CaronWF@state.gov</sys_created_by>
+        <sys_created_on>2021-05-04 03:17:14</sys_created_on>
+        <sys_id>d56026d71bbb24501f7e113d9c4bcbab</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>179356139690000001</sys_recorded_at>
+        <sys_updated_by>CaronWF@state.gov</sys_updated_by>
+        <sys_updated_on>2021-05-04 03:17:14</sys_updated_on>
+        <type>Test Step</type>
+        <update_guid>5d6026d712bb2450f752e7243afff7aa</update_guid>
+        <update_guid_history>5d6026d712bb2450f752e7243afff7aa:1241915537,eafbb74ab97bec10f3e9abc3ff360ba7:914288082</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>CaronWF@state.gov</sys_created_by>
+        <sys_created_on>2021-05-04 03:17:14</sys_created_on>
+        <sys_db_object display_value="" name="sys_atf_step">sys_atf_step</sys_db_object>
+        <sys_id>1731b892dac945dd9b32815574b45d01</sys_id>
+        <sys_metadata>6a7977861b7bec100a4a10ad9c4bcbb3</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Open a Record in List</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_atf_step_6a7977861b7bec100a4a10ad9c4bcbb3</sys_update_name>
+        <sys_update_version display_value="sys_atf_step_6a7977861b7bec100a4a10ad9c4bcbb3">d56026d71bbb24501f7e113d9c4bcbab</sys_update_version>
+        <sys_updated_by>CaronWF@state.gov</sys_updated_by>
+        <sys_updated_on>2021-05-04 03:17:14</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

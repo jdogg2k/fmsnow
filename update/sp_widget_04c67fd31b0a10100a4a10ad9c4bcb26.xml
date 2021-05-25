@@ -83,9 +83,13 @@
     }
 
     c.canAdd = function () {
+
         if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) {
+					
             if (c.userAuth.orgs.indexOf(c.targetOrg) >= 0)
+							{
                 return true;
+							}
             else
                 return false;
         } else
@@ -400,7 +404,32 @@
         <public>false</public>
         <roles/>
         <script><![CDATA[(function() {
+var ShowNewInvoice
+  if (gs.hasRole('admin')) {
+            //gs.info("role inclde first if");
+          data.ShowNewInvoice = true;
 
+        }	
+
+else{
+var gr = new GlideRecord('sys_user_has_role');
+	gr.addQuery('user',gs.getUserID());
+	gr.addEncodedQuery('role.nameSTARTSWITHx_g_irm_fms');
+	gr.query();
+	while(gr.next())
+		{
+			if(gr.role.name =='x_g_irm_fms.readonly')
+				{
+				data.ShowNewInvoice = false;
+break;
+					
+				}
+			else
+					data.ShowNewInvoice = true;
+		}
+	
+}
+	
 	data.selectedOrg = "";
 	data.selectedProj = "";
 	data.selectedObligation = "Enter Obligation";
@@ -492,21 +521,21 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-07-22 13:33:31</sys_created_on>
         <sys_id>04c67fd31b0a10100a4a10ad9c4bcb26</sys_id>
-        <sys_mod_count>117</sys_mod_count>
+        <sys_mod_count>138</sys_mod_count>
         <sys_name>Obligation Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_04c67fd31b0a10100a4a10ad9c4bcb26</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-10 16:53:51</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2021-05-13 17:22:58</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">
     <div class="row">
       <div class="form-group col-sm-12 fms-list-header">
         <div class="fms-header-buttons">
-          <a href="javascript:void(0)" ng-click="c.exportExcel();" class="btn btn-primary excel-button">Export to Excel</a>
+          <a href="javascript:void(0)" ng-click="c.exportExcel();"class="btn btn-primary excel-button">Export to Excel</a>
          Obligation: <input type="text" ng-model="c.selectedObligation" class="obligation-input" onfocus="this.value=''" />
         <a href="javascript:void(0)" ng-click="c.getData();" class="btn btn-info search-button">Search</a>
 
@@ -527,7 +556,7 @@
 
       </div>
       <div class="col-sm-12 gridTitle"><span class="gridTitleText">Invoices</span>
-        <a href="javascript:void(0)" ng-click="c.addNew();" class="btn btn-primary newButton" ng-if="c.tabledata.length > 0">Add New Invoice</a>  
+        <a ng-if="data.ShowNewInvoice && c.tabledata.length > 0" href="javascript:void(0)" ng-click="c.addNew();"  class="btn btn-primary newButton" >Add New Invoice</a>  
       </div>
       <div class="col-sm-12">
 

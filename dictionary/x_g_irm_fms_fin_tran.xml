@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Financial Transaction" max_length="40" name="x_g_irm_fms_fin_tran" sizeclass="11169" type="collection">
+    <element label="Financial Transaction" max_length="40" name="x_g_irm_fms_fin_tran" sizeclass="11172" type="collection">
         <element label="Account Number" max_length="4" name="account_nmbr" type="string"/>
         <element attributes="ref_auto_completer=AJAXTableCompleter,ref_ac_columns=project_ref;group_name;group_desc" dependent="project_ref" dependent_on_field="project_ref" label="Allocation Group" max_length="32" name="allocation_group_ref" reference="x_g_irm_fms_allocation_group" reference_qual="disabled=false^EQ" reference_qual_condition="disabled=false^EQ" type="reference" use_dependent_field="true"/>
         <element label="Allotment" mandatory="true" max_length="32" name="allotment_ref" reference="x_g_irm_fms_allotment" type="reference"/>
+        <element attributes="edge_encryption_enabled=true" label="Bid Approved" max_length="40" name="bid_approved" type="glide_date"/>
+        <element attributes="edge_encryption_enabled=true" label="Bid Awarded" max_length="40" name="bid_awarded" type="glide_date"/>
+        <element attributes="edge_encryption_enabled=true" label="Bid Received" max_length="40" name="bid_received" type="glide_date"/>
         <element attributes="ref_auto_completer=AJAXTableCompleter,ref_ac_columns=contract_piid;contract_class;product_service;vendor_names,ref_ac_columns_search=true,ref_ac_display_value=true" label="Contract" max_length="32" name="contract_ref" reference="x_g_irm_fms_contract" reference_qual="javascript:&#13;&#10;if(current.tran_status== 'Obligated'){ &#13;&#10;&quot;operational_status=&quot;+&quot;Active&quot;+&quot;^contract_piid!=&quot;+&quot;N/A - Open Market&quot;+&quot;^organization_refIN&quot; + new OrgHierarchy().getOrgParents(current.project_ref.organization_ref)+&quot;^ORorganization_ref=&quot;+current.project_ref.organization_ref ;&#13;&#10;}&#13;&#10;&#13;&#10;else{&#13;&#10;&quot;operational_status=&quot;+&quot;Active&quot;+&quot;^organization_refIN&quot; + new OrgHierarchy().getOrgParents(current.project_ref.organization_ref)+&quot;^ORorganization_ref=&quot;+current.project_ref.organization_ref ; &#13;&#10;&#13;&#10;}&#13;&#10;" type="reference" use_reference_qualifier="advanced"/>
         <element label="Cost Pool" max_length="32" name="cost_pool_ref" reference="x_g_irm_fms_cost_pool" type="reference"/>
         <element label="Description" max_length="50" name="description" type="string"/>
@@ -41,6 +44,7 @@
                 <element inactive_on_update="false" label="2029" sequence="29" value="2029"/>
             </choice>
         </element>
+        <element attributes="edge_encryption_enabled=true" label="Material Delivered" max_length="40" name="material_delivered" type="glide_date"/>
         <element label="Notes" max_length="500" name="notes" type="string"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element label="Obligation Number" max_length="15" name="obligation" type="string"/>
@@ -63,6 +67,7 @@
         <element label="Purchase Order" max_length="32" name="purchase_order" reference="x_g_irm_fms_fin_tran_po" type="reference"/>
         <element label="Received By" max_length="50" name="received_by" type="string"/>
         <element label="Reconciliation Date" max_length="40" name="reconcile_date" type="glide_date"/>
+        <element attributes="edge_encryption_enabled=true" label="Sent to AQM" max_length="40" name="sent_to_aqm" type="glide_date"/>
         <element calculation="(function calculatedFieldValue(current) {&#10;    var items = new GlideRecord('x_g_irm_fms_fin_tran_item');&#10;    items.addQuery('fin_tran_ref', current.sys_id);&#10;    items.query();&#10;    var total = 0;&#10;    while (items.next()) {&#10;        //total += (parseInt(items.received_qty || items.item_qty)) * (parseFloat(items.actual_cost || items.item_cost));&#10;&#9;&#9;total += parseFloat(items.item_total);&#10;    }&#10;    return total; &#10;})(current);" label="Transaction Total" max_length="20" name="transaction_total_amt" read_only="true" type="currency" virtual="true"/>
         <element default="javascript:gs.now()" dynamic_default_value="fb7553e85f220100a9ad2572f2b477b4" label="Transaction Date" mandatory="true" max_length="40" name="tran_date" type="glide_date" use_dynamic_default="true"/>
         <element choice="1" label="Status" mandatory="true" max_length="12" name="tran_status" type="string">

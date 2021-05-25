@@ -152,7 +152,7 @@
 								orgPart + " | FY " + params.node.childrenAfterGroup[0].data.fy + " | " + params.node.childrenAfterGroup[0].data.fy_qtr + " Qtr" +
 								'</span>';
 						}
-					} else {
+					} else if(params.banner.show==true){
 
 						var distributeState = "-disabled";
 						var allocateState = "-disabled";
@@ -160,9 +160,11 @@
 						var allocateTitle = distributeTitle;
 
 						if (params.data.unassigned_amt > 0) {
+							
 							if (params.data.pool_status != "Received") {
 								allocateTitle = "Cannot allocate a pool with a status of Requested";
-							} else {
+							}
+							else {
 								allocateState = "-enabled";
 								allocateTitle = "Allocate";
 							}
@@ -178,16 +180,19 @@
 								distributeTitle = "There are no Sub-Organizations to distribute to";
 							}
 						}
-
-						tempDiv.innerHTML = '<span class="row-button"><i class="fa fa-edit edit-pencil"></i></span><span><i class="fa fa-share-alt action' + distributeState + '" title="' + distributeTitle + '"></i></span><span><i class="fa fa-pie-chart action' + allocateState + '" title="' + allocateTitle + '"></i></span>';
-
+           
+				
+						tempDiv.innerHTML = '<span class="row-button"><i class="fa fa-edit edit-pencil"></i></span><span><i class="fa fa-share-alt action' + distributeState + '" title="' + distributeTitle + '"></i></span><span><i class="fa fa-pie-chart action' + allocateState + '" title="' + allocateTitle + '"></i></span>'; 
+						  
+						
+						
 						// get references to the elements we want
 						this.eButton = tempDiv.querySelector('.fa-edit');
 						this.aButton = tempDiv.querySelector('.fa-pie-chart');
 						this.dButton = tempDiv.querySelector('.fa-share-alt');
 
 						// add event listener to buttons
-						this.eventListener = function () {
+					  	this.eventListener = function () {
 							var tField = params.colDef.field;
 							var tID = params.data.sys_id;
 							var tGrid = null;
@@ -203,6 +208,7 @@
 								var tID = params.data.sys_id;
 								params.node.setExpanded(true);
 								editGridRow("-1", "allocation_pool_ref=" + tID + "^fund_source=Allocation^allocation_date=" + params.data.receive_date + "^allocation_amt=" + params.data.unassigned_amt, childTables[0].name, childTables[0].banner, "detail_" + childTables[0].name + tID);
+							
 							}
 						}
 						this.aButton.addEventListener('click', this.allocateListener);
@@ -211,14 +217,14 @@
 							if (distributeState == "-enabled") {
 								var tID = params.data.sys_id;
 								params.node.setExpanded(true);
-								editGridRow("-1", constructAllocationPoolQuery(tID, params.data), childTables[1].name, childTables[1].banner, "detail_" + childTables[1].name + tID);
+								editGridRow("-1", constructAllocationPoolQuery(tID, params.data), childTables[1].name, childTables[1].banner, "detail_" + childTables[1].name + tID);	
+								
 							}
 						}
 						this.dButton.addEventListener('click', this.distributeListener);
 					}
 
 				}
-
 				this.eGui = tempDiv;
 			};
 
@@ -325,6 +331,7 @@
 					if (Number.isNaN(newValue))
 						newValue = oldEditVal;
 				}
+				if (!(typeof(event.colDef.editable) === "function" ? event.colDef.editable(params) : event.colDef.editable == true)) return;
 				pageController.server.get({
 					mode: 'updateField',
 					table: activeTable,
@@ -503,37 +510,6 @@
 							remove: [rowToDelete.data]
 						});
 					}
-
-					if (childTables[0].banner == 'Project Allocation' || childTables[0].banner == 'Distribution') { //special case for Allocation Pool page - need to recalculate/refresh parent
-                        var parentRow = delResp.data.parentRec;
-                        if (parentRow != undefined) {
-                            gridOptions.api.forEachNode(function (rowNode, index) {
-                                if (rowNode.data) {
-                                    if (rowNode.data.sys_id == parentRow.sys_id) {
-                                        rowNode.setDataValue("allocated_amt", parentRow.allocated_amt);
-                                        rowNode.setDataValue("distributed_amt", parentRow.distributed_amt);
-                                        rowNode.setDataValue("unassigned_amt", parentRow.unassigned_amt);
-                                    }
-                                }
-                            });
-                            gridOptions.api.redrawRows(); //redraw the renderer so we the icons can change
-                        }
-					}
-					else if (childTables[0].banner == 'Transaction Items') { //special case for Financial Transaction details grid
-
-                        var parentRow = delResp.data.parentRec;
-                        if (parentRow != undefined) {
-                            gridOptions.api.forEachNode(function (rowNode, index) {
-                                if (rowNode.data) {
-                                    if (rowNode.data.sys_id == parentRow.sys_id) {
-                                        rowNode.setDataValue("transaction_total_amt", parentRow.transaction_total_amt);
-                                        
-                                    }
-                                }
-                            });
-                        }
-
-					}
 				}
 
 				if (!delResp.data.isError) {
@@ -544,7 +520,8 @@
 					//broadcast delete to rootscope
 					$rootScope.$broadcast(deleteMod, {
 						table: delTable,
-						sys_id: delID
+						sys_id: delID,
+						row_data: rowToDelete ? rowToDelete.data : null
 					});
 
 				} else {
@@ -609,6 +586,19 @@
 			gridOptions.api.sizeColumnsToFit();
 
 		};
+		this.primeRow = function (rowID) { highlightRow(rowID); }
+		var highlightRow = function (rowID) {
+			gridOptions.api.forEachNode(function (rowNode, index) {
+				if (rowNode.data) {
+					if (rowNode.data.sys_id == rowID) {
+						rowNode.setSelected(true);
+						rowNode.expanded = true;
+						gridOptions.api.onGroupExpandedOrCollapsed();
+						gridOptions.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
+					}
+				}
+			});
+		}
 		this.setColumnsVisible = function (cols, show) {
 			if (gridOptions.columnApi) gridOptions.columnApi.setColumnsVisible(cols, show);
 		};
@@ -688,7 +678,6 @@
 		
 		var SNowPopupEditor = function (params) {
 			isDoubleClick = true;
-			return;
 			if (!params.data) return;
 			if (params.node.isRowPinned()) return;
 			if (!params.api.gridOptionsWrapper.gridOptions.suppressClickEdit) return;
@@ -944,12 +933,6 @@
 							}
 						}
 					},
-					onCellClicked: function (params) {
-						//JLR - redirect to clicked org on Allocation Pool page
-						if (detailTable == "x_g_irm_fms_allocation_pool" && params.colDef.field == "organization_ref") {
-							window.location.href = "/fms?id=allocation_pools&org_id=" + params.data.organization_ref_rawval;
-						}
-					},
 					components: {
 						editCell: EditCellRenderer,
 						deleteCell: DeleteCellRenderer,
@@ -1167,7 +1150,7 @@
 						var modEventType = "fmsgrid.recordUpdated";
 
 						if (response.isInsert) {
-							updatedID = response.sys_id;
+							updatedID = response.sys_id || updatedID;
 							modEventType = "fmsgrid.recordAdded";
 						}
 
@@ -1188,13 +1171,7 @@
 								gridOptions.api.sizeColumnsToFit();
 
 								//highlight the modded record
-								gridOptions.api.forEachNode(function (rowNode, index) {
-									if (rowNode.data) {
-										if (rowNode.data.sys_id == updatedID) {
-											gridOptions.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
-										}
-									}
-								});
+								highlightRow(updatedID);
 
 								//broadcast grid refresh completion
 								$rootScope.$broadcast(modEventType + ".refresh", {
@@ -1232,48 +1209,14 @@
 									};
 
 								detailGridInfo.api.applyTransaction(dataToUpdate);
-
 								detailGridInfo.api.hideOverlay();
 
-								if (childTables[0].banner == 'Project Allocation') { //special case for Allocation Pool details grid
-
-									var updatedParent = saveResp.data.parentRec;
-									gridOptions.api.forEachNode(function (rowNode, index) {
-										if (rowNode.data) {
-											if (rowNode.data.sys_id == updatedParent.sys_id) {
-												rowNode.setDataValue("allocated_amt", updatedParent.allocated_amt);
-												rowNode.setDataValue("distributed_amt", updatedParent.distributed_amt);
-												rowNode.setDataValue("unassigned_amt", updatedParent.unassigned_amt);
-											}
-										}
-									});
-
-									gridOptions.api.redrawRows(); //redraw the renderer so we the icons can change
-								} 
-							else	if (childTables[0].banner == 'Transaction Items') { //special case for Financial Transaction details grid
-
-									var updatedParent = saveResp.data.parentRec;
-									gridOptions.api.forEachNode(function (rowNode, index) {
-										if (rowNode.data) {
-											if (rowNode.data.sys_id == updatedParent.sys_id) {
-												rowNode.setDataValue("transaction_total_amt", updatedParent.transaction_total_amt);
-												
-											}
-										}
-									});
-
-								}
-								
-								else { //all other grids
-
-									//highlight the modded record
-									detailGridInfo.api.forEachNode(function (rowNode, index) {
-										if (rowNode.data.sys_id == updatedID) {
-											detailGridInfo.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
-										}
-									});
-
-								}
+								//highlight the modded record
+								detailGridInfo.api.forEachNode(function (rowNode, index) {
+									if (rowNode.data.sys_id == updatedID) {
+										detailGridInfo.api.ensureIndexVisible(rowNode.rowIndex, 'middle');
+									}
+								});
 
 							});
 						}
@@ -1281,7 +1224,8 @@
 						//broadcast add or edit to rootscope
 						$rootScope.$broadcast(modEventType, {
 							table: broadcastTable,
-							sys_id: updatedID
+							sys_id: updatedID,
+							row_data: null      
 						});
 					}
 
@@ -1297,14 +1241,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-24 14:39:22</sys_created_on>
         <sys_id>0a1de5321b9458101f7e113d9c4bcbe1</sys_id>
-        <sys_mod_count>1024</sys_mod_count>
+        <sys_mod_count>1083</sys_mod_count>
         <sys_name>AGGridFactory</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_angular_provider_0a1de5321b9458101f7e113d9c4bcbe1</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-04-28 14:48:06</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2021-05-24 17:55:11</sys_updated_on>
         <type>service</type>
     </sp_angular_provider>
 </record_update>

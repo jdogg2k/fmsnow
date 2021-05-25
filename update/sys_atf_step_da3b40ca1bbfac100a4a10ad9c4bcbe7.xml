@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step">
+    <sys_atf_step action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <copied_from/>
+        <description>Click the component: 'Link &lt;a&gt;: Add Expense Item'</description>
+        <display_name>Click Component (Custom UI)</display_name>
+        <inputs/>
+        <mugshots_cache_json>{"49e9182d3edd93af45ba601dc56e121f":"{\"area\":\"Expense Item Grid\",\"sn_atf_mugshot_short_description\":\"Link &lt;a&gt;: Add Expense Item\",\"inner_text\":\"Add Expense Item\",\"sn_atf_mugshot_long_description\":\"Link &lt;a&gt;: Add Expense Item in page area Expense Item Grid\",\"methods\":[\"click\"],\"sn_atf_mugshot_label\":\"Add Expense Item\",\"index\":1,\"type\":\"\",\"version\":\"18.0\",\"get_value_result\":\"Add Expense Item\",\"sn_atf_mugshot_tag_display_name\":\"Link &lt;a&gt;\",\"sn_atf_mugshot_value\":\"\",\"tag\":\"a\",\"isDisabled\":false,\"hash\":\"49e9182d3edd93af45ba601dc56e121f\"}"}</mugshots_cache_json>
+        <notes/>
+        <order>3</order>
+        <snapshot display_value="8af485137252523b729766a6a20bf31a">a2e56edb1bbb24501f7e113d9c4bcb19</snapshot>
+        <step_config display_value="Click Component (Custom UI)">def25c4b73730300c79260bdfaf6a700</step_config>
+        <sys_class_name>sys_atf_step</sys_class_name>
+        <sys_created_by>CaronWF@state.gov</sys_created_by>
+        <sys_created_on>2021-04-29 19:13:30</sys_created_on>
+        <sys_id>da3b40ca1bbfac100a4a10ad9c4bcbe7</sys_id>
+        <sys_mod_count>17</sys_mod_count>
+        <sys_name>Click Component (Custom UI)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_atf_step_da3b40ca1bbfac100a4a10ad9c4bcbe7</sys_update_name>
+        <sys_updated_by>fmsanalyst@test.com</sys_updated_by>
+        <sys_updated_on>2021-05-04 03:41:22</sys_updated_on>
+        <table/>
+        <test display_value="FMS - Expense Item List">ec68844a1bbfac100a4a10ad9c4bcbe1</test>
+        <timeout/>
+        <warning_message/>
+    </sys_atf_step>
+    <sys_variable_value action="delete_multiple" query="document_key=da3b40ca1bbfac100a4a10ad9c4bcbe7"/>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>sys_atf_step</document>
+        <document_key>da3b40ca1bbfac100a4a10ad9c4bcbe7</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>CaronWF@state.gov</sys_created_by>
+        <sys_created_on>2021-04-29 19:13:30</sys_created_on>
+        <sys_id>185bc8ca1bbfac100a4a10ad9c4bcbf7</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>CaronWF@state.gov</sys_updated_by>
+        <sys_updated_on>2021-04-29 19:13:30</sys_updated_on>
+        <value>49e9182d3edd93af45ba601dc56e121f</value>
+        <variable display_value="">ee05588b73730300c79260bdfaf6a749</variable>
+    </sys_variable_value>
+</record_update>

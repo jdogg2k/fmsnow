@@ -149,7 +149,7 @@
             data.org_names[orgList.indexOf(gr.getValue("sys_id"))] = gr.getValue("organization_display");
         if (data.selectedOrg.length == 0) {
             data.selectedOrg = gr.getValue("sys_id").toString();
-            data.selectedOrg_name = gr.getValue("organization_display");
+            data.org_names.push(gr.getValue("organization_display"));
             session.putClientData("org_id", gr.getValue("sys_id").toString());
         }
         data.userOrgs.push(gr.getValue("sys_id"));
@@ -158,6 +158,10 @@
     if (gr.getRowCount() == 0 && JSON.stringify(data.userAuth.roles).includes("true")) {
         data.hide_widget = true;
         gs.addErrorMessage("ERROR!!! CONTACT SYSTEM ADMINISTRATOR.  NO ORGANIZATIONS DEFINED.");
+    }
+    if (data.selectedProj.length > 0 && !session.getClientData("proj_name")) {
+		var proj = FMSUtility.getScalar(FMSConstants.TABLE_PROJECT, "project_name", "sys_id=" + data.selectedProj);
+        session.putClientData("proj_name", proj);
     }
     if (data.selectedProj.length > 0 && session.getClientData("proj_name")) {
         data.selectedProj_name = session.getClientData('proj_name').toString();
@@ -169,21 +173,21 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-04-28 16:15:35</sys_created_on>
         <sys_id>c3c8aac01bac5c101f7e113d9c4bcbb0</sys_id>
-        <sys_mod_count>299</sys_mod_count>
+        <sys_mod_count>302</sys_mod_count>
         <sys_name>Organization Selection</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_c3c8aac01bac5c101f7e113d9c4bcbb0</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-03-17 12:24:43</sys_updated_on>
+        <sys_updated_on>2021-05-24 14:40:18</sys_updated_on>
         <template><![CDATA[<div style="display: inline-flex; text-align: left;" class="topFilters" ng-hide="c.data.hide_widget">
     <div style="display: inline-flex; align-items: center; min-width: 400px;">
       <label class="control-label" ng-show="!c.data.isMultiple">Organization:</label>
       <label class="control-label" ng-show="c.data.isMultiple">Organizations:</label>
       <sn-record-picker field="selOrg" table="data.orgTableName" multiple="c.data.multi_select" default-query="'sys_idIN' + data.userOrgs + '^ORDERBYorg_name'" display-field="'organization_display'" value-field="'sys_id'" search-fields="'org_name,org_code'" page-size="100" ></sn-record-picker>
     </div>
-    &nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;
     <div style="display: inline-flex; align-items: center; min-width: 400px;" ng-hide="c.data.hide_project">
       <label class="control-label">Project:</label>
       <sn-record-picker field="selProj" table="data.projTableName" default-query="'organization_refIN' + data.myOrg_id" display-field="'project_display'" value-field="'sys_id'" search-fields="'project_name'" page-size="100" sn-disabled="!data.myOrg_id"></sn-record-picker>

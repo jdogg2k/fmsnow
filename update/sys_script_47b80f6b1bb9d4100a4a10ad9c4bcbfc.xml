@@ -49,6 +49,11 @@
         gr.quote_vendor_name = current.po_quote_vendor_name;
         gr.requestor = current.po_requestor;
         gr.approved = current.po_approved;
+		gr.sent_to_aqm = current.sent_to_aqm;
+		gr.bid_received = current.bid_received;
+		gr.bid_awarded = current.bid_awarded;
+		gr.bid_approved = current.bid_approved;
+		gr.material_delivered = current.material_delivered;
 		gr.update();
 
     } else {
@@ -67,6 +72,11 @@
         gr.quote_vendor_name = current.po_quote_vendor_name;
         gr.requestor = current.po_requestor;
         gr.approved = current.po_approved;
+		gr.sent_to_aqm = current.sent_to_aqm;
+		gr.bid_received = current.bid_received;
+		gr.bid_awarded = current.bid_awarded;
+		gr.bid_approved = current.bid_approved;
+		gr.material_delivered = current.material_delivered;
         gr.insert();
         current.purchase_order = gr.sys_id;
     }
@@ -80,7 +90,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>47b80f6b1bb9d4100a4a10ad9c4bcbfc</sys_id>
-        <sys_mod_count>9</sys_mod_count>
+        <sys_mod_count>12</sys_mod_count>
         <sys_name>Insert record in fin trans purchase orde</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
@@ -88,9 +98,9 @@
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_47b80f6b1bb9d4100a4a10ad9c4bcbfc</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-21 18:05:11</sys_updated_on>
+        <sys_updated_on>2021-05-18 18:08:48</sys_updated_on>
         <template/>
-        <when>before</when>
+        <when>after</when>
     </sys_script>
     <sys_translated_text action="delete_multiple" query="documentkey=47b80f6b1bb9d4100a4a10ad9c4bcbfc"/>
 </record_update>

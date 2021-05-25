@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function ($scope,AGGridFactory, $timeout,spUtil) {
+        <client_script><![CDATA[api.controller = function ($scope, AGGridFactory, $timeout, $location, spUtil) {
     /* widget controller */
     var c = this;
     c.targetOrg = c.data.selectedOrg;
@@ -10,7 +10,7 @@
 	
     var poolManager = new AGGridFactory();
 
-	 c.onload = function() {
+	c.onload = function() {
         $.each(c.data.fiscalYears, function( index, value ) {
             $('#yearSelect').append("<option value='" + value + "'>" + value + "</option>");
         });
@@ -38,15 +38,18 @@
             }
         });
 
-    }
+    };
 	
     c.addNew = function () {
+			 
         poolManager.editRow("-1", "organization_ref=" + c.targetOrg, c.data.tableName);
-    }
+			
+			  
+    };
 
     c.exportExcel = function () {
         poolManager.exportExcel();
-    }
+    };
 
     c.canAdd = function () {
         if (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst) {
@@ -57,7 +60,7 @@
 		}
 		else
             return false;
-    }
+    };
 
     c.canEdit = function (auth, data) {
         if (!data) return false;
@@ -65,7 +68,7 @@
             return true;
         else
             return false;
-    }
+    };
 
     c.canDelete = function (auth, data) {
         if (data == undefined) {
@@ -77,8 +80,7 @@
                 return c.canEdit(auth, data);
             }
         }
-        
-    }
+    };
 
     c.setYear = function() {
         c.server.get({
@@ -87,7 +89,7 @@
         }).then(function (saveResp) {
             poolManager.setGridData(saveResp.data.tableData);
         });
-    }
+    };
 
     //define AG Grid columns
     var poolColumns = [{
@@ -96,36 +98,50 @@
             minWidth: 200,
             cellRenderer: 'agGroupCellRenderer',
             showRowGroup: true,
-            cellRendererParams: {
+              cellRendererParams: {
                 suppressCount: true,
                 checkbox: false,
                 innerRenderer: 'myGroupCellRenderer',
                 banner: {
-                    type: 'allocationpool'
+                    type: 'allocationpool',
+					show: c.canAdd()
                 },
                 suppressDoubleClickExpand: true,
                 suppressEnterExpand: true
             }
         },
-				 {
+		{
             field: 'pool_type',
             headerName: 'Pool Type',
-					  filter: 'agSetColumnFilter'
+			filter: 'agSetColumnFilter'
+        },							 
+		{
+            field: 'pool_parent_ref.organization_ref.organization_display',
+            headerName: 'Distribution From',
+            filter: 'agSetColumnFilter',
+			cellStyle: function(params) { 
+				if (params.data && c.userAuth.orgs.indexOf(params.data['pool_parent_ref.organization_ref']) >= 0) 
+					return {color: 'blue', 'text-decoration': 'underline', cursor: 'pointer'};
+			},
+			onCellClicked: function(params) { 
+				if (params.data && c.userAuth.orgs.indexOf(params.data['pool_parent_ref.organization_ref']) >= 0) 
+					$location.url("/fms?id=allocation_pools&org_id=" + params.data['pool_parent_ref.organization_ref'] + "&sys_id=" + params.data['pool_parent_ref_rawval']); 
+			}
         },							 
         {
             field: 'organization_source_ref',
             headerName: 'Source Organization',
-					  filter: 'agTextColumnFilter'
+			filter: 'agTextColumnFilter'
         },
         {
             field: 'pool_status',
             headerName: 'Pool Status',
-					  filter: 'agSetColumnFilter',
+			filter: 'agSetColumnFilter',
             filterParams: {
                 values: [ 'Received', 'Requested' ]
             }
         },
-											 
+							
 	/*	{
             field: 'fy',
             headerName: 'FY',
@@ -159,25 +175,25 @@
         {
             field: 'request_date',
             headerName: 'Requested Date',
-			      type:'date'
+			type:'date'
         },
         {
             field: 'request_amt',
             headerName: 'Requested Amount',
             type: 'currency',
-					  filter: 'agNumberColumnFilter',
+			filter: 'agNumberColumnFilter',
             aggFunc: 'sum'
         },
         {
             field: 'receive_date',
             headerName: 'Received Date',
-			      type:'date'
+			type:'date'
         },
         {
             field: 'receive_amt',
             headerName: 'Received Amount',
             type: 'currency',
-					 filter: 'agNumberColumnFilter',
+			filter: 'agNumberColumnFilter',
             aggFunc: 'sum'
         },
         {
@@ -195,38 +211,38 @@
         {
             field: 'pool_purpose',
             headerName: 'Pool Purpose',
-					  filter: 'agSetColumnFilter',
+			filter: 'agSetColumnFilter',
             suppressMenu: true
         },
         {
             field: 'ams_ref_nmbr',
             headerName: 'AMS Reference',
-					 filter: 'agTextColumnFilter'
+			filter: 'agTextColumnFilter'
         },
         {
             field: 'ibis_document',
             headerName: 'IBIS Document',
-					  filter: 'agTextColumnFilter'
+			filter: 'agTextColumnFilter'
         },
         {
             field: 'distributed_amt',
             headerName: 'Distributed Amount',
             type: 'currency',
-					  filter: 'agNumberColumnFilter',
+			filter: 'agNumberColumnFilter',
             aggFunc: 'sum'
         },
         {
             field: 'allocated_amt',
             headerName: 'Allocated Amount',
             type: 'currency',
-					  filter: 'agNumberColumnFilter',
+			filter: 'agNumberColumnFilter',
             aggFunc: 'sum'
         },
         {
             field: 'unassigned_amt',
             headerName: 'Unassigned Amount',
             type: 'currency',
-					 filter: 'agNumberColumnFilter',
+			filter: 'agNumberColumnFilter',
             aggFunc: 'sum',
             cellStyle: function (params) {
                 if (!params.node.group) {
@@ -263,12 +279,16 @@
                 };
             }
         }
-    ]
+    ];
 
     var distColumns = [{
         field: 'organization_ref',
         headerName: 'Organization',
-        cellStyle: {color: 'blue', 'text-decoration': 'underline', cursor: 'pointer'}
+        cellStyle: {color: 'blue', 'text-decoration': 'underline', cursor: 'pointer'},
+		onCellClicked: function(params) { 
+			$location.url("/fms?id=allocation_pools&org_id=" + params.data.organization_ref_rawval + "&sys_id=" + params.data.sys_id); 
+					
+		}
     },
     {
         field: 'pool_type',
@@ -344,7 +364,7 @@
             }
         }
     },
-		 {
+		{
             field: 'delete_item',
             headerName: 'Del.',
             maxWidth: 50,
@@ -399,7 +419,12 @@
         },
         {
             field: 'project_ref',
-            headerName: 'Project Name'
+            headerName: 'Project Name',
+			cellStyle: {color: 'blue', 'text-decoration': 'underline', cursor: 'pointer'},
+			onCellClicked: function(params) { 
+				if (params.data) 
+					$location.url("/fms?id=project_allocation_list&org_id=" + params.data['project_ref.organization_ref'] + "&proj_id=" + params.data['project_ref_rawval'] + "&sys_id=" + params.data['sys_id']); 
+			}
         },
         {
             field: 'fund_source',
@@ -514,14 +539,15 @@
             showButton: false
         }],
         showTotals: true
-    }
+    };
 
     poolManager.setColumns(poolColumns);
     poolManager.setPageProperties(pageProps);
     poolManager.setRenderers('allocation_pool_display'); //build renderers and set display field to show on delete attempt
     poolManager.renderGrid('allocationPoolGrid'); //render grid objects
     poolManager.setGridData(c.data.tableData); //set grid data
-	  //poolManager.setGridFilter('fy', 'equals', c.data.selectedFY);
+	var row = new URLSearchParams(document.URL).get('sys_id');
+	if (row) poolManager.primeRow(row);
     poolManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst));
     poolManager.fitColumns();
 
@@ -538,7 +564,41 @@
             poolManager.gridOpts.api.setFilterModel(model);
         });
     });
-}]]></client_script>
+
+	$rootScope.$on('fmsgrid.recordAdded', function(event, args) {
+		updateParentRow(args.table, args.sys_id, args.row_data); 
+    });
+	$rootScope.$on('fmsgrid.recordUpdated', function(event, args) {
+		updateParentRow(args.table, args.sys_id, args.row_data);  
+    });
+	$rootScope.$on('fmsgrid.recordDeleted', function(event, args) {
+		updateParentRow(args.table, args.sys_id, args.row_data);  
+    });
+
+    function updateParentRow(tableName, rowID, rowData) {
+		if (!rowID) return;
+		if (!(tableName == c.data.projAllocTableName || tableName == c.data.tableName)) return; 
+		c.server.get({
+			mode: 'getParent',
+			sys_id: rowID,
+			targetTable: tableName,
+			row_data: rowData
+		}).then(function (response) {
+			var updatedParent = response.data.parentRec;
+			if (!updatedParent) return;
+			poolManager.gridOpts.api.forEachNode(function (rowNode, index) {
+				if (rowNode.data) {
+					if (rowNode.data.sys_id == updatedParent.sys_id) {
+						rowNode.setDataValue("allocated_amt", updatedParent.allocated_amt);
+						rowNode.setDataValue("distributed_amt", updatedParent.distributed_amt);
+						rowNode.setDataValue("unassigned_amt", updatedParent.unassigned_amt);
+					}
+				}
+			});
+			poolManager.gridOpts.api.redrawRows(); //redraw the renderer so we the icons can change
+		});
+    }
+};]]></client_script>
         <controller_as>c</controller_as>
         <css>.yearSelection {
     float: left;
@@ -568,7 +628,7 @@
         <script><![CDATA[(function() {
 
     data.selectedOrg = "";
-	 data.selectedFY = "";
+	data.selectedFY = "";
 
     var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
     var session = gs.getSession();
@@ -577,7 +637,7 @@
 
     if (data.selectedOrg.length == 0 && session.getClientData('org_id') && session.getClientData('org_id').length > 0)
         data.selectedOrg = session.getClientData('org_id');
-	  if (session.getClientData('fintran_fy') && session.getClientData('fintran_fy').length > 0)
+	if (session.getClientData('fintran_fy') && session.getClientData('fintran_fy').length > 0)
 		data.selectedFY = session.getClientData('fintran_fy');
 
     if (input) { //input holds the data coming back to the server
@@ -586,50 +646,39 @@
             data.selectedFY = input.selectedFY;
         }*/
         if (input.mode == "getDetailData") {
-            data[input.detailTable] = FMSUtility.getTableData(input.detailTable, input.parentRef + '=' + input.parentID, true);
+			var include = [];
+			if (input.detailTable == FMSConstants.TABLE_PROJECT_ALLOCATION)
+				include = ['project_ref.organization_ref'];
+            data[input.detailTable] = FMSUtility.getTableData(input.detailTable, input.parentRef + '=' + input.parentID, true, include);
         }
         if (input.mode == "getNewRec") {
-
             data.newRec = FMSUtility.getTableData(input.targetTable, "sys_id=" + input.newSysID, true)[0];
-
-            var poolRefID = "";
-            if (input.targetTable == FMSConstants.TABLE_PROJECT_ALLOCATION) {
-                poolRefID = data.newRec.allocation_pool_ref_rawval;
-            } else {
-                poolRefID = data.newRec.pool_parent_ref_rawval;
-            }
-
-            data.parentRec = FMSUtility.getTableData(FMSConstants.TABLE_ALLOCATION_POOL, "sys_id=" + poolRefID, true)[0];
         }
-			 if (input.mode == "getTransData") {
+		if (input.mode == "getParent") {
+			var poolRec;
+            var poolRefID = "";
+			if (input.row_data)
+				poolRec = input.row_data;
+			else
+				poolRec = FMSUtility.getTableData(input.targetTable, "sys_id=" + input.sys_id, true)[0];
+            if (input.targetTable == FMSConstants.TABLE_PROJECT_ALLOCATION) {
+                poolRefID = poolRec.allocation_pool_ref_rawval;
+            } else {
+                poolRefID = (poolRec && poolRec.pool_parent_ref_rawval) ? poolRec.pool_parent_ref_rawval : poolRec.pool_parent_ref;
+            }
+			if (poolRefID.length > 0)
+				data.parentRec = FMSUtility.getTableData(FMSConstants.TABLE_ALLOCATION_POOL, "sys_id=" + poolRefID, true)[0];
+		}
+		if (input.mode == "getTransData") {
             data.selectedFY = input.selFY.toString();
             session.putClientData('fintran_fy', data.selectedFY);
         }
 			
-
         if (input.mode == "deleteRow") {
-            
-            var dParentID = "";
             data.selectedFY = input.selectedFY;
 
-            var deletedRec = new GlideRecord(input.delTable);
-            deletedRec.get(input.rowID);
-            if (deletedRec.allocation_pool_ref) {
-                if (deletedRec.allocation_pool_ref.toString() != "")
-                    dParentID = deletedRec.allocation_pool_ref.toString();
-            }
-
-            if (deletedRec.pool_parent_ref) {
-                if (deletedRec.pool_parent_ref.toString() != "")
-                    dParentID = deletedRec.pool_parent_ref.toString();
-            }
-
             var successDelete = FMSUtility.deleteRecord(input.delTable, input.rowID);
-            if (successDelete) {
-                if (dParentID != "") {
-                    data.parentRec = FMSUtility.getTableData(FMSConstants.TABLE_ALLOCATION_POOL, "sys_id=" + dParentID, true)[0];
-                }
-            } else {
+            if (!successDelete) {
                 data.isError = true;
             }
         }
@@ -641,11 +690,12 @@
         data.fiscalYears = FMSUtility.getFiscalYears();
         data.fiscalYears.reverse();
         data.selectedFY = FMSUtility.getCurrentFY();
-        session.putClientData('fintran_fy', data.selectedFY)
+        session.putClientData('fintran_fy', data.selectedFY);
     }
-//"organization_ref=" + data.selectedOrg 
- var filter =  "organization_ref=" +data.selectedOrg+"^"+"fyIN" +data.selectedFY;
-    data.tableData = FMSUtility.getAllAllocationData(FMSConstants.TABLE_ALLOCATION_POOL, filter, true);
+	
+	var filter =  "organization_ref=" +data.selectedOrg+"^"+"fyIN" +data.selectedFY;
+	var poolInclude = [ 'pool_parent_ref.organization_ref', 'pool_parent_ref.organization_ref.organization_display' ];
+    data.tableData = FMSUtility.getAllAllocationData(FMSConstants.TABLE_ALLOCATION_POOL, filter, true, poolInclude);
     data.tableName = FMSConstants.TABLE_ALLOCATION_POOL;
     data.projAllocTableName = FMSConstants.TABLE_PROJECT_ALLOCATION;
 
@@ -660,14 +710,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-18 17:12:53</sys_created_on>
         <sys_id>eb99716a1b7498100a4a10ad9c4bcb7e</sys_id>
-        <sys_mod_count>181</sys_mod_count>
+        <sys_mod_count>256</sys_mod_count>
         <sys_name>Allocation Pool Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_eb99716a1b7498100a4a10ad9c4bcb7e</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2021-03-26 16:25:12</sys_updated_on>
+        <sys_updated_on>2021-05-21 19:51:04</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%" ng-init="c.onload()">
  <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
     <div class="container">

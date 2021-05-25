@@ -449,7 +449,8 @@
             banner: 'Transaction Items',
             name: c.data.itemTableName,
             columnDefs: fintranItemDefs,
-            parentRef: 'fin_tran_ref'
+            parentRef: 'fin_tran_ref',
+					  showButton: c.canAdd()
         }]
     }
 
@@ -465,7 +466,6 @@
     }, 250);
 
     $rootScope.$on('fmsgrid.recordAdded.refresh', function (event, args) { //branch out proper row on transaction add
-
         var targetSys = args.sys_id;
         var targetTable = args.table;
 
@@ -473,7 +473,9 @@
             fintranManager.gridOpts.api.forEachNode(function(rowNode, index) {
                 if (rowNode.data) {
                     if (rowNode.data.sys_id == targetSys) {
+										
                         c.addingNewTrans = true;
+											
                         rowNode.setExpanded(true); //expand
                     }      
                 }
@@ -483,7 +485,9 @@
     });
 
     $rootScope.$on('fms.transgrid.visible', function (event, args) { //branch out proper row on transaction add
-        if (c.addingNewTrans) {
+		
+        if (!c.addingNewTrans) {
+					
             fintranManager.editDetailGridRow("-1", "fin_tran_ref=" + args.sys_id, c.data.itemTableName, args.detailName, "detail_" + args.detailTable + args.sys_id);
             c.addingNewTrans = false;
         }
@@ -530,6 +534,36 @@
     $rootScope.$on('BudgetDetailsGridChanged', function(event, args) {
         c.loadYears();
     });
+
+	$rootScope.$on('fmsgrid.recordAdded', function(event, args) {
+		updateParentRow(args.table, args.sys_id, args.row_data); 
+    });
+	$rootScope.$on('fmsgrid.recordUpdated', function(event, args) {
+		updateParentRow(args.table, args.sys_id, args.row_data);  
+    });
+	$rootScope.$on('fmsgrid.recordDeleted', function(event, args) {
+		updateParentRow(args.table, args.sys_id, args.row_data);  
+    });
+
+    function updateParentRow(tableName, rowID, rowData) {
+		if (tableName != c.data.itemTableName) return; 
+		c.server.get({
+			mode: 'getParent',
+			sys_id: rowID,
+			targetTable: tableName,
+			row_data: rowData
+		}).then(function (response) {
+			var updatedParent = response.data.parentRec;
+			fintranManager.gridOpts.api.forEachNode(function (rowNode, index) {
+				if (rowNode.data) {
+					if (rowNode.data.sys_id == updatedParent.sys_id) {
+						rowNode.setDataValue("transaction_total_amt", updatedParent.transaction_total_amt);
+					}
+				}
+			});
+			fintranManager.gridOpts.api.redrawRows(); //redraw the renderer so we the icons can change
+		});
+    }
 	
 }]]></client_script>
         <controller_as>c</controller_as>
@@ -562,56 +596,54 @@
         <roles/>
         <script><![CDATA[(function() {
 
-	data.selectedOrg = "";
+    data.selectedOrg = "";
     data.selectedProj = "";
     data.selectedFY = "";
-	 // data.isOnSpecific = true;
+    // data.isOnSpecific = true;
 
 
-	//	gs.addInfoMessage("load"+data.selectedProj+"test");
+    //	gs.addInfoMessage("load"+data.selectedProj+"test");
     var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+    var FMSPermissions = new x_g_irm_fms.FMSPermissions();
 
     var session = gs.getSession();
-	if (session.getClientData('org_id') && session.getClientData('org_id').length > 0)
-		data.selectedOrg = session.getClientData('org_id');
-	if (session.getClientData('proj_id') && session.getClientData('proj_id').length > 0)
+    if (session.getClientData('org_id') && session.getClientData('org_id').length > 0)
+        data.selectedOrg = session.getClientData('org_id');
+    if (session.getClientData('proj_id') && session.getClientData('proj_id').length > 0)
         data.selectedProj = session.getClientData('proj_id');
     if (session.getClientData('fintran_fy') && session.getClientData('fintran_fy').length > 0)
-		data.selectedFY = session.getClientData('fintran_fy');
+        data.selectedFY = session.getClientData('fintran_fy');
 
     if (input) { //input holds the data coming back to the server
 
         if (input.mode == "getDetailData") {
-            data[input.detailTable] = FMSUtility.getTableData(input.detailTable, input.parentRef + '=' + input.parentID, true); 
+            data[input.detailTable] = FMSUtility.getTableData(input.detailTable, input.parentRef + '=' + input.parentID, true);
         }
-		if (input.mode == "getNewRec") {
-           data.newRec = FMSUtility.getTableData(input.targetTable, "sys_id=" + input.newSysID, true)[0];
- 
-			var financialRefID = "";
-            
-            financialRefID = data.newRec.fin_tran_ref_rawval;
+        if (input.mode == "getNewRec") {
+            data.newRec = FMSUtility.getTableData(input.targetTable, "sys_id=" + input.newSysID, true)[0];
+        }
+        if (input.mode == "getParent") {
+			var itemRec;
+            var financialRefID = "";
+			if (input.row_data)
+				itemRec = input.row_data;
+			else
+				itemRec = FMSUtility.getTableData(input.targetTable, "sys_id=" + input.sys_id, true)[0];
 
+            financialRefID = itemRec.fin_tran_ref_rawval;
             data.parentRec = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "sys_id=" + financialRefID, true)[0];
         }
         if (input.mode == "deleteRow") {
-			if (input.delTable != FMSConstants.TABLE_FINANCIAL_TRANSACTION) {
-				var deletedRec = new GlideRecord(input.delTable);
-                deletedRec.get(input.rowID);
-                var dParentID = deletedRec.fin_tran_ref.toString();
-                data.parentRec = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "sys_id=" + dParentID, true)[0];
-            }
-			FMSUtility.deleteRecord(input.delTable, input.rowID);
-
-            if (input.delTable != FMSConstants.TABLE_FINANCIAL_TRANSACTION) {
-                data.parentRec = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "sys_id=" + dParentID, true)[0];
-            }
-
-
-            //FMSUtility.deleteRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION, input.rowID);
+           // if (FMSPermissions.canDeletefinTrans(input.rowID)) {
+                FMSUtility.deleteRecord(input.delTable, input.rowID);
+          //  } else {
+          //      data.isError = true;
+          //      data.errorMsg = "This Transaction cannot be deleted as it is linked to existing Purchase Order";
+         //   }
         }
         if (input.mode == "setOrg") {
             data.selectedOrg = input.org_id.toString();
-		}
+        }
         if (input.mode == "setProj") {
             data.selectedProj = input.proj_id.toString();
         }
@@ -620,10 +652,13 @@
             session.putClientData('fintran_fy', data.selectedFY);
         }
 
-	} else if ($sp.getParameter("budget_id") && $sp.getParameter("budget_id").length > 0) {
-		data.selectedBudgetID = $sp.getParameter("budget_id");
-		var bud = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET, "sys_id=" + data.selectedBudgetID, true)[0];
-		if (bud) { data.selectedProj = bud.project_ref_rawval; data.selectedFY = bud.fy; }
+    } else if ($sp.getParameter("budget_id") && $sp.getParameter("budget_id").length > 0) {
+        data.selectedBudgetID = $sp.getParameter("budget_id");
+        var bud = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET, "sys_id=" + data.selectedBudgetID, true)[0];
+        if (bud) {
+            data.selectedProj = bud.project_ref_rawval;
+            data.selectedFY = bud.fy;
+        }
     } else {
         data.fiscalYears = FMSUtility.getFiscalYears();
         data.fiscalYears.reverse();
@@ -633,33 +668,29 @@
 
     //var filter = "fy=2021"; make FYs come from client control
     var filter = "fyIN" + data.selectedFY;
-	if (data.selectedProj.length > 0) filter += "^project_ref=" + data.selectedProj;
+    if (data.selectedProj.length > 0) filter += "^project_ref=" + data.selectedProj;
     else if (data.selectedOrg.length > 0) filter += "^project_ref.organization_ref=" + data.selectedOrg;
 
-    var appropriationTypeInclude = [ 'project_appropriation_ref.appropriation_ref.appropriation_type.appropriation_type_display' ];
-    data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, filter, true, appropriationTypeInclude); 
+    var appropriationTypeInclude = ['project_appropriation_ref.appropriation_ref.appropriation_type.appropriation_type_display'];
+    data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, filter, true, appropriationTypeInclude);
 
     data.tableName = FMSConstants.TABLE_FINANCIAL_TRANSACTION;
     data.itemTableName = FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM;
 
-})();
-
-
-
-]]></script>
+})();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-21 14:05:50</sys_created_on>
         <sys_id>fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_id>
-        <sys_mod_count>602</sys_mod_count>
+        <sys_mod_count>625</sys_mod_count>
         <sys_name>Financial Transaction Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_fc9bec2b1b3c5c100a4a10ad9c4bcb0e</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-04-26 11:43:56</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2021-05-21 19:23:21</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%" ng-init="c.onload()">
  <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
     <div class="container">

@@ -160,16 +160,19 @@ input[type=radio] + label.radio-label:before {&#13;
     data.refresh = options.refresh ? options.refresh : false;
     data.multiple = options.multiple ? options.multiple : false;
     options.choiceType = options.choiceType ? options.choiceType : "N/A";
-
+//	
     var userPref = gs.getUser().getPreference(data.name);
     if (userPref == null || userPref.length == 0) userPref = data.defaultValue;
     data.value = userPref;
 
-    if (options.choiceType == "select" || options.choiceType == "multiSelect" || options.choiceType == "radio") {
+		if (options.choiceType == "select" || options.choiceType == "multiSelect" || options.choiceType == "radio") {
         data.type = options.choiceType;
         if (options.table) {
 			var items;
 			var skip = "column_labelISNOTEMPTY^element!=disabled^elementNOT LIKEsys_^nameNOT LIKEvar__m_sys_^internal_type!=collection^choiceISEMPTY";
+				
+				
+
 			if (options.table == 'sys_dictionary') {
 				items = new GlideRecord(options.table);
 				items.addEncodedQuery(skip);
@@ -188,7 +191,9 @@ input[type=radio] + label.radio-label:before {&#13;
 					cols.addCondition('view_table.view.name', '=', options.view);
 				}
 				items.orderBy('column_label');
-			} else {
+			}
+					
+					else {
 				items = new GlideRecord("sys_choice");
 				items.addQuery('name', options.table);
 				items.addQuery('element', options.field);
@@ -240,6 +245,7 @@ input[type=radio] + label.radio-label:before {&#13;
                 data.display += (idx > 0 ? ", " : "") + ref.getValue(data.field);
 		});
     }
+//	gs.addInfoMessage(data.value);
 
 })();]]></script>
         <servicenow>false</servicenow>
@@ -247,14 +253,14 @@ input[type=radio] + label.radio-label:before {&#13;
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2021-01-22 14:10:55</sys_created_on>
         <sys_id>e0f1e76e1bf5a0100a4a10ad9c4bcb8c</sys_id>
-        <sys_mod_count>251</sys_mod_count>
+        <sys_mod_count>252</sys_mod_count>
         <sys_name>User Preference</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_e0f1e76e1bf5a0100a4a10ad9c4bcb8c</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-03-17 14:19:29</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2021-05-17 19:41:49</sys_updated_on>
         <template><![CDATA[<div class="row">
   <div class="col-md-5" style="font-size: 12pt; text-align: right;">
     <span ng-if="c.data.name == null">UNKNOWN</span>

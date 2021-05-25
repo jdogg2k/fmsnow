@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step">
+    <sys_atf_step action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <copied_from/>
+        <description>Set the components on the page as follows:
+'Text &lt;input&gt;: Activity Code' = Test Activity Code - 1
+</description>
+        <display_name>Set Component Values (Custom UI)</display_name>
+        <inputs/>
+        <mugshots_cache_json>{"5a362c31014cb016c59a1ee28f1e1030":"{\"area\":\"FMS Form\",\"sn_atf_mugshot_short_description\":\"Text &lt;input&gt;: Activity Code\",\"sn_atf_mugshot_long_description\":\"Text &lt;input&gt; [sp_formfield_activity_code]: Activity Code in page area FMS Form\",\"methods\":[\"setValue\"],\"sn_atf_mugshot_label\":\"Activity Code\",\"type\":\"text\",\"version\":\"18.0\",\"label_for_input\":{\"inner_text\":\"Activity Code\"},\"get_value_result\":\"\",\"sn_atf_mugshot_tag_display_name\":\"Text &lt;input&gt;\",\"name\":\"activity_code\",\"sn_atf_mugshot_value\":\"\",\"tag\":\"input\",\"isDisabled\":false,\"id\":\"sp_formfield_activity_code\",\"hash\":\"5a362c31014cb016c59a1ee28f1e1030\",\"html_value\":\"\"}"}</mugshots_cache_json>
+        <notes/>
+        <order>4</order>
+        <snapshot display_value="d59083f4ae502c1c6e465404c66e9670">08f52edb1bbb24501f7e113d9c4bcb4e</snapshot>
+        <step_config display_value="Set Component Values (Custom UI)">e5dd168473330300c79260bdfaf6a794</step_config>
+        <sys_class_name>sys_atf_step</sys_class_name>
+        <sys_created_by>CaronWF@state.gov</sys_created_by>
+        <sys_created_on>2021-04-29 20:12:31</sys_created_on>
+        <sys_id>9076d8821bffac100a4a10ad9c4bcb61</sys_id>
+        <sys_mod_count>16</sys_mod_count>
+        <sys_name>Set Component Values (Custom UI)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_atf_step_9076d8821bffac100a4a10ad9c4bcb61</sys_update_name>
+        <sys_updated_by>fmsanalyst@test.com</sys_updated_by>
+        <sys_updated_on>2021-05-04 03:41:28</sys_updated_on>
+        <table/>
+        <test display_value="FMS - Expense Item List">ec68844a1bbfac100a4a10ad9c4bcbe1</test>
+        <timeout/>
+        <warning_message/>
+    </sys_atf_step>
+    <sys_variable_value action="delete_multiple" query="document_key=9076d8821bffac100a4a10ad9c4bcb61"/>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>sys_atf_step</document>
+        <document_key>9076d8821bffac100a4a10ad9c4bcb61</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>CaronWF@state.gov</sys_created_by>
+        <sys_created_on>2021-04-29 20:12:31</sys_created_on>
+        <sys_id>b8d894861bffac100a4a10ad9c4bcbaa</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_updated_by>CaronWF@state.gov</sys_updated_by>
+        <sys_updated_on>2021-04-29 20:39:08</sys_updated_on>
+        <value>5a362c31014cb016c59a1ee28f1e1030=Test Activity Code - 1^EQ</value>
+        <variable display_value="">d12fde8473330300c79260bdfaf6a7b5</variable>
+    </sys_variable_value>
+</record_update>

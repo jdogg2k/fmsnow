@@ -87,6 +87,19 @@ FMSPermissions.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         return canDelete;
     },
 
+    canDeletefinTrans: function(transID) {
+
+        /* JLR - This function will check if any critical financial data is associated with a category before allowing it to be deleted
+         */
+        var canDelete = true;
+        var orgTransPO = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM_PO, "fin_tran_ref=" + transID);
+
+        if (orgTransPO.length > 0)
+            canDelete = false;
+
+        return canDelete;
+    },
+
     canDeleteOMBCategory: function(catID) {
 
         /* JLR - This function will check if any critical financial data is associated with a category before allowing it to be deleted
@@ -115,12 +128,12 @@ FMSPermissions.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
     },
 
 
-   /*canDeleteProjectAllocation: function(ProjectAllocateID) {
+    /*canDeleteProjectAllocation: function(ProjectAllocateID) {
 
-         /* JLR - This function will check if any critical Financial Transactions or Project Allocations is associated with an Allocation Group before allowing it to be deleted
-          */
+          /* JLR - This function will check if any critical Financial Transactions or Project Allocations is associated with an Allocation Group before allowing it to be deleted
+           */
 
-        /*var ProjectAll = new GlideRecord(FMSConstants.TABLE_PROJECT_ALLOCATION);
+    /*var ProjectAll = new GlideRecord(FMSConstants.TABLE_PROJECT_ALLOCATION);
          ProjectAll.addQuery('sys_id', ProjectAllocateID);
          ProjectAll.query();
          if (ProjectAll.next()) {
@@ -137,7 +150,7 @@ FMSPermissions.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
            var canDelete = false;
         return canDelete;
     },*/
-	
+
     canDeleteAllotment: function(allotmentID) {
 
         /* JLR - This function will check if any critical financial data is associated with a allotment before allowing it to be deleted
@@ -174,7 +187,7 @@ FMSPermissions.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         var orgTrans = FMSUtility.getTableData(FMSConstants.TABLE_FINANCIAL_TRANSACTION, "project_appropriation_ref.appropriation_ref.appropriation_type=" + appropriationTypeID);
         var orgAlloc = FMSUtility.getTableData(FMSConstants.TABLE_ALLOCATION_POOL, "appropriation_type_ref=" + appropriationTypeID);
         var Appro = FMSUtility.getTableData(FMSConstants.TABLE_APPROPRIATION, "appropriation_type=" + appropriationTypeID);
-        
+
         if (orgTrans.length > 0 || orgAlloc.length > 0 || Appro.length > 0)
             canDelete = false;
 
@@ -240,13 +253,13 @@ FMSPermissions.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-06-18 16:32:15</sys_created_on>
         <sys_id>b65919e01b6150100a4a10ad9c4bcbc7</sys_id>
-        <sys_mod_count>31</sys_mod_count>
+        <sys_mod_count>32</sys_mod_count>
         <sys_name>FMSPermissions</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_b65919e01b6150100a4a10ad9c4bcbc7</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-11-18 16:57:26</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2021-04-30 18:22:11</sys_updated_on>
     </sys_script_include>
 </record_update>

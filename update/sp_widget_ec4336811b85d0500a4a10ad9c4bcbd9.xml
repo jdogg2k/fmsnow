@@ -2229,7 +2229,7 @@
                         finTranObj.actual_cost = parseFloat(finTranQ.actual_cost.toString());
                         finTranObj.trans_amount = parseFloat(finTranQ.item_total.toString());
                         finTranObj.sys_updated_by = finTranQ.sys_updated_by.toString();
-                        finTranObj.sys_updated_on = finTranQ.sys_updated_on.toString();
+                        finTranObj.sys_updated_on = finTranQ.sys_updated_on.getDisplayValue().toString();
 
                         //get PO info
                         var finTranPOQ = new GlideRecord(FMSConstants.TABLE_FINANCIAL_TRANSACTION_ITEM_PO);
@@ -2833,14 +2833,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>990</sys_mod_count>
+        <sys_mod_count>991</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-04-13 19:38:39</sys_updated_on>
+        <sys_updated_on>2021-04-30 12:34:49</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">

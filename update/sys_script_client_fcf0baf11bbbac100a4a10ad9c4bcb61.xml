@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script_client">
+    <sys_script_client action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <applies_extended>false</applies_extended>
+        <condition/>
+        <description/>
+        <field>activity_code</field>
+        <global>true</global>
+        <isolate_script>true</isolate_script>
+        <messages/>
+        <name>Expense Item Load</name>
+        <order/>
+        <script><![CDATA[function onLoad() {
+    var util1 = new GlideAjax('x_g_irm_fms.FMSUtilities');
+    util1.addParam('sysparm_name', 'getScalarAjax');
+    util1.addParam('sysparm_table', 'x_g_irm_fms_organization');
+    util1.addParam('sysparm_column', 'organization_parent_ref');
+    util1.addParam('sysparm_query', 'sys_id=' + g_form.getValue('organization_ref').toString());
+    util1.getXMLAnswer(function(parent) {
+        var util2 = new GlideAjax('x_g_irm_fms.FMSUtilities');
+        util2.addParam('sysparm_name', 'getCountAjax');
+        util2.addParam('sysparm_table', g_form.getTableName());
+        util2.addParam('sysparm_query', 'organization_ref.sys_id=' + parent);
+        util2.getXMLAnswer(function(answer) {
+            var count = parseInt(answer);
+            if (count > 0) g_form.setMandatory('parent_expense_item_ref', true);
+        });
+    });
+}]]></script>
+        <sys_class_name>sys_script_client</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-04-29 12:41:06</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>fcf0baf11bbbac100a4a10ad9c4bcb61</sys_id>
+        <sys_mod_count>34</sys_mod_count>
+        <sys_name>Expense Item Load</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_script_client_fcf0baf11bbbac100a4a10ad9c4bcb61</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-05-03 10:55:58</sys_updated_on>
+        <table>x_g_irm_fms_expense_item</table>
+        <type>onLoad</type>
+        <ui_type>10</ui_type>
+        <view/>
+    </sys_script_client>
+</record_update>

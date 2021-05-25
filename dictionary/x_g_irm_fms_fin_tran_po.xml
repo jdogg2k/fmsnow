@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Financial Transaction Purchase Order" max_length="40" name="x_g_irm_fms_fin_tran_po" sizeclass="3950" type="collection">
+    <element label="Financial Transaction Purchase Order" max_length="40" name="x_g_irm_fms_fin_tran_po" sizeclass="3933" type="collection">
         <element label="Approved" max_length="40" name="approved" type="boolean"/>
         <element label="AQM Approval Date" max_length="40" name="aqm_approval_date" type="glide_date"/>
         <element label="AQM POC" max_length="50" name="aqm_poc" type="string"/>
@@ -7,14 +7,19 @@
         <element label="Award Date" max_length="40" name="award_date" type="glide_date"/>
         <element label="Task Order Number" max_length="20" name="award_nmbr" type="string"/>
         <element attributes="edge_encryption_enabled=true" label="Vendor Name" max_length="50" name="award_vendor_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Bid Approved" max_length="40" name="bid_approved" type="glide_date"/>
+        <element attributes="edge_encryption_enabled=true" label="Bid Awarded" max_length="40" name="bid_awarded" type="glide_date"/>
+        <element attributes="edge_encryption_enabled=true" label="Bid Received" max_length="40" name="bid_received" type="glide_date"/>
         <element label="Contract Number" max_length="20" name="contract_nmbr" type="string"/>
         <element calculation="(function calculatedFieldValue(current) {&#10;&#9;var display;&#10;&#9;if (current.sys_id.nil()) {&#10;&#9;&#9;display = &quot;[new purchase order]&quot;;&#10;&#9;}&#10;&#9;else {&#10;&#9;&#9;display = current.po_nmbr.toString() + ' [' + current.fin_tran_ref.contract_piid.toString() + ']'; &#10;&#9;}&#10;&#9;return display;&#10;&#10;})(current);" display="true" label="Fin Tran PO display" max_length="256" name="fin_tran_po_display" read_only="true" type="string" virtual="true"/>
         <element label="Financial Transaction" mandatory="true" max_length="32" name="fin_tran_ref" reference="x_g_irm_fms_fin_tran" type="reference"/>
+        <element attributes="edge_encryption_enabled=true" label="Material Delivered" max_length="40" name="material_delivered" type="glide_date"/>
         <element label="Notes" max_length="500" name="notes" type="string"/>
         <element label="Purchase Request Number" mandatory="true" max_length="30" name="po_nmbr" type="string"/>
         <element attributes="edge_encryption_enabled=true" label="Quote Vendor Name" max_length="50" name="quote_vendor_name" type="string"/>
         <element attributes="edge_encryption_enabled=true" label="Receive Date" max_length="40" name="receive_date" type="glide_date"/>
         <element label="Requestor" max_length="50" name="requestor" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Sent to AQM" max_length="40" name="sent_to_aqm" type="glide_date"/>
         <element label="Tracking Number" max_length="15" name="tracking_nmbr" type="string"/>
         <index name="index">
             <element name="fin_tran_ref"/>

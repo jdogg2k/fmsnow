@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Budget" max_length="40" name="x_g_irm_fms_budget" sizeclass="297" type="collection">
+    <element label="Budget" max_length="40" name="x_g_irm_fms_budget" sizeclass="298" type="collection">
         <element label="Approved Date" max_length="40" name="approved_date" read_only="true" type="glide_date_time"/>
         <element label="Budget Description" max_length="50" name="budget_desc" type="string"/>
         <element calculation="(function calculatedFieldValue(current) {&#10;&#9;var display;&#10;&#9;if (current.sys_id.nil()) {&#10;&#9;&#9;display = &quot;[new budget]&quot;;&#10;&#9;}&#10;&#9;else {&#10;&#9;&#9;display = current.budget_desc.toString() + ' [' + current.fy.toString() + ' ' + current.budget_type.toString() + ' ' + current.budget_version_revision + ']'; &#10;&#9;}&#10;&#9;return display;&#10;&#10;})(current);" display="true" label="Budget display" max_length="256" name="budget_display" read_only="true" type="string" virtual="true"/>

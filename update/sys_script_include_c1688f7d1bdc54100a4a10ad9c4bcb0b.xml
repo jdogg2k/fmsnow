@@ -10,7 +10,26 @@
         <script><![CDATA[var FMSUtilities = Class.create();
 FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
-    getScalar: function(table, column, encQry, orderBy) { // get single value
+	getScalarAjax: function() {
+		var query = this.getParameter('sysparm_query');
+        var table = this.getParameter('sysparm_table');
+        var column = this.getParameter('sysparm_column');
+        var parent = this.getScalar(table, column, query);
+        return parent; 
+	},
+	
+    getCountAjax: function() {
+        var query = this.getParameter('sysparm_query');
+        var table = this.getParameter('sysparm_table');
+        var count = new GlideAggregate(table);
+        count.addEncodedQuery(query);
+        count.addAggregate('COUNT');
+        count.query();
+        if (count.next())
+			return count.getAggregate('COUNT');
+    },
+
+	getScalar: function(table, column, encQry, orderBy) { // get single value
         var rec = new GlideRecord(table);
         rec.addEncodedQuery(encQry);
         if (orderBy) {
@@ -280,11 +299,11 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         return newArray;
     },
 
-    getAllAllocationData: function(table, encQry) {
+    getAllAllocationData: function(table, encQry, returnSysID, dotInclude) {
 
         /* JLR - This function will return all values for the allocation pools table in FMS and all associated related data */
 
-        var allocateData = this.getTableData(table, encQry, true);
+        var allocateData = this.getTableData(table, encQry, returnSysID, dotInclude);
         for (var i = 0; i < allocateData.length; i++) {
             var tObj = allocateData[i];
 
@@ -513,13 +532,13 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 18:30:12</sys_created_on>
         <sys_id>c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>209</sys_mod_count>
+        <sys_mod_count>239</sys_mod_count>
         <sys_name>FMSUtilities</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2021-04-21 18:47:34</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-05-10 19:07:44</sys_updated_on>
     </sys_script_include>
 </record_update>

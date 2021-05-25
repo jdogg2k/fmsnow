@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_embedded_tour_guide">
+    <sys_embedded_tour_guide action="DELETE">
+        <active>true</active>
+        <additional_parameters/>
+        <autolaunch_order>1</autolaunch_order>
+        <context>fms?id=expense_item_list&amp;gtd_portal_title=Financial Management System&amp;gtd_page_title=Expense Item List</context>
+        <description/>
+        <has_concl>true</has_concl>
+        <has_intro>true</has_intro>
+        <name>Expense Item Overview</name>
+        <options/>
+        <roles>x_g_irm_fms.analyst,admin</roles>
+        <sp_page display_value="expense_item_list">0e39a86a1b1018100a4a10ad9c4bcbbc</sp_page>
+        <sp_portal display_value="Financial Management System">68fc92a71b0cd0100a4a10ad9c4bcb41</sp_portal>
+        <status>published</status>
+        <sys_class_name>sys_embedded_tour_guide</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2021-05-13 14:10:20</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>3b2c03561b8874101f7e113d9c4bcbc5</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>Expense Item Overview</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_embedded_tour_guide_3b2c03561b8874101f7e113d9c4bcbc5</sys_update_name>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2021-05-13 14:18:33</sys_updated_on>
+        <tour_id>TOUR0000002</tour_id>
+        <type>service_portal</type>
+    </sys_embedded_tour_guide>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_embedded_tour_guide_3b2c03561b8874101f7e113d9c4bcbc5</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_embedded_tour_guide"><sys_embedded_tour_guide action="INSERT_OR_UPDATE"><active>true</active><additional_parameters/><autolaunch_order>1</autolaunch_order><context>fms?id=expense_item_list&amp;gtd_portal_title=Financial Management System&amp;gtd_page_title=Expense Item List</context><description/><has_concl>true</has_concl><has_intro>true</has_intro><name>Expense Item Overview</name><options/><roles>x_g_irm_fms.analyst,admin</roles><sp_page display_value="expense_item_list">0e39a86a1b1018100a4a10ad9c4bcbbc</sp_page><sp_portal display_value="Financial Management System">68fc92a71b0cd0100a4a10ad9c4bcb41</sp_portal><status>published</status><sys_class_name>sys_embedded_tour_guide</sys_class_name><sys_created_by>RoseJL@state.gov</sys_created_by><sys_created_on>2021-05-13 14:10:20</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>3b2c03561b8874101f7e113d9c4bcbc5</sys_id><sys_mod_count>4</sys_mod_count><sys_name>Expense Item Overview</sys_name><sys_overrides/><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_embedded_tour_guide_3b2c03561b8874101f7e113d9c4bcbc5</sys_update_name><sys_updated_by>RoseJL@state.gov</sys_updated_by><sys_updated_on>2021-05-13 14:18:33</sys_updated_on><tour_id>TOUR0000002</tour_id><type>service_portal</type></sys_embedded_tour_guide></record_update>]]></payload>
+        <payload_hash>734645930</payload_hash>
+        <record_name>Expense Item Overview</record_name>
+        <reverted_from/>
+        <source>7073014c1b02e0101f7e113d9c4bcbe9</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2021-05-13 14:18:33</sys_created_on>
+        <sys_id>d41e4fd61b8874101f7e113d9c4bcb78</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1796617e9390000001</sys_recorded_at>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2021-05-13 14:18:33</sys_updated_on>
+        <type>Guided Tour</type>
+        <update_guid>5c1e4fd640887410584999f617956477</update_guid>
+        <update_guid_history>5c1e4fd640887410584999f617956477:734645930,6ccd8fd6938874103a94c2a9c7566a1c:1212190825,dcbd47d6d88874107dff6beebea4d1fd:-1912596074,094c8b96d0887410e948ad744fa01f4a:-307454785,772c4b9681887410cd7c5df8c8bb9a08:1249178828</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>RoseJL@state.gov</sys_created_by>
+        <sys_created_on>2021-05-13 14:27:04</sys_created_on>
+        <sys_db_object display_value="" name="sys_embedded_tour_guide">sys_embedded_tour_guide</sys_db_object>
+        <sys_id>cca02401d26e4f0ca69d398947f23084</sys_id>
+        <sys_metadata>3b2c03561b8874101f7e113d9c4bcbc5</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Expense Item Overview</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_embedded_tour_guide_3b2c03561b8874101f7e113d9c4bcbc5</sys_update_name>
+        <sys_update_version display_value="sys_embedded_tour_guide_3b2c03561b8874101f7e113d9c4bcbc5">d41e4fd61b8874101f7e113d9c4bcb78</sys_update_version>
+        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
+        <sys_updated_on>2021-05-13 14:27:04</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Budget Item" max_length="40" name="x_g_irm_fms_budget_item" sizeclass="4844" type="collection">
+    <element label="Budget Item" max_length="40" name="x_g_irm_fms_budget_item" sizeclass="4840" type="collection">
         <element label="Budget Amount" mandatory="true" max_length="20" name="budget_amt" type="currency"/>
         <element calculation="(function calculatedFieldValue(current) {&#10;&#9;var display;&#10;&#9;if (current.sys_id.nil()) {&#10;&#9;&#9;display = &quot;[new budget item]&quot;;&#10;&#9;}&#10;&#9;else {&#10;&#9;&#9;display = current.expense_item_ref.activity_code.toString() + ' [' + current.expense_item_ref.budget_code_ref.budget_code.toString() + ']'; &#10;&#9;}&#10;&#9;return display;&#10;&#10;})(current);" display="true" label="Budget Item display" max_length="256" name="budget_item_display" read_only="true" type="string" virtual="true"/>
         <element label="Budget" mandatory="true" max_length="32" name="budget_ref" reference="x_g_irm_fms_budget" reference_cascade_rule="cascade" type="reference"/>
