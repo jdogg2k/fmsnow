@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_embedded_tour_element">
+    <sys_embedded_tour_element action="DELETE">
+        <cell_edit/>
+        <cell_types/>
+        <col/>
+        <cxs_results/>
+        <element_type>generic</element_type>
+        <field/>
+        <field_action/>
+        <field_header/>
+        <filters/>
+        <form_buttons>additional_actions</form_buttons>
+        <form_element>field</form_element>
+        <form_section/>
+        <frameset>nav_filter</frameset>
+        <list_element>ui_action</list_element>
+        <list_header/>
+        <manual_css>.ag-header-viewport [role="rowgroup"] .ag-header-row-column DIV:nth-of-type(4) .ag-cell-label-container [role="presentation"] [role="columnheader"]</manual_css>
+        <name>xpath</name>
+        <record_id/>
+        <related_field/>
+        <related_links/>
+        <related_list_element>ui_action</related_list_element>
+        <related_lists/>
+        <related_table/>
+        <row/>
+        <sys_class_name>sys_embedded_tour_element</sys_class_name>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2021-06-15 17:35:23</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>1597f1cd1b3c78100a4a10ad9c4bcb5c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>xpath</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_embedded_tour_element_1597f1cd1b3c78100a4a10ad9c4bcb5c</sys_update_name>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2021-06-15 17:35:23</sys_updated_on>
+        <table/>
+        <type>manual_css</type>
+        <ui_action/>
+    </sys_embedded_tour_element>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_embedded_tour_element_1597f1cd1b3c78100a4a10ad9c4bcb5c</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_embedded_tour_element"><sys_embedded_tour_element action="INSERT_OR_UPDATE"><cell_edit/><cell_types/><col/><cxs_results/><element_type>generic</element_type><field/><field_action/><field_header/><filters/><form_buttons>additional_actions</form_buttons><form_element>field</form_element><form_section/><frameset>nav_filter</frameset><list_element>ui_action</list_element><list_header/><manual_css>.ag-header-viewport [role="rowgroup"] .ag-header-row-column DIV:nth-of-type(4) .ag-cell-label-container [role="presentation"] [role="columnheader"]</manual_css><name>xpath</name><record_id/><related_field/><related_links/><related_list_element>ui_action</related_list_element><related_lists/><related_table/><row/><sys_class_name>sys_embedded_tour_element</sys_class_name><sys_created_by>PuriA@state.gov</sys_created_by><sys_created_on>2021-06-15 17:35:23</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>1597f1cd1b3c78100a4a10ad9c4bcb5c</sys_id><sys_mod_count>0</sys_mod_count><sys_name>xpath</sys_name><sys_overrides/><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_embedded_tour_element_1597f1cd1b3c78100a4a10ad9c4bcb5c</sys_update_name><sys_updated_by>PuriA@state.gov</sys_updated_by><sys_updated_on>2021-06-15 17:35:23</sys_updated_on><table/><type>manual_css</type><ui_action/></sys_embedded_tour_element></record_update>]]></payload>
+        <payload_hash>654516940</payload_hash>
+        <record_name>xpath</record_name>
+        <reverted_from/>
+        <source>bfbf7e2d1bff6c100a4a10ad9c4bcb40</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2021-06-15 17:35:24</sys_created_on>
+        <sys_id>1597f1cd1b3c78100a4a10ad9c4bcb5f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17a10bdfbad0000001</sys_recorded_at>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2021-06-15 17:35:24</sys_updated_on>
+        <type>Guided Tour Element</type>
+        <update_guid>1d97f1cda53c7810ab9e7baccb64f95e</update_guid>
+        <update_guid_history>1d97f1cda53c7810ab9e7baccb64f95e:654516940</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2021-06-15 17:43:19</sys_created_on>
+        <sys_db_object display_value="" name="sys_embedded_tour_element">sys_embedded_tour_element</sys_db_object>
+        <sys_id>6b5ec26e53e44fcfacc5c075f3283799</sys_id>
+        <sys_metadata>1597f1cd1b3c78100a4a10ad9c4bcb5c</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>xpath</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_embedded_tour_element_1597f1cd1b3c78100a4a10ad9c4bcb5c</sys_update_name>
+        <sys_update_version display_value="sys_embedded_tour_element_1597f1cd1b3c78100a4a10ad9c4bcb5c">1597f1cd1b3c78100a4a10ad9c4bcb5f</sys_update_version>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2021-06-15 17:43:19</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

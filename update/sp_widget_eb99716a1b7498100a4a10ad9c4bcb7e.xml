@@ -43,9 +43,9 @@
     c.addNew = function () {
 			 
         poolManager.editRow("-1", "organization_ref=" + c.targetOrg, c.data.tableName);
-			
-			  
+			  c.addingNewTrans = true;
     };
+	
 
     c.exportExcel = function () {
         poolManager.exportExcel();
@@ -550,6 +550,35 @@
 	if (row) poolManager.primeRow(row);
     poolManager.setColumnsVisible(['edit', 'delete'], (c.userAuth.roles.isSysAdmin || c.userAuth.roles.isOrgAdmin || c.userAuth.roles.isAnalyst));
     poolManager.fitColumns();
+	
+	/* $rootScope.$on('fmsgrid.recordAdded.refresh', function (event, args) { //branch out proper row on transaction add
+        var targetSys = args.sys_id;
+        var targetTable = args.table;
+
+        if (targetTable == c.data.tableName) {
+            poolManager.gridOpts.api.forEachNode(function(rowNode, index) {
+                if (rowNode.data) {
+                    if (rowNode.data.sys_id == targetSys) {
+										
+                        c.addingNewTrans = true;
+											
+                        rowNode.setExpanded(true); //expand
+                    }      
+                }
+            });
+        }
+
+    });
+
+    $rootScope.$on('fms.poolgrid.visible', function (event, args) { //branch out proper row on transaction add
+		
+           if(c.addingNewTrans){
+					   poolManager.editRow("-1", "", "x_g_irm_fms_project_allocation");
+            c.addingNewTrans = false;
+					 }
+        
+    });*/
+
 
     $rootScope.$on('OrgChanged', function (event, args) {
         c.server.get({
@@ -627,10 +656,10 @@
         <roles/>
         <script><![CDATA[(function() {
 
-    data.selectedOrg = "";
-	data.selectedFY = "";
-
     var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
+    data.selectedOrg = "";
+	data.selectedFY = gs.getUser().getPreference("x_g_irm_fms.general.defaultFY") || FMSUtility.getCurrentFY();
+
     var session = gs.getSession();
 	
     data.pageID = $sp.getParameter("id");
@@ -689,7 +718,6 @@
     } else {
         data.fiscalYears = FMSUtility.getFiscalYears();
         data.fiscalYears.reverse();
-        data.selectedFY = FMSUtility.getCurrentFY();
         session.putClientData('fintran_fy', data.selectedFY);
     }
 	
@@ -710,14 +738,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-18 17:12:53</sys_created_on>
         <sys_id>eb99716a1b7498100a4a10ad9c4bcb7e</sys_id>
-        <sys_mod_count>256</sys_mod_count>
+        <sys_mod_count>276</sys_mod_count>
         <sys_name>Allocation Pool Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_eb99716a1b7498100a4a10ad9c4bcb7e</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2021-05-21 19:51:04</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-05-27 10:42:11</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%" ng-init="c.onload()">
  <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
     <div class="container">

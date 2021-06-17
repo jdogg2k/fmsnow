@@ -50,10 +50,10 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         var orgHelper = new OrgHierarchy();
         var session = gs.getSession();
         var selOrg = session.getClientData('org_id');
-
+		
         if (selOrg == undefined)
             selOrg = orgHelper.getUserOrgs();
-
+		//gs.info("From include 1 "+session +"\n Session org"  +selOrg+"\n final org"+selOrg);
         return selOrg;
     },
 
@@ -532,13 +532,13 @@ FMSUtilities.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-04-21 18:30:12</sys_created_on>
         <sys_id>c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_id>
-        <sys_mod_count>239</sys_mod_count>
+        <sys_mod_count>241</sys_mod_count>
         <sys_name>FMSUtilities</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_c1688f7d1bdc54100a4a10ad9c4bcb0b</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-05-10 19:07:44</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2021-06-07 17:45:43</sys_updated_on>
     </sys_script_include>
 </record_update>

@@ -334,80 +334,77 @@
         <roles/>
         <script><![CDATA[(function() {
 
-	data.selectedOrg = "";
-	data.selectedProj = "";
-	data.selectedFY = "";
-	
-	//gs.addInfoMessage("load"+data.selectedProj+"test");
     var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
     var FMSPermissions = new x_g_irm_fms.FMSPermissions();
+    data.selectedOrg = "";
+    data.selectedProj = "";
+    data.selectedFY = gs.getUser().getPreference("x_g_irm_fms.general.defaultFY") || FMSUtility.getCurrentFY();
+
+    //gs.addInfoMessage("load"+data.selectedProj+"test");
     var session = gs.getSession();
-	if (session.getClientData('org_id') && session.getClientData('org_id').length > 0)
-		data.selectedOrg = session.getClientData('org_id');
-	if (session.getClientData('proj_id') && session.getClientData('proj_id').length > 0)
-		data.selectedProj = session.getClientData('proj_id');
-	if (session.getClientData('fintran_fy') && session.getClientData('fintran_fy').length > 0)
-		data.selectedFY = session.getClientData('fintran_fy');
-	
+    if (session.getClientData('org_id') && session.getClientData('org_id').length > 0)
+        data.selectedOrg = session.getClientData('org_id');
+    if (session.getClientData('proj_id') && session.getClientData('proj_id').length > 0)
+        data.selectedProj = session.getClientData('proj_id');
+    if (session.getClientData('fintran_fy') && session.getClientData('fintran_fy').length > 0)
+        data.selectedFY = session.getClientData('fintran_fy');
+
     if (input) { //input holds the data coming back to the server
         if (input.mode == "deleteRow") {
-			var successDelete = FMSUtility.deleteRecord(FMSConstants.TABLE_PROJECT_ALLOCATION, input.rowID);
+            var successDelete = FMSUtility.deleteRecord(FMSConstants.TABLE_PROJECT_ALLOCATION, input.rowID);
             if (!successDelete) {
                 data.isError = true;
             }
         }
         if (input.mode == "setOrg") {
             data.selectedOrg = input.org_id.toString();
-           
-		}
+
+        }
         if (input.mode == "setProj") {
             data.selectedProj = input.proj_id.toString();
         }
-			
-			if (input.mode == "getTransData") {
+
+        if (input.mode == "getTransData") {
             data.selectedFY = input.selFY.toString();
             session.putClientData('fintran_fy', data.selectedFY);
         }
 
-	} else if ($sp.getParameter("budget_id") && $sp.getParameter("budget_id").length > 0) {
-		data.selectedBudgetID = $sp.getParameter("budget_id");
-		var bud = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET, "sys_id=" + data.selectedBudgetID, true)[0];
-		if (bud) { data.selectedProj = bud.project_ref_rawval; data.selectedFY = bud.fy; }
-    }
-     else {
-         data.fiscalYears = FMSUtility.getFiscalYears();
+    } else if ($sp.getParameter("budget_id") && $sp.getParameter("budget_id").length > 0) {
+        data.selectedBudgetID = $sp.getParameter("budget_id");
+        var bud = FMSUtility.getTableData(FMSConstants.TABLE_BUDGET, "sys_id=" + data.selectedBudgetID, true)[0];
+        if (bud) {
+            data.selectedProj = bud.project_ref_rawval;
+            data.selectedFY = bud.fy;
+        }
+    } else {
+        data.fiscalYears = FMSUtility.getFiscalYears();
         data.fiscalYears.reverse();
-        data.selectedFY = FMSUtility.getCurrentFY();
         session.putClientData('fintran_fy', data.selectedFY);
-       
+
     }
 
-	var filter = "fyIN" + data.selectedFY;;
-	var allocInclude = [ 'allocation_pool_ref.organization_ref' ];
-	if (data.selectedProj.length > 0) filter += "^project_ref=" + data.selectedProj;
-	else if (data.selectedOrg.length > 0) filter += "^project_ref.organization_ref=" + data.selectedOrg;
-    data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, filter, true, allocInclude); 
+    var filter = "fyIN" + data.selectedFY;;
+    var allocInclude = ['allocation_pool_ref.organization_ref'];
+    if (data.selectedProj.length > 0) filter += "^project_ref=" + data.selectedProj;
+    else if (data.selectedOrg.length > 0) filter += "^project_ref.organization_ref=" + data.selectedOrg;
+    data.tableData = FMSUtility.getTableData(FMSConstants.TABLE_PROJECT_ALLOCATION, filter, true, allocInclude);
 
     data.tableName = FMSConstants.TABLE_PROJECT_ALLOCATION;
 
-})();
-
-
-
-]]></script>
+})();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-05-20 12:59:28</sys_created_on>
         <sys_id>1fc21bc31b305c101f7e113d9c4bcb0d</sys_id>
-        <sys_mod_count>127</sys_mod_count>
+        <sys_mod_count>133</sys_mod_count>
         <sys_name>Project Allocation Grid</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_1fc21bc31b305c101f7e113d9c4bcb0d</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-05-13 17:27:55</sys_updated_on>
+        <sys_updated_on>2021-05-27 10:44:10</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%" ng-init="c.onload()">
 <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
   <div class="container">

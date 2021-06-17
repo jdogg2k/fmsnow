@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_embedded_tour_step">
+    <sys_embedded_tour_step action="INSERT_OR_UPDATE">
+        <action>false</action>
+        <action_event>next</action_event>
+        <action_target/>
+        <action_target_ref display_value="xpath">b3c992c71bacf0100a4a10ad9c4bcb8e</action_target_ref>
+        <active>true</active>
+        <content><![CDATA[Create a new Contract by entering the required information. ]]></content>
+        <guide display_value="FMS Organization Contracts Tab Tour">27481b891b2cbc100a4a10ad9c4bcba4</guide>
+        <implicit>false</implicit>
+        <link/>
+        <name/>
+        <options>{"url":"/fms?id=organization_detail"}</options>
+        <order>4</order>
+        <placement>bottom</placement>
+        <skippable>false</skippable>
+        <step_type>step</step_type>
+        <sys_class_name>sys_embedded_tour_step</sys_class_name>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2021-06-09 14:57:05</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>b3c9dec71bacf0100a4a10ad9c4bcba3</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name/>
+        <sys_overrides/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_embedded_tour_step_b3c9dec71bacf0100a4a10ad9c4bcba3</sys_update_name>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2021-06-15 22:11:16</sys_updated_on>
+        <target/>
+        <target_ref display_value="xpath">b3c992c71bacf0100a4a10ad9c4bcb8e</target_ref>
+        <title/>
+        <ui_version>dynamic</ui_version>
+        <view/>
+        <window>fms</window>
+    </sys_embedded_tour_step>
+    <sys_translated_text action="delete_multiple" query="documentkey=b3c9dec71bacf0100a4a10ad9c4bcba3"/>
+</record_update>

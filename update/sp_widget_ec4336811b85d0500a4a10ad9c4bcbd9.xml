@@ -41,7 +41,7 @@
 	function getCurrentFinancialYear(type) {
 		var startYear = "";
 		var endYear = "";
-		var docDate = new Date();
+		var docDate = c.data.FYPref ? new Date(c.data.FYPref, 1, 1) : new Date();
 		if ((docDate.getMonth() + 1) <= 8) {
 			startYear = docDate.getFullYear() - 1;
 			endYear = docDate.getFullYear();
@@ -704,6 +704,7 @@
                 type: 'currency',
                 enableValue: true
 			});
+			
 			if (c.data.reportType == "baseline") {
 				colArray.push({
 					headerName: 'Transfer',
@@ -1552,6 +1553,7 @@
     data.defaultToolPanel = user.getPreference(data.prefPrefix + "toolPanel") || 'columns';
     try {
         data.reportPref = JSON.parse(user.getPreference(data.prefPrefix + data.reportType + ".state"));
+        data.FYPref = user.getPreference(data.prefPrefix.replace("reports", "general") + "defaultFY");
     } catch (err) {
         gs.addErrorMessage("Error parsing report column preferences.");
     }
@@ -2086,12 +2088,14 @@
 
                             if (reportObj.budget_type == "Baseline") {
                                 reportObj.baseline += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
+															
                             }
 
                             if (reportObj.budget_type == "Execution") {
                                 reportObj.execution += parseFloat(baseQ.getAggregate("SUM", "budget_amt"));
+															
                             }
-
+													  
                         } else {
 
                             if (input.budget_type == "Actual") {
@@ -2163,14 +2167,15 @@
                         //calculate balances
                         data.reportData.forEach(function(item) {
                             item.balance = item.execution - (item.transfer + item.in_progress + item.initiated + item.committed + item.obligated);
-                        });
+                        });	
 
                     } else {
                         if (input.budget_type == "Actual") {
                             //calculate balances
                             data.reportData.forEach(function(item) {
-                                item.balance = (item.execution - item.budget);
-                            });
+                                item.balance = (item.execution - item.budget);	
+                           });
+									
                         }
                     }
 
@@ -2833,14 +2838,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>991</sys_mod_count>
+        <sys_mod_count>1011</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
-        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-04-30 12:34:49</sys_updated_on>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2021-06-17 12:51:07</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">

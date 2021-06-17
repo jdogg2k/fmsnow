@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_embedded_tour_step">
+    <sys_embedded_tour_step action="INSERT_OR_UPDATE">
+        <action>false</action>
+        <action_event>next</action_event>
+        <action_target/>
+        <action_target_ref display_value="xpath">bd3978761b64f0101f7e113d9c4bcbeb</action_target_ref>
+        <active>true</active>
+        <content><![CDATA[Change any information, as necessary, and press the &#39;Save&#39; button.]]></content>
+        <guide display_value="FMS Organization Cost Pool Tour">9048643a1b24f0101f7e113d9c4bcbb9</guide>
+        <implicit>false</implicit>
+        <link/>
+        <name/>
+        <options>{"url":"/fms?id=organization_detail"}</options>
+        <order>8</order>
+        <placement>bottom</placement>
+        <skippable>false</skippable>
+        <step_type>step</step_type>
+        <sys_class_name>sys_embedded_tour_step</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-06-08 13:16:35</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>bd3970b61b64f0101f7e113d9c4bcb8f</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name/>
+        <sys_overrides/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_embedded_tour_step_bd3970b61b64f0101f7e113d9c4bcb8f</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-06-15 19:23:00</sys_updated_on>
+        <target/>
+        <target_ref display_value="xpath">bd3978761b64f0101f7e113d9c4bcbeb</target_ref>
+        <title/>
+        <ui_version>dynamic</ui_version>
+        <view/>
+        <window>fms</window>
+    </sys_embedded_tour_step>
+    <sys_translated_text action="delete_multiple" query="documentkey=bd3970b61b64f0101f7e113d9c4bcb8f"/>
+</record_update>

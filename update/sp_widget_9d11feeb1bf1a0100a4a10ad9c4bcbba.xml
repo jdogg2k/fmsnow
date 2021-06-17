@@ -36,7 +36,7 @@
     while (pref.next()) {
 		if (pref.getValue('name').substring(applScope.length + 1) == "choice_preferences.meta") {  // should be first row, if exists
 			try { choicePrefs = JSON.parse(pref.getValue('value')); }
-			catch(err)  { gs.addErrorMessage("Error parsing choice preferences metadata."); }
+			catch(err) { gs.addErrorMessage("Error parsing choice preferences metadata."); }
 			continue;
 		}
         options = {};
@@ -44,7 +44,7 @@
         options.type = pref.getValue('type') || "string";
         options.value = pref.getValue('value');
         options.description = pref.getValue('description');
-		options.refresh = options.name.includes(".general.defaultOrg") ||options.name.includes(".contains") || options.name.includes(".showClock"); 
+		options.refresh = options.name.includes(".general.defaultFY") || options.name.includes(".general.defaultOrg") || options.name.includes(".contains") || options.name.includes(".showClock"); 
 
 		var choice = choicePrefs.filter(function(item) { return item.name == options.name; })[0];
 		if (choice) {
@@ -61,14 +61,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2021-01-25 13:05:26</sys_created_on>
         <sys_id>9d11feeb1bf1a0100a4a10ad9c4bcbba</sys_id>
-        <sys_mod_count>24</sys_mod_count>
+        <sys_mod_count>44</sys_mod_count>
         <sys_name>Application Preferences</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_9d11feeb1bf1a0100a4a10ad9c4bcbba</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-03-09 22:49:40</sys_updated_on>
+        <sys_updated_on>2021-05-28 12:48:36</sys_updated_on>
         <template><![CDATA[<div>
 	<div class="form-group">
         <div class="row" style="margin: 0px; padding: 0px;">
@@ -86,6 +86,9 @@
               	<div class="col-md-5 text-left" style="padding: 0px;">Preferred Default Value</div>
               	<div class="col-md-1"></div>
               	<div class="col-md-1">Clear/Reset</div>
+              </div>
+              <div style="text-align: left; margin: 5px;">
+                <sp-widget widget='data["x_g_irm_fms.general.defaultFY"]'></sp-widget>
               </div>
               <div style="text-align: left; margin: 5px;">
                 <sp-widget widget='data["x_g_irm_fms.general.defaultOrg"]'></sp-widget>

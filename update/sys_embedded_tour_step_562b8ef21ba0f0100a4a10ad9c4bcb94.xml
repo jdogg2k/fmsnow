@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_embedded_tour_step">
+    <sys_embedded_tour_step action="INSERT_OR_UPDATE">
+        <action>false</action>
+        <action_event>next</action_event>
+        <action_target/>
+        <action_target_ref display_value="xpath">122b8ef21ba0f0100a4a10ad9c4bcb91</action_target_ref>
+        <active>true</active>
+        <content><![CDATA[Click the pencil icon to edit any Project.]]></content>
+        <guide display_value="FMS Organization Projects Tab Tour">9866627c1b6c7c100a4a10ad9c4bcb05</guide>
+        <implicit>false</implicit>
+        <link/>
+        <name/>
+        <options>{"url":"/fms?id=organization_detail"}</options>
+        <order>7</order>
+        <placement>top</placement>
+        <skippable>false</skippable>
+        <step_type>step</step_type>
+        <sys_class_name>sys_embedded_tour_step</sys_class_name>
+        <sys_created_by>PuriA@state.gov</sys_created_by>
+        <sys_created_on>2021-06-08 19:14:36</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>562b8ef21ba0f0100a4a10ad9c4bcb94</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name/>
+        <sys_overrides/>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_embedded_tour_step_562b8ef21ba0f0100a4a10ad9c4bcb94</sys_update_name>
+        <sys_updated_by>PuriA@state.gov</sys_updated_by>
+        <sys_updated_on>2021-06-15 15:55:04</sys_updated_on>
+        <target/>
+        <target_ref display_value="xpath">122b8ef21ba0f0100a4a10ad9c4bcb91</target_ref>
+        <title/>
+        <ui_version>dynamic</ui_version>
+        <view/>
+        <window>fms</window>
+    </sys_embedded_tour_step>
+    <sys_translated_text action="delete_multiple" query="documentkey=562b8ef21ba0f0100a4a10ad9c4bcb94"/>
+</record_update>

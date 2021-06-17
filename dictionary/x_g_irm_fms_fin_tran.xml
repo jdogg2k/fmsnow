@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Financial Transaction" max_length="40" name="x_g_irm_fms_fin_tran" sizeclass="11172" type="collection">
+    <element label="Financial Transaction" max_length="40" name="x_g_irm_fms_fin_tran" sizeclass="11180" type="collection">
         <element label="Account Number" max_length="4" name="account_nmbr" type="string"/>
         <element attributes="ref_auto_completer=AJAXTableCompleter,ref_ac_columns=project_ref;group_name;group_desc" dependent="project_ref" dependent_on_field="project_ref" label="Allocation Group" max_length="32" name="allocation_group_ref" reference="x_g_irm_fms_allocation_group" reference_qual="disabled=false^EQ" reference_qual_condition="disabled=false^EQ" type="reference" use_dependent_field="true"/>
         <element label="Allotment" mandatory="true" max_length="32" name="allotment_ref" reference="x_g_irm_fms_allotment" type="reference"/>
