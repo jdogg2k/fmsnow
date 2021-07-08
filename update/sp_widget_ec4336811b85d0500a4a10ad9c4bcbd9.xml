@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[api.controller = function ($timeout, $scope, spUtil, spModal) {
+        <client_script><![CDATA[api.controller = function ($timeout, $scope, $location, spUtil, spModal) {
 	/* widget controller */
 
 	var c = this;
@@ -97,7 +97,7 @@
 						filterState: gridOptions.api.getFilterModel()
 					}
 				}).then(function(resp) {
-					spUtil.addTrivialMessage("Report preference saved");
+					spUtil.addTrivialMessage("Preferred report layout was saved");
 				});
 			}
 		});
@@ -182,7 +182,7 @@
 				}
 					
 				if (c.data.reportPref && c.data.reportPref.columnState != null) {
-					if (c.loadCount ==0 ) spUtil.addTrivialMessage("Report preferred laout loaded");
+					if (c.loadCount == 0) spUtil.addTrivialMessage("Preferred report layout was loaded");
 					c.setState(c.data.reportPref);
 				} 
 			});
@@ -419,7 +419,7 @@
 
 		colArray.push(orgCol);
 
-		if (c.data.reportType != "phasing") {
+		if (c.data.reportType != "phasing" && c.data.reportType != "obligation") {
 			var projCol = {
 				headerName: 'Project',
 				field: 'project',
@@ -433,16 +433,18 @@
 
 			colArray.push(projCol);
 		}
-        colArray.push({
-            headerName: 'OMB Project',
-            field: 'omb_project',
-			colId: 'omb_project',
-            pivot: false,
-            enablePivot: true,
-            enableRowGroup: true,
-			filter: true,
-			hide: c.hideValues
-		});
+		if (c.data.reportType != "obligation") {
+			colArray.push({
+				headerName: 'OMB Project',
+				field: 'omb_project',
+				colId: 'omb_project',
+				pivot: false,
+				enablePivot: true,
+				enableRowGroup: true,
+				filter: true,
+				hide: c.hideValues
+			});
+		}
 
 		if (c.data.reportType != "obligation") {
 			colArray.push({
@@ -475,7 +477,20 @@
 				colId: 'obligation',
 				enableRowGroup: true,
 				filter: true,
-				hide: c.hideValues
+				hide: c.hideValues,
+				cellRenderer: function(params) {
+					if (params.node.group) params.value = params.node.key;
+					if (!params.value) return params.node.footer ? "All obligations" : null;
+					var a = document.createElement('a');
+					a.innerText = params.value;
+					a.href = "/fms?id=obligation_reconciliation&obligation_id=" + params.value;
+					a.style.color = "blue";
+					a.style.textDecoration = "underline";
+					a.target = '_blank';
+					// Prevent click from reaching AgGrid
+					a.addEventListener('click', function(event) { event.stopPropagation(); });
+					return a;
+				}
 			});
 			colArray.push({
                 headerName: 'Source',
@@ -706,6 +721,18 @@
 			});
 			
 			if (c.data.reportType == "baseline") {
+				colArray.push({
+					headerName: 'Remaining Allocation',
+					field: 'remain_allocation',
+					colId: 'remain_allocation',
+					aggFunc: 'sum',
+					type: 'currency',
+					enableValue: true,
+					valueGetter: function(params) { 
+						if (params.data) 
+							return params.data.baseline - params.data.execution; 
+					}
+				});
 				colArray.push({
 					headerName: 'Transfer',
 					field: 'transfer',
@@ -973,12 +1000,29 @@
                 enableValue: true
             });
             colArray.push({
-                headerName: 'Transfer Out',
+                headerName: 'Transfer Out - External',
+                field: 'trans_out_ext',
+				colId: 'trans_out_ext',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+            });
+            colArray.push({
+                headerName: 'Transfer Out - Internal',
+                field: 'trans_out_int',
+				colId: 'trans_out_int',
+                aggFunc: 'sum',
+                type: 'currency',
+                enableValue: true
+            });
+            colArray.push({
+                headerName: 'Transfer Out Total',
                 field: 'trans_out',
 				colId: 'trans_out',
                 aggFunc: 'sum',
                 type: 'currency',
-                enableValue: true
+                enableValue: true,
+				hide: true
             });
             colArray.push({
                 headerName: 'VG Labor',
@@ -1154,7 +1198,7 @@
 									colTotal += params.data[col.colDef.field];
 							if(colTotal < 0)
 								if(colTotal > -0.01)
-							   colTotal = colTotal*-1;
+									colTotal = colTotal*-1;
 						});
 
 						return colTotal;
@@ -1867,6 +1911,8 @@
                             reportObj.reimbursements = 0;
                             reportObj.trans_in = 0;
                             reportObj.trans_out = 0;
+                            reportObj.trans_out_ext = 0;
+                            reportObj.trans_out_int = 0;
                             reportObj.toaa = 0;
                             reportObj.toa = 0;
                             reportObj.vg_labor = 0;
@@ -1951,6 +1997,8 @@
                             endObj.reimbursements = 0;
                             endObj.trans_in = 0;
                             endObj.trans_out = 0;
+                            endObj.trans_out_ext = 0;
+                            endObj.trans_out_int = 0;
                             endObj.toaa = 0;
                             endObj.toa = 0;
                             endObj.vg_labor = 0;
@@ -1960,8 +2008,12 @@
                         }
 
                         var finalCost = parseFloat(endQ.getAggregate("SUM", "fti_item_total"));
-                        if (endQ.ft_tran_type == "TE" || endQ.ft_tran_type == "TI" || endQ.ft_tran_type == "TVGT") {
+                        if (endQ.ft_tran_type == "TE" || endQ.ft_tran_type == "TVGT") {
                             endObj.trans_out += finalCost;
+                            endObj.trans_out_ext += finalCost;
+						} else if (endQ.ft_tran_type == "TI") {
+                            endObj.trans_out += finalCost;
+                            endObj.trans_out_int += finalCost;
                         } else if (endQ.ft_tran_type == "TVGL") {
                             endObj.vg_labor += finalCost;
                         } else if (endQ.ft_tran_type == "TOA") {
@@ -1980,6 +2032,8 @@
                     data.reportData.forEach(function(item) {
                         item.vg_labor = item.vg_labor * -1;
                         item.trans_out = item.trans_out * -1;
+                        item.trans_out_ext = item.trans_out_ext * -1;
+                        item.trans_out_int = item.trans_out_int * -1;
                         item.expended = item.expended * -1;
                         item.off_adjustments = (item.toaa - item.toa);
                     });
@@ -2838,14 +2892,14 @@
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>1011</sys_mod_count>
+        <sys_mod_count>1037</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2021-06-17 12:51:07</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-06-25 16:13:12</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">

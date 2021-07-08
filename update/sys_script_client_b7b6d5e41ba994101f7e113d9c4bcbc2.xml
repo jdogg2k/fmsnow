@@ -13,19 +13,19 @@
         <script><![CDATA[function onLoad() {
 
    var pageID = getUrlVars()['id'];
-   var projReadOnly = true;
+   var projReadOnly = false;
 
    if (pageID == "project_detail") {
       g_form.setReadOnly("contract_class", true);
    } else {
       if (!g_form.isNewRecord()) {
-         projReadOnly = false;
+         projReadOnly = true;
       }
    }
 
    g_form.setReadOnly("project_ref", projReadOnly);
    g_form.setReadOnly("organization_ref", true);
-   g_form.setVisible("org_promote_date", false);
+   g_form.setDisplay("org_promote_date", false);
 
    function getUrlVars() {
       var vars = {};
@@ -41,15 +41,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>b7b6d5e41ba994101f7e113d9c4bcbc2</sys_id>
-        <sys_mod_count>5</sys_mod_count>
+        <sys_mod_count>6</sys_mod_count>
         <sys_name>Contracts Load</sys_name>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_client_b7b6d5e41ba994101f7e113d9c4bcbc2</sys_update_name>
-        <sys_updated_by>RoseJL@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-16 18:50:42</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-06-29 18:45:38</sys_updated_on>
         <table>x_g_irm_fms_contract</table>
         <type>onLoad</type>
         <ui_type>10</ui_type>

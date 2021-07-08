@@ -5,7 +5,7 @@
         <action_target/>
         <action_target_ref display_value="xpath">73b2d5c11bf878100a4a10ad9c4bcb90</action_target_ref>
         <active>true</active>
-        <content><![CDATA[Create a new project by entering a unique Project Code along with the required information. Click the down arrow to scroll through the available choices of the other fields.]]></content>
+        <content><![CDATA[Create a new Project by entering a unique Project Code along with the required information. Click the down arrow to scroll through the available choices of the other fields.]]></content>
         <guide display_value="FMS Project List Tour">75eec1011bf878100a4a10ad9c4bcbb6</guide>
         <implicit>false</implicit>
         <link/>
@@ -21,7 +21,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>b7b2d5c11bf878100a4a10ad9c4bcb93</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name/>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
@@ -29,7 +29,7 @@
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_embedded_tour_step_b7b2d5c11bf878100a4a10ad9c4bcb93</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2021-06-15 19:33:29</sys_updated_on>
+        <sys_updated_on>2021-06-22 04:32:21</sys_updated_on>
         <target/>
         <target_ref display_value="xpath">73b2d5c11bf878100a4a10ad9c4bcb90</target_ref>
         <title/>

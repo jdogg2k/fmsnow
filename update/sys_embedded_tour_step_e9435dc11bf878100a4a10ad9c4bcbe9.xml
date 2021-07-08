@@ -5,7 +5,7 @@
         <action_target/>
         <action_target_ref display_value="xpath">a5435dc11bf878100a4a10ad9c4bcbe6</action_target_ref>
         <active>true</active>
-        <content><![CDATA[Click on &#39;X&#39; icon to delete the project. A confirmation popup will appear.]]></content>
+        <content><![CDATA[Click on &#39;X&#39; icon to delete the Project. A confirmation popup will appear.]]></content>
         <guide display_value="FMS Project List Tour">75eec1011bf878100a4a10ad9c4bcbb6</guide>
         <implicit>false</implicit>
         <link/>
@@ -21,7 +21,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>e9435dc11bf878100a4a10ad9c4bcbe9</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name/>
         <sys_overrides/>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
@@ -29,7 +29,7 @@
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_embedded_tour_step_e9435dc11bf878100a4a10ad9c4bcbe9</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2021-06-15 19:37:09</sys_updated_on>
+        <sys_updated_on>2021-06-22 04:33:37</sys_updated_on>
         <target/>
         <target_ref display_value="xpath">a5435dc11bf878100a4a10ad9c4bcbe6</target_ref>
         <title/>
