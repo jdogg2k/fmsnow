@@ -37,12 +37,24 @@
 	}];
 
 	c.selectedObligationType = "unliquidated";
+	
+	c.hasGroups = function(toggle) {
+		var grps = false;
+		grps =  c.targetOrg != "" && gridOptions.api.getDisplayedRowCount() > 0 &&
+					gridOptions.columnApi.getRowGroupColumns().length > (gridOptions.columnApi.isPivotMode() ? 1 : 0);
+		if (toggle) {
+			if (c.data.reportType == "financial_transaction" || c.data.reportType == "phasing")
+				c.toggleExpand(true);
+			else c.toggleExpand(false);
+		}
+		return grps;
+	};
 
 	function getCurrentFinancialYear(type) {
 		var startYear = "";
 		var endYear = "";
 		var docDate = c.data.FYPref ? new Date(c.data.FYPref, 1, 1) : new Date();
-		if ((docDate.getMonth() + 1) <= 8) {
+		if ((docDate.getMonth() + 1) <= 9) {
 			startYear = docDate.getFullYear() - 1;
 			endYear = docDate.getFullYear();
 		} else {
@@ -162,6 +174,7 @@
 
 			c.server.get(reportObj).then(function (reportResults) {
 				c.reportData = reportResults.data.reportData;
+				c.reportProj = reportResults.data.reportProj || [];
 				gridOptions.api.setColumnDefs(generateColumns());
 				gridOptions.api.setRowData(c.reportData);
 
@@ -173,13 +186,9 @@
 
 					gridOptions.columnApi.autoSizeColumns(allColumnIds, false);
 				}
-				
 
 				if (c.data.reportType != "phasing" && c.data.reportType != "financial_transaction")
 					gridOptions.api.sizeColumnsToFit();
-				if (c.data.reportType == "financial_transaction" || c.data.reportType == "phasing"){
-					c.toggleExpand(true);
-				}
 					
 				if (c.data.reportPref && c.data.reportPref.columnState != null) {
 					if (c.loadCount == 0) spUtil.addTrivialMessage("Preferred report layout was loaded");
@@ -240,12 +249,20 @@
 
 	c.reportTitle = c.getReportTitle();
 
-	c.toggleExpand = function (mode) {
-		gridOptions.api.forEachNode(function (rowNode, index) {
-			if (rowNode.group)
-				rowNode.setExpanded(mode);
-		});
-	};
+    c.toggleExpand = function(fExpand) {
+		if (fExpand == null || fExpand == undefined)  fExpand = !c.allExpanded || false;
+        if (fExpand == true) c.allExpanded = false; else if (fExpand == false) c.allExpanded = true;
+        if (c.allExpanded) {
+            gridOptions.api.collapseAll();
+            c.expandButtonLabel = "Expand All";
+            c.allExpanded = false;
+        } else {
+            gridOptions.api.expandAll();
+            c.expandButtonLabel = "Collapse All";
+            c.allExpanded = true;
+        } 
+		gridOptions.groupDefaultExpanded = c.allExpanded == true ? -1 : 0;
+    };
 
 	function currencyCssFunc(params) {
 		if (params.value !== null && params.value !== undefined && params.value < 0) {
@@ -708,8 +725,9 @@
                 field: 'baseline',
 				colId: 'baseline',
                 aggFunc: 'sum',
+				allowedAggFuncs: ['sum'],
                 type: 'currency',
-                enableValue: true
+				lockVisible: true
 			});
 			colArray.push({
                 headerName: 'Execution',
@@ -722,9 +740,9 @@
 			
 			if (c.data.reportType == "baseline") {
 				colArray.push({
-					headerName: 'Remaining Allocation',
-					field: 'remain_allocation',
-					colId: 'remain_allocation',
+					headerName: 'Budgeted Remaining',
+					field: 'remain_budget',
+					colId: 'remain_budget',
 					aggFunc: 'sum',
 					type: 'currency',
 					enableValue: true,
@@ -732,6 +750,27 @@
 						if (params.data) 
 							return params.data.baseline - params.data.execution; 
 					}
+				});
+				colArray.push({    
+					headerName: 'Allocated',
+					field: 'allocated', 
+					colId: 'allocated',
+					aggFunc: 'groupSum',
+					allowedAggFuncs: ['groupSum'],
+					type: 'currency',
+					hide: false,
+					lockVisible: true,
+					valueGetter: aggregateValueGetter
+				});
+				colArray.push({
+					headerName: 'Remaining Allocations',
+					field: 'remain_allocation',
+					colId: 'remain_allocation',
+					aggFunc: 'groupSum',
+					allowedAggFuncs: ['groupSum'],
+					type: 'currency',
+					lockVisible: true,
+					valueGetter: aggregateValueGetter
 				});
 				colArray.push({
 					headerName: 'Transfer',
@@ -1190,18 +1229,9 @@
 				enableValue: true,
 				valueGetter: function(params) {
 					if (params.data) {
-						var colTotal = 0;
-						var displayedColumns = params.columnApi.getAllDisplayedColumns();
-						displayedColumns.forEach(function (col) {
-							if (col.colDef.field && params.data)
-								if (col.colDef.type == "currency")
-									colTotal += params.data[col.colDef.field];
-							if(colTotal < 0)
-								if(colTotal > -0.01)
-									colTotal = colTotal*-1;
-						});
-
-						return colTotal;
+						var bal = params.data.allocations + params.data.trans_in + params.data.reimbursements + 
+									params.data.vg_labor + params.data.off_adjustments + params.data.trans_out + params.data.expended;
+						return parseFloat(bal.toFixed(2));
 					}
 				}
 			});
@@ -1216,184 +1246,268 @@
         return colArray;
     }
 
-		var gridOptions = {
-			columnDefs: generateColumns(),
-			onRowDataChanged: function () {
-				if (c.loadCount > 1) {
-					c.setState(c.savedStates);
-				} else {
-					c.loadCount++;
-				}
-			},
-			defaultColDef: {
-				//flex: 1,
-				//minWidth: 100,
-				sortable: c.canSort,
-				resizable: true
-			},
-			autoGroupColumnDef: {
-				width: 300,
-				cellRendererParams: {
-					suppressCount: true
-				}
-			},
-			suppressAggFuncInHeader: true,
-            groupMultiAutoColumn: true,
-	//		showOpenedGroup: true,         needs version  v25+
-			multiSortKey: 'ctrl',
-			accentedSort: true,
-			pivotMode: c.usePivot,
-            groupIncludeFooter: true,
-            groupIncludeTotalFooter: true,
-			sideBar: {
-				toolPanels: [
-				  {
+	var gridOptions = {
+		columnDefs: generateColumns(),
+		onGridReady: function(params) {
+			c.hasGroups(true);
+		},
+		onFilterChanged: function(params) {
+			c.hasGroups();
+		},
+		onRowDataChanged: function(params) {
+			if (c.loadCount > 1) {
+				c.setState(c.savedStates);
+			} else {
+				c.loadCount++;
+			}
+			c.hasGroups();
+			params.api.refreshClientSideRowModel('aggregate');
+		},
+		onColumnRowGroupChanged: function(params) {
+			c.hasGroups();
+			params.api.refreshClientSideRowModel('aggregate');
+		},
+		defaultColDef: {
+			//flex: 1,
+			//minWidth: 100,
+			sortable: c.canSort,
+			resizable: true
+		},
+		autoGroupColumnDef: {
+			width: 300,
+			cellRendererParams: {
+				suppressCount: true
+			}
+		},
+		suppressAggFuncInHeader: true,
+		groupMultiAutoColumn: true,
+		//		showOpenedGroup: true,         needs version  v25+
+		multiSortKey: 'ctrl',
+		accentedSort: true,
+		pivotMode: c.usePivot,
+		groupIncludeFooter: true,
+		groupIncludeTotalFooter: true,
+		overlayNoRowsTemplate: '<span style="padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow;">No data found</span>',
+		sideBar: {
+			toolPanels: [
+				{
 					id: 'columns',
 					labelDefault: 'Columns',
 					labelKey: 'columns',
 					iconKey: 'columns',
 					toolPanel: 'agColumnsToolPanel',
-				  },
-				  {
+				},
+				{
 					id: 'filters',
 					labelDefault: 'Filters',
 					labelKey: 'filters',
 					iconKey: 'filter',
 					toolPanel: 'agFiltersToolPanel',
-				  },
-				],
-				position: 'right',
-				defaultToolPanel: c.data.defaultToolPanel,
-			},
-			columnTypes: {
-				'currency': {
-					valueFormatter: currencyFormatter,
-					cellStyle: currencyCssFunc,
-					cellRenderer: 'agAnimateShowChangeCellRenderer'
 				},
-				'phasingCurrency': {
-					valueFormatter: phasingCurrencyFormatter,
-					cellStyle: currencyCssFunc,
-					cellRenderer: 'agAnimateShowChangeCellRenderer'
-				}
+			],
+			position: 'right',
+			defaultToolPanel: c.data.defaultToolPanel,
+		},
+		columnTypes: {
+			'currency': {
+				valueFormatter: currencyFormatter,
+				cellStyle: currencyCssFunc,
+				cellClass: 'currencyFormat',
+				cellRenderer: 'agAnimateShowChangeCellRenderer'
 			},
-			rowClassRules: {
-				// apply green to 2008
-				'phaseTotals': function(params) { 
-					var isTotal = false;
-					if (c.data.reportType == "phasing" && params.data)
-						if ((params.data.activity_code.indexOf("Total") > -1 || params.data.budget_code.indexOf("Total") > -1) && params.data.m1 == "Q1:")
-							isTotal = true;
-
-					return isTotal;
-				},
-				'phaseTotalRow': function(params) { 
-					var isTotalRow = false;
-					if (c.data.reportType == "phasing" && params.data)
-						if (params.data.activity_code.indexOf("Total") > -1 || params.data.budget_code.indexOf("Total") > -1)
-							isTotalRow = true;
-
-					return isTotalRow;
-				}
+			'phasingCurrency': {
+				valueFormatter: phasingCurrencyFormatter,
+				cellStyle: currencyCssFunc,
+				cellRenderer: 'agAnimateShowChangeCellRenderer'
 			}
-		};
-
-		if (c.data.reportType != "phasing")
-			gridOptions.autoGroupColumnDef.sort = 'asc';
-
-		if (c.data.reportType == "budget_plans")
-			gridOptions.groupIncludeTotalFooter = true;
-
-		c.fiscalYears = [];
-
-		for (var i = 2026; i >= 2000; i--) {
-			c.fiscalYears.push(i.toString());
-		}
-
-		c.selectedFY = getCurrentFinancialYear("year");
-
-		c.exportToCsv = function () {
-			gridOptions.api.exportDataAsExcel({
-				columnGroups: true,
-				//customFooter: getGridTotals() NOTE WILL WORK WITH NEW AG GRID LICENSE
-			});
-		};
-
-		function getGridTotals() {
-			var hasColumns = false;
-			var totalCounts = {};
-			gridOptions.api.forEachNode(function (rowNode, index) {
-				if (rowNode.group && rowNode.level == 0) {
-					if (!hasColumns) {
-						for (var prop in rowNode.aggData) {
-							if (Object.prototype.hasOwnProperty.call(rowNode.aggData, prop)) {
-								totalCounts[prop] = 0;
-							}
-						}
-						hasColumns = true;
-					}
-					for (var prop in rowNode.aggData) {
-						if (Object.prototype.hasOwnProperty.call(rowNode.aggData, prop)) {
-							totalCounts[prop] += rowNode.aggData[prop];
-						}
-					}
-				}
-			});
-
-			var totalCols = [];
-			var mergeCount = 0;
-			var allCols = gridOptions.columnApi.getAllDisplayedColumns();
-			allCols.forEach(function (col) {
-				if (col.aggFunc != undefined) {
-					totalCols.push({
-						data: {
-							type: 'Number',
-							value: totalCounts[col.colId]
-						}
-					});
-				} else {
-					mergeCount++;
-				}
-			});
-
-			return [
-				[],
-				[{
-					data: {
-						type: 'String',
-						value: 'Grand Total'
-					},
-					mergeAcross: mergeCount
-				}, totalCols]
-			];
-
-		}
-
-		var gridDiv = document.querySelector('#reportGrid');
-		new agGrid.Grid(gridDiv, gridOptions);
-
-		c.generateReport();
-
-		$rootScope.$on('multiOrgChanged', function (event, args) {
-            
-            c.targetOrg = args.org_ids;
-            
-            if (c.data.reportType == "phasing") {
-				var projectObj = {
-					mode: 'refreshProjects',
-					orgs: c.targetOrg
-				};
-		
-				c.server.get(projectObj).then(function (projResults) {
-					c.data.projects = projResults.data.projects;
-					c.selectedProject = c.data.projects[0].value;
-					c.generateReport();
-				});
-			} else {
-				c.generateReport();
+		},
+		excelStyles: [
+			{
+				id: 'currencyFormat',
+				numberFormat: {	format: '$[black] #,##0;$ [red](#,##0)'	}
 			}
+		],
+		aggFuncs: {
+			'groupSum': function(params) {
+				if (params.length == 0 || params.values.length == 0) return;
+				var grpTot = 0;
+				params.forEach(function(value) { grpTot += parseFloat(value); });
+				return grpTot;
+			}
+		},
+		rowClassRules: {
+			'phaseTotals': function(params) { 
+				var isTotal = false;
+				if (c.data.reportType == "phasing" && params.data)
+					if ((params.data.activity_code.indexOf("Total") > -1 || params.data.budget_code.indexOf("Total") > -1) && params.data.m1 == "Q1:")
+						isTotal = true;
+
+				return isTotal;
+			},
+			'phaseTotalRow': function(params) { 
+				var isTotalRow = false;
+				if (c.data.reportType == "phasing" && params.data)
+					if (params.data.activity_code.indexOf("Total") > -1 || params.data.budget_code.indexOf("Total") > -1)
+						isTotalRow = true;
+
+				return isTotalRow;
+			}
+		}
+	};
+
+	if (c.data.reportType != "phasing")
+		gridOptions.autoGroupColumnDef.sort = 'asc';
+
+	if (c.data.reportType == "budget_plans")
+		gridOptions.groupIncludeTotalFooter = true;
+
+	c.fiscalYears = [];
+
+	for (var i = 2026; i >= 2000; i--) {
+		c.fiscalYears.push(i.toString());
+	}
+
+	c.selectedFY = getCurrentFinancialYear("year");
+
+	c.exportToCsv = function () {
+		gridOptions.api.exportDataAsExcel({
+			columnGroups: true,
+			fileName: c.data.reportType + "_report_" + ((new Date()).toJSON()).slice(0, 19) + ".xlsx",
+			//customFooter: getGridTotals() NOTE WILL WORK WITH NEW AG GRID LICENSE
 		});
 	};
+
+	var aggregateValueGetter = function(params) {
+		var getAllocAmt = function(node) {
+			if (!(node.field == "project" || node.field == "org_name")) return null;
+			var ref_name = node.field == "project" ? "project_ref" : "org_ref";
+			var row_ref = node.allLeafChildren[0].data[ref_name];
+			var alloc_item = c.reportProj.filter(function(itm) { return itm[ref_name.replace("_ref", "_id")] == row_ref; });
+			var amt = alloc_item.reduce(function(prev, curr, idx) { return prev + curr.allocated; }, 0);
+			return amt;
+		};
+		if (params.node.group == true) {
+			var alloc = getAllocAmt(params.node);
+			if (alloc) {
+				if (params.column.colId == "remain_allocation") 
+					alloc = params.node.aggData.baseline - alloc;
+				params.node.aggData[params.column.colId] = alloc;
+				return alloc;
+			}
+			else {
+				var getAggregate = function(children) {
+					var count = 0;
+					var allocated = 0;
+					var baseline = 0;
+					for (var n = 0; n < children.length; n++) {
+						if (children[n].group != true || !children[n].rowGroupColumn) continue;
+						if (children[n].field == "project" || children[n].field == "org_name") {
+							count += 1;
+							allocated += children[n].aggData.allocated|| getAllocAmt(children[n]) || 0;
+							baseline += children[n].aggData.baseline || 0;
+						} else {
+							var descend = getAggregate(children[n].childrenAfterFilter);
+							count += descend.count;
+							allocated += descend.allocated;
+							baseline += descend.baseline;
+						}
+					}
+					return { count: count, allocated: allocated, baseline: baseline };
+				}; 
+				var amt = null;
+				var agg;
+				if (params.node.level == -1) {
+					agg = getAggregate(params.node.sibling.childrenAfterFilter);
+					if (params.columnApi.getRowGroupColumns().length == 0) agg.count = 0;
+				}
+				else
+					agg = getAggregate(params.node.childrenAfterFilter);
+				if (params.column.colId == "remain_allocation") 
+					amt = agg.count > 0 ? agg.baseline - agg.allocated : null;
+				else
+					amt = agg.count > 0 ? agg.allocated : null;
+				params.node.aggData[params.column.colId] = amt;
+				return amt;
+			}
+		}
+		else return null;
+	};
+	
+	function getGridTotals() {
+		var hasColumns = false;
+		var totalCounts = {};
+		gridOptions.api.forEachNode(function (rowNode, index) {
+			if (rowNode.group && rowNode.level == 0) {
+				var prop;
+				if (!hasColumns) {
+					for (prop in rowNode.aggData) {
+						if (Object.prototype.hasOwnProperty.call(rowNode.aggData, prop)) {
+							totalCounts[prop] = 0;
+						}
+					}
+					hasColumns = true;
+				}
+				for (prop in rowNode.aggData) {
+					if (Object.prototype.hasOwnProperty.call(rowNode.aggData, prop)) {
+						totalCounts[prop] += rowNode.aggData[prop];
+					}
+				}
+			}
+		});
+
+		var totalCols = [];
+		var mergeCount = 0;
+		var allCols = gridOptions.columnApi.getAllDisplayedColumns();
+		allCols.forEach(function (col) {
+			if (col.aggFunc != undefined) {
+				totalCols.push({
+					data: {
+						type: 'Number',
+						value: totalCounts[col.colId]
+					}
+				});
+			} else {
+				mergeCount++;
+			}
+		});
+
+		return [
+			[],
+			[{
+				data: {
+					type: 'String',
+					value: 'Grand Total'
+				},
+				mergeAcross: mergeCount
+			}, totalCols]
+		];
+	}
+
+	var gridDiv = document.querySelector('#reportGrid');
+	new agGrid.Grid(gridDiv, gridOptions);
+
+	c.generateReport();
+
+	$rootScope.$on('multiOrgChanged', function (event, args) {
+
+		c.targetOrg = args.org_ids;
+
+		if (c.data.reportType == "phasing") {
+			var projectObj = {
+				mode: 'refreshProjects',
+				orgs: c.targetOrg
+			};
+
+			c.server.get(projectObj).then(function (projResults) {
+				c.data.projects = projResults.data.projects;
+				c.selectedProject = c.data.projects[0].value;
+				c.generateReport();
+			});
+		} else {
+			c.generateReport();
+		}
+	});
+};
 ]]></client_script>
         <controller_as>c</controller_as>
         <css>.no-orgs {&#13;
@@ -2222,6 +2336,8 @@
                         data.reportData.forEach(function(item) {
                             item.balance = item.execution - (item.transfer + item.in_progress + item.initiated + item.committed + item.obligated);
                         });	
+						
+						loadProjAllocatedAmt(input.fy);
 
                     } else {
                         if (input.budget_type == "Actual") {
@@ -2861,7 +2977,7 @@
 
 
 
-    data.orgData = FMSUtility.getAllAllocationData(FMSConstants.TABLE_ORGANIZATION, '', true);
+    data.orgData = FMSUtility.getTableData(FMSConstants.TABLE_ORGANIZATION, '', true);
     data.orgData.sort(function(a, b) {
         var x = a.organization_display.toLowerCase();
         var y = b.organization_display.toLowerCase();
@@ -2886,20 +3002,34 @@
     }
     data.budgetTypes = budgetTypes;
 
+	function loadProjAllocatedAmt(fy) {
+		data.reportProj = data.reportData.map(function(row) { return { project_id: row.project_ref, org_id: row.org_ref, allocated: 0 }; })
+				.filter(function(elem, index, self) { return self.map(function(mapObj) { return (mapObj.project_id); }).indexOf(elem.project_id) === index; });
+        var allocQ = new GlideAggregate(FMSConstants.TABLE_PROJECT_ALLOCATION);
+        allocQ.addEncodedQuery("fy=" + fy + "^project_refIN" + data.reportProj.map(function(elem) { return elem.project_id; }).join(","));
+        allocQ.groupBy("fy");
+        allocQ.groupBy("project_ref");
+        allocQ.addAggregate("SUM", "allocation_amt");
+        allocQ.query();
+        while (allocQ.next()) {
+            data.reportProj.filter(function(itm) { return itm.project_id == allocQ.project_ref.toString(); })[0].allocated = parseFloat(allocQ.getAggregate("SUM", "allocation_amt")); 
+		}
+	}
+	
 })(options);]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>RoseJL@state.gov</sys_created_by>
         <sys_created_on>2020-05-26 15:49:31</sys_created_on>
         <sys_id>ec4336811b85d0500a4a10ad9c4bcbd9</sys_id>
-        <sys_mod_count>1037</sys_mod_count>
+        <sys_mod_count>1187</sys_mod_count>
         <sys_name>FMS Reports</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_ec4336811b85d0500a4a10ad9c4bcbd9</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-06-25 16:13:12</sys_updated_on>
+        <sys_updated_on>2021-09-24 11:17:42</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
     <div class="container">
@@ -2963,9 +3093,8 @@
                         </li>
                       </ul>
                     </div>
-                    <a href="javascript:void(0)" ng-click="c.toggleExpand(false);" class="btn btn-info new-button">Collapse All Rows</a>
-                    <a href="javascript:void(0)" ng-click="c.toggleExpand(true);" class="btn btn-info new-button">Expand All Rows</a>
                     <a href="javascript:void(0)" ng-click="c.exportToCsv();" class="btn btn-success new-button">Export to Excel</a>
+                    <a href="javascript:void(0)" ng-click="c.toggleExpand();" class="btn btn-info new-button" ng-show="c.hasGroups()">{{c.expandButtonLabel}}</a>
                 </div>
             </div>
         </div>
@@ -2974,7 +3103,7 @@
                 <div id="reportGrid" class="ag-theme-balham full-grid"></div>
             </div>
         </div>
-        <div class="row" ng-show="c.targetOrg == ''">
+        <div class="row" ng-show="c.targetOrg == ''" ng-init="c.hasGroups()">
             <div class="col-sm-12">
                 <div class="no-orgs">**Please select at least one Organization to run the report**</div>
             </div>

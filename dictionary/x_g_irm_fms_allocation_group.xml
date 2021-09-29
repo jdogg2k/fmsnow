@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Allocation Group" max_length="40" name="x_g_irm_fms_allocation_group" sizeclass="106" type="collection">
+    <element label="Allocation Group" max_length="40" name="x_g_irm_fms_allocation_group" sizeclass="107" type="collection">
         <element label="Disabled" max_length="40" name="disabled" type="boolean"/>
         <element label="Group Description" max_length="500" name="group_desc" type="string"/>
         <element display="true" label="Group Name" mandatory="true" max_length="20" name="group_name" type="string"/>

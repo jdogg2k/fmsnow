@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step">
+    <sys_atf_step action="DELETE">
+        <active>true</active>
+        <copied_from/>
+        <description>Open Budget Detail page in the Financial Management System portal with the following query params:
+budget_id = {{invalid step_id=b51acee21bf674100a4a10ad9c4bcb84.}}
+</description>
+        <display_name>Open Service Portal Page</display_name>
+        <inputs/>
+        <inputs/>
+        <mugshots_cache_json/>
+        <notes/>
+        <order>10</order>
+        <snapshot display_value="c17ed048a24014078d4edd619eac9fbc">17380db61bfab4101f7e113d9c4bcbf1</snapshot>
+        <step_config display_value="Open Service Portal Page">fc7e65d577332300e46abe41a9106106</step_config>
+        <sys_class_name>sys_atf_step</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 21:44:16</sys_created_on>
+        <sys_id>5d951e6e1bf674100a4a10ad9c4bcb8b</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_name>Open Service Portal Page</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_atf_step_5d951e6e1bf674100a4a10ad9c4bcb8b</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-28 11:22:15</sys_updated_on>
+        <table/>
+        <test display_value="Enter Budget">00590de61bf274100a4a10ad9c4bcb31</test>
+        <timeout>1970-01-01 00:00:05</timeout>
+        <warning_message/>
+    </sys_atf_step>
+    <sys_variable_value action="DELETE" query="document_key=5d951e6e1bf674100a4a10ad9c4bcb8b"/>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>5d951e6e1bf674100a4a10ad9c4bcb8b</document_key>
+        <order>200</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 21:44:16</sys_created_on>
+        <sys_id>34e552ae1bf674100a4a10ad9c4bcbff</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 21:44:16</sys_updated_on>
+        <value>62c511e11b7c94100a4a10ad9c4bcb75</value>
+        <variable display_value="">ca8ea5d577332300e46abe41a91061b6</variable>
+    </sys_variable_value>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>5d951e6e1bf674100a4a10ad9c4bcb8b</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 21:44:16</sys_created_on>
+        <sys_id>b8e552ae1bf674100a4a10ad9c4bcbff</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 21:44:16</sys_updated_on>
+        <value>68fc92a71b0cd0100a4a10ad9c4bcb41</value>
+        <variable display_value="">5a7e65d577332300e46abe41a91061cb</variable>
+    </sys_variable_value>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>5d951e6e1bf674100a4a10ad9c4bcb8b</document_key>
+        <order>300</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 21:44:16</sys_created_on>
+        <sys_id>f4e552ae1bf674100a4a10ad9c4bcbff</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-28 11:19:54</sys_updated_on>
+        <value>{"budget_id":"{{step['b51acee21bf674100a4a10ad9c4bcb84'].table}}"}</value>
+        <variable display_value="">839e29d577332300e46abe41a9106134</variable>
+    </sys_variable_value>
+    <sys_element_mapping action="DELETE" query="id=5d951e6e1bf674100a4a10ad9c4bcb8b"/>
+    <sys_element_mapping action="DELETE">
+        <field>page_id</field>
+        <id>5d951e6e1bf674100a4a10ad9c4bcb8b</id>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 21:44:16</sys_created_on>
+        <sys_id>38e552ae1bf674100a4a10ad9c4bcbfe</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 21:44:16</sys_updated_on>
+        <table>var__m_atf_input_variable_fc7e65d577332300e46abe41a9106106</table>
+        <value/>
+    </sys_element_mapping>
+    <sys_element_mapping action="DELETE">
+        <field>portal_id</field>
+        <id>5d951e6e1bf674100a4a10ad9c4bcb8b</id>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 21:44:16</sys_created_on>
+        <sys_id>fce552ae1bf674100a4a10ad9c4bcbfe</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 21:44:16</sys_updated_on>
+        <table>var__m_atf_input_variable_fc7e65d577332300e46abe41a9106106</table>
+        <value/>
+    </sys_element_mapping>
+    <sys_element_mapping action="DELETE">
+        <field>query_params</field>
+        <id>5d951e6e1bf674100a4a10ad9c4bcb8b</id>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 21:44:16</sys_created_on>
+        <sys_id>b0e552ae1bf674100a4a10ad9c4bcbff</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-28 11:19:54</sys_updated_on>
+        <table>var__m_atf_input_variable_fc7e65d577332300e46abe41a9106106</table>
+        <value>{"budget_id":"{{step['b51acee21bf674100a4a10ad9c4bcb84'].table}}"}</value>
+    </sys_element_mapping>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_atf_step_5d951e6e1bf674100a4a10ad9c4bcb8b</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step"><sys_atf_step action="INSERT_OR_UPDATE"><active>true</active><copied_from/><description>Open Budget Detail page in the Financial Management System portal with the following query params:
+budget_id = {{invalid step_id=b51acee21bf674100a4a10ad9c4bcb84.}}
+</description><display_name>Open Service Portal Page</display_name><inputs/><inputs/><mugshots_cache_json/><notes/><order>10</order><snapshot display_value="c17ed048a24014078d4edd619eac9fbc">17380db61bfab4101f7e113d9c4bcbf1</snapshot><step_config display_value="Open Service Portal Page">fc7e65d577332300e46abe41a9106106</step_config><sys_class_name>sys_atf_step</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 21:44:16</sys_created_on><sys_id>5d951e6e1bf674100a4a10ad9c4bcb8b</sys_id><sys_mod_count>6</sys_mod_count><sys_name>Open Service Portal Page</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_atf_step_5d951e6e1bf674100a4a10ad9c4bcb8b</sys_update_name><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-28 11:22:15</sys_updated_on><table/><test display_value="Enter Budget">00590de61bf274100a4a10ad9c4bcb31</test><timeout>1970-01-01 00:00:05</timeout><warning_message/></sys_atf_step><sys_variable_value action="delete_multiple" query="document_key=5d951e6e1bf674100a4a10ad9c4bcb8b"/><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>5d951e6e1bf674100a4a10ad9c4bcb8b</document_key><order>200</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 21:44:16</sys_created_on><sys_id>34e552ae1bf674100a4a10ad9c4bcbff</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-27 21:44:16</sys_updated_on><value>62c511e11b7c94100a4a10ad9c4bcb75</value><variable display_value="">ca8ea5d577332300e46abe41a91061b6</variable></sys_variable_value><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>5d951e6e1bf674100a4a10ad9c4bcb8b</document_key><order>100</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 21:44:16</sys_created_on><sys_id>b8e552ae1bf674100a4a10ad9c4bcbff</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-27 21:44:16</sys_updated_on><value>68fc92a71b0cd0100a4a10ad9c4bcb41</value><variable display_value="">5a7e65d577332300e46abe41a91061cb</variable></sys_variable_value><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>5d951e6e1bf674100a4a10ad9c4bcb8b</document_key><order>300</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 21:44:16</sys_created_on><sys_id>f4e552ae1bf674100a4a10ad9c4bcbff</sys_id><sys_mod_count>3</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-28 11:19:54</sys_updated_on><value>{"budget_id":"{{step['b51acee21bf674100a4a10ad9c4bcb84'].table}}"}</value><variable display_value="">839e29d577332300e46abe41a9106134</variable></sys_variable_value><sys_element_mapping action="delete_multiple" query="id=5d951e6e1bf674100a4a10ad9c4bcb8b"/><sys_element_mapping action="INSERT_OR_UPDATE"><field>page_id</field><id>5d951e6e1bf674100a4a10ad9c4bcb8b</id><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 21:44:16</sys_created_on><sys_id>38e552ae1bf674100a4a10ad9c4bcbfe</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-27 21:44:16</sys_updated_on><table>var__m_atf_input_variable_fc7e65d577332300e46abe41a9106106</table><value/></sys_element_mapping><sys_element_mapping action="INSERT_OR_UPDATE"><field>portal_id</field><id>5d951e6e1bf674100a4a10ad9c4bcb8b</id><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 21:44:16</sys_created_on><sys_id>fce552ae1bf674100a4a10ad9c4bcbfe</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-27 21:44:16</sys_updated_on><table>var__m_atf_input_variable_fc7e65d577332300e46abe41a9106106</table><value/></sys_element_mapping><sys_element_mapping action="INSERT_OR_UPDATE"><field>query_params</field><id>5d951e6e1bf674100a4a10ad9c4bcb8b</id><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 21:44:16</sys_created_on><sys_id>b0e552ae1bf674100a4a10ad9c4bcbff</sys_id><sys_mod_count>3</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-28 11:19:54</sys_updated_on><table>var__m_atf_input_variable_fc7e65d577332300e46abe41a9106106</table><value>{"budget_id":"{{step['b51acee21bf674100a4a10ad9c4bcb84'].table}}"}</value></sys_element_mapping></record_update>]]></payload>
+        <payload_hash>-2063626769</payload_hash>
+        <record_name>Open Service Portal Page</record_name>
+        <reverted_from/>
+        <source>8ca60de61bf274100a4a10ad9c4bcb27</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-28 11:22:15</sys_created_on>
+        <sys_id>c31119be1bfab4101f7e113d9c4bcb75</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17c2c2418df0000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-28 11:22:15</sys_updated_on>
+        <type>Test Step</type>
+        <update_guid>4b1119be44fab4105b72429e806b3c74</update_guid>
+        <update_guid_history>4b1119be44fab4105b72429e806b3c74:-2063626769,ac905d7e14fab410a756231b866e0bf8:-1136377601,a1bd4dba27fab4105798eba2e12d2287:775626331,1fc79aeed7f6741003787b305fa90eca:1440249064,b4e592aeddf67410adc08a5138b91f01:-149410851</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-28 11:23:18</sys_created_on>
+        <sys_db_object display_value="" name="sys_atf_step">sys_atf_step</sys_db_object>
+        <sys_id>7bb1843914554f5a8a7feb49f04066e1</sys_id>
+        <sys_metadata>5d951e6e1bf674100a4a10ad9c4bcb8b</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Open Service Portal Page</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_atf_step_5d951e6e1bf674100a4a10ad9c4bcb8b</sys_update_name>
+        <sys_update_version display_value="sys_atf_step_5d951e6e1bf674100a4a10ad9c4bcb8b">c31119be1bfab4101f7e113d9c4bcb75</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-28 11:23:18</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

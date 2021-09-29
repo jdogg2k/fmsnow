@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step">
+    <sys_atf_step action="DELETE">
+        <active>true</active>
+        <copied_from/>
+        <description>Set the components on the page as follows:
+'Combobox &lt;input&gt; [s2id_autogen6_search]' = Reach - Program Funds
+</description>
+        <display_name>Set Component Values (Custom UI)</display_name>
+        <inputs/>
+        <mugshots_cache_json>{"3419c47290d4bf55443ea381953e526f":"{\"area\":\"Organization Selection\",\"sn_atf_mugshot_short_description\":\"Combobox &lt;input&gt; [s2id_autogen6_search]\",\"role\":\"combobox\",\"sn_atf_mugshot_long_description\":\"Combobox &lt;input&gt; [s2id_autogen6_search]: (empty) in page area Organization Selection\",\"methods\":[\"setValue\"],\"sn_atf_mugshot_label\":\"s2id_autogen6_search\",\"type\":\"text\",\"version\":\"18.8\",\"label_for_input\":{},\"get_value_result\":\"\",\"sn_atf_mugshot_tag_display_name\":\"Combobox &lt;input&gt;\",\"sn_atf_mugshot_value\":\"\",\"tag\":\"input\",\"isDisabled\":false,\"id\":\"s2id_autogen6_search\",\"hash\":\"3419c47290d4bf55443ea381953e526f\",\"html_value\":\"\"}"}</mugshots_cache_json>
+        <notes/>
+        <order>3</order>
+        <snapshot display_value="a05775c663b7e85b6c508c3289bdb579">d82809b61bfab4101f7e113d9c4bcbe3</snapshot>
+        <step_config display_value="Set Component Values (Custom UI)">e5dd168473330300c79260bdfaf6a794</step_config>
+        <sys_class_name>sys_atf_step</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 17:13:27</sys_created_on>
+        <sys_id>bf37dda61b3674100a4a10ad9c4bcbc1</sys_id>
+        <sys_mod_count>11</sys_mod_count>
+        <sys_name>Set Component Values (Custom UI)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_atf_step_bf37dda61b3674100a4a10ad9c4bcbc1</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-28 11:39:59</sys_updated_on>
+        <table/>
+        <test display_value="Enter Budget">00590de61bf274100a4a10ad9c4bcb31</test>
+        <timeout/>
+        <warning_message/>
+    </sys_atf_step>
+    <sys_variable_value action="DELETE" query="document_key=bf37dda61b3674100a4a10ad9c4bcbc1"/>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>bf37dda61b3674100a4a10ad9c4bcbc1</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 17:13:27</sys_created_on>
+        <sys_id>8ae75da61b3674100a4a10ad9c4bcb59</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 17:18:00</sys_updated_on>
+        <value>3419c47290d4bf55443ea381953e526f=Reach - Program Funds^EQ</value>
+        <variable display_value="">d12fde8473330300c79260bdfaf6a7b5</variable>
+    </sys_variable_value>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_atf_step_bf37dda61b3674100a4a10ad9c4bcbc1</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step"><sys_atf_step action="INSERT_OR_UPDATE"><active>true</active><copied_from/><description>Set the components on the page as follows:
+'Combobox &lt;input&gt; [s2id_autogen6_search]' = Reach - Program Funds
+</description><display_name>Set Component Values (Custom UI)</display_name><inputs/><mugshots_cache_json>{"3419c47290d4bf55443ea381953e526f":"{\"area\":\"Organization Selection\",\"sn_atf_mugshot_short_description\":\"Combobox &lt;input&gt; [s2id_autogen6_search]\",\"role\":\"combobox\",\"sn_atf_mugshot_long_description\":\"Combobox &lt;input&gt; [s2id_autogen6_search]: (empty) in page area Organization Selection\",\"methods\":[\"setValue\"],\"sn_atf_mugshot_label\":\"s2id_autogen6_search\",\"type\":\"text\",\"version\":\"18.8\",\"label_for_input\":{},\"get_value_result\":\"\",\"sn_atf_mugshot_tag_display_name\":\"Combobox &lt;input&gt;\",\"sn_atf_mugshot_value\":\"\",\"tag\":\"input\",\"isDisabled\":false,\"id\":\"s2id_autogen6_search\",\"hash\":\"3419c47290d4bf55443ea381953e526f\",\"html_value\":\"\"}"}</mugshots_cache_json><notes/><order>3</order><snapshot display_value="a05775c663b7e85b6c508c3289bdb579">d82809b61bfab4101f7e113d9c4bcbe3</snapshot><step_config display_value="Set Component Values (Custom UI)">e5dd168473330300c79260bdfaf6a794</step_config><sys_class_name>sys_atf_step</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 17:13:27</sys_created_on><sys_id>bf37dda61b3674100a4a10ad9c4bcbc1</sys_id><sys_mod_count>11</sys_mod_count><sys_name>Set Component Values (Custom UI)</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_atf_step_bf37dda61b3674100a4a10ad9c4bcbc1</sys_update_name><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-28 11:39:59</sys_updated_on><table/><test display_value="Enter Budget">00590de61bf274100a4a10ad9c4bcb31</test><timeout/><warning_message/></sys_atf_step><sys_variable_value action="delete_multiple" query="document_key=bf37dda61b3674100a4a10ad9c4bcbc1"/><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>bf37dda61b3674100a4a10ad9c4bcbc1</document_key><order>100</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 17:13:27</sys_created_on><sys_id>8ae75da61b3674100a4a10ad9c4bcb59</sys_id><sys_mod_count>3</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-27 17:18:00</sys_updated_on><value>3419c47290d4bf55443ea381953e526f=Reach - Program Funds^EQ</value><variable display_value="">d12fde8473330300c79260bdfaf6a7b5</variable></sys_variable_value></record_update>]]></payload>
+        <payload_hash>219717781</payload_hash>
+        <record_name>Set Component Values (Custom UI)</record_name>
+        <reverted_from/>
+        <source>8ca60de61bf274100a4a10ad9c4bcb27</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-28 11:39:59</sys_created_on>
+        <sys_id>e22515b21b3eb4101f7e113d9c4bcbc8</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17c2c3452e70000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-28 11:39:59</sys_updated_on>
+        <type>Test Step</type>
+        <update_guid>6a2515b2733eb410a95d9e1acfa894c7</update_guid>
+        <update_guid_history>6a2515b2733eb410a95d9e1acfa894c7:219717781,ba15d1b20e3eb4107a47d8099a000c48:274713396,be0591b23f3eb410fdd63a1eeb4e1200:329709011,e0f8952ae1367410964160ba36d645cf:-1589313676,b8b8152a673674102170766d162af47e:-1750741353,971819e636367410f938f1b550c37b17:1861682337,c2e75da610367410ef33bea360b2d45b:-283995809</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-28 11:40:26</sys_created_on>
+        <sys_db_object display_value="" name="sys_atf_step">sys_atf_step</sys_db_object>
+        <sys_id>3a1860ac4f3e4573bdd9f6b0d383ac49</sys_id>
+        <sys_metadata>bf37dda61b3674100a4a10ad9c4bcbc1</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Set Component Values (Custom UI)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_atf_step_bf37dda61b3674100a4a10ad9c4bcbc1</sys_update_name>
+        <sys_update_version display_value="sys_atf_step_bf37dda61b3674100a4a10ad9c4bcbc1">e22515b21b3eb4101f7e113d9c4bcbc8</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-28 11:40:26</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

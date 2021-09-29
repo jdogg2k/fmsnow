@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step">
+    <sys_atf_step action="DELETE">
+        <active>false</active>
+        <copied_from/>
+        <description>Set the components on the page as follows:
+'Text &lt;input&gt; [ag-input-id-73]' = automated budget
+</description>
+        <display_name>Set Component Values (Custom UI)</display_name>
+        <inputs/>
+        <mugshots_cache_json>{"ab12907fcfc46e69b727a9f983e4cdb8":"{\"area\":\"Budget Grid\",\"sn_atf_mugshot_short_description\":\"Text &lt;input&gt; [ag-input-id-73]\",\"sn_atf_mugshot_long_description\":\"Text &lt;input&gt; [ag-input-id-73]: (empty) in page area Budget Grid\",\"methods\":[\"setValue\"],\"sn_atf_mugshot_label\":\"ag-input-id-73\",\"type\":\"text\",\"version\":\"18.8\",\"label_for_input\":{},\"get_value_result\":\"\",\"sn_atf_mugshot_tag_display_name\":\"Text &lt;input&gt;\",\"sn_atf_mugshot_value\":\"\",\"tag\":\"input\",\"isDisabled\":false,\"id\":\"ag-input-id-73\",\"aria-label\":\"Budget Description Filter Input\",\"hash\":\"ab12907fcfc46e69b727a9f983e4cdb8\",\"html_value\":\"\"}"}</mugshots_cache_json>
+        <notes/>
+        <order>6</order>
+        <snapshot/>
+        <step_config display_value="Set Component Values (Custom UI)">e5dd168473330300c79260bdfaf6a794</step_config>
+        <sys_class_name>sys_atf_step</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-28 19:48:10</sys_created_on>
+        <sys_id>c814433e1bb2f4101f7e113d9c4bcbde</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>Set Component Values (Custom UI)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_atf_step_c814433e1bb2f4101f7e113d9c4bcbde</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-28 20:56:40</sys_updated_on>
+        <table/>
+        <test display_value="Enter Budget">00590de61bf274100a4a10ad9c4bcb31</test>
+        <timeout/>
+        <warning_message/>
+    </sys_atf_step>
+    <sys_variable_value action="DELETE" query="document_key=c814433e1bb2f4101f7e113d9c4bcbde"/>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>c814433e1bb2f4101f7e113d9c4bcbde</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-28 19:48:10</sys_created_on>
+        <sys_id>46e4cf3e1bb2f4101f7e113d9c4bcb06</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-28 19:48:10</sys_updated_on>
+        <value>ab12907fcfc46e69b727a9f983e4cdb8=automated budget^EQ</value>
+        <variable display_value="">d12fde8473330300c79260bdfaf6a7b5</variable>
+    </sys_variable_value>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_atf_step_c814433e1bb2f4101f7e113d9c4bcbde</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step"><sys_atf_step action="INSERT_OR_UPDATE"><active>false</active><copied_from/><description>Set the components on the page as follows:
+'Text &lt;input&gt; [ag-input-id-73]' = automated budget
+</description><display_name>Set Component Values (Custom UI)</display_name><inputs/><mugshots_cache_json>{"ab12907fcfc46e69b727a9f983e4cdb8":"{\"area\":\"Budget Grid\",\"sn_atf_mugshot_short_description\":\"Text &lt;input&gt; [ag-input-id-73]\",\"sn_atf_mugshot_long_description\":\"Text &lt;input&gt; [ag-input-id-73]: (empty) in page area Budget Grid\",\"methods\":[\"setValue\"],\"sn_atf_mugshot_label\":\"ag-input-id-73\",\"type\":\"text\",\"version\":\"18.8\",\"label_for_input\":{},\"get_value_result\":\"\",\"sn_atf_mugshot_tag_display_name\":\"Text &lt;input&gt;\",\"sn_atf_mugshot_value\":\"\",\"tag\":\"input\",\"isDisabled\":false,\"id\":\"ag-input-id-73\",\"aria-label\":\"Budget Description Filter Input\",\"hash\":\"ab12907fcfc46e69b727a9f983e4cdb8\",\"html_value\":\"\"}"}</mugshots_cache_json><notes/><order>6</order><snapshot/><step_config display_value="Set Component Values (Custom UI)">e5dd168473330300c79260bdfaf6a794</step_config><sys_class_name>sys_atf_step</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-28 19:48:10</sys_created_on><sys_id>c814433e1bb2f4101f7e113d9c4bcbde</sys_id><sys_mod_count>5</sys_mod_count><sys_name>Set Component Values (Custom UI)</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_atf_step_c814433e1bb2f4101f7e113d9c4bcbde</sys_update_name><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-28 20:56:40</sys_updated_on><table/><test display_value="Enter Budget">00590de61bf274100a4a10ad9c4bcb31</test><timeout/><warning_message/></sys_atf_step><sys_variable_value action="delete_multiple" query="document_key=c814433e1bb2f4101f7e113d9c4bcbde"/><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>c814433e1bb2f4101f7e113d9c4bcbde</document_key><order>100</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-28 19:48:10</sys_created_on><sys_id>46e4cf3e1bb2f4101f7e113d9c4bcb06</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-28 19:48:10</sys_updated_on><value>ab12907fcfc46e69b727a9f983e4cdb8=automated budget^EQ</value><variable display_value="">d12fde8473330300c79260bdfaf6a7b5</variable></sys_variable_value></record_update>]]></payload>
+        <payload_hash>-1996246823</payload_hash>
+        <record_name>Set Component Values (Custom UI)</record_name>
+        <reverted_from/>
+        <source>8ca60de61bf274100a4a10ad9c4bcb27</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-28 20:56:41</sys_created_on>
+        <sys_id>2d9497fa1bf2f4101f7e113d9c4bcbd6</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17c2e31ff310000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-28 20:56:41</sys_updated_on>
+        <type>Test Step</type>
+        <update_guid>a19497fa73f2f41017c71d868fee79d6</update_guid>
+        <update_guid_history>a19497fa73f2f41017c71d868fee79d6:-1996246823,83f1137a77f2f410cfd2a1dcad0719c5:-194173198,39205bf69ef2f410043e6efd42940181:-237828719,4ee4cf3e91b2f4104c502c5a02e5e507:-194173198</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-29 11:17:57</sys_created_on>
+        <sys_db_object display_value="" name="sys_atf_step">sys_atf_step</sys_db_object>
+        <sys_id>192903f6e29d48d2adfa2302d03e1381</sys_id>
+        <sys_metadata>c814433e1bb2f4101f7e113d9c4bcbde</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Set Component Values (Custom UI)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_atf_step_c814433e1bb2f4101f7e113d9c4bcbde</sys_update_name>
+        <sys_update_version display_value="sys_atf_step_c814433e1bb2f4101f7e113d9c4bcbde">2d9497fa1bf2f4101f7e113d9c4bcbd6</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-29 11:17:57</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

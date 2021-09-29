@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step">
+    <sys_atf_step action="DELETE">
+        <active>true</active>
+        <copied_from/>
+        <description>Click the component: 'Button &lt;button&gt;: (empty)'</description>
+        <display_name>Click Component (Custom UI)</display_name>
+        <inputs/>
+        <mugshots_cache_json>{"469acc25c7037b2ed7528cb5a551c05e":"{\"area\":\"FMS Form\",\"sn_atf_mugshot_short_description\":\"Button &lt;button&gt;: (empty)\",\"role\":\"button\",\"sn_atf_mugshot_long_description\":\"Button &lt;button&gt;: (empty) in page area FMS Form\",\"methods\":[\"click\"],\"sn_atf_mugshot_label\":\"\",\"type\":\"button\",\"version\":\"18.8\",\"get_value_result\":\"\",\"sn_atf_mugshot_tag_display_name\":\"Button &lt;button&gt;\",\"sn_atf_mugshot_value\":\"\",\"tag\":\"button\",\"isDisabled\":false,\"aria-label\":\"Show calendar\",\"hash\":\"469acc25c7037b2ed7528cb5a551c05e\"}"}</mugshots_cache_json>
+        <notes/>
+        <order>10</order>
+        <snapshot/>
+        <step_config display_value="Click Component (Custom UI)">def25c4b73730300c79260bdfaf6a700</step_config>
+        <sys_class_name>sys_atf_step</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 20:06:03</sys_created_on>
+        <sys_id>7dfe75aa1bb674100a4a10ad9c4bcbf6</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Click Component (Custom UI)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_atf_step_7dfe75aa1bb674100a4a10ad9c4bcbf6</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 20:06:03</sys_updated_on>
+        <table/>
+        <test display_value="Enter Budget">00590de61bf274100a4a10ad9c4bcb31</test>
+        <timeout/>
+        <warning_message/>
+    </sys_atf_step>
+    <sys_variable_value action="DELETE" query="document_key=7dfe75aa1bb674100a4a10ad9c4bcbf6"/>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>7dfe75aa1bb674100a4a10ad9c4bcbf6</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 20:06:03</sys_created_on>
+        <sys_id>d66f71ea1bb674100a4a10ad9c4bcb55</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 20:06:03</sys_updated_on>
+        <value>469acc25c7037b2ed7528cb5a551c05e</value>
+        <variable display_value="">ee05588b73730300c79260bdfaf6a749</variable>
+    </sys_variable_value>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_atf_step_7dfe75aa1bb674100a4a10ad9c4bcbf6</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step"><sys_atf_step action="INSERT_OR_UPDATE"><active>true</active><copied_from/><description>Click the component: 'Button &lt;button&gt;: (empty)'</description><display_name>Click Component (Custom UI)</display_name><inputs/><mugshots_cache_json>{"469acc25c7037b2ed7528cb5a551c05e":"{\"area\":\"FMS Form\",\"sn_atf_mugshot_short_description\":\"Button &lt;button&gt;: (empty)\",\"role\":\"button\",\"sn_atf_mugshot_long_description\":\"Button &lt;button&gt;: (empty) in page area FMS Form\",\"methods\":[\"click\"],\"sn_atf_mugshot_label\":\"\",\"type\":\"button\",\"version\":\"18.8\",\"get_value_result\":\"\",\"sn_atf_mugshot_tag_display_name\":\"Button &lt;button&gt;\",\"sn_atf_mugshot_value\":\"\",\"tag\":\"button\",\"isDisabled\":false,\"aria-label\":\"Show calendar\",\"hash\":\"469acc25c7037b2ed7528cb5a551c05e\"}"}</mugshots_cache_json><notes/><order>10</order><snapshot/><step_config display_value="Click Component (Custom UI)">def25c4b73730300c79260bdfaf6a700</step_config><sys_class_name>sys_atf_step</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 20:06:03</sys_created_on><sys_id>7dfe75aa1bb674100a4a10ad9c4bcbf6</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Click Component (Custom UI)</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_atf_step_7dfe75aa1bb674100a4a10ad9c4bcbf6</sys_update_name><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-27 20:06:03</sys_updated_on><table/><test display_value="Enter Budget">00590de61bf274100a4a10ad9c4bcb31</test><timeout/><warning_message/></sys_atf_step><sys_variable_value action="delete_multiple" query="document_key=7dfe75aa1bb674100a4a10ad9c4bcbf6"/><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>7dfe75aa1bb674100a4a10ad9c4bcbf6</document_key><order>100</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 20:06:03</sys_created_on><sys_id>d66f71ea1bb674100a4a10ad9c4bcb55</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-27 20:06:03</sys_updated_on><value>469acc25c7037b2ed7528cb5a551c05e</value><variable display_value="">ee05588b73730300c79260bdfaf6a749</variable></sys_variable_value></record_update>]]></payload>
+        <payload_hash>1692520149</payload_hash>
+        <record_name>Click Component (Custom UI)</record_name>
+        <reverted_from/>
+        <source>8ca60de61bf274100a4a10ad9c4bcb27</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 20:06:03</sys_created_on>
+        <sys_id>966f71ea1bb674100a4a10ad9c4bcb57</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17c28dd4acd0000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 20:06:03</sys_updated_on>
+        <type>Test Step</type>
+        <update_guid>9e6f71eacbb6741051e76fb23f9c9656</update_guid>
+        <update_guid_history>9e6f71eacbb6741051e76fb23f9c9656:1692520149</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 20:13:25</sys_created_on>
+        <sys_db_object display_value="" name="sys_atf_step">sys_atf_step</sys_db_object>
+        <sys_id>2c144aebb37e4370ad80cbf8fa2367b1</sys_id>
+        <sys_metadata>7dfe75aa1bb674100a4a10ad9c4bcbf6</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Click Component (Custom UI)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_atf_step_7dfe75aa1bb674100a4a10ad9c4bcbf6</sys_update_name>
+        <sys_update_version display_value="sys_atf_step_7dfe75aa1bb674100a4a10ad9c4bcbf6">966f71ea1bb674100a4a10ad9c4bcb57</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 20:13:25</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

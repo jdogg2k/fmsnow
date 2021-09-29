@@ -1,0 +1,1247 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_section caption="" section_id="c462ffaf1bf570100a4a10ad9c4bcb35" sys_domain="global" table="x_g_irm_fms_gfms_staged_data" version="3" view="">
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.begin_split</element>
+            <position>0</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d862b3ef1bf570100a4a10ad9c4bcbbc</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type>.begin_split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>bureau</element>
+            <position>1</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d462b3ef1bf570100a4a10ad9c4bcbbd</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>office_ref</element>
+            <position>2</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5c62b3ef1bf570100a4a10ad9c4bcbbd</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>location_ref</element>
+            <position>3</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d062b3ef1bf570100a4a10ad9c4bcbbe</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>allotment</element>
+            <position>4</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5862b3ef1bf570100a4a10ad9c4bcbbe</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>allotment_ref</element>
+            <position>5</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>dc62b3ef1bf570100a4a10ad9c4bcbbe</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>organization</element>
+            <position>6</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5462b3ef1bf570100a4a10ad9c4bcbbf</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>organization_ref</element>
+            <position>7</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d862b3ef1bf570100a4a10ad9c4bcbbf</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>allotment_parent</element>
+            <position>8</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5062b3ef1bf570100a4a10ad9c4bcbc0</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>function</element>
+            <position>9</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d462b3ef1bf570100a4a10ad9c4bcbc0</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>function_ref</element>
+            <position>10</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5c62b3ef1bf570100a4a10ad9c4bcbc0</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>function_parent</element>
+            <position>11</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d062b3ef1bf570100a4a10ad9c4bcbc1</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>function_parent_ref</element>
+            <position>12</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5862b3ef1bf570100a4a10ad9c4bcbc1</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>budget_object_code</element>
+            <position>13</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>dc62b3ef1bf570100a4a10ad9c4bcbc1</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>budget_object_category</element>
+            <position>14</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5462b3ef1bf570100a4a10ad9c4bcbc2</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>revenue_source</element>
+            <position>15</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d862b3ef1bf570100a4a10ad9c4bcbc2</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>account_type</element>
+            <position>16</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5062b3ef1bf570100a4a10ad9c4bcbc3</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>tran_code</element>
+            <position>17</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d462b3ef1bf570100a4a10ad9c4bcbc3</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>tran_number</element>
+            <position>18</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5c62b3ef1bf570100a4a10ad9c4bcbc3</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>tran_category</element>
+            <position>19</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d062b3ef1bf570100a4a10ad9c4bcbc4</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>tran_line</element>
+            <position>20</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5862b3ef1bf570100a4a10ad9c4bcbc4</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>doc_action</element>
+            <position>21</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>dc62b3ef1bf570100a4a10ad9c4bcbc4</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>tran_line_action</element>
+            <position>22</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5462b3ef1bf570100a4a10ad9c4bcbc5</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>doc_type</element>
+            <position>23</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d862b3ef1bf570100a4a10ad9c4bcbc5</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>acceptance_date</element>
+            <position>24</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5062b3ef1bf570100a4a10ad9c4bcbc6</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>tran_record_date</element>
+            <position>25</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d462b3ef1bf570100a4a10ad9c4bcbc6</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>fiscal_year</element>
+            <position>26</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5c62b3ef1bf570100a4a10ad9c4bcbc6</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>fiscal_quarter</element>
+            <position>27</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d062b3ef1bf570100a4a10ad9c4bcbc7</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>fiscal_month</element>
+            <position>28</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5862b3ef1bf570100a4a10ad9c4bcbc7</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>no_year_ind</element>
+            <position>29</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>dc62b3ef1bf570100a4a10ad9c4bcbc7</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>apportion_year</element>
+            <position>30</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5462b3ef1bf570100a4a10ad9c4bcbc8</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>apportion_qtr</element>
+            <position>31</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d862b3ef1bf570100a4a10ad9c4bcbc8</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>vendor_code</element>
+            <position>32</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5062b3ef1bf570100a4a10ad9c4bcbc9</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>vendor_type</element>
+            <position>33</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d462b3ef1bf570100a4a10ad9c4bcbc9</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>vendor_name</element>
+            <position>34</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5c62b3ef1bf570100a4a10ad9c4bcbc9</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>invoice_nmbr</element>
+            <position>35</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d062b3ef1bf570100a4a10ad9c4bcbca</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>invoice_date</element>
+            <position>36</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5862b3ef1bf570100a4a10ad9c4bcbca</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.split</element>
+            <position>37</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>dc62b3ef1bf570100a4a10ad9c4bcbca</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type>.split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>invoice_line</element>
+            <position>38</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5462b3ef1bf570100a4a10ad9c4bcbcb</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>doc_desc</element>
+            <position>39</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d862b3ef1bf570100a4a10ad9c4bcbcb</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>doc_line_desc</element>
+            <position>40</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5062b3ef1bf570100a4a10ad9c4bcbcc</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>job_nmbr</element>
+            <position>41</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d462b3ef1bf570100a4a10ad9c4bcbcc</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>project_ref</element>
+            <position>42</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5c62b3ef1bf570100a4a10ad9c4bcbcc</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>rpt_category</element>
+            <position>43</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d062b3ef1bf570100a4a10ad9c4bcbcd</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>disburse_office</element>
+            <position>44</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5862b3ef1bf570100a4a10ad9c4bcbcd</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>ref_doc_nmbr</element>
+            <position>45</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>dc62b3ef1bf570100a4a10ad9c4bcbcd</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>ref_doc_line</element>
+            <position>46</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5462b3ef1bf570100a4a10ad9c4bcbce</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>ref_doc_cateogory</element>
+            <position>47</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d862b3ef1bf570100a4a10ad9c4bcbce</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>tran_amt</element>
+            <position>48</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5062b3ef1bf570100a4a10ad9c4bcbcf</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>voucher_sched_category</element>
+            <position>49</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d462b3ef1bf570100a4a10ad9c4bcbcf</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>discount_type</element>
+            <position>50</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5c62b3ef1bf570100a4a10ad9c4bcbcf</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>treas_sched_nmbr</element>
+            <position>51</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d062b3ef1bf570100a4a10ad9c4bcbd0</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>deposit_nmbr</element>
+            <position>52</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5862b3ef1bf570100a4a10ad9c4bcbd0</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>agency_sched_nmbr</element>
+            <position>53</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>dc62b3ef1bf570100a4a10ad9c4bcbd0</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>agency_sched_fy</element>
+            <position>54</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5462b3ef1bf570100a4a10ad9c4bcbd1</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>voucher_sched_type</element>
+            <position>55</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d862b3ef1bf570100a4a10ad9c4bcbd1</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>travel_desc_code</element>
+            <position>56</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5062b3ef1bf570100a4a10ad9c4bcbd2</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>interest_reason_code</element>
+            <position>57</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d462b3ef1bf570100a4a10ad9c4bcbd2</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>check_nmbr</element>
+            <position>58</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5c62b3ef1bf570100a4a10ad9c4bcbd2</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>cost_acctg_data</element>
+            <position>59</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d062b3ef1bf570100a4a10ad9c4bcbd3</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>travel_advance_nmbr</element>
+            <position>60</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5862b3ef1bf570100a4a10ad9c4bcbd3</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>tran_accompl_date</element>
+            <position>61</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>dc62b3ef1bf570100a4a10ad9c4bcbd3</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>tran_user</element>
+            <position>62</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5462b3ef1bf570100a4a10ad9c4bcbd4</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>tran_lock_seq</element>
+            <position>63</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d862b3ef1bf570100a4a10ad9c4bcbd4</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>fund</element>
+            <position>64</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5062b3ef1bf570100a4a10ad9c4bcbd5</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>appropriation_ref</element>
+            <position>65</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d462b3ef1bf570100a4a10ad9c4bcbd5</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>op_allow_code</element>
+            <position>66</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5c62b3ef1bf570100a4a10ad9c4bcbd5</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>treas_symbol</element>
+            <position>67</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d062b3ef1bf570100a4a10ad9c4bcbd6</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>treas_symbol_alt</element>
+            <position>68</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5862b3ef1bf570100a4a10ad9c4bcbd6</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>bbfy</element>
+            <position>69</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>dc62b3ef1bf570100a4a10ad9c4bcbd6</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>ebfy</element>
+            <position>70</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5462b3ef1bf570100a4a10ad9c4bcbd7</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>ref_doc_type</element>
+            <position>71</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d862b3ef1bf570100a4a10ad9c4bcbd7</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>tran_lock_date</element>
+            <position>72</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5062b3ef1bf570100a4a10ad9c4bcbd8</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>ref_document_nmbr</element>
+            <position>73</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>d462b3ef1bf570100a4a10ad9c4bcbd8</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.end_split</element>
+            <position>74</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_id>5c62b3ef1bf570100a4a10ad9c4bcbd8</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <type>.end_split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>aaaa</element>
+            <position>75</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 14:08:44</sys_created_on>
+            <sys_id>eb74b3631b3970100a4a10ad9c4bcb72</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 14:08:44</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>ref_doc_category</element>
+            <position>76</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 14:14:26</sys_created_on>
+            <sys_id>d7c5bfa31b3970100a4a10ad9c4bcb0d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 14:14:26</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>document_nmbr</element>
+            <position>77</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 14:19:07</sys_created_on>
+            <sys_id>fbd6b3271b3970100a4a10ad9c4bcbca</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 14:19:07</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>document_category</element>
+            <position>78</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 14:20:21</sys_created_on>
+            <sys_id>79273b271b3970100a4a10ad9c4bcb25</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 14:20:21</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>document_line</element>
+            <position>79</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 14:20:47</sys_created_on>
+            <sys_id>dc47f3271b3970100a4a10ad9c4bcbb3</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 14:20:47</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>document_type</element>
+            <position>80</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 14:21:20</sys_created_on>
+            <sys_id>8867bb271b3970100a4a10ad9c4bcbf1</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 14:21:20</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>doc_category</element>
+            <position>81</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 14:27:10</sys_created_on>
+            <sys_id>29b8b3a71b3970100a4a10ad9c4bcb0d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 14:27:10</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>doc_line</element>
+            <position>82</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 14:27:45</sys_created_on>
+            <sys_id>06d8b7a71b3970100a4a10ad9c4bcb05</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 14:27:45</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>doc_number</element>
+            <position>83</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 14:28:14</sys_created_on>
+            <sys_id>d9f83ba71b3970100a4a10ad9c4bcb31</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 14:28:14</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>tran_amt_abs</element>
+            <position>84</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-16 17:08:17</sys_created_on>
+            <sys_id>70f30d491b4a74100a4a10ad9c4bcb1c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-16 17:08:17</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>import_set_nmbr</element>
+            <position>85</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-25 10:06:32</sys_created_on>
+            <sys_id>eab979ff1b8e7c100a4a10ad9c4bcbc9</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-25 10:06:32</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>import_set_row</element>
+            <position>86</position>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-25 10:07:22</sys_created_on>
+            <sys_id>a2e9b9ff1b8e7c100a4a10ad9c4bcbe9</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_g_irm_fms_gfms_staged_data" sys_domain="global" view="Default view">c462ffaf1bf570100a4a10ad9c4bcb35</sys_ui_section>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-25 10:07:22</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_section action="INSERT_OR_UPDATE">
+            <caption/>
+            <header>false</header>
+            <name>x_g_irm_fms_gfms_staged_data</name>
+            <roles/>
+            <sys_class_name>sys_ui_section</sys_class_name>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 13:59:29</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>c462ffaf1bf570100a4a10ad9c4bcb35</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>x_g_irm_fms_gfms_staged_data</sys_name>
+            <sys_overrides/>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_ui_section_c462ffaf1bf570100a4a10ad9c4bcb35</sys_update_name>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 13:59:29</sys_updated_on>
+            <sys_user/>
+            <title>true</title>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_section>
+    </sys_ui_section>
+</record_update>

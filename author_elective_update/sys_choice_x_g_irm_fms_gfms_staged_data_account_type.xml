@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="account_type" table="x_g_irm_fms_gfms_staged_data" version="3">
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>account_type</element>
+            <name>x_g_irm_fms_gfms_staged_data</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 10:45:52</sys_created_on>
+            <sys_id>0816036b1b7570100a4a10ad9c4bcb6e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>account_type</sys_name>
+            <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+            <sys_update_name>sys_choice_x_g_irm_fms_gfms_staged_data_account_type</sys_update_name>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 10:45:52</sys_updated_on>
+        </sys_choice_set>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>account_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Commitment</label>
+            <language>en</language>
+            <name>x_g_irm_fms_gfms_staged_data</name>
+            <sequence/>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 10:45:52</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>41f50bab1b7570100a4a10ad9c4bcb4b</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 10:45:52</sys_updated_on>
+            <value>46</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>account_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Obligation</label>
+            <language>en</language>
+            <name>x_g_irm_fms_gfms_staged_data</name>
+            <sequence/>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 10:46:19</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>8f1687ab1b7570100a4a10ad9c4bcbb2</sys_id>
+            <sys_mod_count>1</sys_mod_count>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 10:46:54</sys_updated_on>
+            <value>47</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>account_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Expenditure</label>
+            <language>en</language>
+            <name>x_g_irm_fms_gfms_staged_data</name>
+            <sequence/>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 10:47:23</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>82564fab1b7570100a4a10ad9c4bcb9d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 10:47:23</sys_updated_on>
+            <value>48</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>account_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Adjustment (upward)</label>
+            <language>en</language>
+            <name>x_g_irm_fms_gfms_staged_data</name>
+            <sequence/>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 10:47:55</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>ef668bab1b7570100a4a10ad9c4bcb7b</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 10:47:55</sys_updated_on>
+            <value>58</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>account_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Adjustment (downward)</label>
+            <language>en</language>
+            <name>x_g_irm_fms_gfms_staged_data</name>
+            <sequence/>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 10:48:31</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>df86cfab1b7570100a4a10ad9c4bcb08</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 10:48:31</sys_updated_on>
+            <value>59</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>account_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Adjustment (downward expenditure)</label>
+            <language>en</language>
+            <name>x_g_irm_fms_gfms_staged_data</name>
+            <sequence/>
+            <sys_created_by>MarkelJR@state.gov</sys_created_by>
+            <sys_created_on>2021-08-12 10:49:13</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>15b683eb1b7570100a4a10ad9c4bcb62</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+            <sys_updated_on>2021-08-12 10:49:13</sys_updated_on>
+            <value>69</value>
+        </sys_choice>
+    </sys_choice>
+</record_update>

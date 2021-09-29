@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_data_source">
+    <sys_data_source action="INSERT_OR_UPDATE">
+        <category/>
+        <connection_timeout>0</connection_timeout>
+        <connection_url>attachment://sys_data_source:d2fbb4471b75f0101f7e113d9c4bcbf4/</connection_url>
+        <connection_url_parameters/>
+        <csv_delimiter/>
+        <data_in_single_column>false</data_in_single_column>
+        <data_loader><![CDATA[(function loadData(import_set_table) {
+
+	// Add your code here to insert data to import_set_table
+
+})(import_set_table);]]></data_loader>
+        <database_name/>
+        <database_port/>
+        <discard_arrays>true</discard_arrays>
+        <expand_node_children>false</expand_node_children>
+        <file_path/>
+        <file_retrieval_method>Attachment</file_retrieval_method>
+        <format>Custom (Parse by Script)</format>
+        <glide_keystore>false</glide_keystore>
+        <header_row>0</header_row>
+        <import_set_table_label>GFMS Imported Data</import_set_table_label>
+        <import_set_table_name>x_g_irm_fms_gfms_import_data</import_set_table_name>
+        <instance_name/>
+        <jdbc_password/>
+        <jdbc_server/>
+        <jdbc_user_name/>
+        <jpath_root_node/>
+        <last_run_database_field/>
+        <last_run_datetime/>
+        <last_success_import_time/>
+        <ldap_target/>
+        <ldapprobe_result_set_rows>200</ldapprobe_result_set_rows>
+        <limit/>
+        <maximum_rows/>
+        <mid_server/>
+        <name>GFMS Extract File</name>
+        <offset>0</offset>
+        <oracle_port>1521</oracle_port>
+        <oracle_sid>orcl</oracle_sid>
+        <parsing_script><![CDATA[(function(line, lineNumber, result) {
+
+    var map = {};
+	var session = gs.getSession();
+    var layoutHeader = [
+        { name: 'RECORD_TYPE', start: 1, end: 1 },
+        { name: 'FILLER_H1', start: 2, end: 39 },
+        { name: 'SUBMITTING_SYSTEM_NAME', start: 40, end: 49 },
+        { name: 'SUBMITTING_ACCOUNTING_LOCATION', start: 50, end: 52 },
+        { name: 'RECEIVING_SYSTEM_NAME', start: 53, end: 62 },
+        { name: 'RECEIVING_ACCOUNTING_LOCATION', start: 63, end: 65 },
+        { name: 'FILE_NUMBER', start: 66, end: 72 },
+        { name: 'FILE_DATE', start: 73, end: 80 },
+        { name: 'FILE_TIME', start: 81, end: 86 },
+        { name: 'RECORD_FROM_DATE', start: 87, end: 100 },
+        { name: 'RECORD_TO_DATE', start: 101, end: 114 },
+        { name: 'POC_NAME', start: 115, end: 144 },
+        { name: 'POC_PHONE', start: 145, end: 160 }
+    ];
+    var layoutDetail = [
+        { name: 'FUND', start: 1, end: 6 },
+        { name: 'TREASURY_SYMBOL', start: 7, end: 21 },
+        { name: 'INTER_AGENCY_TREASURY_SYMBOL', start: 22, end: 36 },
+        { name: 'BUREAU', start: 37, end: 40 },
+        { name: 'ALLOTMENT', start: 41, end: 47 },
+        { name: 'BENE_ORGANIZATION', start: 48, end: 54 },
+        { name: 'PARENT_ALLOTMENT', start: 55, end: 61 },
+        { name: 'FUNCTION', start: 62, end: 70 },
+        { name: 'PARENT_FUNCTION', start: 71, end: 79 },
+        { name: 'BUDGET_OBJECT_CODE', start: 80, end: 83 },
+        { name: 'BUDGET_BOC', start: 84, end: 87 },
+        { name: 'REVENUE_SOURCE', start: 88, end: 91 },
+        { name: 'ACCOUNT_TYPE', start: 92, end: 93 },
+        { name: 'TRANS_CODE', start: 94, end: 96 },
+        { name: 'TRANS_NUMBER', start: 97, end: 126 },
+        { name: 'TRANS_CATEGORY', start: 127, end: 128 },
+        { name: 'LINE_NO', start: 129, end: 131 },
+        { name: 'DOCUMENT_ACTION', start: 132, end: 132 },
+        { name: 'LINE_ACTION', start: 133, end: 133 },
+        { name: 'DOCUMENT_TYPE', start: 134, end: 134 },
+        { name: 'ACCEPTANCE_DATE', start: 135, end: 140 },
+        { name: 'RECORD_DATE', start: 141, end: 146 },
+        { name: 'FISCAL_YEAR', start: 147, end: 148 },
+        { name: 'FISCAL_QUARTER', start: 149, end: 149 },
+        { name: 'FISCAL_MONTH', start: 150, end: 151 },
+        { name: 'TWO_DGT_BEG_BUDGET_FY', start: 152, end: 153 },
+        { name: 'TWO_DGT_END_BUDGET_FY', start: 154, end: 155 },
+        { name: 'NO_YEAR_IND', start: 156, end: 156 },
+        { name: 'APPORTIONMENT_YEAR', start: 157, end: 158 },
+        { name: 'APPORTIONMENT_QUARTER', start: 159, end: 159 },
+        { name: 'VENDOR_CODE', start: 160, end: 170 },
+        { name: 'VENDOR_TYPE', start: 171, end: 171 },
+        { name: 'VENDOR_NAME', start: 172, end: 201 },
+        { name: 'VENDOR_INVOICE', start: 202, end: 212 },
+        { name: 'VENDOR_INOVICE_DATE', start: 213, end: 218 },
+        { name: 'VENDOR_INVOICE_LINE', start: 219, end: 221 },
+        { name: 'DOCUMENT_DESCRIPTION', start: 222, end: 233 },
+        { name: 'LINE_DESCRIPTION', start: 234, end: 263 },
+        { name: 'JOB_NUMBER', start: 264, end: 271 },
+        { name: 'REPORTING_CATEGORY', start: 272, end: 275 },
+        { name: 'DISBURSING_OFFICE', start: 276, end: 279 },
+        { name: 'REFERENCE_DOCUMENT_TYPE', start: 280, end: 282 },
+        { name: 'REFERENCE_DOCUMENT_NUMBER', start: 283, end: 312 },
+        { name: 'REFERENCE_DOCUMENT_LINE', start: 313, end: 315 },
+        { name: 'REFERENCE_DOCUMENT_CATEGORY', start: 316, end: 317 },
+        { name: 'DOLLAR_AMOUNT', start: 318, end: 333 },
+        { name: 'VOUCHER_SCHEDULE_CATEGORY', start: 334, end: 334 },
+        { name: 'DISCOUNT_TYPE', start: 335, end: 335 },
+        { name: 'TREASURY_SCHEDULE_NUMBER', start: 336, end: 346 },
+        { name: 'DEPOSIT_NUMBER', start: 347, end: 358 },
+        { name: 'AGENCY_SCHEDULE_NO', start: 359, end: 367 },
+        { name: 'AGENCY_SCHEDULE_FY', start: 368, end: 369 },
+        { name: 'VOUCHER_SCHEDULE_TYPE', start: 370, end: 370 },
+        { name: 'TRAVEL_DESCRIPTION_CODE', start: 371, end: 371 },
+        { name: 'INTEREST_REASON_CODE', start: 372, end: 372 },
+        { name: 'CHECK_NUMBER', start: 373, end: 383 },
+        { name: 'COST_ACCOUNTING_DATA', start: 384, end: 425 },
+        { name: 'TRAVEL_ADVANCE_NUMBER', start: 426, end: 431 },
+        { name: 'ACCOMPLISHED_DATE', start: 432, end: 437 },
+        { name: 'USERID', start: 438, end: 441 },
+        { name: 'DATE_1WD', start: 442, end: 447 },
+        { name: 'TIME_1WD', start: 448, end: 453 },
+        { name: 'POSTNUM_1WD', start: 454, end: 462 },
+        { name: '14_BYTE_FUND', start: 463, end: 476 },
+        { name: 'OPERATING_ALLOWANCE', start: 477, end: 482 },
+        { name: 'EXPANDED_TREASURY_SYMBOL', start: 483, end: 509 },
+        { name: 'EXPANDED_INTER_AGENCY_TREASURY_SYMBOL', start: 510, end: 536 },
+        { name: 'BBFY', start: 537, end: 540 },
+        { name: 'EBFY', start: 541, end: 544 }
+    ];
+    var layoutTrailer = [
+        { name: 'RECORD_TYPE', start: 1, end: 1 },		
+        { name: 'FILLER_T1', start: 38, end: 39 },		
+        { name: 'RECORD_COUNT', start: 7, end: 46 },		
+        { name: 'RECORD_AMOUNT', start: 17, end: 63 },		
+        { name: 'FILLER_T2', start: 64, end: 482 }
+	];
+	
+    if (session.getClientData('abort') == 'true') { result.setSkip(true); return; }
+	
+	if (lineNumber == 0) {
+        result.setSkip(true);
+        map = getFixedWidthValues(line, layoutHeader);
+		if (map.RECORD_TYPE != "H") {
+            session.putClientData('abort', 'true');
+			gs.error("GFMS Extract > Error! Wrong file type - Missing header....aborting import.");
+        }
+        if (map.SUBMITTING_SYSTEM_NAME != "GFMS") {
+            session.putClientData('abort', 'true');
+			gs.error("GFMS Extract > Error! Wrong file type - not GFMS....aborting import.");
+        }
+		var recFrom = map.RECORD_FROM_DATE;
+		var fromDate = new Date(recFrom.substr(0,4), recFrom.substr(4,2), recFrom.substr(6,2), recFrom.substr(8,2), recFrom.substr(10,2), recFrom.substr(10,2));
+		var recTo = map.RECORD_TO_DATE;
+		var toDate = new Date(recTo.substr(0,4), recTo.substr(4,2), recTo.substr(6,2), recTo.substr(8,2), recTo.substr(10,2), recTo.substr(10,2));
+		gs.info("GFMS Extract > From: " + fromDate + " to: " + toDate);
+    }
+	else if (line.substring(0, 10) == "T         ") {
+        result.setSkip(true);
+        map = getFixedWidthValues(line, layoutTrailer);
+        gs.info("GFMS Extract > Records imported: " + parseInt(map.RECORD_COUNT));
+    }
+    else {
+        map = getFixedWidthValues(line, layoutDetail);
+		if (map.ACCEPTANCE_DATE && map.ACCEPTANCE_DATE.length == 6) {
+			var accept = map.ACCEPTANCE_DATE;
+			map.ACCEPTANCE_DATE = new Date('20' + accept.substr(0,2) + "/" + accept.substr(2,2) + '/' + accept.substr(4,2)).toJSON().slice(0,10);
+		}
+		if (map.ACCOMPLISHED_DATE && map.ACCOMPLISHED_DATE.length == 6) {
+			var accomp = map.ACCOMPLISHED_DATE;
+			map.ACCOMPLISHED_DATE = new Date('20' + accomp.substr(0,2) + "/" + accomp.substr(2,2) + '/' + accomp.substr(4,2)).toJSON().slice(0,10);
+		}
+		if (map.DATE_1WD && map.DATE_1WD.length == 6) {
+			var oplock = map.DATE_1WD;
+			map.DATE_1WD = new Date('20' + oplock.substr(0,2) + "/" + oplock.substr(2,2) + '/' + oplock.substr(4,2)).toJSON().slice(0,10);
+		}
+		if (map.RECORD_DATE && map.RECORD_DATE.length == 6) {
+			var record = map.RECORD_DATE;
+			map.RECORD_DATE = new Date('20' + record.substr(0,2) + "/" + record.substr(2,2) + '/' + record.substr(4,2)).toJSON().slice(0,10);
+		}
+		if (map.VENDOR_INOVICE_DATE && map.VENDOR_INOVICE_DATE.length == 6) {
+			var invoice = map.VENDOR_INOVICE_DATE;
+			map.VENDOR_INOVICE_DATE = new Date('20' + invoice.substr(0,2) + "/" + invoice.substr(2,2) + '/' + invoice.substr(4,2)).toJSON().slice(0,10);
+		}
+		if (map.DOLLAR_AMOUNT && map.DOLLAR_AMOUNT.length > 0) 
+			map.DOLLAR_AMOUNT = parseFloat(map.DOLLAR_AMOUNT.replace(/ /g, "")).toFixed(2);
+        result.addRow(map);
+    }
+
+    function getFixedWidthValues(line, layout) {
+		var val = null;
+        var values = {};
+        layout.forEach(function(fld) {
+            val = line.substring(fld.start - 1, fld.end).trim();
+            values[fld.name] = val.length > 0 ? val : null;
+        });
+        return values;
+    }
+	
+})(line, lineNumber, result);]]></parsing_script>
+        <properties/>
+        <query>All Rows from Table</query>
+        <query_timeout>0</query_timeout>
+        <request_action/>
+        <scp_authentication>Username and Password</scp_authentication>
+        <scp_password/>
+        <scp_port/>
+        <scp_server/>
+        <scp_user_name/>
+        <sheet_number>0</sheet_number>
+        <sql_statement/>
+        <ssh_keyfile_path/>
+        <support_pagination>false</support_pagination>
+        <sys_class_name>sys_data_source</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-08-10 11:28:43</sys_created_on>
+        <sys_id>d2fbb4471b75f0101f7e113d9c4bcbf4</sys_id>
+        <sys_mod_count>32</sys_mod_count>
+        <sys_name>GFMS Extract File</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_data_source_d2fbb4471b75f0101f7e113d9c4bcbf4</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-08-16 19:41:22</sys_updated_on>
+        <table_name/>
+        <type>File</type>
+        <use_integrated_authentication>false</use_integrated_authentication>
+        <use_last_run_datetime>false</use_last_run_datetime>
+        <xpath_root_node/>
+        <zipped>true</zipped>
+    </sys_data_source>
+</record_update>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_db_view_table">
+    <sys_db_view_table action="DELETE">
+        <active>true</active>
+        <left_join>false</left_join>
+        <order>900</order>
+        <sys_class_name>sys_db_view_table</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-08-16 14:09:47</sys_created_on>
+        <sys_id>c52ad8091bc674100a4a10ad9c4bcbe7</sys_id>
+        <sys_mod_count>62</sys_mod_count>
+        <sys_name>x_g_irm_fms_gfms_staged_data</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_db_view_table_c52ad8091bc674100a4a10ad9c4bcbe7</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-08-20 16:29:04</sys_updated_on>
+        <table>x_g_irm_fms_gfms_staged_data</table>
+        <variable_prefix>exp</variable_prefix>
+        <view display_value="x_g_irm_fms_gfms_obligation_to_expenditure">2ba950851bc674100a4a10ad9c4bcb91</view>
+        <where_clause>exp_account_type = '48' &amp;&amp; exp_sys_import_set = obl_sys_import_set  &amp;&amp; (exp_doc_number = obl_tran_number || exp_doc_number = obl_tran_number || exp_doc_number = obl_doc_number)  &amp;&amp; obl_tran_amt_abs = exp_tran_amt_abs &amp;&amp; exp_check_nmbr != ''</where_clause>
+    </sys_db_view_table>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_db_view_table_c52ad8091bc674100a4a10ad9c4bcbe7</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_db_view_table"><sys_db_view_table action="INSERT_OR_UPDATE"><active>true</active><left_join>false</left_join><order>900</order><sys_class_name>sys_db_view_table</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-08-16 14:09:47</sys_created_on><sys_id>c52ad8091bc674100a4a10ad9c4bcbe7</sys_id><sys_mod_count>62</sys_mod_count><sys_name>x_g_irm_fms_gfms_staged_data</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_db_view_table_c52ad8091bc674100a4a10ad9c4bcbe7</sys_update_name><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-08-20 16:29:04</sys_updated_on><table>x_g_irm_fms_gfms_staged_data</table><variable_prefix>exp</variable_prefix><view display_value="x_g_irm_fms_gfms_obligation_to_expenditure">2ba950851bc674100a4a10ad9c4bcb91</view><where_clause>exp_account_type = '48' &amp;&amp; exp_sys_import_set = obl_sys_import_set  &amp;&amp; (exp_doc_number = obl_tran_number || exp_doc_number = obl_tran_number || exp_doc_number = obl_doc_number)  &amp;&amp; obl_tran_amt_abs = exp_tran_amt_abs &amp;&amp; exp_check_nmbr != ''</where_clause></sys_db_view_table></record_update>]]></payload>
+        <payload_hash>1306510246</payload_hash>
+        <record_name>x_g_irm_fms_gfms_staged_data</record_name>
+        <reverted_from/>
+        <source>b5ee7f261b35b0101f7e113d9c4bcb71</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-08-20 16:29:04</sys_created_on>
+        <sys_id>1d51e5561b02b8101f7e113d9c4bcb24</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17b6464fb5a0000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-08-20 16:29:04</sys_updated_on>
+        <type>View Table</type>
+        <update_guid>9151e5568a02b810a8be3609c3bf0b24</update_guid>
+        <update_guid_history>9151e5568a02b810a8be3609c3bf0b24:1306510246,82bf15163502b81063baccbdccf29406:-339962357,5b9f91169c02b8107976c5efa1be626e:-1769523022,137c95520e02b8109bfb4844e5893e48:1673333842,6a1cd1522302b810cd32ac1b8660543e:-1397290713,0e9f48863ace381059f156365f6c9090:-1311738296,785f448625ce3810df678f0c72434be1:1525111629,60ee8c4612ce38103ac2c147e19ce5f6:-174011723,7a7e4846a1ce38106d81b977da0943b1:1525111629,288c08c256ce381089164234f706f9b7:1301192895,163cc4c207ce3810f90be16e2f2855b8:1069137404,600c04c2a2ce38105a0d83c3c64d55df:1505660777,5543f945980e741013274ec89424ed0e:-340624175,32f23905490e74104506abb9867072a3:995640717,8d9f9585f1ca7410ddd8bc9f67065353:503526035,b8ce9d4507ca74104e988af6cbf3a7eb:1699977420,043d990590ca741015f55b7dfd6e4ef1:-751339718,c60d190556ca7410bd639ccc8c4b5ad1:-391941740,7cdc5505feca7410a40ea0d4f627c1f3:-1990008980,0d3c59c186ca74105e2cdb46c5abc219:2049215204,6d789101e6ca7410122db93fbdae0c30:281957457,00411189fc8a74105131e50c65390545:2049215204,5a20dd09d08a7410a7188ca0f00a60b7:196228371,d38541c9974a74103134e7ecdeda79b4:2049215204,ec258d890b4a7410474632a764678293:-2059927900,0798fc01344a74100a862f98fe89558f:-2053318523,c438b4017f4a7410c061be2d12113e1b:-886190299,a2e7f8cd7e0a741011da9ea8e5948c38:349334590,4146f0cdc60a74107958a7d7ff83c589:-1020982300,eb1670cdf80a74105f180fb77c3f9e89:1783270475,ff55388db90a7410692adbb2884faa8a:747767838,6525708d200a74104bc4a3a6acd1857b:870433246,e012f8c9480a74102b9e0084c0601c54:-1684253109,0b81b8c90a0a74101c371dbed223d208:-1810517331,61a0fc89410a741028697da8e7453f5f:2080415797,c9df24898f0a74109b55460e8be4ff7c:451279453,f06e6049500a741055e3c5c5d0dceb34:-1078783852,3f2eac092f0a74101f0b6d432636b184:-1474019702,e6dd2809780a7410bf53449fc549e7e3:-1384072551,ec5d2009e40a741038d108f271e0745c:375194733,d2cce8c5970a74104cea0d05e7f20695:-1557957600,488ce4c5790a7410e4163fd068846cd7:-1702125835,eafaa845c00a7410910badb1ae132169:-1078783852,c91aa845ce0a74105f1c04af43f84b58:-76480404,1c19a805300a7410236702baf5ff3ab7:-1020982300,5c28acc18a0a7410202839ff53ba4b8d:-830559200,0da6e881780a741036e4d493ca5d8ffb:-1012413804,eb866881040a741039bbac8dda0641b4:-1788297076,e6766881360a7410afedc8aba54dfa5f:-1116518149,78a42041f60a74105281bdf349b10720:959897257,08946041250a74101d72228df5bae54f:1124336559,8774a801850a741008460996d4e6760e:1588822846,5914a801f30a741093e98fb72c30bd6e:-168589898,aab268cd11c67410205bc3525f2eb551:-1412481130,9e22688d03c674102e7c08204d2c53a6:-1726398258,ffe1ec8debc6741092bda8d48230982c:-1722287928,ff01a08df2c67410ff6409bbf9e7974e:1610005698,3eafd80d61c67410aca04f4c3c0dfc6b:-1579776506,b59f5c0d8dc67410845a015a06ea52d9:-1308379467,4c8f580d04c6741024628c0349b203ad:-1579776506,0a4f980d78c6741002cac4f6263edc12:600267955,d77c588946c6741008d813193e2d7f6e:-1579776506,421b94490fc67410dc993ae6c95ae3b2:-841179612</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-08-25 10:24:13</sys_created_on>
+        <sys_db_object display_value="" name="sys_db_view_table">sys_db_view_table</sys_db_object>
+        <sys_id>0ee82ee3abdf4a6a81171a28685ec5a9</sys_id>
+        <sys_metadata>c52ad8091bc674100a4a10ad9c4bcbe7</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_g_irm_fms_gfms_staged_data</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_db_view_table_c52ad8091bc674100a4a10ad9c4bcbe7</sys_update_name>
+        <sys_update_version display_value="sys_db_view_table_c52ad8091bc674100a4a10ad9c4bcbe7">1d51e5561b02b8101f7e113d9c4bcb24</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-08-25 10:24:13</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

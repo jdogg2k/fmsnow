@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step">
+    <sys_atf_step action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <copied_from/>
+        <description>Click the component: 'Link &lt;a&gt;: Add Budget'</description>
+        <display_name>Click Component (Custom UI)</display_name>
+        <inputs/>
+        <mugshots_cache_json>{"e86e0012f4c830a5aee9914be2bbe2e2":"{\"area\":\"Budget Grid\",\"sn_atf_mugshot_short_description\":\"Link &lt;a&gt;: Add Budget\",\"inner_text\":\"Add Budget\",\"sn_atf_mugshot_long_description\":\"Link &lt;a&gt;: Add Budget in page area Budget Grid\",\"methods\":[\"click\"],\"sn_atf_mugshot_label\":\"Add Budget\",\"index\":1,\"type\":\"\",\"version\":\"18.8\",\"get_value_result\":\"Add Budget\",\"sn_atf_mugshot_tag_display_name\":\"Link &lt;a&gt;\",\"sn_atf_mugshot_value\":\"\",\"tag\":\"a\",\"isDisabled\":false,\"hash\":\"e86e0012f4c830a5aee9914be2bbe2e2\"}"}</mugshots_cache_json>
+        <notes/>
+        <order>3</order>
+        <snapshot display_value="ed129616f830dc89631a55b13dacf3fd">fae9f2c71b72f4100a4a10ad9c4bcb4c</snapshot>
+        <step_config display_value="Click Component (Custom UI)">def25c4b73730300c79260bdfaf6a700</step_config>
+        <sys_class_name>sys_atf_step</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 17:15:28</sys_created_on>
+        <sys_id>3f489de61b3674100a4a10ad9c4bcb1a</sys_id>
+        <sys_mod_count>42</sys_mod_count>
+        <sys_name>Click Component (Custom UI)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_atf_step_3f489de61b3674100a4a10ad9c4bcb1a</sys_update_name>
+        <sys_updated_by>fmsanalyst@test.com</sys_updated_by>
+        <sys_updated_on>2021-09-29 13:38:39</sys_updated_on>
+        <table/>
+        <test display_value="Enter Budget + 1 Item">00590de61bf274100a4a10ad9c4bcb31</test>
+        <timeout/>
+        <warning_message/>
+    </sys_atf_step>
+    <sys_variable_value action="delete_multiple" query="document_key=3f489de61b3674100a4a10ad9c4bcb1a"/>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>sys_atf_step</document>
+        <document_key>3f489de61b3674100a4a10ad9c4bcb1a</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 17:15:28</sys_created_on>
+        <sys_id>5f589de61b3674100a4a10ad9c4bcbe7</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 17:15:28</sys_updated_on>
+        <value>e86e0012f4c830a5aee9914be2bbe2e2</value>
+        <variable display_value="">ee05588b73730300c79260bdfaf6a749</variable>
+    </sys_variable_value>
+</record_update>

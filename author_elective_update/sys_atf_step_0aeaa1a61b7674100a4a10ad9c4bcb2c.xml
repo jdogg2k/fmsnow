@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step">
+    <sys_atf_step action="DELETE">
+        <active>true</active>
+        <copied_from/>
+        <description>Set the values on the form as follows:
+Expense Item = Labor - VG 2.2.5 [2500 - Contractual Services and Training]
+and Budget Amount = $150,000.00</description>
+        <display_name>Set Field Values (SP)</display_name>
+        <inputs/>
+        <mugshots_cache_json/>
+        <notes/>
+        <order>7</order>
+        <snapshot/>
+        <step_config display_value="Set Field Values (SP)">ba49e51de7420300b2888f49c2f6a93c</step_config>
+        <sys_class_name>sys_atf_step</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 18:37:58</sys_created_on>
+        <sys_id>0aeaa1a61b7674100a4a10ad9c4bcb2c</sys_id>
+        <sys_mod_count>64</sys_mod_count>
+        <sys_name>Set Field Values (SP)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_atf_step_0aeaa1a61b7674100a4a10ad9c4bcb2c</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-29 11:46:44</sys_updated_on>
+        <table>x_g_irm_fms_budget_item</table>
+        <test display_value="Enter Budget + 1 Item">00590de61bf274100a4a10ad9c4bcb31</test>
+        <timeout/>
+        <warning_message/>
+    </sys_atf_step>
+    <sys_variable_value action="DELETE" query="document_key=0aeaa1a61b7674100a4a10ad9c4bcb2c"/>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>0aeaa1a61b7674100a4a10ad9c4bcb2c</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 18:37:58</sys_created_on>
+        <sys_id>3b3ba9e61b7674100a4a10ad9c4bcba0</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 18:37:58</sys_updated_on>
+        <value>x_g_irm_fms_budget_item</value>
+        <variable display_value="">adf8f511e7020300b2888f49c2f6a9f3</variable>
+    </sys_variable_value>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>0aeaa1a61b7674100a4a10ad9c4bcb2c</document_key>
+        <order>200</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 18:37:58</sys_created_on>
+        <sys_id>3f3ba9e61b7674100a4a10ad9c4bcba0</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 18:37:58</sys_updated_on>
+        <value>expense_item_ref=d6e87b481bcca0100a4a10ad9c4bcb71^budget_amt=javascript:global.getCurrencyFilter('x_g_irm_fms_budget_item','budget_amt', 'USD;150000')^EQ</value>
+        <variable display_value="">5c297551e7020300b2888f49c2f6a933</variable>
+    </sys_variable_value>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_atf_step_0aeaa1a61b7674100a4a10ad9c4bcb2c</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step"><sys_atf_step action="INSERT_OR_UPDATE"><active>true</active><copied_from/><description>Set the values on the form as follows:
+Expense Item = Labor - VG 2.2.5 [2500 - Contractual Services and Training]
+and Budget Amount = $150,000.00</description><display_name>Set Field Values (SP)</display_name><inputs/><mugshots_cache_json/><notes/><order>7</order><snapshot/><step_config display_value="Set Field Values (SP)">ba49e51de7420300b2888f49c2f6a93c</step_config><sys_class_name>sys_atf_step</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 18:37:58</sys_created_on><sys_id>0aeaa1a61b7674100a4a10ad9c4bcb2c</sys_id><sys_mod_count>64</sys_mod_count><sys_name>Set Field Values (SP)</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_atf_step_0aeaa1a61b7674100a4a10ad9c4bcb2c</sys_update_name><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-29 11:46:44</sys_updated_on><table>x_g_irm_fms_budget_item</table><test display_value="Enter Budget + 1 Item">00590de61bf274100a4a10ad9c4bcb31</test><timeout/><warning_message/></sys_atf_step><sys_variable_value action="delete_multiple" query="document_key=0aeaa1a61b7674100a4a10ad9c4bcb2c"/><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>0aeaa1a61b7674100a4a10ad9c4bcb2c</document_key><order>100</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 18:37:58</sys_created_on><sys_id>3b3ba9e61b7674100a4a10ad9c4bcba0</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-27 18:37:58</sys_updated_on><value>x_g_irm_fms_budget_item</value><variable display_value="">adf8f511e7020300b2888f49c2f6a9f3</variable></sys_variable_value><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>0aeaa1a61b7674100a4a10ad9c4bcb2c</document_key><order>200</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 18:37:58</sys_created_on><sys_id>3f3ba9e61b7674100a4a10ad9c4bcba0</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-27 18:37:58</sys_updated_on><value>expense_item_ref=d6e87b481bcca0100a4a10ad9c4bcb71^budget_amt=javascript:global.getCurrencyFilter('x_g_irm_fms_budget_item','budget_amt', 'USD;150000')^EQ</value><variable display_value="">5c297551e7020300b2888f49c2f6a933</variable></sys_variable_value></record_update>]]></payload>
+        <payload_hash>-433227840</payload_hash>
+        <record_name>Set Field Values (SP)</record_name>
+        <reverted_from/>
+        <source>8ca60de61bf274100a4a10ad9c4bcb27</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-29 11:46:44</sys_created_on>
+        <sys_id>6b40ee431b32f4100a4a10ad9c4bcbb3</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17c3160dfcf0000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-29 11:46:44</sys_updated_on>
+        <type>Test Step</type>
+        <update_guid>ef40ee43c232f410f7e2bd8a06f104b2</update_guid>
+        <update_guid_history>ef40ee43c232f410f7e2bd8a06f104b2:-433227840,8eef9a438932f4103513081fe2a53b84:-1868828639,e89f56431632f4106dca2dd1d6109c58:-433227840,3f5a1e0fb6feb41084737f03e74cb569:-1868828639,d10a560f66feb410f7a6b4b3c65e10b8:1986395098,24f9160f1dfeb4103ad8bb32f7e0d47a:-872971399,67d9d20f10feb4103dab250cd3a6350a:562629400,8fc9520f3efeb41076d6c28fe9a35dc8:1998230199,02b9120f64feb4108227d949118bff2a:-952230711,8a0753bef0f2f410f9ae815c1af28aad:225344663,50c41bfa0af2f410c1d8be29894ba6f7:-2147178530,03249fba5bf2f41060d40697cce4abc9:225344663,fce39bbac7f2f410269b0fbd276c9df9:-404626666,a09353ba70f2f410847c7bc76977d395:1690462568,c3f1137a1cf2f410ef3a89b1de9cefd8:782645569,7d205bf650f2f41068ca05979c51156e:1517817437,b457c7fe63b2f410472d015124df6127:782645569,291703fed4b2f410dc0d6ced58eb884d:152674240,bdb50f7e39b2f41040e6af2413150e0f:1060491239,86e4cf3e2cb2f410ba987319c62a1204:430519910,4abbb6f260b2f410a4bf8f2894cd93d8:-199451419,b2f0f1facf7eb410428574bab3284c71:-1107268418,db3cedb6477eb410cec8a5a61c3e3f17:-477297089,1145d5b28c3eb41011826a2d9ca571cf:-1107268418,7e2515b27d3eb4107a759bae052665ec:-477297089,b215d1b2593eb410cd26e320e7055c7a:152674240,ba0591b2773eb41038ec54b966902819:782645569,26511dbe5efab410181039a02866d361:1517817437,871119be11fab410407ec56603c38a7b:-2147178530,30e552aec8f6741029dd95682ac551fd:-1517207201,c5851e6eb7f67410cbf375a06ddecdd5:-2147178530,3643daeaf1f674106f98f2700ebe084a:-1517207201,98dc02a623f674101d1e43e58f229ad5:-2147178530,8211026e9ab674106f6476eea7487b60:1517817437,126f71eaabb674105ba67972b62ad854:-2147178530,b73ba9e6a2767410ea2002bc6f2137a2:1517817437</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-29 11:47:07</sys_created_on>
+        <sys_db_object display_value="" name="sys_atf_step">sys_atf_step</sys_db_object>
+        <sys_id>11762510cd6541c0b90919700ea7dd10</sys_id>
+        <sys_metadata>0aeaa1a61b7674100a4a10ad9c4bcb2c</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Set Field Values (SP)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_atf_step_0aeaa1a61b7674100a4a10ad9c4bcb2c</sys_update_name>
+        <sys_update_version display_value="sys_atf_step_0aeaa1a61b7674100a4a10ad9c4bcb2c">6b40ee431b32f4100a4a10ad9c4bcbb3</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-29 11:47:07</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

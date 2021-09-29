@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step">
+    <sys_atf_step action="DELETE">
+        <active>false</active>
+        <copied_from/>
+        <description>Assert that the text 'Add Budget Item' is on the page.
+With a failure timeout of 5 Seconds</description>
+        <display_name>Assert Text on Page (Custom UI)</display_name>
+        <inputs/>
+        <mugshots_cache_json/>
+        <notes/>
+        <order>6</order>
+        <snapshot/>
+        <step_config display_value="Assert Text on Page (Custom UI)">475e0de3d732130089fca2285e610361</step_config>
+        <sys_class_name>sys_atf_step</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 18:53:22</sys_created_on>
+        <sys_id>47aeadaa1b7674100a4a10ad9c4bcb8d</sys_id>
+        <sys_mod_count>59</sys_mod_count>
+        <sys_name>Assert Text on Page (Custom UI)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_atf_step_47aeadaa1b7674100a4a10ad9c4bcb8d</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-29 11:18:57</sys_updated_on>
+        <table/>
+        <test display_value="Enter Budget + 1 Item">00590de61bf274100a4a10ad9c4bcb31</test>
+        <timeout>1970-01-01 00:00:05</timeout>
+        <warning_message/>
+    </sys_atf_step>
+    <sys_variable_value action="DELETE" query="document_key=47aeadaa1b7674100a4a10ad9c4bcb8d"/>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>47aeadaa1b7674100a4a10ad9c4bcb8d</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 18:53:22</sys_created_on>
+        <sys_id>29ceadaa1b7674100a4a10ad9c4bcb99</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 18:53:22</sys_updated_on>
+        <value>Add Budget Item</value>
+        <variable display_value="">1c267c5cd703130089fca2285e61035b</variable>
+    </sys_variable_value>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>47aeadaa1b7674100a4a10ad9c4bcb8d</document_key>
+        <order>300</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 18:53:22</sys_created_on>
+        <sys_id>65ceadaa1b7674100a4a10ad9c4bcb99</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 18:53:22</sys_updated_on>
+        <value>18.8</value>
+        <variable display_value="">4a49b1d3b700101044026848ee11a980</variable>
+    </sys_variable_value>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>47aeadaa1b7674100a4a10ad9c4bcb8d</document_key>
+        <order>200</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 18:53:22</sys_created_on>
+        <sys_id>a1ceadaa1b7674100a4a10ad9c4bcb99</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 18:53:22</sys_updated_on>
+        <value>text_on_page</value>
+        <variable display_value="">86e4f05cd703130089fca2285e610307</variable>
+    </sys_variable_value>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_atf_step_47aeadaa1b7674100a4a10ad9c4bcb8d</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step"><sys_atf_step action="INSERT_OR_UPDATE"><active>false</active><copied_from/><description>Assert that the text 'Add Budget Item' is on the page.
+With a failure timeout of 5 Seconds</description><display_name>Assert Text on Page (Custom UI)</display_name><inputs/><mugshots_cache_json/><notes/><order>6</order><snapshot/><step_config display_value="Assert Text on Page (Custom UI)">475e0de3d732130089fca2285e610361</step_config><sys_class_name>sys_atf_step</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 18:53:22</sys_created_on><sys_id>47aeadaa1b7674100a4a10ad9c4bcb8d</sys_id><sys_mod_count>59</sys_mod_count><sys_name>Assert Text on Page (Custom UI)</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_atf_step_47aeadaa1b7674100a4a10ad9c4bcb8d</sys_update_name><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-29 11:18:57</sys_updated_on><table/><test display_value="Enter Budget + 1 Item">00590de61bf274100a4a10ad9c4bcb31</test><timeout>1970-01-01 00:00:05</timeout><warning_message/></sys_atf_step><sys_variable_value action="delete_multiple" query="document_key=47aeadaa1b7674100a4a10ad9c4bcb8d"/><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>47aeadaa1b7674100a4a10ad9c4bcb8d</document_key><order>100</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 18:53:22</sys_created_on><sys_id>29ceadaa1b7674100a4a10ad9c4bcb99</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-27 18:53:22</sys_updated_on><value>Add Budget Item</value><variable display_value="">1c267c5cd703130089fca2285e61035b</variable></sys_variable_value><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>47aeadaa1b7674100a4a10ad9c4bcb8d</document_key><order>300</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 18:53:22</sys_created_on><sys_id>65ceadaa1b7674100a4a10ad9c4bcb99</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-27 18:53:22</sys_updated_on><value>18.8</value><variable display_value="">4a49b1d3b700101044026848ee11a980</variable></sys_variable_value><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>47aeadaa1b7674100a4a10ad9c4bcb8d</document_key><order>200</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 18:53:22</sys_created_on><sys_id>a1ceadaa1b7674100a4a10ad9c4bcb99</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-27 18:53:22</sys_updated_on><value>text_on_page</value><variable display_value="">86e4f05cd703130089fca2285e610307</variable></sys_variable_value></record_update>]]></payload>
+        <payload_hash>1980646019</payload_hash>
+        <record_name>Assert Text on Page (Custom UI)</record_name>
+        <reverted_from/>
+        <source>8ca60de61bf274100a4a10ad9c4bcb27</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-29 11:18:57</sys_created_on>
+        <sys_id>64f9160f1bfeb4100a4a10ad9c4bcb74</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17c31476ece0000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-29 11:18:57</sys_updated_on>
+        <type>Test Step</type>
+        <update_guid>e8f9160f2bfeb41060665d715d522673</update_guid>
+        <update_guid_history>e8f9160f2bfeb41060665d715d522673:1980646019,6fd9d20fe8feb410e035f8f62e114203:-327087710,87c9520f5efeb41034e02aaf1ceac1c2:1660145857,42b9120fe5feb410e3848b114d0e7123:-647587872,4b249fba06f2f410f93358bf6f13e8cf:-839699,09e3dbba74f2f4102f2f7824c467ec00:-1741914263,cbf1137a19f2f4100a6bf24cd15dbbd1:1884198248,f5205bf66af2f41012cfe9d5ed1b6675:-1741914263,7c57c7fed5b2f4105842dc956ce3702c:1884198248,ba3747feb5b2f41008a5d57504e733e8:-839699,b5b54b7e31b2f41012b57f0b29a95cff:668015086,79e48f3e31b2f4105275bc6495a519f1:-839699,9edbbaf26bb2f4107e22ba0887b43569:-1741914263,0ff0f1fa607eb410ac57e893c9332783:335442544,9b3cedb6877eb410a8dd73f657378f04:-27288122,06f661b29d7eb410498e80abf24c8a99:335442544,cc4819766f3eb410e970c6c74c1a3f14:-333412241,ff175536c93eb410a1453d1f65abafad:335442544,2545d5b2783eb4104a59939d96d02ef4:-333412241,f22515b2e03eb41048fa1bbe287119f9:335442544,3a15d1b2513eb4101e301f7781f8fb86:-27288122,3a0591b2413eb4104705732aa3a18f32:641566663,6e511dbe00fab410a8ebd0fa98f1566d:1310421448,831119be99fab410bc14f4b6c2619588:1979276233,78e552aeddf67410199946d98e07b5f0:-1646836278,c5851e6e05f67410dc790d912722fcee:1979276233,3a43daead0f6741031033658eaa4373d:-1646836278,dcdcce66bdf67410dbb2784f8d098553:1979276233,4a11026e2cb67410eda5b4ced621d66c:1310421448,466f71eaafb67410b0a807e5f20c1247:1979276233,61ceedaa437674109c2418e681465aeb:1310421448</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-29 11:19:16</sys_created_on>
+        <sys_db_object display_value="" name="sys_atf_step">sys_atf_step</sys_db_object>
+        <sys_id>5a5de43ad3f8435ea732d8c91c4e96e4</sys_id>
+        <sys_metadata>47aeadaa1b7674100a4a10ad9c4bcb8d</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Assert Text on Page (Custom UI)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_atf_step_47aeadaa1b7674100a4a10ad9c4bcb8d</sys_update_name>
+        <sys_update_version display_value="sys_atf_step_47aeadaa1b7674100a4a10ad9c4bcb8d">64f9160f1bfeb4100a4a10ad9c4bcb74</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-29 11:19:16</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

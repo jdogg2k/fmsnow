@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_transform_script">
+    <sys_transform_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <map display_value="Stage GFMS">fcadf5db1b3530100a4a10ad9c4bcbf4</map>
+        <order>100</order>
+        <script><![CDATA[(function runTransformScript(source, map, log, target) {
+	
+    var grImportSet = new GlideRecord(map.target_table);
+    grImportSet.addQuery("import_set_nmbr", import_set.number);
+    grImportSet.query();
+    grImportSet.setWorkflow(false);
+    grImportSet.deleteMultiple();
+
+})(source, map, log, target);]]></script>
+        <sys_class_name>sys_transform_script</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-08-11 11:30:48</sys_created_on>
+        <sys_id>1196ca931b7530100a4a10ad9c4bcb77</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>onStart</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_transform_script_1196ca931b7530100a4a10ad9c4bcb77</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-08-25 12:15:14</sys_updated_on>
+        <when>onStart</when>
+    </sys_transform_script>
+</record_update>

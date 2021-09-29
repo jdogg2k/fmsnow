@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step">
+    <sys_atf_step action="DELETE">
+        <active>true</active>
+        <copied_from/>
+        <description>Click the component: 'Link &lt;a&gt;: (empty)'</description>
+        <display_name>Click Component (Custom UI)</display_name>
+        <inputs/>
+        <mugshots_cache_json>{"a9e8041c27d5d57ddab95cd1d26f8c1b":"{\"area\":\"Organization Selection\",\"sn_atf_mugshot_short_description\":\"Link &lt;a&gt;: (empty)\",\"sn_atf_mugshot_long_description\":\"Link &lt;a&gt;: (empty) in page area Organization Selection\",\"methods\":[\"click\"],\"sn_atf_mugshot_label\":\"\",\"type\":\"\",\"version\":\"18.8\",\"get_value_result\":\"\",\"sn_atf_mugshot_tag_display_name\":\"Link &lt;a&gt;\",\"sn_atf_mugshot_value\":\"\",\"tag\":\"a\",\"isDisabled\":false,\"hash\":\"a9e8041c27d5d57ddab95cd1d26f8c1b\"}"}</mugshots_cache_json>
+        <notes/>
+        <order>3</order>
+        <snapshot display_value="6ead1d6132fa90d78a4ef7d5b247b775">332019221b3674100a4a10ad9c4bcb21</snapshot>
+        <step_config display_value="Click Component (Custom UI)">def25c4b73730300c79260bdfaf6a700</step_config>
+        <sys_class_name>sys_atf_step</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 16:41:40</sys_created_on>
+        <sys_id>a160dd221b3674100a4a10ad9c4bcb1f</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>Click Component (Custom UI)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_atf_step_a160dd221b3674100a4a10ad9c4bcb1f</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-28 11:39:26</sys_updated_on>
+        <table/>
+        <test display_value="Enter Budget">00590de61bf274100a4a10ad9c4bcb31</test>
+        <timeout/>
+        <warning_message/>
+    </sys_atf_step>
+    <sys_variable_value action="DELETE" query="document_key=a160dd221b3674100a4a10ad9c4bcb1f"/>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>a160dd221b3674100a4a10ad9c4bcb1f</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 16:41:40</sys_created_on>
+        <sys_id>94a01d221b3674100a4a10ad9c4bcb77</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 16:41:40</sys_updated_on>
+        <value>a9e8041c27d5d57ddab95cd1d26f8c1b</value>
+        <variable display_value="">ee05588b73730300c79260bdfaf6a749</variable>
+    </sys_variable_value>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_atf_step_a160dd221b3674100a4a10ad9c4bcb1f</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step"><sys_atf_step action="INSERT_OR_UPDATE"><active>true</active><copied_from/><description>Click the component: 'Link &lt;a&gt;: (empty)'</description><display_name>Click Component (Custom UI)</display_name><inputs/><mugshots_cache_json>{"a9e8041c27d5d57ddab95cd1d26f8c1b":"{\"area\":\"Organization Selection\",\"sn_atf_mugshot_short_description\":\"Link &lt;a&gt;: (empty)\",\"sn_atf_mugshot_long_description\":\"Link &lt;a&gt;: (empty) in page area Organization Selection\",\"methods\":[\"click\"],\"sn_atf_mugshot_label\":\"\",\"type\":\"\",\"version\":\"18.8\",\"get_value_result\":\"\",\"sn_atf_mugshot_tag_display_name\":\"Link &lt;a&gt;\",\"sn_atf_mugshot_value\":\"\",\"tag\":\"a\",\"isDisabled\":false,\"hash\":\"a9e8041c27d5d57ddab95cd1d26f8c1b\"}"}</mugshots_cache_json><notes/><order>3</order><snapshot display_value="6ead1d6132fa90d78a4ef7d5b247b775">332019221b3674100a4a10ad9c4bcb21</snapshot><step_config display_value="Click Component (Custom UI)">def25c4b73730300c79260bdfaf6a700</step_config><sys_class_name>sys_atf_step</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 16:41:40</sys_created_on><sys_id>a160dd221b3674100a4a10ad9c4bcb1f</sys_id><sys_mod_count>3</sys_mod_count><sys_name>Click Component (Custom UI)</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_atf_step_a160dd221b3674100a4a10ad9c4bcb1f</sys_update_name><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-28 11:39:26</sys_updated_on><table/><test display_value="Enter Budget">00590de61bf274100a4a10ad9c4bcb31</test><timeout/><warning_message/></sys_atf_step><sys_variable_value action="delete_multiple" query="document_key=a160dd221b3674100a4a10ad9c4bcb1f"/><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>a160dd221b3674100a4a10ad9c4bcb1f</document_key><order>100</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 16:41:40</sys_created_on><sys_id>94a01d221b3674100a4a10ad9c4bcb77</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-27 16:41:40</sys_updated_on><value>a9e8041c27d5d57ddab95cd1d26f8c1b</value><variable display_value="">ee05588b73730300c79260bdfaf6a749</variable></sys_variable_value></record_update>]]></payload>
+        <payload_hash>447504881</payload_hash>
+        <record_name>Click Component (Custom UI)</record_name>
+        <reverted_from/>
+        <source>8ca60de61bf274100a4a10ad9c4bcb27</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-28 11:39:26</sys_created_on>
+        <sys_id>be0551b21b3eb4101f7e113d9c4bcbf4</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17c2c33d3670000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-28 11:39:26</sys_updated_on>
+        <type>Test Step</type>
+        <update_guid>360551b2ba3eb41047b6dc65df9cfef4</update_guid>
+        <update_guid_history>360551b2ba3eb41047b6dc65df9cfef4:447504881,1ca01d22e5367410ea66ff719c5de178:470779817</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-28 11:39:42</sys_created_on>
+        <sys_db_object display_value="" name="sys_atf_step">sys_atf_step</sys_db_object>
+        <sys_id>4aa96e253576453aa40892eb8a2b3b64</sys_id>
+        <sys_metadata>a160dd221b3674100a4a10ad9c4bcb1f</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Click Component (Custom UI)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_atf_step_a160dd221b3674100a4a10ad9c4bcb1f</sys_update_name>
+        <sys_update_version display_value="sys_atf_step_a160dd221b3674100a4a10ad9c4bcb1f">be0551b21b3eb4101f7e113d9c4bcbf4</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-28 11:39:42</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

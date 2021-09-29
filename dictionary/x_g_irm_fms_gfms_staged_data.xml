@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="GFMS Staged Data" max_length="40" name="x_g_irm_fms_gfms_staged_data" sizeclass="93142" type="collection">
+        <element label="Acceptance Date" max_length="40" name="acceptance_date" type="glide_date"/>
+        <element choice="1" label="Account Type" max_length="2" name="account_type" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Adjustment (downward expenditure)" value="69"/>
+                <element inactive_on_update="false" label="Adjustment (downward)" value="59"/>
+                <element inactive_on_update="false" label="Adjustment (upward)" value="58"/>
+                <element inactive_on_update="false" label="Commitment" value="46"/>
+                <element inactive_on_update="false" label="Expenditure" value="48"/>
+                <element inactive_on_update="false" label="Obligation" value="47"/>
+            </choice>
+        </element>
+        <element label="Agency Schedule FY" max_length="2" name="agency_sched_fy" type="string"/>
+        <element label="Agency Schedule Number" max_length="9" name="agency_sched_nmbr" type="string"/>
+        <element label="Allotment" max_length="7" name="allotment" type="string"/>
+        <element label="Allotment Parent" max_length="7" name="allotment_parent" type="string"/>
+        <element label="Allotment" max_length="32" name="allotment_ref" reference="x_g_irm_fms_allotment" type="reference"/>
+        <element label="Apportionment Quarter" max_length="1" name="apportion_qtr" type="string"/>
+        <element label="Apportionment Year" max_length="2" name="apportion_year" type="string"/>
+        <element label="Appropriation" max_length="32" name="appropriation_ref" reference="x_g_irm_fms_appropriation" type="reference"/>
+        <element label="Beginning Budget FY" max_length="40" name="bbfy" type="integer"/>
+        <element label="Object Code Category" max_length="40" name="budget_object_category" type="integer"/>
+        <element label="Object Code" max_length="40" name="budget_object_code" type="integer"/>
+        <element label="Bureau" max_length="4" name="bureau" type="string"/>
+        <element label="Check Number" max_length="11" name="check_nmbr" type="string"/>
+        <element label="Cost Accocunting Data" max_length="42" name="cost_acctg_data" type="string"/>
+        <element label="Deposit Number" max_length="12" name="deposit_nmbr" type="string"/>
+        <element label="Disbursing Office" max_length="4" name="disburse_office" type="string"/>
+        <element label="Discount Type" max_length="1" name="discount_type" type="string"/>
+        <element label="Document Action" max_length="1" name="doc_action" type="string"/>
+        <element label="Document Category" max_length="2" name="doc_category" type="string"/>
+        <element label="Document Description" max_length="11" name="doc_desc" type="string"/>
+        <element label="Document Line" max_length="40" name="doc_line" type="integer"/>
+        <element label="Document Line Description" max_length="30" name="doc_line_desc" type="string"/>
+        <element label="Document Number" max_length="30" name="doc_number" type="string"/>
+        <element label="Document Type" max_length="3" name="doc_type" type="string"/>
+        <element label="Ending Budget FY" max_length="40" name="ebfy" type="integer"/>
+        <element label="Fiscal Month" max_length="2" name="fiscal_month" type="string"/>
+        <element label="Fiscal Quarter" max_length="1" name="fiscal_quarter" type="string"/>
+        <element label="Fiscal Year" max_length="2" name="fiscal_year" type="string"/>
+        <element label="Function" max_length="7" name="function" type="string"/>
+        <element label="Parent Function" max_length="9" name="function_parent" type="string"/>
+        <element label="Parent Function" max_length="32" name="function_parent_ref" reference="x_g_irmb_ams_finan_function_code" type="reference"/>
+        <element label="Function" max_length="32" name="function_ref" reference="x_g_irmb_ams_finan_function_code" type="reference"/>
+        <element label="Fund" max_length="14" name="fund" type="string"/>
+        <element label="Import Set Number" max_length="40" name="import_set_nmbr" type="string"/>
+        <element label="Import Set Row" max_length="40" name="import_set_row" type="integer"/>
+        <element label="Interest Reason Code" max_length="1" name="interest_reason_code" type="string"/>
+        <element label="Invoice Date" max_length="40" name="invoice_date" type="glide_date"/>
+        <element label="Invoice Line" max_length="40" name="invoice_line" type="integer"/>
+        <element label="Invoice Number" max_length="11" name="invoice_nmbr" type="string"/>
+        <element label="Job Number" max_length="8" name="job_nmbr" type="string"/>
+        <element label="Location" max_length="32" name="location_ref" reference="x_g_irmb_ams_finan_office_locations" type="reference"/>
+        <element label="No Year Indicator" max_length="40" name="no_year_ind" type="boolean"/>
+        <element label="Office" max_length="32" name="office_ref" reference="x_g_irmb_ams_finan_offices" type="reference"/>
+        <element label="Operating Allowance" max_length="6" name="op_allow_code" type="string"/>
+        <element label="Organization" max_length="7" name="organization" type="string"/>
+        <element label="Organization" max_length="32" name="organization_ref" reference="x_g_irm_fms_organization" type="reference"/>
+        <element label="Project" max_length="32" name="project_ref" reference="x_g_irm_fms_project" type="reference"/>
+        <element label="Revenue Source" max_length="4" name="revenue_source" type="string"/>
+        <element label="Reporting Category" max_length="4" name="rpt_category" type="string"/>
+        <element label="Accomplished Date" max_length="40" name="tran_accompl_date" type="glide_date"/>
+        <element label="Dollar Amount" max_length="20" name="tran_amt" type="currency"/>
+        <element label="Transaction Category" max_length="2" name="tran_category" type="string"/>
+        <element label="Transaction Code" max_length="3" name="tran_code" type="string"/>
+        <element label="Transaction Line" max_length="40" name="tran_line" type="integer"/>
+        <element label="Transaction Line Action" max_length="1" name="tran_line_action" type="string"/>
+        <element label="Transaction Lock Date" max_length="40" name="tran_lock_date" type="glide_date_time"/>
+        <element label="Transaction Lock Sequence" max_length="9" name="tran_lock_seq" type="string"/>
+        <element label="Transaction Number" max_length="30" name="tran_number" type="string"/>
+        <element label="Record Date" max_length="40" name="tran_record_date" type="glide_date"/>
+        <element label="User" max_length="4" name="tran_user" type="string"/>
+        <element label="Travel Advance Number " max_length="6" name="travel_advance_nmbr" type="string"/>
+        <element label="Travel Description Code" max_length="1" name="travel_desc_code" type="string"/>
+        <element label="Treasury Schedule Number" max_length="11" name="treas_sched_nmbr" type="string"/>
+        <element label="Treasury Symbol" max_length="27" name="treas_symbol" type="string"/>
+        <element label="Treasury Symbol Inter-agency" max_length="27" name="treas_symbol_alt" type="string"/>
+        <element label="Vendor Code" max_length="11" name="vendor_code" type="string"/>
+        <element label="Vendor Name" max_length="30" name="vendor_name" type="string"/>
+        <element label="Vendor Type" max_length="1" name="vendor_type" type="string"/>
+        <element label="Voucher Schedule Category" max_length="1" name="voucher_sched_category" type="string"/>
+        <element label="Voucher Schedule Type" max_length="1" name="voucher_sched_type" type="string"/>
+        <index name="index">
+            <element name="tran_number"/>
+        </index>
+        <index name="index2">
+            <element name="function_ref"/>
+        </index>
+        <index name="index3">
+            <element name="location_ref"/>
+        </index>
+        <index name="index4">
+            <element name="project_ref"/>
+        </index>
+        <index name="index5">
+            <element name="organization_ref"/>
+        </index>
+        <index name="index6">
+            <element name="appropriation_ref"/>
+        </index>
+        <index name="index7">
+            <element name="function_parent_ref"/>
+        </index>
+        <index name="index8">
+            <element name="office_ref"/>
+        </index>
+        <index name="index9">
+            <element name="allotment_ref"/>
+        </index>
+    </element>
+</database>

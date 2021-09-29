@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Invoice" max_length="40" name="x_g_irm_fms_invoice" sizeclass="2801" type="collection">
+    <element label="Invoice" max_length="40" name="x_g_irm_fms_invoice" sizeclass="2803" type="collection">
+        <element label="Check Number" max_length="15" name="check_nmbr" type="string"/>
         <element label="Reference Number" max_length="20" name="contract_number" type="string"/>
         <element label="Estimated Cost" max_length="20" name="estimated_cost" type="currency"/>
+        <element label="GFMS Transaction Number" max_length="30" name="gfms_tran_nmbr" type="string"/>
         <element label="Invoice Amount" mandatory="true" max_length="20" name="invoice_amount" type="currency"/>
+        <element label="Invoice Date" max_length="40" name="invoice_date" type="glide_date"/>
+        <element label="Invoice Line" max_length="40" name="invoice_line" type="integer"/>
         <element label="Invoice Number" mandatory="true" max_length="20" name="invoice_nmbr" type="string"/>
         <element label="Notes" max_length="500" name="notes" type="string"/>
         <element label="Obligation" mandatory="true" max_length="15" name="obligation" type="string"/>
@@ -10,6 +14,9 @@
         <element label="Paid Date" max_length="40" name="paid_date" type="glide_date"/>
         <element label="Post" max_length="32" name="post_ref" reference="x_g_irm_fms_post" type="reference"/>
         <index name="index">
+            <element name="gfms_tran_nmbr"/>
+        </index>
+        <index name="index2">
             <element name="post_ref"/>
         </index>
     </element>

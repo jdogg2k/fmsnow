@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step">
+    <sys_atf_step action="DELETE">
+        <active>true</active>
+        <copied_from/>
+        <description>Run Server Side Validation Script</description>
+        <display_name>Run Server Side Script</display_name>
+        <inputs/>
+        <mugshots_cache_json/>
+        <notes/>
+        <order>10</order>
+        <snapshot/>
+        <step_config display_value="Run Server Side Script">41de4a935332120028bc29cac2dc349a</step_config>
+        <sys_class_name>sys_atf_step</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 21:01:21</sys_created_on>
+        <sys_id>b51acee21bf674100a4a10ad9c4bcb84</sys_id>
+        <sys_mod_count>15</sys_mod_count>
+        <sys_name>Run Server Side Script</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_atf_step_b51acee21bf674100a4a10ad9c4bcb84</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-28 11:19:30</sys_updated_on>
+        <table/>
+        <test display_value="Enter Budget">00590de61bf274100a4a10ad9c4bcb31</test>
+        <timeout/>
+        <warning_message/>
+    </sys_atf_step>
+    <sys_variable_value action="DELETE" query="document_key=b51acee21bf674100a4a10ad9c4bcb84"/>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>b51acee21bf674100a4a10ad9c4bcb84</document_key>
+        <order>200</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 21:01:21</sys_created_on>
+        <sys_id>101cc6661bf674100a4a10ad9c4bcb60</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-28 11:19:30</sys_updated_on>
+        <value>(function(outputs, steps, stepResult, assertEqual) {&#13;
+    var budget_id = steps('4819e9661b7674100a4a10ad9c4bcbd6').first_record;&#13;
+	outputs.table = budget_id;&#13;
+    stepResult.setOutputMessage("Success");&#13;
+    stepResult.setSuccess();&#13;
+    return true;&#13;
+})(outputs, steps, stepResult, assertEqual);&#13;
+</value>
+        <variable display_value="">989d9e235324220002c6435723dc3484</variable>
+    </sys_variable_value>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>b51acee21bf674100a4a10ad9c4bcb84</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 21:01:21</sys_created_on>
+        <sys_id>181cc6661bf674100a4a10ad9c4bcb5f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 21:01:21</sys_updated_on>
+        <value>3.1</value>
+        <variable display_value="">42f2564b73031300440211d8faf6a777</variable>
+    </sys_variable_value>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_atf_step_b51acee21bf674100a4a10ad9c4bcb84</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step"><sys_atf_step action="INSERT_OR_UPDATE"><active>true</active><copied_from/><description>Run Server Side Validation Script</description><display_name>Run Server Side Script</display_name><inputs/><mugshots_cache_json/><notes/><order>10</order><snapshot/><step_config display_value="Run Server Side Script">41de4a935332120028bc29cac2dc349a</step_config><sys_class_name>sys_atf_step</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 21:01:21</sys_created_on><sys_id>b51acee21bf674100a4a10ad9c4bcb84</sys_id><sys_mod_count>15</sys_mod_count><sys_name>Run Server Side Script</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_atf_step_b51acee21bf674100a4a10ad9c4bcb84</sys_update_name><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-28 11:19:30</sys_updated_on><table/><test display_value="Enter Budget">00590de61bf274100a4a10ad9c4bcb31</test><timeout/><warning_message/></sys_atf_step><sys_variable_value action="delete_multiple" query="document_key=b51acee21bf674100a4a10ad9c4bcb84"/><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>b51acee21bf674100a4a10ad9c4bcb84</document_key><order>200</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 21:01:21</sys_created_on><sys_id>101cc6661bf674100a4a10ad9c4bcb60</sys_id><sys_mod_count>9</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-28 11:19:30</sys_updated_on><value>(function(outputs, steps, stepResult, assertEqual) {&#13;
+    var budget_id = steps('4819e9661b7674100a4a10ad9c4bcbd6').first_record;&#13;
+	outputs.table = budget_id;&#13;
+    stepResult.setOutputMessage("Success");&#13;
+    stepResult.setSuccess();&#13;
+    return true;&#13;
+})(outputs, steps, stepResult, assertEqual);&#13;
+</value><variable display_value="">989d9e235324220002c6435723dc3484</variable></sys_variable_value><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>b51acee21bf674100a4a10ad9c4bcb84</document_key><order>100</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 21:01:21</sys_created_on><sys_id>181cc6661bf674100a4a10ad9c4bcb5f</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-27 21:01:21</sys_updated_on><value>3.1</value><variable display_value="">42f2564b73031300440211d8faf6a777</variable></sys_variable_value></record_update>]]></payload>
+        <payload_hash>-735168836</payload_hash>
+        <record_name>Run Server Side Script</record_name>
+        <reverted_from/>
+        <source>8ca60de61bf274100a4a10ad9c4bcb27</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-28 11:19:31</sys_created_on>
+        <sys_id>3a701d7e1bfab4101f7e113d9c4bcb45</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17c2c2195c10000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-28 11:19:31</sys_updated_on>
+        <type>Test Step</type>
+        <update_guid>7670d13e14fab41039aed7275b063f71</update_guid>
+        <update_guid_history>7670d13e14fab41039aed7275b063f71:-735168836,1cdd4dba4afab410ff9b2d3be4d66639:-1719825872,702ccd7a1dfab41087ff97f7f50dea2b:616871905,02b7c1b6b6fab4102a25bd8c304ebe14:1106601067,86b79aeeccf6741063f02a0c099471d3:1623029884,5f7752eee5f67410471ae0b13f2a8e13:-1630203758,4d851e6e68f674103726d80ea529d4ce:1846126854,ed631eeac3f674108139c4568468e4d4:791548581,99af4a2a8ff674100cacd38d0f0528f5:1846126854,6bbdcea604f67410e64fa6ff8d04f04d:-1630203758,ce0dc2a6c5f67410c9e7476cf9c825f8:603376726,1cdc02a6c5f67410a5acc817bba40cda:-191830002,101cc66661f67410fe18945fa23b1d62:523597163</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-28 11:22:15</sys_created_on>
+        <sys_db_object display_value="" name="sys_atf_step">sys_atf_step</sys_db_object>
+        <sys_id>01173e677d8e4240936e9495d9f99900</sys_id>
+        <sys_metadata>b51acee21bf674100a4a10ad9c4bcb84</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Run Server Side Script</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_atf_step_b51acee21bf674100a4a10ad9c4bcb84</sys_update_name>
+        <sys_update_version display_value="sys_atf_step_b51acee21bf674100a4a10ad9c4bcb84">3a701d7e1bfab4101f7e113d9c4bcb45</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-28 11:22:15</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

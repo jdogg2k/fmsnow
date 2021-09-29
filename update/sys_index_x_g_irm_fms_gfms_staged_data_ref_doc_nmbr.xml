@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_index">
+    <sys_index action="INSERT_OR_UPDATE">
+        <col_name_string>ref_doc_nmbr</col_name_string>
+        <index_col_name>37ce59071bf5f0101f7e113d9c4bcb6f</index_col_name>
+        <logical_table_name>x_g_irm_fms_gfms_staged_data</logical_table_name>
+        <sys_class_name>sys_index</sys_class_name>
+        <sys_created_by>system</sys_created_by>
+        <sys_created_on>2021-08-10 14:24:54</sys_created_on>
+        <sys_id>8505a9031bf1f0100a4a10ad9c4bcb45</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_g_irm_fms_gfms_staged_data</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_index_x_g_irm_fms_gfms_staged_data_ref_doc_nmbr</sys_update_name>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2021-08-10 14:24:54</sys_updated_on>
+        <table display_value="GFMS Staged Data" name="x_g_irm_fms_gfms_staged_data">7da981431bb5f0101f7e113d9c4bcbbe</table>
+        <unique_index>false</unique_index>
+    </sys_index>
+</record_update>

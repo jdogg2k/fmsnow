@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step">
+    <sys_atf_step action="DELETE">
+        <active>true</active>
+        <copied_from/>
+        <description>Confirm that the following UI actions are visible: Insert</description>
+        <display_name>UI Action Visibility Validation (SP)</display_name>
+        <inputs/>
+        <mugshots_cache_json/>
+        <notes/>
+        <order>9</order>
+        <snapshot/>
+        <step_config display_value="UI Action Visibility Validation (SP)">02b5128223230300ab65ff5e17bf658e</step_config>
+        <sys_class_name>sys_atf_step</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 18:17:00</sys_created_on>
+        <sys_id>86366da21b7674100a4a10ad9c4bcb8d</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>UI Action Visibility Validation (SP)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_atf_step_86366da21b7674100a4a10ad9c4bcb8d</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 18:17:17</sys_updated_on>
+        <table>x_g_irm_fms_budget</table>
+        <test display_value="Enter Budget">00590de61bf274100a4a10ad9c4bcb31</test>
+        <timeout/>
+        <warning_message/>
+    </sys_atf_step>
+    <sys_variable_value action="DELETE" query="document_key=86366da21b7674100a4a10ad9c4bcb8d"/>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>86366da21b7674100a4a10ad9c4bcb8d</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 18:17:00</sys_created_on>
+        <sys_id>307661e21b7674100a4a10ad9c4bcb4b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 18:17:00</sys_updated_on>
+        <value>x_g_irm_fms_budget</value>
+        <variable display_value="">cd5b1ec223230300ab65ff5e17bf65c9</variable>
+    </sys_variable_value>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>86366da21b7674100a4a10ad9c4bcb8d</document_key>
+        <order>200</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 18:17:00</sys_created_on>
+        <sys_id>787661e21b7674100a4a10ad9c4bcb4a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 18:17:00</sys_updated_on>
+        <value>4326fb390a0a0b340099a93580d98f32</value>
+        <variable display_value="">7acbdec223230300ab65ff5e17bf65ea</variable>
+    </sys_variable_value>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>86366da21b7674100a4a10ad9c4bcb8d</document_key>
+        <order>300</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 18:17:00</sys_created_on>
+        <sys_id>7c7661e21b7674100a4a10ad9c4bcb4a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 18:17:00</sys_updated_on>
+        <value/>
+        <variable display_value="">1f1c920623230300ab65ff5e17bf6504</variable>
+    </sys_variable_value>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_atf_step_86366da21b7674100a4a10ad9c4bcb8d</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step"><sys_atf_step action="INSERT_OR_UPDATE"><active>true</active><copied_from/><description>Confirm that the following UI actions are visible: Insert</description><display_name>UI Action Visibility Validation (SP)</display_name><inputs/><mugshots_cache_json/><notes/><order>9</order><snapshot/><step_config display_value="UI Action Visibility Validation (SP)">02b5128223230300ab65ff5e17bf658e</step_config><sys_class_name>sys_atf_step</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 18:17:00</sys_created_on><sys_id>86366da21b7674100a4a10ad9c4bcb8d</sys_id><sys_mod_count>2</sys_mod_count><sys_name>UI Action Visibility Validation (SP)</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_atf_step_86366da21b7674100a4a10ad9c4bcb8d</sys_update_name><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-27 18:17:17</sys_updated_on><table>x_g_irm_fms_budget</table><test display_value="Enter Budget">00590de61bf274100a4a10ad9c4bcb31</test><timeout/><warning_message/></sys_atf_step><sys_variable_value action="delete_multiple" query="document_key=86366da21b7674100a4a10ad9c4bcb8d"/><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>86366da21b7674100a4a10ad9c4bcb8d</document_key><order>100</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 18:17:00</sys_created_on><sys_id>307661e21b7674100a4a10ad9c4bcb4b</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-27 18:17:00</sys_updated_on><value>x_g_irm_fms_budget</value><variable display_value="">cd5b1ec223230300ab65ff5e17bf65c9</variable></sys_variable_value><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>86366da21b7674100a4a10ad9c4bcb8d</document_key><order>200</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 18:17:00</sys_created_on><sys_id>787661e21b7674100a4a10ad9c4bcb4a</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-27 18:17:00</sys_updated_on><value>4326fb390a0a0b340099a93580d98f32</value><variable display_value="">7acbdec223230300ab65ff5e17bf65ea</variable></sys_variable_value><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>86366da21b7674100a4a10ad9c4bcb8d</document_key><order>300</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 18:17:00</sys_created_on><sys_id>7c7661e21b7674100a4a10ad9c4bcb4a</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-27 18:17:00</sys_updated_on><value/><variable display_value="">1f1c920623230300ab65ff5e17bf6504</variable></sys_variable_value></record_update>]]></payload>
+        <payload_hash>-1237002142</payload_hash>
+        <record_name>UI Action Visibility Validation (SP)</record_name>
+        <reverted_from/>
+        <source>8ca60de61bf274100a4a10ad9c4bcb27</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 18:17:17</sys_created_on>
+        <sys_id>b08669e21b7674100a4a10ad9c4bcbb3</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17c2879b53d0000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 18:17:17</sys_updated_on>
+        <type>Test Step</type>
+        <update_guid>388669e2db7674101df5bf72077b54b2</update_guid>
+        <update_guid_history>388669e2db7674101df5bf72077b54b2:-1237002142,7c7661e237767410f4a0f300dac0ef4c:-567372854</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 18:24:40</sys_created_on>
+        <sys_db_object display_value="" name="sys_atf_step">sys_atf_step</sys_db_object>
+        <sys_id>94b1014fc40d47009f9c41c9951e1539</sys_id>
+        <sys_metadata>86366da21b7674100a4a10ad9c4bcb8d</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>UI Action Visibility Validation (SP)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_atf_step_86366da21b7674100a4a10ad9c4bcb8d</sys_update_name>
+        <sys_update_version display_value="sys_atf_step_86366da21b7674100a4a10ad9c4bcb8d">b08669e21b7674100a4a10ad9c4bcbb3</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 18:24:40</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>
