@@ -4,6 +4,7 @@
         <angular_module/>
         <formatter>test_butt</formatter>
         <name>test_butt's_butt</name>
+        <seismic_component/>
         <sys_class_name>sys_ui_formatter</sys_class_name>
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-07-10 17:13:11</sys_created_on>

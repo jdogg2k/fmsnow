@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_fix">
+    <sys_script_fix action="INSERT_OR_UPDATE">
+        <before>false</before>
+        <description>**DO NOT RUN IN A PRODUCTION ENVIRONMENT**
+**FMS Version**
+--Several checks are in-place to prevent this; will throw an error if attempted to be run in production.
+
+Cleanses, sanitizes, or obfuscates the data tables within the 1F application scope, i.e, table name that start with: x_g_irm
+</description>
+        <name>OneFinancials - Cleanse Data - FMS</name>
+        <record_for_rollback>false</record_for_rollback>
+        <script><![CDATA[//==============> SCROLL TO BOTTOM FOR EXECUTION OPTIONS <==============// 
+//                | | | | | | | | | | | | | | | | | | |                 //
+//                V V V V V V V V V V V V V V V V V V V                 //
+var DataCleanse = Class.create();
+DataCleanse.prototype = {
+    initialize: function() {
+        this.verbose = true;      // Enable or disable extensive logging  // 
+        this.multLower = 0.5000;  // Lower end of random multiplier value // 
+        this.multUpper = 1.5000;  // Upper end of random multiplier value // 
+        // The following columns should always be preserved and values remain unaltered
+        this.colWhiteList = [ 
+            "fy",
+            "fiscal_year",
+            "fiscal_month",
+            "fiscal_quarter",
+            "code",
+            "org_code",
+            "benefiting_org_code",
+            "number",
+            "investment",
+            "budget_code",
+            "project_code",
+            "fund_code",
+            "vendor_code",
+            "function_code",
+            "allotment_code",
+            "region_code",
+            "contract_piid",
+            "contract_number",
+            "document_number",
+            "obligation_number",
+            "transfer_type_code",
+            "appropriation_code"
+        ];
+
+        // This dictionary is a placeholder for text substitution of extremely sensitive words or phrases
+        this.replaceDict = { 
+            " the "    : " a ",
+            " door "   : " window ",
+            " dog "    : " cat "
+        };
+    },
+    CleanseApplicationData: function(applName, numberMult) {
+        if (!this.CleanseValidateInstance()) return;
+        var tables = new GlideRecord('sys_db_object');
+        tables.addQuery('sys_scope.name', applName);
+        tables.addQuery('sys_class_name', 'sys_db_object');
+        tables.addQuery('name', 'NOT LIKE', 'sys_%');
+        tables.addQuery('name', 'NOT LIKE', '%_load_%');
+        tables.addQuery('name', 'NOT LIKE', '%_imp_tmpl_%');
+        tables.addQuery('name', 'NOT LIKE', '%_import_data%');
+        tables.addQuery('name', 'NOT LIKE', '%_user_load');
+        if (gs.getCurrentScopeName() == 'rhino.global')
+            tables.addQuery('access', 'public');
+        tables.query();
+        if (!tables.hasNext()) {
+            gs.debug('***ERROR*** No tables found for application - ' + applName, 'CleanseApplicationData   ');
+            return;
+        }
+        while (tables.next()) {
+            this.CleanseTableData(tables.getValue('name'), null, numberMult, this.replaceDict, true, true, true, true, (tables.getValue('super_class') != "sys_metadata"), this.CleanseGetTableAudit(tables.getValue('name')) == true);
+        }
+        gs.debug('Operation complete for application = ' + applName, 'CleanseApplicationData   ');
+    },
+    CleanseTableData: function(tableName, rec_id, numberMult, textRepl, fChar, fCurr, fNum, fJournal, fAttach, fAudit) {
+        if (!tableName) return;
+        if (!this.CleanseValidateInstance()) return;
+        if (!this.CleanseValidateScope(tableName)) return;
+        if (!textRepl) textRepl = this.replaceDict;
+        if (!numberMult) numberMult = this.CleanseGetNumberMultiplier();
+		if (!fAudit) fAudit = this.CleanseGetTableAudit(tableName);
+        var fieldNames = this.CleanseGetTableColumns(tableName, fChar, fCurr, fNum, fJournal);
+        if (fieldNames.length == 0) return;
+        var tbl = new GlideRecord(tableName);
+        if (rec_id) tbl.addQuery('sys_id', rec_id);
+        tbl.query();
+        while (tbl.next()) {
+            var cleansedValue;
+            var cleansedFields = [];
+            rec_id = tbl.getValue('sys_id');
+            for (var i = 0; i < fieldNames.length; i++) {
+                var cleansedField = false;
+                var type = tbl.getElement(fieldNames[i]).getED().getInternalType();
+                if (type == 'string' && ((fChar || false) == true)) {
+                    cleansedValue = this.TransformCharacterValue(fieldNames[i], tbl.getValue(fieldNames[i]), textRepl);
+                    if (cleansedValue != tbl.getValue(fieldNames[i])) {
+                        cleansedField = true;
+                        tbl.setValue(fieldNames[i], cleansedValue);
+                    }
+                }
+                if ((type == 'integer' || type == 'decimal') && ((fNum || false) == true)) {
+                    cleansedValue = this.TransformNumberValue(fieldNames[i], tbl.getValue(fieldNames[i]), numberMult, type == 'integer');
+                    if (cleansedValue != tbl.getValue(fieldNames[i])) {
+                        cleansedField = true;
+                        tbl.setValue(fieldNames[i], cleansedValue);
+                    }
+                }
+                if (type == 'currency' && ((fCurr || false) == true)) {
+                    cleansedValue = this.TransformCurrencyValue(fieldNames[i], parseFloat(tbl.getValue(fieldNames[i])), numberMult);
+                    if (cleansedValue != tbl.getValue(fieldNames[i])) {
+                       cleansedField = true;
+                       tbl.setValue(fieldNames[i], cleansedValue);
+                    }
+                }
+                if (type == 'journal' && ((fJournal || false) == true)) {
+                    cleansedField = true;
+                    this.CleanseTableJournal(tableName, fieldNames[i], rec_id, true);
+                }
+                if (cleansedField) {
+                    cleansedFields.push(fieldNames[i]);
+                    if (this.verbose == true)
+                        gs.debug('Cleansed => ' + tableName + ' / ' + rec_id + ' / ' + fieldNames[i], 'CleanseTableData         ');
+                }
+            }
+            if ((fAttach || false) == true) {
+                this.CleanseTableAttachments(tableName, rec_id);
+                if (fieldNames.indexOf("number_of_attachments") > -1)
+                    tbl.setValue("number_of_attachments", 0);
+            }
+            if (cleansedFields.length > 0) {
+                tbl.autoSysFields(false);
+                tbl.setWorkflow(false);
+                if (tbl.update() == null) gs.debug('***ERROR*** Row update failed - ' + tbl.getLastErrorMessage(), 'CleanseTableData         ');
+                if ((fAudit || false) == true)
+                    this.CleanseTableAuditHistory(tableName, cleansedFields, rec_id);
+            }
+        }
+        gs.debug('Operation complete for table = ' + tableName, 'CleanseTableData         ');
+    },
+    CleanseGetApplName: function(tableName) {
+        var applName = "INVALID TABLE NAME";
+        if (!this.CleanseValidateInstance()) return;
+        var tbl = new GlideRecord('sys_db_object');
+        tbl.addQuery('name', tableName);
+        tbl.addQuery('sys_class_name', 'sys_db_object');
+        tbl.setLimit(1);
+        tbl.query();
+        while (tbl.next()) {
+            applName = tbl.getDisplayValue('sys_scope');
+        }
+        return applName;
+    },
+    CleanseGetTableAudit: function(tableName) {
+        var isAudit = false;
+        var tbl = new GlideRecord('sys_dictionary');
+        tbl.addQuery('name', tableName);
+        tbl.addQuery('internal_type', 'collection');
+        tbl.setLimit(1);
+        tbl.query();
+        while (tbl.next()) {
+            isAudit = tbl.getValue('audit');
+        }
+        return isAudit;
+    }, 
+    CleanseGetTableColumns: function(tableName, fChar, fCurr, fNum, fJournal) {
+        var cleanseCols = [];
+        var cols = new GlideRecord('sys_dictionary');
+        cols.addQuery('name', tableName);
+        cols.addNotNullQuery('element');
+        cols.addQuery('element', 'NOT LIKE', 'sys_%');
+        cols.addQuery('element', 'NOT LIKE', 'u_%');
+        cols.addEncodedQuery('elementNOT IN' + this.colWhiteList.join(","));
+        cols.addQuery('display', false);
+        cols.addQuery('read_only', false);
+        cols.addQuery('virtual', false);
+        var intType = "";
+        if ((fChar || false) == true) intType += (intType.length > 0 ? '^OR' : '') + 'internal_type=string';
+        if ((fCurr || false) == true) intType += (intType.length > 0 ? '^OR' : '') + 'internal_type=currency';
+        if ((fNum  || false) == true) intType += (intType.length > 0 ? '^OR' : '') + 'internal_type=decimal^ORinternal_type=integer';
+        if ((fJournal || false) == true) intType += (intType.length > 0 ? '^OR' : '') + 'internal_type=journal';
+        cols.addEncodedQuery(intType);
+        cols.query();
+        while (cols.next()) {
+            var colName = cols.getValue('element');
+            cleanseCols.push(colName);
+        }
+        if (cleanseCols.length == 0) 
+            gs.debug('***WARNING*** No columns for cleanse operations found in table "' + tableName + '"', 'CleanseGetTableColumns   ');
+        else if (this.verbose == true)
+            gs.debug('Table = ' + tableName + '    Columns to cleanse = ' + cleanseCols.join(", "), 'CleanseGetTableColumns   ');
+        return cleanseCols;
+    }, 
+    CleanseGetNumberMultiplier: function(lower, upper) {
+        if (!lower) lower = this.multLower;
+        if (!upper) upper = this.multUpper;
+        var mult = Number((Math.random() * (upper - lower) + lower).toFixed(4));
+        if (this.verbose == true)
+            gs.debug('Random multiplier = ' + mult, 'CleanseGetMultiplier     ');
+        return mult;
+    },
+    TransformNumberValue: function(fieldName, fieldValue, numberMult, isInt) {
+        if (!fieldValue || fieldValue.length == 0) return fieldValue;
+        if (fieldName.substring(0, 4) == 'sys_') return fieldValue;
+        if (this.colWhiteList.indexOf(fieldName) > -1) return fieldValue;
+        var newValue = fieldValue;
+        if (!numberMult) numberMult = this.CleanseGetNumberMultiplier();
+        if (((isInt || false) && isInt == true) || (newValue.toString().indexOf(".") == -1)) 
+            newValue = Math.ceil(newValue * numberMult);
+        else
+            newValue = newValue * numberMult;
+        if (this.verbose == true)
+            gs.debug('Field = ' + fieldName + '    Old value = ' + fieldValue + '     New value = ' + newValue, 'TransformNumberValue     ');
+        return newValue;
+    },
+    TransformCurrencyValue: function(fieldName, fieldValue, numberMult) {
+        if (!fieldValue || fieldValue.length == 0) return fieldValue;
+        if (fieldName.substring(0, 4) == 'sys_') return fieldValue;
+        if (this.colWhiteList.indexOf(fieldName) > -1) return fieldValue;
+        var newValue = fieldValue;
+        if (!numberMult) numberMult = this.CleanseGetNumberMultiplier();
+        newValue = Number((newValue * numberMult).toFixed(2));
+        if (this.verbose == true)
+            gs.debug('Field = ' + fieldName + '    Old value = ' + fieldValue + '     New value = ' + newValue, 'TransformCurrencyValue   ');
+        return newValue;
+    },
+    TransformCharacterValue: function(fieldName, fieldValue, textRepl) {
+        if (!fieldValue || fieldValue.length == 0) return fieldValue;
+        if (fieldName.substring(0, 4) == 'sys_') return fieldValue;
+        if (this.colWhiteList.indexOf(fieldName) > -1) return fieldValue;
+        //var newValue = fieldValue;
+        var newValue = "";
+//        var entries = Object.entries(textRepl);
+//        entries.forEach(function(para) {
+//            var find = para[0];
+//            var regExp = new RegExp(find, 'g');
+//            newValue = newValue.replace(regExp, para[1]);
+//        });
+        //newValue = newValue.split('').sort(function() { return 0.5-Math.random(); }).join('');
+        newValue = fieldValue.split('').sort(function() { return 0.5-Math.random(); }).join('');
+        //
+        if (this.verbose == true)
+            gs.debug('Field = ' + fieldName + '    Old value = ' + fieldValue, 'TransformCharacterValue  ');
+            gs.debug('Field = ' + fieldName + '    New value = ' + newValue, 'TransformCharacterValue  ');
+        return newValue;
+    },
+    CleanseTableNumber: function(tableName, fieldNames, numberMult, rec_id) {
+        if (!tableName) return;
+        if (!this.CleanseValidateInstance()) return;
+        if (!this.CleanseValidateScope(tableName)) return;
+        if (!numberMult) numberMult = this.CleanseGetNumberMultiplier();
+        if (!fieldNames || fieldNames.length == 0) 
+            fieldNames = this.CleanseGetTableColumns(tableName, false, false, true, false);
+        if (fieldNames.length == 0) return;
+        var gr = new GlideRecord(tableName);
+        if (rec_id) gr.addQuery('sys_id', rec_id);
+        gr.query();
+        var rows = gr.getRowCount();
+        if (rows == 0)
+            gs.debug('Cleansed => ' + tableName + ' / ' + (rec_id || 'All Rows') + " / " + (fieldNames.length > 0 ? fieldNames.join(", ") : 'All Number') + ' (0 rows affected)', 'CleanseTableNumber       ');
+        gr.autoSysFields(false);
+        gr.setWorkflow(false);
+        while (gr.next()) {
+            for (var i = 0; i < fieldNames.length; i++) {
+                gr.setValue(fieldNames[i], this.TransformNumberValue(fieldNames[i], gr.getValue(fieldNames[i]), numberMult));
+            }
+            if (gr.update() == null) gs.debug('***ERROR*** Row update failed - ' + tbl.getLastErrorMessage(), 'CleanseTableNumber       '); 
+            if (this.verbose == true)
+                gs.debug('Cleansed => ' + tableName + ' / ' + (rec_id || gr.getUniqueValue()) + ' / ' + fieldNames.join(", "), 'CleanseTableNumber       ');
+        }
+    },
+    CleanseTableCurrency: function(tableName, fieldNames, numberMult, rec_id) {
+        if (!tableName) return;
+        if (!this.CleanseValidateInstance()) return;
+        if (!this.CleanseValidateScope(tableName)) return;
+        if (!numberMult) numberMult = this.CleanseGetNumberMultiplier();
+        if (!fieldNames || fieldNames.length == 0) 
+            fieldNames = this.CleanseGetTableColumns(tableName, false, true, false, false);
+        if (fieldNames.length == 0) return;
+        var gr = new GlideRecord(tableName);
+        if (rec_id) gr.addQuery('sys_id', rec_id);
+        gr.query();
+        var rows = gr.getRowCount();
+        if (rows == 0)
+            gs.debug('Cleansed => ' + tableName + ' / ' + (rec_id || 'All Rows') + " / " + (fieldNames.length > 0 ? fieldNames.join(", ") : 'All Currency') + ' (0 rows affected)', 'CleanseTableCurrency     ');
+        gr.autoSysFields(false);
+        gr.setWorkflow(false);
+        while (gr.next()) {
+            for (var i = 0; i < fieldNames.length; i++) {
+                gr.setValue(fieldNames[i], this.TransformCurrencyValue(fieldNames[i], parseFloat(gr.getValue(fieldNames[i])), numberMult));
+            }
+            if (gr.update() == null) gs.debug('***ERROR*** Row update failed - ' + tbl.getLastErrorMessage(), 'CleanseTableCurrency     '); 
+            if (this.verbose == true)
+                gs.debug('Cleansed => ' + tableName + ' / ' + (rec_id || gr.getUniqueValue()) + ' / ' + fieldNames.join(", "), 'CleanseTableCurrency     ');
+        }
+    },
+    CleanseTableText: function(tableName, fieldNames, textRepl, rec_id) {
+        if (!tableName) return;
+        if (!this.CleanseValidateInstance()) return;
+        if (!this.CleanseValidateScope(tableName)) return;
+        if (!textRepl) textRepl = this.replaceDict;
+        if (!fieldNames || fieldNames.length == 0) 
+            fieldNames = this.CleanseGetTableColumns(tableName, true, false, false, false);
+        if (fieldNames.length == 0) return;
+        var gr = new GlideRecord(tableName);
+        if (rec_id) gr.addQuery('sys_id', rec_id);
+        gr.query();
+        var rows = gr.getRowCount();
+        if (rows == 0)
+            gs.debug('Cleansed => ' + tableName + ' / ' + (rec_id || 'All Rows') + ' / ' + (fieldNames.length > 0 ? fieldNames.join(", ") : ' / All Text') + ' (0 rows affected)', 'CleanseTableText         ');
+        gr.autoSysFields(false);
+        gr.setWorkflow(false);
+        while (gr.next()) {
+            for (var i = 0; i < fieldNames.length; i++) {
+                gr.setValue(fieldNames[i], this.TransformCharacterValue(fieldNames[i], gr.getValue(fieldNames[i]), textRepl));
+            }
+            if (gr.update() == null) gs.debug('***ERROR*** Row update failed - ' + tableName.getLastErrorMessage(), 'CleanseTableText         '); 
+            if (this.verbose == true)
+                gs.debug('Cleansed => ' + tableName + ' / ' + (rec_id || gr.getUniqueValue()) + ' / ' + fieldNames.join(", "), 'CleanseTableText         ');
+        }
+    },
+    CleanseTableAttachments: function(tableName, rec_id) {
+        var attachCount = 0;
+        if (!tableName) return;
+        if (!this.CleanseValidateInstance()) return;
+        if (!this.CleanseValidateScope(tableName)) return;
+        var gsa = new GlideSysAttachment();
+        var att = new GlideRecord('sys_attachment');
+        att.addQuery('table_name', tableName);
+        if (rec_id) att.addQuery('table_sys_id', rec_id);
+        att.query();
+        att.autoSysFields(false);
+        att.setWorkflow(false);
+        if (!att.hasNext())
+            gs.debug('Cleansed => ' + tableName + ' / ' + (rec_id || 'All Rows') + ' (0 rows affected)', 'CleanseTableAttachments  ');
+        while (att.next()) {
+            attachCount += 1;
+            gsa.deleteAttachment(att.sys_id);
+            if (this.verbose == true)
+                gs.debug('Cleansed => ' + tableName + ' / ' + att.getValue('table_sys_id') + ' / ' + att.getValue('file_name'), 'CleanseTableAttachments  ');
+        }
+        if (attachCount > 0)
+            gs.debug('Cleansed => ' + tableName + ' / All Rows (' + attachCount + ' rows affected)', 'CleanseTableAttachments  ');
+    },
+    CleanseTableAuditHistory: function(tableName, fieldNames, rec_id) {
+        if (!tableName) return;
+        if (!this.CleanseValidateInstance()) return;
+        if (!this.CleanseValidateScope(tableName)) return;
+        if (this.CleanseGetTableAudit(tableName) != true) {
+            gs.debug('***WARNING*** Audit is not enabled for table "' + tableName + '"', 'CleanseTableAuditHistory ');
+            return;
+        }
+        if (!fieldNames || fieldNames.length == 0) 
+            fieldNames = this.CleanseGetTableColumns(tableName, true, true, true, true);
+        if (fieldNames.length == 0) return;
+        var aud = new GlideRecord('sys_audit');
+        aud.addQuery('tablename', tableName);
+        aud.addEncodedQuery('fieldnameIN' + fieldNames.join(","));
+        if (rec_id) aud.addQuery('documentkey', rec_id);
+        aud.query();
+        var rows = aud.getRowCount();
+        aud.deleteMultiple();
+        gs.debug('Cleansed => ' + tableName + ' / ' + (rec_id || 'All Rows') + ' / ' + fieldNames.join(", ") + ' (' + rows + ' rows affected)', 'CleanseTableAuditHistory ');
+    },
+    CleanseTableJournal: function(tableName, fieldNames, rec_id, suppressMsg) {
+        if (!tableName) return;
+        if (!this.CleanseValidateScope(tableName)) return;
+        if (!fieldNames || fieldNames.length == 0) 
+            fieldNames = this.CleanseGetTableColumns(tableName, false, false, false, true);
+        if (fieldNames.length == 0) return;
+        var je = new GlideRecord('sys_journal_field');
+        je.addQuery('name', tableName);
+        je.addEncodedQuery('elementIN' + fieldNames.join(","));
+        if (rec_id) je.addQuery('element_id', rec_id);
+        je.query();
+        je.autoSysFields(false);
+        je.setWorkflow(false);
+        var rows = je.getRowCount();
+        je.deleteMultiple();
+        if (suppressMsg && suppressMsg == true) return;
+        gs.debug('Cleansed => ' + tableName + ' / ' + (rec_id || 'All Rows') + ' / ' + fieldNames.join(", ") + ' (' + rows + ' rows affected)', 'CleanseTableJournal      ');
+    },
+    CleanseValidateInstance: function() {
+        var isValid = false;
+        var instance = gs.getProperty('instance_name').split(".");
+        if (instance[0].toUpperCase() != "SEIRMPROD" && instance[0].toUpperCase() != "SEIRMPROD3") isValid = true;
+        if (gs.getProperty('glide.db.clone.allow_clone_target')) isValid = true; else isValid = false;
+        if (!isValid)
+            gs.debug('***ERROR*** Instance is invalid for data cleanse operations.', 'CleanseValidateInstance  ');
+        return isValid;
+    },
+    CleanseValidateScope: function(tableName) {
+        
+        var applName = "";
+        var isValid = true;
+        /** NOT working in scoped-version
+         * 
+        var tbl = new GlideRecord('sys_db_object');
+        tbl.addQuery('name', tableName);
+        tbl.addQuery('sys_class_name', 'sys_db_object');
+        tbl.setLimit(1);
+        tbl.query();
+        if (!tbl.hasNext()) isValid = false;
+        while (tbl.next()) {
+            applName = tbl.getDisplayValue('sys_scope');
+        }
+        if (applName == "Global") isValid = false;
+        if (tableName.substring(0, 7) != 'x_g_irm') isValid = false;
+        if (!isValid)
+            gs.debug('***ERROR*** Table "' + (tableName || 'unspecified') + (applName.length > 0 ? '" with Scope: "' + applName : '') + '" is invalid for data cleanse operations.', 'CleanseValidateScope     ');
+        return isValid;
+        *
+        */
+       return isValid;
+    },
+    type:'DataCleanse'
+};
+
+
+// ==================== Cleanse Data Execution ===================== //
+var scrub = new DataCleanse();
+gs.debug('Data Cleanse start - ' + (new Date()).toLocaleTimeString(), 'CleanseData              ');
+// ****************************************************************************************
+// --> Choose, modify, and uncomment ONE or more of the following lines to cleanse data <--
+// ****************************************************************************************
+//
+// scrub.CleanseApplicationData("FMS");                 // ALL APP TABLES & NUMERIC & STRING & CURRENCY & JOURNAL & AUDIT  
+// scrub.CleanseTableData("x_g_irm_fms_budget", null, null, null, true, true, true, true, true, null);
+// scrub.CleanseTableText("x_g_irm_fms_budget");        // ALL STRING COLUMNS
+// scrub.CleanseTableText("x_g_irm_fms_budget", ["column_name"], dictionary, sys_id);
+// scrub.CleanseTableNumber("x_g_irm_fms_budget");      // ALL INTEGER & DECIMAL COLUMNS
+// scrub.CleanseTableNumber("x_g_irm_fms_budget", ["column_name"], multiplier, sys_id);
+// scrub.CleanseTableCurrency("x_g_irm_fms_budget");    // ALL CURRENCY COLUMNS
+// scrub.CleanseTableCurrency("x_g_irm_fms_budget", ["budget_amt"], multiplier, sys_id);
+// scrub.CleanseTableJournal("x_g_irm_fms_budget");     // ALL JOURNAL COLUMNS
+// scrub.CleanseTableAttachments("x_g_irm_fms_budget"); // ALL ATTACHMENTS ALL ROWS
+// scrub.CleanseTableAuditHistory("x_g_irm_fms_budget") // ALL AUDIT HISTORY ALL ROWS & ALL COLUMNS
+//
+
+
+
+//CleanseTableText
+//scrub.CleanseTableText("x_g_irmb_ams_finan_credit_card");        // ALL STRING COLUMNS
+//scrub.CleanseTableText("x_g_irmb_ams_finan_appropriation");        // ALL STRING COLUMNS
+//scrub.CleanseTableText("x_g_irmb_ams_finan_bureau_control");        // ALL STRING COLUMNS
+//Successful on 8/5/2021 Run
+
+//CleanseTableNumber
+//scrub.CleanseTableNumber("x_g_irmb_ams_finan_credit_card");
+//scrub.CleanseTableNumber("x_g_irmb_ams_finan_fund_review_ulo_data");
+//scrub.CleanseTableNumber("x_g_irmb_ams_finan_fund_review_ulo_data_full");
+//Successful on 8/5/2021 Run
+
+//CleanseTableCurrency
+//scrub.CleanseTableCurrency("x_g_irmb_ams_finan_congressional_budget");
+
+
+
+
+gs.debug('Data Cleanse complete - ' + (new Date()).toLocaleTimeString(), 'CleanseData              ');
+// ==================== Cleanse Data Execution ===================== //
+
+]]></script>
+        <sys_class_name>sys_script_fix</sys_class_name>
+        <sys_created_by>Adam.hutton@fan.gov</sys_created_by>
+        <sys_created_on>2021-10-12 13:33:22</sys_created_on>
+        <sys_id>1065f5131bc33810d8dc10ad9c4bcb22</sys_id>
+        <sys_mod_count>24</sys_mod_count>
+        <sys_name>OneFinancials - Cleanse Data - FMS</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_script_fix_1065f5131bc33810d8dc10ad9c4bcb22</sys_update_name>
+        <sys_updated_by>adam.hutton@fan.gov</sys_updated_by>
+        <sys_updated_on>2021-10-19 16:24:48</sys_updated_on>
+        <unloadable>false</unloadable>
+    </sys_script_fix>
+</record_update>

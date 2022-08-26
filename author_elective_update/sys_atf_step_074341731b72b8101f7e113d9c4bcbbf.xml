@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step">
+    <sys_atf_step action="DELETE">
+        <active>true</active>
+        <copied_from/>
+        <description>Open Organization List page in the Financial Management System portal</description>
+        <display_name>Open Service Portal Page</display_name>
+        <inputs/>
+        <mugshots_cache_json/>
+        <notes/>
+        <order>1</order>
+        <snapshot display_value="1ed1d593e49a768c7c1b1863e1384740">7588c1b71b72b8101f7e113d9c4bcb0e</snapshot>
+        <step_config display_value="Open Service Portal Page">fc7e65d577332300e46abe41a9106106</step_config>
+        <sys_class_name>sys_atf_step</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-10-01 12:56:15</sys_created_on>
+        <sys_id>074341731b72b8101f7e113d9c4bcbbf</sys_id>
+        <sys_mod_count>10</sys_mod_count>
+        <sys_name>Open Service Portal Page</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_atf_step_074341731b72b8101f7e113d9c4bcbbf</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-10-01 13:19:49</sys_updated_on>
+        <table/>
+        <test display_value="My New Test">bf728dff1b32b8101f7e113d9c4bcb66</test>
+        <timeout>1970-01-01 00:00:05</timeout>
+        <warning_message/>
+    </sys_atf_step>
+    <sys_variable_value action="DELETE" query="document_key=074341731b72b8101f7e113d9c4bcbbf"/>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>074341731b72b8101f7e113d9c4bcbbf</document_key>
+        <order>200</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-10-01 12:56:15</sys_created_on>
+        <sys_id>056389731b72b8101f7e113d9c4bcb06</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-10-01 13:19:49</sys_updated_on>
+        <value>778935a51b9c14100a4a10ad9c4bcb94</value>
+        <variable display_value="">ca8ea5d577332300e46abe41a91061b6</variable>
+    </sys_variable_value>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>074341731b72b8101f7e113d9c4bcbbf</document_key>
+        <order>300</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-10-01 12:56:15</sys_created_on>
+        <sys_id>0d6389731b72b8101f7e113d9c4bcb06</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-10-01 12:56:15</sys_updated_on>
+        <value/>
+        <variable display_value="">839e29d577332300e46abe41a9106134</variable>
+    </sys_variable_value>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>074341731b72b8101f7e113d9c4bcbbf</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-10-01 12:56:15</sys_created_on>
+        <sys_id>cd6389731b72b8101f7e113d9c4bcb06</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-10-01 12:56:15</sys_updated_on>
+        <value>68fc92a71b0cd0100a4a10ad9c4bcb41</value>
+        <variable display_value="">5a7e65d577332300e46abe41a91061cb</variable>
+    </sys_variable_value>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_atf_step_074341731b72b8101f7e113d9c4bcbbf</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step"><sys_atf_step action="INSERT_OR_UPDATE"><active>true</active><copied_from/><description>Open Organization List page in the Financial Management System portal</description><display_name>Open Service Portal Page</display_name><inputs/><mugshots_cache_json/><notes/><order>1</order><snapshot display_value="1ed1d593e49a768c7c1b1863e1384740">7588c1b71b72b8101f7e113d9c4bcb0e</snapshot><step_config display_value="Open Service Portal Page">fc7e65d577332300e46abe41a9106106</step_config><sys_class_name>sys_atf_step</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-10-01 12:56:15</sys_created_on><sys_id>074341731b72b8101f7e113d9c4bcbbf</sys_id><sys_mod_count>10</sys_mod_count><sys_name>Open Service Portal Page</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_atf_step_074341731b72b8101f7e113d9c4bcbbf</sys_update_name><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-10-01 13:19:49</sys_updated_on><table/><test display_value="My New Test">bf728dff1b32b8101f7e113d9c4bcb66</test><timeout>1970-01-01 00:00:05</timeout><warning_message/></sys_atf_step><sys_variable_value action="delete_multiple" query="document_key=074341731b72b8101f7e113d9c4bcbbf"/><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>074341731b72b8101f7e113d9c4bcbbf</document_key><order>200</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-10-01 12:56:15</sys_created_on><sys_id>056389731b72b8101f7e113d9c4bcb06</sys_id><sys_mod_count>2</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-10-01 13:19:49</sys_updated_on><value>778935a51b9c14100a4a10ad9c4bcb94</value><variable display_value="">ca8ea5d577332300e46abe41a91061b6</variable></sys_variable_value><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>074341731b72b8101f7e113d9c4bcbbf</document_key><order>300</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-10-01 12:56:15</sys_created_on><sys_id>0d6389731b72b8101f7e113d9c4bcb06</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-10-01 12:56:15</sys_updated_on><value/><variable display_value="">839e29d577332300e46abe41a9106134</variable></sys_variable_value><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>074341731b72b8101f7e113d9c4bcbbf</document_key><order>100</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-10-01 12:56:15</sys_created_on><sys_id>cd6389731b72b8101f7e113d9c4bcb06</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-10-01 12:56:15</sys_updated_on><value>68fc92a71b0cd0100a4a10ad9c4bcb41</value><variable display_value="">5a7e65d577332300e46abe41a91061cb</variable></sys_variable_value></record_update>]]></payload>
+        <payload_hash>-1497727500</payload_hash>
+        <record_name>Open Service Portal Page</record_name>
+        <reverted_from/>
+        <source>55587b0b1b36f4100a4a10ad9c4bcb7d</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-10-01 13:19:49</sys_created_on>
+        <sys_id>a6c809b71b72b8101f7e113d9c4bcb7b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17c3c02cefe0000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-10-01 13:19:49</sys_updated_on>
+        <type>Test Step</type>
+        <update_guid>1ec809b7e772b810f4bea7856d39397a</update_guid>
+        <update_guid_history>1ec809b7e772b810f4bea7856d39397a:-1497727500,37f341b3ef72b810f8269aca6c478a80:-962890666,0d6389732972b81007a50ebf8f7b1108:1685125841</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-10-01 14:22:38</sys_created_on>
+        <sys_db_object display_value="" name="sys_atf_step">sys_atf_step</sys_db_object>
+        <sys_id>9fe90d9e21c440429cc29169dd9b5ae4</sys_id>
+        <sys_metadata>074341731b72b8101f7e113d9c4bcbbf</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Open Service Portal Page</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_atf_step_074341731b72b8101f7e113d9c4bcbbf</sys_update_name>
+        <sys_update_version display_value="sys_atf_step_074341731b72b8101f7e113d9c4bcbbf">a6c809b71b72b8101f7e113d9c4bcb7b</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-10-01 14:22:38</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

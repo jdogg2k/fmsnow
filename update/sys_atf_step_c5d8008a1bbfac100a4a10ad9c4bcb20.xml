@@ -40,7 +40,7 @@
         <sys_updated_by>CaronWF@state.gov</sys_updated_by>
         <sys_updated_on>2021-04-29 19:03:46</sys_updated_on>
         <value>0e39a86a1b1018100a4a10ad9c4bcbbc</value>
-        <variable display_value="">ca8ea5d577332300e46abe41a91061b6</variable>
+        <variable display_value="Page">ca8ea5d577332300e46abe41a91061b6</variable>
     </sys_variable_value>
     <sys_variable_value action="INSERT_OR_UPDATE">
         <document>sys_atf_step</document>
@@ -54,7 +54,7 @@
         <sys_updated_by>CaronWF@state.gov</sys_updated_by>
         <sys_updated_on>2021-04-29 19:03:46</sys_updated_on>
         <value>68fc92a71b0cd0100a4a10ad9c4bcb41</value>
-        <variable display_value="">5a7e65d577332300e46abe41a91061cb</variable>
+        <variable display_value="Portal">5a7e65d577332300e46abe41a91061cb</variable>
     </sys_variable_value>
     <sys_variable_value action="INSERT_OR_UPDATE">
         <document>sys_atf_step</document>
@@ -68,6 +68,7 @@
         <sys_updated_by>CaronWF@state.gov</sys_updated_by>
         <sys_updated_on>2021-04-29 19:03:46</sys_updated_on>
         <value/>
-        <variable display_value="">839e29d577332300e46abe41a9106134</variable>
+        <variable display_value="Query parameters">839e29d577332300e46abe41a9106134</variable>
     </sys_variable_value>
+    <sys_element_mapping action="delete_multiple" query="table=var__m_atf_input_variable_fc7e65d577332300e46abe41a9106106^id=c5d8008a1bbfac100a4a10ad9c4bcb20"/>
 </record_update>

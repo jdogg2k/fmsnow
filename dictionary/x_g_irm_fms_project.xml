@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Project" max_length="40" name="x_g_irm_fms_project" sizeclass="123" type="collection">
+    <element label="Project" max_length="40" name="x_g_irm_fms_project" sizeclass="125" type="collection">
         <element label="Disabled" max_length="40" name="disabled" type="boolean"/>
         <element label="Function Code" max_length="32" name="function_code_ref" reference="x_g_irm_fms_function_code" type="reference"/>
         <element label="Investment" max_length="32" name="investment" reference="x_g_irm_fms_investment" type="reference"/>

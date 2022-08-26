@@ -71,7 +71,7 @@
         <name>Users Selection</name>
         <option_schema>[{"name":"hide_widget","section":"Behavior","default_value":"false","label":"Hide Widget","type":"boolean"},{"hint":"","name":"hide_project","section":"Behavior","default_value":"false","label":"Hide Project","type":"boolean"}]</option_schema>
         <public>false</public>
-        <roles/>
+        <roles>x_g_irm_fms.all_users</roles>
         <script><![CDATA[(function(options) {
     data.selectedOrg = "";
     data.selectedRole = "";
@@ -149,14 +149,14 @@
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-07-29 16:41:54</sys_created_on>
         <sys_id>0805e4b91b9658100a4a10ad9c4bcb36</sys_id>
-        <sys_mod_count>17</sys_mod_count>
+        <sys_mod_count>18</sys_mod_count>
         <sys_name>Users Selection</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_0805e4b91b9658100a4a10ad9c4bcb36</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-08-21 15:05:48</sys_updated_on>
+        <sys_updated_on>2022-07-01 19:11:52</sys_updated_on>
         <template><![CDATA[<div style="display: inline-flex;" class="topFilters" ng-hide="c.data.hide_widget">
   <!--div style="display: inline-flex; align-items: center; min-width: 400px;">
     <label class="control-label">Organization:</label>

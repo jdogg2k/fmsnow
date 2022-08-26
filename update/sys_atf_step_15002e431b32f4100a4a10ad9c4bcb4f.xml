@@ -10,23 +10,23 @@
         <inputs/>
         <mugshots_cache_json>{"7c5eaef1edaede167ebc56a321207c23":"{\"area\":\"FMS Form\",\"sn_atf_mugshot_short_description\":\"Text &lt;input&gt;: Budget Amount\",\"sn_atf_mugshot_long_description\":\"Text &lt;input&gt; [sp_formfield_budget_amt]: Budget Amount with value 150,000 in page area FMS Form\",\"methods\":[\"setValue\"],\"sn_atf_mugshot_label\":\"Budget Amount\",\"type\":\"text\",\"version\":\"18.8\",\"label_for_input\":{\"inner_text\":\"Budget Amount\"},\"get_value_result\":\"150,000\",\"sn_atf_mugshot_tag_display_name\":\"Text &lt;input&gt;\",\"name\":\"budget_amt\",\"sn_atf_mugshot_value\":\"150,000\",\"tag\":\"input\",\"isDisabled\":false,\"id\":\"sp_formfield_budget_amt\",\"hash\":\"7c5eaef1edaede167ebc56a321207c23\",\"html_value\":\"150,000\"}","46a172d5356a87ce1e8a0dbc8a7e36f7":"{\"area\":\"FMS Form\",\"sn_atf_mugshot_short_description\":\"Text &lt;input&gt;: Expense Item\",\"role\":\"textbox\",\"sn_atf_mugshot_long_description\":\"Text &lt;input&gt; [sp_formfield_expense_item_ref]: Expense Item with value d6e87b481bcca0100a4a10ad9c4bcb71 in page area FMS Form\",\"methods\":[\"setValue\"],\"sn_atf_mugshot_label\":\"Expense Item\",\"index\":2,\"type\":\"text\",\"title\":\"Expense Item\",\"version\":\"18.8\",\"get_value_result\":\"d6e87b481bcca0100a4a10ad9c4bcb71\",\"sn_atf_mugshot_tag_display_name\":\"Text &lt;input&gt;\",\"name\":\"expense_item_ref\",\"sn_atf_mugshot_value\":\"d6e87b481bcca0100a4a10ad9c4bcb71\",\"tag\":\"input\",\"isDisabled\":false,\"id\":\"sp_formfield_expense_item_ref\",\"hash\":\"46a172d5356a87ce1e8a0dbc8a7e36f7\",\"html_value\":\"d6e87b481bcca0100a4a10ad9c4bcb71\"}"}</mugshots_cache_json>
         <notes/>
-        <order>8</order>
+        <order>5</order>
         <snapshot display_value="bf6e4d96a4c881482c5268bca8b54777">d9ea22cb1b32f4100a4a10ad9c4bcb02</snapshot>
         <step_config display_value="Set Component Values (Custom UI)">e5dd168473330300c79260bdfaf6a794</step_config>
         <sys_class_name>sys_atf_step</sys_class_name>
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2021-09-29 11:46:44</sys_created_on>
         <sys_id>15002e431b32f4100a4a10ad9c4bcb4f</sys_id>
-        <sys_mod_count>13</sys_mod_count>
+        <sys_mod_count>31</sys_mod_count>
         <sys_name>Set Component Values (Custom UI)</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_atf_step_15002e431b32f4100a4a10ad9c4bcb4f</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-09-29 13:32:36</sys_updated_on>
+        <sys_updated_on>2021-09-30 21:07:45</sys_updated_on>
         <table/>
-        <test display_value="Enter Budget + 1 Item">00590de61bf274100a4a10ad9c4bcb31</test>
+        <test display_value="Budget Detail">00590de61bf274100a4a10ad9c4bcb31</test>
         <timeout/>
         <warning_message/>
     </sys_atf_step>
@@ -43,6 +43,7 @@
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
         <sys_updated_on>2021-09-29 12:02:59</sys_updated_on>
         <value>46a172d5356a87ce1e8a0dbc8a7e36f7=labor - vanguard^7c5eaef1edaede167ebc56a321207c23=150000^EQ</value>
-        <variable display_value="">d12fde8473330300c79260bdfaf6a7b5</variable>
+        <variable display_value="Component values">d12fde8473330300c79260bdfaf6a7b5</variable>
     </sys_variable_value>
+    <sys_element_mapping action="delete_multiple" query="table=var__m_atf_input_variable_e5dd168473330300c79260bdfaf6a794^id=15002e431b32f4100a4a10ad9c4bcb4f"/>
 </record_update>

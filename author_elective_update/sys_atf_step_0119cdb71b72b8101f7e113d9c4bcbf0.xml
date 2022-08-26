@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step">
+    <sys_atf_step action="DELETE">
+        <active>true</active>
+        <copied_from/>
+        <description>Set the components on the page as follows:
+'Text &lt;input&gt;: Organization Name' = test org
+'Choice list &lt;select&gt;: Organization Type' = E
+'Text &lt;input&gt;: Organization Code' = 22334455
+</description>
+        <display_name>Set Component Values (Custom UI)</display_name>
+        <inputs/>
+        <mugshots_cache_json>{"99df6f2420bdb6dd676cc47b05e20d90":"{\"area\":\"FMS Form\",\"sn_atf_mugshot_short_description\":\"Text &lt;input&gt;: Organization Name\",\"sn_atf_mugshot_long_description\":\"Text &lt;input&gt; [sp_formfield_org_name]: Organization Name in page area FMS Form\",\"methods\":[\"setValue\"],\"sn_atf_mugshot_label\":\"Organization Name\",\"type\":\"text\",\"version\":\"18.8\",\"label_for_input\":{\"inner_text\":\"Organization Name\"},\"get_value_result\":\"\",\"sn_atf_mugshot_tag_display_name\":\"Text &lt;input&gt;\",\"name\":\"org_name\",\"sn_atf_mugshot_value\":\"\",\"tag\":\"input\",\"isDisabled\":false,\"id\":\"sp_formfield_org_name\",\"hash\":\"99df6f2420bdb6dd676cc47b05e20d90\",\"html_value\":\"\"}","4fbff613535dab28be74e628e822cf77":"{\"area\":\"FMS Form\",\"sn_atf_mugshot_short_description\":\"Choice list &lt;select&gt;: Organization Type\",\"inner_text\":\"-- None --\\nExternal\\nInternal\",\"sn_atf_mugshot_long_description\":\"Choice list &lt;select&gt; [sp_formfield_org_type]: Organization Type in page area FMS Form\",\"methods\":[\"setValue\"],\"sn_atf_mugshot_label\":\"Organization Type\",\"type\":\"select-one\",\"version\":\"18.8\",\"label_for_input\":{\"inner_text\":\"Organization Type\"},\"get_value_result\":\"\",\"sn_atf_mugshot_tag_display_name\":\"Choice list &lt;select&gt;\",\"name\":\"org_type\",\"sn_atf_mugshot_value\":\"\",\"options\":[{\"label\":\"-- None --\",\"value\":\"\"},{\"label\":\"External\",\"value\":\"E\"},{\"label\":\"Internal\",\"value\":\"I\"}],\"tag\":\"select\",\"isDisabled\":false,\"id\":\"sp_formfield_org_type\",\"hash\":\"4fbff613535dab28be74e628e822cf77\",\"html_value\":\"\"}","9ba62b959ff391dc57d3551c14b951f9":"{\"area\":\"FMS Form\",\"sn_atf_mugshot_short_description\":\"Text &lt;input&gt;: Organization Code\",\"sn_atf_mugshot_long_description\":\"Text &lt;input&gt; [sp_formfield_org_code]: Organization Code in page area FMS Form\",\"methods\":[\"setValue\"],\"sn_atf_mugshot_label\":\"Organization Code\",\"type\":\"text\",\"version\":\"18.8\",\"label_for_input\":{\"inner_text\":\"Organization Code\"},\"get_value_result\":\"\",\"sn_atf_mugshot_tag_display_name\":\"Text &lt;input&gt;\",\"name\":\"org_code\",\"sn_atf_mugshot_value\":\"\",\"tag\":\"input\",\"isDisabled\":false,\"id\":\"sp_formfield_org_code\",\"hash\":\"9ba62b959ff391dc57d3551c14b951f9\",\"html_value\":\"\"}"}</mugshots_cache_json>
+        <notes/>
+        <order>3</order>
+        <snapshot display_value="02218a31e533dedf570128ad0f2ecb92">0f69c5f71b72b8101f7e113d9c4bcba4</snapshot>
+        <step_config display_value="Set Component Values (Custom UI)">e5dd168473330300c79260bdfaf6a794</step_config>
+        <sys_class_name>sys_atf_step</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-10-01 13:21:41</sys_created_on>
+        <sys_id>0119cdb71b72b8101f7e113d9c4bcbf0</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>Set Component Values (Custom UI)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_atf_step_0119cdb71b72b8101f7e113d9c4bcbf0</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-10-01 13:26:02</sys_updated_on>
+        <table/>
+        <test display_value="My New Test">bf728dff1b32b8101f7e113d9c4bcb66</test>
+        <timeout/>
+        <warning_message/>
+    </sys_atf_step>
+    <sys_variable_value action="DELETE" query="document_key=0119cdb71b72b8101f7e113d9c4bcbf0"/>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>0119cdb71b72b8101f7e113d9c4bcbf0</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-10-01 13:21:41</sys_created_on>
+        <sys_id>f93941f71b72b8101f7e113d9c4bcb1a</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-10-01 13:26:02</sys_updated_on>
+        <value>99df6f2420bdb6dd676cc47b05e20d90=test org^4fbff613535dab28be74e628e822cf77=E^9ba62b959ff391dc57d3551c14b951f9=22334455^EQ</value>
+        <variable display_value="">d12fde8473330300c79260bdfaf6a7b5</variable>
+    </sys_variable_value>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_atf_step_0119cdb71b72b8101f7e113d9c4bcbf0</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step"><sys_atf_step action="INSERT_OR_UPDATE"><active>true</active><copied_from/><description>Set the components on the page as follows:
+'Text &lt;input&gt;: Organization Name' = test org
+'Choice list &lt;select&gt;: Organization Type' = E
+'Text &lt;input&gt;: Organization Code' = 22334455
+</description><display_name>Set Component Values (Custom UI)</display_name><inputs/><mugshots_cache_json>{"99df6f2420bdb6dd676cc47b05e20d90":"{\"area\":\"FMS Form\",\"sn_atf_mugshot_short_description\":\"Text &lt;input&gt;: Organization Name\",\"sn_atf_mugshot_long_description\":\"Text &lt;input&gt; [sp_formfield_org_name]: Organization Name in page area FMS Form\",\"methods\":[\"setValue\"],\"sn_atf_mugshot_label\":\"Organization Name\",\"type\":\"text\",\"version\":\"18.8\",\"label_for_input\":{\"inner_text\":\"Organization Name\"},\"get_value_result\":\"\",\"sn_atf_mugshot_tag_display_name\":\"Text &lt;input&gt;\",\"name\":\"org_name\",\"sn_atf_mugshot_value\":\"\",\"tag\":\"input\",\"isDisabled\":false,\"id\":\"sp_formfield_org_name\",\"hash\":\"99df6f2420bdb6dd676cc47b05e20d90\",\"html_value\":\"\"}","4fbff613535dab28be74e628e822cf77":"{\"area\":\"FMS Form\",\"sn_atf_mugshot_short_description\":\"Choice list &lt;select&gt;: Organization Type\",\"inner_text\":\"-- None --\\nExternal\\nInternal\",\"sn_atf_mugshot_long_description\":\"Choice list &lt;select&gt; [sp_formfield_org_type]: Organization Type in page area FMS Form\",\"methods\":[\"setValue\"],\"sn_atf_mugshot_label\":\"Organization Type\",\"type\":\"select-one\",\"version\":\"18.8\",\"label_for_input\":{\"inner_text\":\"Organization Type\"},\"get_value_result\":\"\",\"sn_atf_mugshot_tag_display_name\":\"Choice list &lt;select&gt;\",\"name\":\"org_type\",\"sn_atf_mugshot_value\":\"\",\"options\":[{\"label\":\"-- None --\",\"value\":\"\"},{\"label\":\"External\",\"value\":\"E\"},{\"label\":\"Internal\",\"value\":\"I\"}],\"tag\":\"select\",\"isDisabled\":false,\"id\":\"sp_formfield_org_type\",\"hash\":\"4fbff613535dab28be74e628e822cf77\",\"html_value\":\"\"}","9ba62b959ff391dc57d3551c14b951f9":"{\"area\":\"FMS Form\",\"sn_atf_mugshot_short_description\":\"Text &lt;input&gt;: Organization Code\",\"sn_atf_mugshot_long_description\":\"Text &lt;input&gt; [sp_formfield_org_code]: Organization Code in page area FMS Form\",\"methods\":[\"setValue\"],\"sn_atf_mugshot_label\":\"Organization Code\",\"type\":\"text\",\"version\":\"18.8\",\"label_for_input\":{\"inner_text\":\"Organization Code\"},\"get_value_result\":\"\",\"sn_atf_mugshot_tag_display_name\":\"Text &lt;input&gt;\",\"name\":\"org_code\",\"sn_atf_mugshot_value\":\"\",\"tag\":\"input\",\"isDisabled\":false,\"id\":\"sp_formfield_org_code\",\"hash\":\"9ba62b959ff391dc57d3551c14b951f9\",\"html_value\":\"\"}"}</mugshots_cache_json><notes/><order>3</order><snapshot display_value="02218a31e533dedf570128ad0f2ecb92">0f69c5f71b72b8101f7e113d9c4bcba4</snapshot><step_config display_value="Set Component Values (Custom UI)">e5dd168473330300c79260bdfaf6a794</step_config><sys_class_name>sys_atf_step</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-10-01 13:21:41</sys_created_on><sys_id>0119cdb71b72b8101f7e113d9c4bcbf0</sys_id><sys_mod_count>3</sys_mod_count><sys_name>Set Component Values (Custom UI)</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_atf_step_0119cdb71b72b8101f7e113d9c4bcbf0</sys_update_name><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-10-01 13:26:02</sys_updated_on><table/><test display_value="My New Test">bf728dff1b32b8101f7e113d9c4bcb66</test><timeout/><warning_message/></sys_atf_step><sys_variable_value action="delete_multiple" query="document_key=0119cdb71b72b8101f7e113d9c4bcbf0"/><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>0119cdb71b72b8101f7e113d9c4bcbf0</document_key><order>100</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-10-01 13:21:41</sys_created_on><sys_id>f93941f71b72b8101f7e113d9c4bcb1a</sys_id><sys_mod_count>1</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-10-01 13:26:02</sys_updated_on><value>99df6f2420bdb6dd676cc47b05e20d90=test org^4fbff613535dab28be74e628e822cf77=E^9ba62b959ff391dc57d3551c14b951f9=22334455^EQ</value><variable display_value="">d12fde8473330300c79260bdfaf6a7b5</variable></sys_variable_value></record_update>]]></payload>
+        <payload_hash>113431068</payload_hash>
+        <record_name>Set Component Values (Custom UI)</record_name>
+        <reverted_from/>
+        <source>55587b0b1b36f4100a4a10ad9c4bcb7d</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-10-01 13:26:02</sys_created_on>
+        <sys_id>293a853b1b72b8101f7e113d9c4bcb31</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17c3c087ff70000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-10-01 13:26:02</sys_updated_on>
+        <type>Test Step</type>
+        <update_guid>ad3a853b2272b810686cbfacaa15e730</update_guid>
+        <update_guid_history>ad3a853b2272b810686cbfacaa15e730:113431068,393941f70672b810768e6b882a1a501c:328470513</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-10-01 14:22:38</sys_created_on>
+        <sys_db_object display_value="" name="sys_atf_step">sys_atf_step</sys_db_object>
+        <sys_id>0352f49cf00b4a948038e4df4131dd61</sys_id>
+        <sys_metadata>0119cdb71b72b8101f7e113d9c4bcbf0</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Set Component Values (Custom UI)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_atf_step_0119cdb71b72b8101f7e113d9c4bcbf0</sys_update_name>
+        <sys_update_version display_value="sys_atf_step_0119cdb71b72b8101f7e113d9c4bcbf0">293a853b1b72b8101f7e113d9c4bcb31</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-10-01 14:22:38</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

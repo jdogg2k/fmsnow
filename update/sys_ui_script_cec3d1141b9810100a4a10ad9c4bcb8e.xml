@@ -3,6 +3,7 @@
         <active>true</active>
         <description/>
         <global>false</global>
+        <ignore_in_now_experience>false</ignore_in_now_experience>
         <name>x_g_irm_fms.ag Grid License</name>
         <script><![CDATA[agGrid.LicenseManager.setLicenseKey("CompanyName=US Department of State,LicensedApplication=IRM ServiceNow,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=0,AssetReference=AG-009086,ExpiryDate=23_July_2021_[v2]_MTYyNjk5NDgwMDAwMA==73e86f1a865690deb33863c69b3ae478");]]></script>
         <script_name>ag Grid License</script_name>

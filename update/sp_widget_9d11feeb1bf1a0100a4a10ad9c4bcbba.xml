@@ -21,7 +21,7 @@
         <name>Application Preferences</name>
         <option_schema>[{"name":"application_scope","section":"Data","label":"Application Scope","type":"string"}]</option_schema>
         <public>false</public>
-        <roles/>
+        <roles>x_g_irm_fms.all_users</roles>
         <script><![CDATA[(function() {
 
     var applScope = $sp.getParameter('scope') || (options.application_scope ? options.application_scope.toString() : "");
@@ -61,14 +61,14 @@
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2021-01-25 13:05:26</sys_created_on>
         <sys_id>9d11feeb1bf1a0100a4a10ad9c4bcbba</sys_id>
-        <sys_mod_count>44</sys_mod_count>
+        <sys_mod_count>45</sys_mod_count>
         <sys_name>Application Preferences</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_9d11feeb1bf1a0100a4a10ad9c4bcbba</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-05-28 12:48:36</sys_updated_on>
+        <sys_updated_on>2022-06-30 16:17:30</sys_updated_on>
         <template><![CDATA[<div>
 	<div class="form-group">
         <div class="row" style="margin: 0px; padding: 0px;">

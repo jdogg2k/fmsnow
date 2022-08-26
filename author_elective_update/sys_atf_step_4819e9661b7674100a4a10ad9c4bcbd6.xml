@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step">
+    <sys_atf_step action="DELETE">
+        <active>true</active>
+        <copied_from/>
+        <description>Click the component: 'Link &lt;a&gt;: Save'</description>
+        <display_name>Click Component (Custom UI)</display_name>
+        <inputs/>
+        <mugshots_cache_json>{"4adc5ea101872f192ee6f287eef5ee54":"{\"area\":\"FMS Form\",\"sn_atf_mugshot_short_description\":\"Link &lt;a&gt;: Save\",\"inner_text\":\"Save\",\"sn_atf_mugshot_long_description\":\"Link &lt;a&gt;: Save in page area FMS Form\",\"methods\":[\"click\"],\"sn_atf_mugshot_label\":\"Save\",\"type\":\"\",\"version\":\"18.8\",\"get_value_result\":\"Save\",\"sn_atf_mugshot_tag_display_name\":\"Link &lt;a&gt;\",\"sn_atf_mugshot_value\":\"\",\"tag\":\"a\",\"isDisabled\":false,\"hash\":\"4adc5ea101872f192ee6f287eef5ee54\"}"}</mugshots_cache_json>
+        <notes/>
+        <order>4</order>
+        <snapshot display_value="b05a98d24a0685b58f2a0d381f8c514e">08d838a31b3638100a4a10ad9c4bcbc6</snapshot>
+        <step_config display_value="Click Component (Custom UI)">def25c4b73730300c79260bdfaf6a700</step_config>
+        <sys_class_name>sys_atf_step</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 18:29:01</sys_created_on>
+        <sys_id>4819e9661b7674100a4a10ad9c4bcbd6</sys_id>
+        <sys_mod_count>52</sys_mod_count>
+        <sys_name>Click Component (Custom UI)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_update_name>sys_atf_step_4819e9661b7674100a4a10ad9c4bcbd6</sys_update_name>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-30 17:40:53</sys_updated_on>
+        <table/>
+        <test display_value="Enter Budget + 1 Item">00590de61bf274100a4a10ad9c4bcb31</test>
+        <timeout/>
+        <warning_message/>
+    </sys_atf_step>
+    <sys_variable_value action="DELETE" query="document_key=4819e9661b7674100a4a10ad9c4bcbd6"/>
+    <sys_variable_value action="DELETE">
+        <document>sys_atf_step</document>
+        <document_key>4819e9661b7674100a4a10ad9c4bcbd6</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-27 18:29:01</sys_created_on>
+        <sys_id>b83969661b7674100a4a10ad9c4bcb54</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-27 18:29:01</sys_updated_on>
+        <value>4adc5ea101872f192ee6f287eef5ee54</value>
+        <variable display_value="">ee05588b73730300c79260bdfaf6a749</variable>
+    </sys_variable_value>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</application>
+        <file_path/>
+        <instance_id>d1e3ff52db934090334f461932961904</instance_id>
+        <instance_name>bmpdev</instance_name>
+        <name>sys_atf_step_4819e9661b7674100a4a10ad9c4bcbd6</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step"><sys_atf_step action="INSERT_OR_UPDATE"><active>true</active><copied_from/><description>Click the component: 'Link &lt;a&gt;: Save'</description><display_name>Click Component (Custom UI)</display_name><inputs/><mugshots_cache_json>{"4adc5ea101872f192ee6f287eef5ee54":"{\"area\":\"FMS Form\",\"sn_atf_mugshot_short_description\":\"Link &lt;a&gt;: Save\",\"inner_text\":\"Save\",\"sn_atf_mugshot_long_description\":\"Link &lt;a&gt;: Save in page area FMS Form\",\"methods\":[\"click\"],\"sn_atf_mugshot_label\":\"Save\",\"type\":\"\",\"version\":\"18.8\",\"get_value_result\":\"Save\",\"sn_atf_mugshot_tag_display_name\":\"Link &lt;a&gt;\",\"sn_atf_mugshot_value\":\"\",\"tag\":\"a\",\"isDisabled\":false,\"hash\":\"4adc5ea101872f192ee6f287eef5ee54\"}"}</mugshots_cache_json><notes/><order>4</order><snapshot display_value="b05a98d24a0685b58f2a0d381f8c514e">08d838a31b3638100a4a10ad9c4bcbc6</snapshot><step_config display_value="Click Component (Custom UI)">def25c4b73730300c79260bdfaf6a700</step_config><sys_class_name>sys_atf_step</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 18:29:01</sys_created_on><sys_id>4819e9661b7674100a4a10ad9c4bcbd6</sys_id><sys_mod_count>52</sys_mod_count><sys_name>Click Component (Custom UI)</sys_name><sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package><sys_policy/><sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope><sys_update_name>sys_atf_step_4819e9661b7674100a4a10ad9c4bcbd6</sys_update_name><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-30 17:40:53</sys_updated_on><table/><test display_value="Enter Budget + 1 Item">00590de61bf274100a4a10ad9c4bcb31</test><timeout/><warning_message/></sys_atf_step><sys_variable_value action="delete_multiple" query="document_key=4819e9661b7674100a4a10ad9c4bcbd6"/><sys_variable_value action="INSERT_OR_UPDATE"><document>sys_atf_step</document><document_key>4819e9661b7674100a4a10ad9c4bcbd6</document_key><order>100</order><sys_class_name>sys_variable_value</sys_class_name><sys_created_by>MarkelJR@state.gov</sys_created_by><sys_created_on>2021-09-27 18:29:01</sys_created_on><sys_id>b83969661b7674100a4a10ad9c4bcb54</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>MarkelJR@state.gov</sys_updated_by><sys_updated_on>2021-09-27 18:29:01</sys_updated_on><value>4adc5ea101872f192ee6f287eef5ee54</value><variable display_value="">ee05588b73730300c79260bdfaf6a749</variable></sys_variable_value></record_update>]]></payload>
+        <payload_hash>628353359</payload_hash>
+        <record_name>Click Component (Custom UI)</record_name>
+        <reverted_from/>
+        <source>55587b0b1b36f4100a4a10ad9c4bcb7d</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-30 17:40:53</sys_created_on>
+        <sys_id>09fa38271b3638100a4a10ad9c4bcb8d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17c37cb77d10000001</sys_recorded_at>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-30 17:40:53</sys_updated_on>
+        <type>Test Step</type>
+        <update_guid>8dfa3827783638108651c5247bc17a8c</update_guid>
+        <update_guid_history>8dfa3827783638108651c5247bc17a8c:628353359,a7daf427b4363810bc36831561c12747:414162094,73baf027773638104d76d5e6b59564a3:199970829,cfe9b4e3e5363810a3ba0008e1866ee5:-14220436,5e8872878572f41023d6bfa99303f059:245329462,c6ef9a43fa32f4102f809d76c5fa6c7e:1781194926,689f56436d32f410650ce2b04378f65e:1567003661,baf0f1fac17eb410d2bdf8000e97a95d:152825060,9b3cedb69b7eb410ac37e3191dddef1d:1835672229,d945d5b2ee3eb4109cff04d454cd6dc8:152825060,3a2515b2ca3eb4101a61c359b746ede6:1835672229,7e15d1b2dd3eb410efd6f98b7fecd073:-776447898,360591b2c63eb410b63a6a1507ad7913:906399271,f039ad667c767410d562975aa7e6a100:1511721622</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>MarkelJR@state.gov</sys_created_by>
+        <sys_created_on>2021-09-30 17:41:12</sys_created_on>
+        <sys_db_object display_value="" name="sys_atf_step">sys_atf_step</sys_db_object>
+        <sys_id>7359796d9abe444095fee2a57ab32a24</sys_id>
+        <sys_metadata>4819e9661b7674100a4a10ad9c4bcbd6</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Click Component (Custom UI)</sys_name>
+        <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
+        <sys_scope_delete display_value="">1b928b235c054c56a2c71b72d4cf8e79</sys_scope_delete>
+        <sys_update_name>sys_atf_step_4819e9661b7674100a4a10ad9c4bcbd6</sys_update_name>
+        <sys_update_version display_value="sys_atf_step_4819e9661b7674100a4a10ad9c4bcbd6">09fa38271b3638100a4a10ad9c4bcb8d</sys_update_version>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-09-30 17:41:12</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

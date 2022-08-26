@@ -7,23 +7,23 @@
         <inputs/>
         <mugshots_cache_json>{"80f147318fab5390c9fd42f627220e6e":"{\"area\":\"FMS Form\",\"sn_atf_mugshot_short_description\":\"Button &lt;button&gt;: Save (Ctrl + s)\",\"inner_text\":\"Save (Ctrl + s)\",\"sn_atf_mugshot_long_description\":\"Button &lt;button&gt;: Save (Ctrl + s) in page area FMS Form\",\"methods\":[\"click\"],\"sn_atf_mugshot_label\":\"Save (Ctrl + s)\",\"type\":\"submit\",\"version\":\"18.8\",\"get_value_result\":\"Save (Ctrl + s)\",\"sn_atf_mugshot_tag_display_name\":\"Button &lt;button&gt;\",\"sn_atf_mugshot_value\":\"Save (Ctrl + s)\",\"tag\":\"button\",\"isDisabled\":false,\"hash\":\"80f147318fab5390c9fd42f627220e6e\"}"}</mugshots_cache_json>
         <notes/>
-        <order>9</order>
+        <order>6</order>
         <snapshot display_value="f6d0434e384c183b14565be72473bcaf">d43f16031b32f4100a4a10ad9c4bcb0d</snapshot>
         <step_config display_value="Click Component (Custom UI)">def25c4b73730300c79260bdfaf6a700</step_config>
         <sys_class_name>sys_atf_step</sys_class_name>
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2021-09-27 18:40:42</sys_created_on>
         <sys_id>88ab212a1b7674100a4a10ad9c4bcb86</sys_id>
-        <sys_mod_count>74</sys_mod_count>
+        <sys_mod_count>90</sys_mod_count>
         <sys_name>Click Component (Custom UI)</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_atf_step_88ab212a1b7674100a4a10ad9c4bcb86</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-09-29 13:32:36</sys_updated_on>
+        <sys_updated_on>2021-09-30 18:19:31</sys_updated_on>
         <table/>
-        <test display_value="Enter Budget + 1 Item">00590de61bf274100a4a10ad9c4bcb31</test>
+        <test display_value="Budget Detail">00590de61bf274100a4a10ad9c4bcb31</test>
         <timeout/>
         <warning_message/>
     </sys_atf_step>
@@ -40,6 +40,6 @@
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
         <sys_updated_on>2021-09-27 18:46:33</sys_updated_on>
         <value>80f147318fab5390c9fd42f627220e6e</value>
-        <variable display_value="">ee05588b73730300c79260bdfaf6a749</variable>
+        <variable display_value="Component">ee05588b73730300c79260bdfaf6a749</variable>
     </sys_variable_value>
 </record_update>

@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_fix">
     <sys_script_fix action="INSERT_OR_UPDATE">
-        <active>true</active>
         <before>false</before>
         <description/>
-        <flush_cache>false</flush_cache>
         <name>Item Total Calculation</name>
         <record_for_rollback>false</record_for_rollback>
-        <run_once>true</run_once>
         <script><![CDATA[var gr = new GlideRecord("x_g_irm_fms_fin_tran_item");
 gr.addEncodedQuery("fin_tran_ref.fy=2020^fin_tran_ref.project_ref=cee864241be89c100a4a10ad9c4bcbad");
 gr.query();

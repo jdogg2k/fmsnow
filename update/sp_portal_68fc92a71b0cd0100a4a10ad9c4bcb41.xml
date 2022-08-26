@@ -22,6 +22,8 @@ $btn-default-bg:#fff;
 $text-muted:#666666;
 </css_variables>
         <default>false</default>
+        <enable_ais>false</enable_ais>
+        <enable_favorites>false</enable_favorites>
         <hide_portal_name>false</hide_portal_name>
         <homepage display_value="fms_home">279e522f1b0cd0100a4a10ad9c4bcb28</homepage>
         <icon>509107331b8410101f7e113d9c4bcb93</icon>
@@ -34,6 +36,8 @@ $text-muted:#666666;
         <sc_catalog/>
         <sc_catalog_page/>
         <sc_category_page/>
+        <search_application/>
+        <search_results_configuration/>
         <sp_chat_queue/>
         <sp_rectangle_menu display_value="FMS Menu">45dd16eb1b0cd0100a4a10ad9c4bcb6e</sp_rectangle_menu>
         <sqanda_knowledge_base/>

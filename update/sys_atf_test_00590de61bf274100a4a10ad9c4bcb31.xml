@@ -4,21 +4,21 @@
         <copied_from/>
         <description/>
         <enable_parameterized_testing>false</enable_parameterized_testing>
-        <name>Enter Budget + 1 Item</name>
+        <name>Budget Detail</name>
         <parameters/>
         <remember/>
         <sys_class_name>sys_atf_test</sys_class_name>
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2021-09-27 16:10:30</sys_created_on>
         <sys_id>00590de61bf274100a4a10ad9c4bcb31</sys_id>
-        <sys_mod_count>2</sys_mod_count>
-        <sys_name>Enter Budget + 1 Item</sys_name>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>Budget Detail</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_atf_test_00590de61bf274100a4a10ad9c4bcb31</sys_update_name>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
-        <sys_updated_on>2021-09-29 11:16:55</sys_updated_on>
+        <sys_updated_on>2021-09-30 17:44:33</sys_updated_on>
     </sys_atf_test>
     <sys_variable_value action="delete_multiple" query="document_key=00590de61bf274100a4a10ad9c4bcb31"/>
 </record_update>

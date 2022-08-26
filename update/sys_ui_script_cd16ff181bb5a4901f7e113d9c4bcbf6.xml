@@ -3,6 +3,7 @@
         <active>true</active>
         <description/>
         <global>false</global>
+        <ignore_in_now_experience>false</ignore_in_now_experience>
         <name>x_g_irm_fms.chosen</name>
         <script><![CDATA[/*!
 Chosen, a Select Box Enhancer for jQuery and Prototype

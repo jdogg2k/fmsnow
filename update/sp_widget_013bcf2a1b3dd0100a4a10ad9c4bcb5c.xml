@@ -109,9 +109,8 @@
         <name>Appropriation Type Lookup Table</name>
         <option_schema/>
         <public>false</public>
-        <roles/>
-        <script><![CDATA[
-(function() {
+        <roles>x_g_irm_fms.all_users</roles>
+        <script><![CDATA[(function() {
 
     var FMSUtility = new x_g_irm_fms.FMSUtilities(); //helper utility for FMS queries
 	var FMSPermissions = new x_g_irm_fms.FMSPermissions();
@@ -142,14 +141,14 @@
         <sys_created_by>PuriA@state.gov</sys_created_by>
         <sys_created_on>2020-07-07 16:13:26</sys_created_on>
         <sys_id>013bcf2a1b3dd0100a4a10ad9c4bcb5c</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name>Appropriation Type Lookup Table</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy/>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sp_widget_013bcf2a1b3dd0100a4a10ad9c4bcb5c</sys_update_name>
         <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2020-07-07 16:27:46</sys_updated_on>
+        <sys_updated_on>2022-07-01 19:16:38</sys_updated_on>
         <template><![CDATA[<div style="width: 100%; height: 100%">
 
   <div class="container">

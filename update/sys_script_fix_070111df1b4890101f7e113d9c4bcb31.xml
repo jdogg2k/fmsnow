@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_fix">
     <sys_script_fix action="INSERT_OR_UPDATE">
-        <active>true</active>
         <before>true</before>
         <description/>
-        <flush_cache>true</flush_cache>
         <name>Fix Calculated Fields</name>
         <record_for_rollback>false</record_for_rollback>
-        <run_once>true</run_once>
         <script><![CDATA[var allTables = new GlideRecord('sys_dictionary');
 allTables.addEncodedQuery('sys_scope=c728dd331b3fc8100a4a10ad9c4bcbb6^virtual=true^display=true');
 allTables.query();

@@ -22,14 +22,14 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		var isValid = true;
 		if (current.tran_status != 'Obligated' || current.getValue('void') == true) return isValid;
 		var grpChanged =  current.allocation_group_ref != previous.allocation_group_ref;
-		var grp = this.getAllocationGroup(current.allocation_group_ref.sys_id);
+		var grp = this.getAllocationGroup(current.allocation_group_ref);
 		if (grp == null) return true;
 		if (grp.getValue('val_tran_fy') == true && (current.fy != previous.fy || previous.tran_status != 'Obligated' || current.getValue('void') != previous.getValue('void') || grpChanged)) 
-			isValid = isValid && this.validateTranFY(current.project_ref.sys_id, current.allocation_group_ref.sys_id, current.fy);
+			isValid = isValid && this.validateTranFY(current.project_ref, current.allocation_group_ref, current.fy);
 		if (grp.getValue('val_tran_allotment') == true  && (current.allotment_ref != previous.allotment_ref || previous.tran_status != 'Obligated' || current.getValue('void') != previous.getValue('void') || grpChanged)) 
-			isValid = isValid && this.validateTranAllotment(current.project_ref.sys_id, current.allocation_group_ref.sys_id, current.fy, current.allotment_ref);
+			isValid = isValid && this.validateTranAllotment(current.project_ref, current.allocation_group_ref, current.fy, current.allotment_ref);
 		if (grp.getValue('val_tran_appropriation') == true  && (current.project_appropriation_ref != previous.project_appropriation_ref || previous.tran_status != 'Obligated' || current.getValue('void') != previous.getValue('void') || grpChanged)) 
-			isValid = isValid && this.validateTranAppropriation(current.project_ref.sys_id, current.allocation_group_ref.sys_id, current.fy, current.project_appropriation_ref);
+			isValid = isValid && this.validateTranAppropriation(current.project_ref, current.allocation_group_ref, current.fy, current.project_appropriation_ref);
 		if (grp.getValue('val_tran_not_deficient') == true && (previous.transaction_total_amt != current.transaction_total_amt || previous.tran_status != 'Obligated' || current.getValue('void') != previous.getValue('void') || grpChanged)) {
 			isValid = isValid && this.validateTranApproDeficient(current, previous);
 			isValid = isValid && this.validateTranDeficient(current, previous);
@@ -40,7 +40,7 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
     validateTranItemGroup: function(current, previous) {
 		var isValid = true;
 		if (current.fin_tran_ref.tran_status != 'Obligated' || current.fin_tran_ref.getRefRecord().getValue('void') == true) return isValid;
-		var grp = this.getAllocationGroup(current.fin_tran_ref.allocation_group_ref.sys_id);
+		var grp = this.getAllocationGroup(current.fin_tran_ref.allocation_group_ref);
 		if (grp == null) return true;
 		if (grp.getValue('val_tran_not_deficient') == true && current.fin_tran_ref.tran_status == 'Obligated' && current.fin_tran_ref.getRefRecord().getValue('void') == false) { 
 			isValid = isValid && this.validateTranItemApproDeficient(current, previous);
@@ -52,14 +52,14 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	validateProjAllocGroup: function(current, previous) {
 		var isValid = true;
 		var isDelete =  current.operation() == 'delete';
-		var grp = this.getAllocationGroup(previous.allocation_group_ref.sys_id);
+		var grp = this.getAllocationGroup(previous.allocation_group_ref);
 		if (grp == null) return true;
 		if (grp.getValue('val_tran_fy') == true && (current.fy != previous.fy || isDelete)) 
-			isValid = isValid && this.validateAllocFY(previous.project_ref.sys_id, previous.allocation_group_ref.sys_id, previous.fy);
+			isValid = isValid && this.validateAllocFY(previous.project_ref, previous.allocation_group_ref, previous.fy);
 		if (grp.getValue('val_tran_allotment') == true  && (current.allotment != previous.allotment || isDelete)) 
-			isValid = isValid && this.validateAllocAllotment(previous.project_ref.sys_id, previous.allocation_group_ref.sys_id, previous.fy, previous.allotment);
+			isValid = isValid && this.validateAllocAllotment(previous.project_ref, previous.allocation_group_ref, previous.fy, previous.allotment);
 		if (grp.getValue('val_tran_appropriation') == true  && (current.appropriation_ref != previous.appropriation_ref || isDelete)) 
-			isValid = isValid && this.validateAllocAppropriation(previous.project_ref.sys_id, previous.allocation_group_ref.sys_id, previous.fy, previous.appropriation_ref.sys_id);
+			isValid = isValid && this.validateAllocAppropriation(previous.project_ref, previous.allocation_group_ref, previous.fy, previous.appropriation_ref);
 		if (grp.getValue('val_tran_not_deficient') == true && (current.allocation_amt != previous.allocation_amt || isDelete)) {
 			var def = this.validateAllocDeficient(current, previous);
 			isValid = isValid && def;
@@ -105,9 +105,9 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 		var isValid = true;
 		var isDelete =  current.operation() == 'delete';
 		var valPrevDeficient = previous.allocation_group_ref.getRefRecord().getValue('val_tran_not_deficient') == true;
-		var allocAmt = this.getAllocationTotal(previous.project_ref.sys_id, previous.fy, previous.allocation_group_ref.sys_id, null);
+		var allocAmt = this.getAllocationTotal(previous.project_ref, previous.fy, previous.allocation_group_ref, null);
 		if (this.debugMsg) gs.addInfoMessage('Allocated: ' + allocAmt);
-		var tranAmt = this.getObligatedTotal(previous.project_ref.sys_id, previous.fy, null, null, previous.allocation_group_ref.sys_id, null);
+		var tranAmt = this.getObligatedTotal(previous.project_ref, previous.fy, null, null, previous.allocation_group_ref, null);
 		if (this.debugMsg) gs.addInfoMessage('Obligated: ' + tranAmt);
 		if (this.debugMsg) gs.addInfoMessage('Validating old/previous allocation group....');
 		if (valPrevDeficient && (current.fy != previous.fy || current.allocation_group_ref != previous.allocation_group_ref || isDelete)) {
@@ -133,12 +133,12 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 			}
 		}
 		if (this.debugMsg) gs.addInfoMessage('Validating new/current allocation group....');
-		var newGrp = this.getAllocationGroup(current.allocation_group_ref.sys_id);
+		var newGrp = this.getAllocationGroup(current.allocation_group_ref);
 		if (newGrp.getValue('val_tran_not_deficient') == true && current.allocation_group_ref != previous.allocation_group_ref) {
-			allocAmt = this.getAllocationTotal(current.project_ref.sys_id, current.fy, current.allocation_group_ref.sys_id, null);
+			allocAmt = this.getAllocationTotal(current.project_ref, current.fy, current.allocation_group_ref, null);
 			allocAmt = (allocAmt - parseFloat(previous.allocation_amt) + parseFloat(current.allocation_amt));
 			if (this.debugMsg) gs.addInfoMessage('Allocated: ' + allocAmt);
-			tranAmt = this.getObligatedTotal(current.project_ref.sys_id, current.fy, null, null, current.allocation_group_ref.sys_id, null);
+			tranAmt = this.getObligatedTotal(current.project_ref, current.fy, null, null, current.allocation_group_ref, null);
 			if (this.debugMsg) gs.addInfoMessage('Obligated: ' + tranAmt);
 			remAmt = parseFloat(allocAmt) - parseFloat(tranAmt);
 			if (this.debugMsg) gs.addInfoMessage('Remaining: ' + remAmt);
@@ -185,51 +185,51 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
 	validateTranDeficient: function(current, previous) {
 		var isValid = true;
-		var allocAmt = this.getAllocationTotal(current.project_ref.sys_id, current.fy, current.allocation_group_ref.sys_id, null);
+		var allocAmt = this.getAllocationTotal(current.project_ref, current.fy, current.allocation_group_ref, null);
 		if (this.debugMsg) gs.addInfoMessage('Allocated Amount is: ' + allocAmt);
-		var tranAmt = this.getObligatedTotal(current.project_ref.sys_id, current.fy, current.sys_id, null, current.allocation_group_ref.sys_id, null);
+		var tranAmt = this.getObligatedTotal(current.project_ref, current.fy, current, null, current.allocation_group_ref, null);
 		if (this.debugMsg) gs.addInfoMessage('Obligated Amount is: ' + tranAmt);
 		var remAmt = parseFloat(allocAmt) - parseFloat(tranAmt);
 		if (this.debugMsg) gs.addInfoMessage('Remaining Amount is: ' + remAmt);
 		var oldAmt = previous.transaction_total_amt;
 		if (previous.tran_status != 'Obligated' || previous.getValue('void') == true) 
 			oldAmt = 0;
-		if (parseFloat(current.transaction_total_amt) > parseFloat(remAmt) + oldAmt) {
+		var defAmt = parseFloat((parseFloat(remAmt) + oldAmt) - current.transaction_total_amt);
+		if (parseFloat(defAmt.toFixed(2)) > 0) {
 			isValid = false;
-			gs.addErrorMessage("Unable to obligate...insufficient funds remain for the Allocation Group specified.  Funds needed: " + this.formatMoney(Math.abs(parseFloat(current.transaction_total_amt - (parseFloat(remAmt) + oldAmt)))) + " Update Failed.");
+			gs.addErrorMessage("Unable to obligate...insufficient funds remain for the Allocation Group specified.  Funds needed: " + this.formatMoney(Math.abs(defAmt)) + " Update Failed.");
 		}
 		return isValid;
 	},
 	
 	validateTranApproDeficient: function(current, previous) {
 		var isValid = true;
-		var allocAmt = this.getAllocationTotal(current.project_ref.sys_id, current.fy, null, current.project_appropriation_ref.sys_id);
+		var allocAmt = this.getAllocationTotal(current.project_ref, current.fy, null, current.project_appropriation_ref);
 		if (this.debugMsg) gs.addInfoMessage('Allocated Amount is: ' + allocAmt);
-		var tranAmt = this.getObligatedTotal(current.project_ref.sys_id, current.fy, current.sys_id, null, null, current.project_appropriation_ref.sys_id);
+		var tranAmt = this.getObligatedTotal(current.project_ref, current.fy, current.getUniqueValue(), null, null, current.project_appropriation_ref);
 		if (this.debugMsg) gs.addInfoMessage('Obligated Amount is: ' + tranAmt);
 		var remAmt = parseFloat(allocAmt) - parseFloat(tranAmt);
 		if (this.debugMsg) gs.addInfoMessage('Remaining Amount is: ' + remAmt);
 		var oldAmt = previous.transaction_total_amt;
 		if (previous.tran_status != 'Obligated' || previous.getValue('void') == true) 
 			oldAmt = 0;
-		if (parseFloat(current.transaction_total_amt) > parseFloat(remAmt) + oldAmt) {
-			if(Math.abs(parseFloat(current.transaction_total_amt - (parseFloat(remAmt) + oldAmt)))>=0.01){
+		var defAmt = parseFloat((parseFloat(remAmt) + oldAmt) - current.transaction_total_amt);
+		if (parseFloat(defAmt.toFixed(2)) > 0) {
 			isValid = false;
-			gs.addErrorMessage("Unable to obligate...insufficient funds remain for the Appropriation specified.  Funds needed: " + this.formatMoney(Math.abs(parseFloat(current.transaction_total_amt - (parseFloat(remAmt) + oldAmt)))) + " Update Failed.");
-		}
+			gs.addErrorMessage("Unable to obligate...insufficient funds remain for the Appropriation specified.  Funds needed: " + this.formatMoney(Math.abs(defAmt)) + " Update Failed.");
 		}
 		return isValid;
 	},
 	
 	validateTranItemDeficient: function(current, previous) {
 		var isValid = true;
-		var allocAmt = this.getAllocationTotal(current.fin_tran_ref.project_ref.sys_id, current.fin_tran_ref.fy, current.fin_tran_ref.allocation_group_ref.sys_id, null);
+		var allocAmt = this.getAllocationTotal(current.fin_tran_ref.project_ref, current.fin_tran_ref.fy, current.fin_tran_ref.allocation_group_ref, null);
 		if (this.debugMsg) gs.addInfoMessage('Allocated Amount is: ' + allocAmt);
-		var tranAmt = this.getObligatedTotal(current.fin_tran_ref.project_ref.sys_id, current.fin_tran_ref.fy, null, current.fti_sys_id, current.fin_tran_ref.allocation_group_ref.sys_id, null);
+		var tranAmt = this.getObligatedTotal(current.fin_tran_ref.project_ref, current.fin_tran_ref.fy, null, current.fti_sys_id, current.fin_tran_ref.allocation_group_ref, null);
 		if (this.debugMsg) gs.addInfoMessage('Obligated Amount is: ' + tranAmt);
 		var remAmt = parseFloat(allocAmt) - (parseFloat(tranAmt) + (parseFloat(current.item_total) - parseFloat(previous.item_total)));
 		if (this.debugMsg) gs.addInfoMessage('Remaining Amount is: ' + remAmt);
-		if (remAmt < 0) {
+		if (parseFloat(remAmt.toFixed(2)) < 0) {
 			isValid = false;
 			gs.addErrorMessage("Unable to obligate...insufficient funds remain for the Allocation Group specified.  Funds needed: " + this.formatMoney(Math.abs(remAmt)) + " Update Failed.");
 		}
@@ -238,13 +238,13 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	
 	validateTranItemApproDeficient: function(current, previous) {
 		var isValid = true;
-		var allocAmt = this.getAllocationTotal(current.fin_tran_ref.project_ref.sys_id, current.fin_tran_ref.fy, null, current.fin_tran_ref.project_appropriation_ref.sys_id);
+		var allocAmt = this.getAllocationTotal(current.fin_tran_ref.project_ref, current.fin_tran_ref.fy, null, current.fin_tran_ref.project_appropriation_ref);
 		if (this.debugMsg) gs.addInfoMessage('Allocated Amount is: ' + allocAmt);
-		var tranAmt = this.getObligatedTotal(current.fin_tran_ref.project_ref.sys_id, current.fin_tran_ref.fy, null, current.fti_sys_id, null, current.fin_tran_ref.project_appropriation_ref.sys_id);
+		var tranAmt = this.getObligatedTotal(current.fin_tran_ref.project_ref, current.fin_tran_ref.fy, null, current.fti_sys_id, null, current.fin_tran_ref.project_appropriation_ref);
 		if (this.debugMsg) gs.addInfoMessage('Obligated Amount is: ' + tranAmt);
 		var remAmt = parseFloat(allocAmt) - (parseFloat(tranAmt) + (parseFloat(current.item_total) - parseFloat(previous.item_total)));
 		if (this.debugMsg) gs.addInfoMessage('Remaining Amount is: ' + remAmt);
-		if (remAmt < 0) {
+		if (parseFloat(remAmt.toFixed(2)) < 0) {
 			isValid = false;
 			gs.addErrorMessage("Unable to obligate...insufficient funds remain for the Appropriation specified.  Funds needed: " + this.formatMoney(Math.abs(remAmt)) + " Update Failed.");
 		}
@@ -286,18 +286,19 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
 	validateGroupDeficient: function(current, previous) {
 		var isValid = true;
-		var allocAmt = this.getAllocationTotal(current.project_ref.sys_id, current.fy, current.allocation_group_ref.sys_id, null);
+		var allocAmt = this.getAllocationTotal(current.project_ref, current.fy, current.allocation_group_ref, null);
 		if (this.debugMsg) gs.addInfoMessage('Allocated Amount is: ' + allocAmt);
-		var tranAmt = this.getObligatedTotal(current.project_ref.sys_id, current.sys_id, current.fy, null, current.allocation_group_ref.sys_id, null);
+		var tranAmt = this.getObligatedTotal(current.project_ref, current.getUniqueValue(), current.fy, null, current.allocation_group_ref, null);
 		if (this.debugMsg) gs.addInfoMessage('Obligated Amount is: ' + tranAmt);
 		var remAmt = parseFloat(allocAmt) - parseFloat(tranAmt);
 		if (this.debugMsg) gs.addInfoMessage('Remaining Amount is: ' + remAmt);
 		var oldAmt = previous.transaction_total_amt;
 		if (previous.tran_status != 'Obligated' || previous.getValue('void') == true) 
 			oldAmt = 0;
-		if (parseFloat(current.transaction_total_amt) > parseFloat(remAmt) + oldAmt) {
+		var defAmt = parseFloat((parseFloat(remAmt) + oldAmt) - current.transaction_total_amt);
+		if (parseFloat(defAmt.toFixed(2)) > 0) {
 			isValid = false;
-			gs.addErrorMessage("Unable to obligate...insufficient funds remain for the Allocation Group specified.  Funds needed: " + this.formatMoney(Math.abs(parseFloat(current.transaction_total_amt - (parseFloat(remAmt) + oldAmt)))) + " Update Failed.");
+			gs.addErrorMessage("Unable to obligate...insufficient funds remain for the Allocation Group specified.  Funds needed: " + this.formatMoney(Math.abs(defAmt)) + " Update Failed.");
 		}
 		return isValid;
 	},
@@ -360,10 +361,10 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         alloc.query();
 		var allocAmt = 0;
         while (alloc.next()) {
-			allocAmt += alloc.getAggregate('SUM', 'allocation_amt');
+			allocAmt += parseFloat(alloc.getAggregate('SUM', 'allocation_amt'));
 		}
 		if (this.debugMsg) gs.addInfoMessage('Allocated query: ' + alloc.getEncodedQuery());
-		return allocAmt;
+		return parseFloat(allocAmt.toFixed(2));
 	},
 
 	getObligatedTotal: function(projKey, fy, tranKey, itemKey, grpKey, approKey) {
@@ -380,10 +381,10 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         txn.query();
 		var totAmt = 0;
         while (txn.next()) {
-			totAmt += txn.getAggregate('SUM', 'itm_item_total');
+			totAmt += parseFloat(txn.getAggregate('SUM', 'itm_item_total'));
 		}
 		if (this.debugMsg) gs.addInfoMessage('Obligated query: ' + txn.getEncodedQuery());
-		return totAmt;
+		return parseFloat(totAmt.toFixed(2));
 	},
 	
 	formatMoney: function(val) {
@@ -406,13 +407,13 @@ FMSFinTran.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>MarkelJR@state.gov</sys_created_by>
         <sys_created_on>2020-07-28 16:48:32</sys_created_on>
         <sys_id>1238d3d91b5ed0101f7e113d9c4bcbd6</sys_id>
-        <sys_mod_count>239</sys_mod_count>
+        <sys_mod_count>252</sys_mod_count>
         <sys_name>FMSFinTran</sys_name>
         <sys_package display_value="FMS" source="x_g_irm_fms">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="FMS">c728dd331b3fc8100a4a10ad9c4bcbb6</sys_scope>
         <sys_update_name>sys_script_include_1238d3d91b5ed0101f7e113d9c4bcbd6</sys_update_name>
-        <sys_updated_by>PuriA@state.gov</sys_updated_by>
-        <sys_updated_on>2021-04-23 18:21:01</sys_updated_on>
+        <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
+        <sys_updated_on>2021-10-28 18:12:06</sys_updated_on>
     </sys_script_include>
 </record_update>

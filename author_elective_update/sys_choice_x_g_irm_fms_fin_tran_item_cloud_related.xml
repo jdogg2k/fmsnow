@@ -25,6 +25,7 @@
             <language>en</language>
             <name>x_g_irm_fms_fin_tran_item</name>
             <sequence>1</sequence>
+            <synonyms/>
             <sys_created_by>RoseJL@state.gov</sys_created_by>
             <sys_created_on>2020-08-17 17:51:44</sys_created_on>
             <sys_domain>global</sys_domain>
@@ -44,6 +45,7 @@
             <language>en</language>
             <name>x_g_irm_fms_fin_tran_item</name>
             <sequence>2</sequence>
+            <synonyms/>
             <sys_created_by>RoseJL@state.gov</sys_created_by>
             <sys_created_on>2020-08-17 17:51:15</sys_created_on>
             <sys_domain>global</sys_domain>
@@ -63,6 +65,7 @@
             <language>en</language>
             <name>x_g_irm_fms_fin_tran_item</name>
             <sequence>3</sequence>
+            <synonyms/>
             <sys_created_by>RoseJL@state.gov</sys_created_by>
             <sys_created_on>2020-08-17 17:50:55</sys_created_on>
             <sys_domain>global</sys_domain>

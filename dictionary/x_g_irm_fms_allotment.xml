@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Allotment" max_length="40" name="x_g_irm_fms_allotment" sizeclass="2" type="collection">
+    <element label="Allotment" max_length="40" name="x_g_irm_fms_allotment" sizeclass="1" type="collection">
         <element attributes="format=none" label="allotment" mandatory="true" max_length="40" name="allotment" type="integer"/>
         <element label="Allotment Description" mandatory="true" max_length="50" name="allotment_desc" type="string"/>
         <element calculation="(function calculatedFieldValue(current) {&#10;&#9;var display;&#10;&#9;if (current.sys_id.nil()) {&#10;&#9;&#9;display = &quot;[new allotment]&quot;;&#10;&#9;}&#10;&#9;else {&#10;&#9;&#9;display = current.allotment_desc.toString() + ' [' + current.allotment.toString() + ']'; &#10;&#9;}&#10;&#9;return display;&#10;})(current);" display="true" label="Allotment display" max_length="256" name="allotment_display" type="string" virtual="true"/>

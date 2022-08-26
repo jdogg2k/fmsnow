@@ -26,7 +26,7 @@ See the documentation for Test Design Considerations</description>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
         <sys_updated_on>2021-09-27 16:11:28</sys_updated_on>
         <table/>
-        <test display_value="Enter Budget + 1 Item">00590de61bf274100a4a10ad9c4bcb31</test>
+        <test display_value="Budget Detail">00590de61bf274100a4a10ad9c4bcb31</test>
         <timeout/>
         <warning_message>Warning: Impersonating an existing user may cause unexpected behavior for this test. Avoid potential issues by adding a 'Create a User' step instead&#13;
 See the documentation for Test Design Considerations</warning_message>
@@ -44,6 +44,7 @@ See the documentation for Test Design Considerations</warning_message>
         <sys_updated_by>MarkelJR@state.gov</sys_updated_by>
         <sys_updated_on>2021-09-27 16:11:28</sys_updated_on>
         <value>ac4e48261b81e4100a4a10ad9c4bcb08</value>
-        <variable display_value="">586e2c4253e0220002c6435723dc3415</variable>
+        <variable display_value="User">586e2c4253e0220002c6435723dc3415</variable>
     </sys_variable_value>
+    <sys_element_mapping action="delete_multiple" query="table=var__m_atf_input_variable_071ee5b253331200040729cac2dc348d^id=a699c1aa1bf274100a4a10ad9c4bcb9d"/>
 </record_update>
